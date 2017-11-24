@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iptables," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Options   选项名 功能及特点     -A （--append）在指定链的末尾添加一条新的规则   -D （--delete）删除指定链中的某条规则，按规则序号或内容确定要删除的规则   -I （--insert）在指定链中插入一条新的规则，默认在链的开头插入   -R （--replace）修改、替换指定链">
+<meta name="keywords" content="iptables">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iptables Options &amp; Chain">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/21/2016-2-21 iptables_Options_&_Chain/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="Options   选项名 功能及特点     -A （--append）在指定链的末尾添加一条新的规则   -D （--delete）删除指定链中的某条规则，按规则序号或内容确定要删除的规则   -I （--insert）在指定链中插入一条新的规则，默认在链的开头插入   -R （--replace）修改、替换指定链中的一条规则，按规则序号或内容确定   -F （--flush）清空指定链中的所">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/iptables2.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/iptables3.png">
+<meta property="og:updated_time" content="2017-03-03T03:33:45.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iptables Options &amp; Chain">
+<meta name="twitter:description" content="Options   选项名 功能及特点     -A （--append）在指定链的末尾添加一条新的规则   -D （--delete）删除指定链中的某条规则，按规则序号或内容确定要删除的规则   -I （--insert）在指定链中插入一条新的规则，默认在链的开头插入   -R （--replace）修改、替换指定链中的一条规则，按规则序号或内容确定   -F （--flush）清空指定链中的所">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/iptables2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/21/2016-2-21 iptables_Options_&_Chain/"/>
+
+
+
+
+
+  <title>iptables Options & Chain | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/21/2016-2-21 iptables_Options_&_Chain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iptables Options & Chain</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-21T16:22:39+08:00">
+                2016-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">选项名</th>
+<th style="text-align:left">功能及特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">-A</td>
+<td style="text-align:left">（--append）在指定链的末尾添加一条新的规则</td>
+</tr>
+<tr>
+<td style="text-align:left">-D</td>
+<td style="text-align:left">（--delete）删除指定链中的某条规则，按规则序号或内容确定要删除的规则</td>
+</tr>
+<tr>
+<td style="text-align:left">-I</td>
+<td style="text-align:left">（--insert）在指定链中插入一条新的规则，默认在链的开头插入</td>
+</tr>
+<tr>
+<td style="text-align:left">-R</td>
+<td style="text-align:left">（--replace）修改、替换指定链中的一条规则，按规则序号或内容确定</td>
+</tr>
+<tr>
+<td style="text-align:left">-F</td>
+<td style="text-align:left">（--flush）清空指定链中的所有规则，默认清空表中所有链的内容</td>
+</tr>
+<tr>
+<td style="text-align:left">-N</td>
+<td style="text-align:left">（--new-chain）新建一条用户自己定义的规则链</td>
+</tr>
+<tr>
+<td style="text-align:left">-X</td>
+<td style="text-align:left">（--delete-chain）删除指定表中用户自定义的规则链</td>
+</tr>
+<tr>
+<td style="text-align:left">-E</td>
+<td style="text-align:left">（-E old-chain-name new-chain-name）重命名自定义链</td>
+</tr>
+<tr>
+<td style="text-align:left">-P</td>
+<td style="text-align:left">（--policy）设置指定链的默认策略</td>
+</tr>
+<tr>
+<td style="text-align:left">-v</td>
+<td style="text-align:left">（--verbose）查看规则列表时显示详细的信息</td>
+</tr>
+<tr>
+<td style="text-align:left">-V</td>
+<td style="text-align:left">（--Version）查看iptables命令工具的版本信息</td>
+</tr>
+<tr>
+<td style="text-align:left">-Z</td>
+<td style="text-align:left">（--zero) 将指定链中的所有规则的包字节计数器归零</td>
+</tr>
+<tr>
+<td style="text-align:left">-h</td>
+<td style="text-align:left">（--help）查看命令帮助信息</td>
+</tr>
+<tr>
+<td style="text-align:left">-L</td>
+<td style="text-align:left">（--list）列出指定链中所有的规则，默认列出表中所有链的内容</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">-n 以数字形式显示地址和端口号,不进行解析</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">-v 显示链及规则详细信息</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">-x 显示计数器的精确值而不是近似值</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">--line-numbers显示规则号码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h4><ul>
+<li><p>默认链</p>
+<ul>
+<li><p>PREROUTING：进入netfilter后的数据包在进入路由判断前执行的规则</p>
+</li>
+<li><p>INPUT：路由判断后要进入本机内部获取本地服务资源</p>
+</li>
+<li><p>FORWARD：路由判断后目的地不是本机的数据包而执行的规则。与本机没有关联。</p>
+</li>
+<li><p>OUTPUT：由本机产生，需向外发的数据包执行的规则</p>
+</li>
+<li><p>POSTROUTING：路由判断后发送到网卡接口前,数据包准备离开netfilter时执行的规则</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>自定义链</p>
+<ul>
+<li><p>自定义链必须在默认链调用后才能发挥作用。</p>
+</li>
+<li><p>如果没有被自定义链中的任何规则匹配,还应该有返回机制。</p>
+</li>
+<li><p>用户可以删除自定义的空链,但不可以删除默认链。</p>
+</li>
+</ul>
+</li>
+<li><p>计数器</p>
+<ul>
+<li>每一条规则都有两个内置的计数器,一个记录被匹配到的报文个数,一个记录被匹配的报文大小之和</li>
+</ul>
+</li>
+</ul>
+<h4 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h4><ul>
+<li>图例一</li>
+</ul>
+<p><img src="http://ohlli9uc9.bkt.clouddn.com/iptables2.png" alt=""></p>
+<ul>
+<li>图例二</li>
+</ul>
+<p><img src="http://ohlli9uc9.bkt.clouddn.com/iptables3.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iptables/" rel="tag"># iptables</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/20/2016-2-20 iptables_Basic/" rel="next" title="iptables Basic">
+                <i class="fa fa-chevron-left"></i> iptables Basic
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/22/2016-2-22 iptables_Match/" rel="prev" title="iptables Match">
+                iptables Match <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Options"><span class="nav-number">1.</span> <span class="nav-text">Options</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chain"><span class="nav-number">2.</span> <span class="nav-text">Chain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process"><span class="nav-number">3.</span> <span class="nav-text">Process</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

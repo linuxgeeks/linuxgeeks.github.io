@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="监控," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介Linux下常用的系统监控软件有Nagios、Cacti、Zabbix、Monit等，这些开源的软件，可以帮助我们更好的管理机器，在第一时间内发现，并警告系统维护人员。 Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状态，Zabbix SIA提供支持.  Zabbix是一个">
+<meta name="keywords" content="监控">
+<meta property="og:type" content="article">
+<meta property="og:title" content="监控服务器 Zabbix">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/03/12/2016-03-12 监控服务器 Zabbix/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="简介Linux下常用的系统监控软件有Nagios、Cacti、Zabbix、Monit等，这些开源的软件，可以帮助我们更好的管理机器，在第一时间内发现，并警告系统维护人员。 Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状态，Zabbix SIA提供支持.  Zabbix是一个企业级的、开源的、分布式的监控套件  Zabbix可以监控网络和服务的监控状况.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-04-03T17:41:36.328Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="监控服务器 Zabbix">
+<meta name="twitter:description" content="简介Linux下常用的系统监控软件有Nagios、Cacti、Zabbix、Monit等，这些开源的软件，可以帮助我们更好的管理机器，在第一时间内发现，并警告系统维护人员。 Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状态，Zabbix SIA提供支持.  Zabbix是一个企业级的、开源的、分布式的监控套件  Zabbix可以监控网络和服务的监控状况.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/03/12/2016-03-12 监控服务器 Zabbix/"/>
+
+
+
+
+
+  <title>监控服务器 Zabbix | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/12/2016-03-12 监控服务器 Zabbix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">监控服务器 Zabbix</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-12T10:43:49+08:00">
+                2016-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Linux下常用的系统监控软件有Nagios、Cacti、Zabbix、Monit等，这些开源的软件，可以帮助我们更好的管理机器，在第一时间内发现，并警告系统维护人员。</p>
+<h4 id="Zabbix介绍"><a href="#Zabbix介绍" class="headerlink" title="Zabbix介绍"></a>Zabbix介绍</h4><p>Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状态，Zabbix SIA提供支持.</p>
+<ul>
+<li><p>Zabbix是一个企业级的、开源的、分布式的监控套件</p>
+</li>
+<li><p>Zabbix可以监控网络和服务的监控状况. Zabbix利用灵活的告警机制，允许用户对事件发送基于Email的告警. 这样可以保证快速的对问题作出相应. Zabbix可以利用存储数据提供杰出的报告及图形化方式. 这一特性将帮助用户完成容量规划.</p>
+</li>
+<li><p>Zabbix支持polling和trapping两种方式. 所有的Zabbix报告都可以通过配置参数在WEB前端进行访问. Web前端将帮助你在任何区域都能够迅速获得你的网络及服务状况. Zabbix可以通过尽可能的配置来扮演监控你的IT基础框架的角色，而不管你是来自于小型组织还是大规模的公司.</p>
+</li>
+<li><p>Zabbix是零成本的. 因为Zabbix编写和发布基于GPL V2协议. 意味着源代码是免费发布的.</p>
+</li>
+<li><p>Zabbix公司也提供商业化的技术支持.</p>
+</li>
+</ul>
+<h4 id="Zabbix功能"><a href="#Zabbix功能" class="headerlink" title="Zabbix功能"></a>Zabbix功能</h4><ul>
+<li><p>应用监控</p>
+<ul>
+<li>数据库/SSH/Apache/Nginx等应用程序的监控。</li>
+</ul>
+</li>
+<li><p>服务器监控</p>
+<ul>
+<li>CPU，内存，SWAP，磁盘空间，网卡流量的监控等.</li>
+</ul>
+</li>
+<li><p>网络设备监控</p>
+<ul>
+<li>支持Cisco, Juniper, 3Com等网络设备，网络设备通过SNMP（SNMP (v1,v2,v3) devices）协<br>议进行监控。</li>
+</ul>
+</li>
+<li><p>自定义监控</p>
+<ul>
+<li>对于Zabbix无法满足的监控，可以添加自定义监控。</li>
+</ul>
+</li>
+</ul>
+<h4 id="Zabbix特性"><a href="#Zabbix特性" class="headerlink" title="Zabbix特性"></a>Zabbix特性</h4><ul>
+<li><p>数据收集</p>
+<ul>
+<li>可用性及性能检测</li>
+<li>支持SNMP(trapping及polling)、IPMI、JMX监控</li>
+<li>自定义检测</li>
+<li>自定义间隔收集收据</li>
+<li>server/proxy/agents吸能</li>
+</ul>
+</li>
+<li><p>灵活的阀值定义</p>
+<ul>
+<li>允许灵活地自定义问题阀值，Zabbix中称为触发器(trigger), 存储在后端数据库中</li>
+</ul>
+</li>
+<li><p>高级告警配置</p>
+<ul>
+<li>可以自定义告警升级(escalation)、接收者及告警方式</li>
+<li>告警信息可以配置并允许使用宏(macro)变量</li>
+<li>通过远程命令实行自动化动作(action)</li>
+</ul>
+</li>
+<li><p>实时绘图</p>
+<ul>
+<li>通过内置的绘图方法实现监控数据实时绘图</li>
+</ul>
+</li>
+<li><p>扩展的图形化显示</p>
+<ul>
+<li>允许自定义创建多监控项视图</li>
+<li>网络拓扑(network maps)</li>
+<li>自定义的面板(screen)和slide shows，并允许在dashboard页面显示</li>
+<li>报告</li>
+<li>高等级(商业)监控资源</li>
+</ul>
+</li>
+<li><p>历史数据存储</p>
+<ul>
+<li>数据存储在数据库中</li>
+<li>历史数据可配置</li>
+<li>内置数据清理机制</li>
+</ul>
+</li>
+<li><p>配置简单</p>
+<ul>
+<li>主机通过添加监控设备方式添加</li>
+<li>一次配置，终生监控(译者注：除非调整或删除)</li>
+<li>监控设备允许使用模板</li>
+<li>支持多种语言，包括中文</li>
+</ul>
+</li>
+<li><p>模板使用</p>
+<ul>
+<li>模板中可以添加组监控</li>
+<li>模板允许继承</li>
+<li>系统自带多种监控模版</li>
+</ul>
+</li>
+<li><p>网络自动发现</p>
+<ul>
+<li>自动发现网络设备</li>
+<li>agent自动注册</li>
+<li>自动发现文件系统、网卡设备、SNMP OID等</li>
+</ul>
+</li>
+<li><p>快速的web接口</p>
+<ul>
+<li>web前端采用php编写</li>
+<li>访问无障碍</li>
+<li>你想怎么做就能做么做</li>
+<li>审计日志</li>
+</ul>
+</li>
+<li><p>Zabbix API</p>
+<ul>
+<li>Zabbix API提供程序级别的访问接口，第三方程序可以很快接入</li>
+</ul>
+</li>
+<li><p>权限系统</p>
+<ul>
+<li>安全的权限认证</li>
+<li>用户可以限制允许维护的列表</li>
+</ul>
+</li>
+<li><p>全特性、agent易扩展</p>
+<ul>
+<li>在监控目标上部署</li>
+<li>支持Linux及Windows</li>
+</ul>
+</li>
+<li><p>二进制守护进程</p>
+<ul>
+<li>C开发，高性能，低内存消耗</li>
+<li>易移植</li>
+</ul>
+</li>
+<li><p>具备应对复杂环境情况</p>
+<ul>
+<li>通过Zabbix proxy可以非常容易的创建远程监控</li>
+<li>支持分布式部署和WEB集中管理</li>
+</ul>
+</li>
+</ul>
+<h4 id="Zabbix缺点"><a href="#Zabbix缺点" class="headerlink" title="Zabbix缺点"></a>Zabbix缺点</h4><ul>
+<li><p>需要在被监控机器上面安装agent。</p>
+</li>
+<li><p>配置信息都存储在数据库里面，数据库是整个监控平台的瓶颈。</p>
+</li>
+</ul>
+<h4 id="Zabbix组件"><a href="#Zabbix组件" class="headerlink" title="Zabbix组件"></a>Zabbix组件</h4><p>默认情况下，zabbix包含5个程序：zabbix_agentd、zabbix_get、zabbix_sender、zabbix_server，zabbix_proxy、可选程序zabbix_java_gateway（需要另外安装）。以及web前端组件和数据存储系统。</p>
+<blockquote>
+<p>zabbix_agentd</p>
+</blockquote>
+<p>  被监控端守护进程，监控本地资源和应用，将收集数据（CPU负载、内存、硬盘使用情况等）汇报给Zabbix Server。agentd并不是必须的，因为zabbix系统支持众多的监控数据采集方法，通过被监控设备代理采集监控数据只是其中的一种方法。</p>
+<blockquote>
+<p>zabbix_get</p>
+</blockquote>
+<p>  zabbix工具，单独使用的命令，通常在server或proxy端执行，用于获取被监控端数据，通常用于排错。</p>
+<blockquote>
+<p>zabbix_sender</p>
+</blockquote>
+<p>   zabbix工具，单独使用的命令，发送数据给server或proxy端，通常用于耗时较长的check，并且与trapper配合使用。生产环境中，个别消耗时间较长的check经常导致zabbix超时，于是我们在脚本执行完后，使用sender主动提交数据。</p>
+<blockquote>
+<p>zabbix_server</p>
+</blockquote>
+<p>  服务端守护进程，zabbix_agentd、zabbix_get、zabbix_sender、zabbix_proxy、zabbix_java_gateway的数据最终都提交到server端。负责所有监控设备和监控项目配置、数据的存储与报表的生成和展示、报警的发送等。（数据不都是主动提交给server，多数情况下都是server主动去获取数据）</p>
+<blockquote>
+<p>zabbix_proxy</p>
+</blockquote>
+<p>  zabbix代理守护进程，功能和server类似。唯一不同的是它只是一个中转站，需要把收集到的数据提交/被提交到server端。一般跨机房、地区的环境需要用到proxy。可以减轻Zabbix Server的压力。</p>
+<blockquote>
+<p>zabbix_java_gateway</p>
+</blockquote>
+<p>  Java网关，zabbix2.0之后引入的一个功能。类似与agentd，但只用于Java方面。需要特别注意的是，它只能主动去获取数据，而不能被动获取数据。它的数据最终会提交给server或proxy。</p>
+<blockquote>
+<p>Web前端组件</p>
+</blockquote>
+<p>  通过Web界面进行管理和维护操作。</p>
+<blockquote>
+<p>数据存储系统</p>
+</blockquote>
+<p>  所有被监控主机和被监控项目的配置信息以及系统所采集的所有监控数据都存储在数据库中。</p>
+<h3 id="Zabbix-环境需求"><a href="#Zabbix-环境需求" class="headerlink" title="Zabbix 环境需求"></a>Zabbix 环境需求</h3><h4 id="软硬件需求"><a href="#软硬件需求" class="headerlink" title="软硬件需求"></a>软硬件需求</h4><blockquote>
+<p>内存和磁盘</p>
+</blockquote>
+<p>  基本需求：128M内存、256M硬盘。硬盘需要考虑的问题：监控条目越多、历史记录保留时间越久数据库将会越大。100台server，做基本的CPU、内存、硬盘、网卡流量等监控，建议硬盘空间80GB</p>
+<blockquote>
+<p>CPU</p>
+</blockquote>
+<p>  由Zabbix数据库使用情况而定，如果监控条目越多，选择的CPU应该越好</p>
+<blockquote>
+<p>其他硬件</p>
+</blockquote>
+<p>  如果有必要的话，可准备GSM短信猫</p>
+<blockquote>
+<p>硬件配置样例</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Platform</th>
+<th>CPU/Memory</th>
+<th>Database</th>
+<th>Monitored hosts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small</td>
+<td>CentOS</td>
+<td>Virtual Appliance</td>
+<td>MySQL InnoDB</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Medium</td>
+<td>CentOS</td>
+<td>2 CPU cores/2GB</td>
+<td>MySQL InnoDB</td>
+<td>500</td>
+</tr>
+<tr>
+<td>Large</td>
+<td>RedHat Enterprise Linux</td>
+<td>4 CPU cores/8GB</td>
+<td>RAID10 MySQL InnoDB or PostgreSQL</td>
+<td>&gt;1000</td>
+</tr>
+<tr>
+<td>Very large</td>
+<td>RedHat Enterprise Linux</td>
+<td>8 CPU cores/16GB</td>
+<td>Fast RAID10 MySQL InnoDB or PostgreSQL</td>
+<td>&gt;10000</td>
+</tr>
+</tbody>
+</table>
+<h4 id="支持的平台"><a href="#支持的平台" class="headerlink" title="支持的平台"></a>支持的平台</h4><ul>
+<li>Linux</li>
+<li>IBM AIX</li>
+<li>FreeBSD</li>
+<li>NetBSD</li>
+<li>OpenBSD</li>
+<li>HP-UX</li>
+<li>Mac OS X</li>
+<li>Solaris</li>
+<li>Windows: all desktop and server versions since 2000 (Zabbix agent only)</li>
+</ul>
+<h4 id="软件需求"><a href="#软件需求" class="headerlink" title="软件需求"></a>软件需求</h4><blockquote>
+<p>数据库</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Software</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MySQL</td>
+<td>5.0.3 or later</td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>10g or later</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>8.1 or later</td>
+</tr>
+<tr>
+<td>SQLite</td>
+<td>3.3.5 or later</td>
+</tr>
+<tr>
+<td>IBM DB2</td>
+<td>9.7 or later</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>前端</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+<th>可选/必须</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apache</td>
+<td>1.3.12 or later</td>
+</tr>
+<tr>
+<td>PHP</td>
+<td>5.4.0 or later</td>
+</tr>
+<tr>
+<td>gd</td>
+<td>2.0 or later</td>
+<td>PHP GD 扩展 必须支持 PNG  (–with-png-dir), JPEG (–with-jpeg-dir) 和 FreeType 2 (–with-freetype-dir).</td>
+</tr>
+<tr>
+<td>bcmath</td>
+<td></td>
+<td>php必须，php-bcmath (–enable-bcmath)</td>
+</tr>
+<tr>
+<td>ctype</td>
+<td></td>
+<td>php必须，php-ctype (–enable-ctype)</td>
+</tr>
+<tr>
+<td>libXML</td>
+<td>2.6.15 or later</td>
+<td>php必须</td>
+</tr>
+<tr>
+<td>xmlreader</td>
+<td></td>
+<td>php必须</td>
+</tr>
+<tr>
+<td>xmlwriter</td>
+<td></td>
+<td>php必须</td>
+</tr>
+<tr>
+<td>session</td>
+<td></td>
+<td>php必须</td>
+</tr>
+<tr>
+<td>sockets</td>
+<td></td>
+<td>php必须，php-net-socket (–enable-sockets)</td>
+</tr>
+<tr>
+<td>mbstring</td>
+<td></td>
+<td>php必须，php-mbstring (–enable-mbstring)</td>
+</tr>
+<tr>
+<td>gettext</td>
+<td></td>
+<td>php必须，php-gettext (–with-gettext).</td>
+</tr>
+<tr>
+<td>ldap</td>
+<td></td>
+<td>php可选</td>
+</tr>
+<tr>
+<td>ibm_db2</td>
+<td></td>
+<td>可选，如果 IBM DB2 作为zabbix后端数据库则需要</td>
+</tr>
+<tr>
+<td>mysqli</td>
+<td></td>
+<td>推荐，如果 MySQL 作为zabbix后端数据库则需要</td>
+</tr>
+<tr>
+<td>oci8</td>
+<td></td>
+<td>可选，如果 Oracle 作为zabbix后端数据库则需要</td>
+</tr>
+<tr>
+<td>pgsql</td>
+<td></td>
+<td>可选，如果 PostgreSQL  作为zabbix后端数据库则需要</td>
+</tr>
+<tr>
+<td>sqlite3</td>
+<td></td>
+<td>可选，如果 SQLite   作为zabbix后端数据库则需要</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>服务器<br>以下内容都为可选项，如果你需要监控特定项，安装特定支持即可。 </p>
+</blockquote>
+<ul>
+<li>OpenIPMI：IPMI硬件监控 </li>
+<li>libssh2：版本1.0以上，监控ssh服务 </li>
+<li>fping：icmp监控项 </li>
+<li>libcurl：监控web项. </li>
+<li>libiksemel：支持jabber报警 </li>
+<li>net-snmp：增加SNMP支持 </li>
+</ul>
+<blockquote>
+<p>Java网关<br>如果你需要通过Java网关来监控你的Java进程，那么你需要增加如下支持 </p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>包名</th>
+<th>地址</th>
+<th>兼容性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>logback-core-0.9.27.jar</td>
+<td><a href="http://logback.qos.ch/" target="_blank" rel="noopener">http://logback.qos.ch/</a></td>
+<td>0.9.27, 1.0.13, and 1.1.1已测试</td>
+</tr>
+<tr>
+<td>logback-classic-0.9.27.jar</td>
+<td><a href="http://logback.qos.ch/" target="_blank" rel="noopener">http://logback.qos.ch/</a></td>
+<td>0.9.27, 1.0.13, and 1.1.1.已测试</td>
+</tr>
+<tr>
+<td>slf4j-api-1.6.1.jar</td>
+<td><a href="http://logback.qos.ch/" target="_blank" rel="noopener">http://logback.qos.ch/</a></td>
+<td>1.6.1, 1.6.6, and 1.7.6.已测试</td>
+</tr>
+<tr>
+<td>android-json-4.3_r3.1.jar</td>
+<td><a href="https://android.googlesource.com/platform/libcore/+/master/json" target="_blank" rel="noopener">https://android.googlesource.com/platform/libcore/+/master/json</a></td>
+<td>2.3.3_r1.1 and 4.3_r3.1已测试</td>
+</tr>
+</tbody>
+</table>
+<h4 id="数据库硬盘容量计算"><a href="#数据库硬盘容量计算" class="headerlink" title="数据库硬盘容量计算"></a>数据库硬盘容量计算</h4><blockquote>
+<p>每秒处理的数据量</p>
+</blockquote>
+<p>  这里的每秒只是一个平均值，例如：3000个监控项，均为60秒刷新一次，那么平均每秒有50（3000/60）个数据要处理。也就是说每秒有50条数据要存储到MySQL（或其他数据库）中。</p>
+<blockquote>
+<p>历史记录保存时间</p>
+</blockquote>
+<p>  一般情况下，zabbix监控项值都要存储到数据库中，并且保留一段时间。假如一个数据需要保存30天，而且每秒有50个值要保存，这30天要存储129 600 000（300 * 24小时 * 3600秒 * 50）个值<br>  一条记录需要多少容量：容量由当前使用的数据库引擎和存储的数据类型（浮点型、整型、字符型等）共同决定。通常，一条记录需要占用大约50个字节，这个案例中129 600 000个记录大约需要（129 600 000 * 50）6.5GB的硬盘空间</p>
+<blockquote>
+<p>趋势数据保存时间</p>
+</blockquote>
+<p>  什么是趋势数据？当查看一周或一月的图标，图表上看到的 MAX / MIN / AVG / COUNT / 都是取自趋势数据，趋势数据一小时获取一次。通常，一条趋势数据大约占用128字节，如果需要保存5年的趋势数据，3000个监控项每年需要2.4GB（3000 个 * 24小时 * 365天 * 128字节），5年共16.8GB。</p>
+<blockquote>
+<p>事件记录保存时间</p>
+</blockquote>
+<p>  报警、警告、恢复等事件。一个事件大概占用130个字节，通常情况下不会有太多的事件，除非运维做的很糟糕，或者运维要求太严格，把阈值调的很低。如果每秒有一个事件发生，那么一年事件记录占用的数据空间为： （1天 * 365天 * 24小时 * 3600秒 * 130字节） 大约4.1G空间。</p>
+<blockquote>
+<p>数据库空间计算公式</p>
+</blockquote>
+<ul>
+<li>zabbix配置占用：固定大小，一般 &lt; 10MB</li>
+<li>历史数据：天数 *（监控项总数 / 更新频率）* 24小时 * 3600秒 * 50字节</li>
+<li>趋势数据：天数 *（监控项总数  / 3600）* 24 小时 * 3600秒 * 128 字节</li>
+<li>事件数据：天数 * 事件个数（大概值）* 24 小时 * 3600 秒 * 130 字节</li>
+</ul>
+<h3 id="Zabbix部署"><a href="#Zabbix部署" class="headerlink" title="Zabbix部署"></a>Zabbix部署</h3><p>前提：时间同步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*/2 * * * * root /usr/sbin/ntpdate time.nist.gov 1&gt;/dev/null 2&gt;&amp;1</span><br><span class="line"><span class="comment"># 加入计划任务</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y groupinstall <span class="string">"Compatibility libraries"</span> <span class="string">"Development tools"</span> <span class="string">"Server Platform Development"</span></span><br><span class="line"><span class="comment"># 解决依赖关系，安装开发环境软件包组</span></span><br></pre></td></tr></table></figure>
+<h4 id="部署LNMP"><a href="#部署LNMP" class="headerlink" title="部署LNMP"></a>部署LNMP</h4><p>Linux：CentOS 6.8<br><a href="http://cn2.php.net/distributions/php-5.6.30.tar.bz2" target="_blank" rel="noopener">Nginx：1.11.12</a><br><a href="http://mirrors.sohu.com/mysql/MySQL-5.6/mysql-5.6.35-linux-glibc2.5-x86_64.tar.gz" target="_blank" rel="noopener">MySQL：5.6.35</a><br><a href="http://nginx.org/download/nginx-1.11.12.tar.gz" target="_blank" rel="noopener">PHP：5.6.30</a></p>
+<p>Zabbix：3.2.4-1</p>
+<ul>
+<li><a href="https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/zabbix-agent-3.2.4-1.el6.x86_64.rpm" target="_blank" rel="noopener">zabbix-agent-3.2.4-1</a></li>
+<li><a href="https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/zabbix-get-3.2.4-1.el6.x86_64.rpm" target="_blank" rel="noopener">zabbix-get-3.2.4-1</a></li>
+<li><a href="https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/zabbix-sender-3.2.4-1.el6.x86_64.rpm" target="_blank" rel="noopener">zabbix-sender-3.2.4-1</a></li>
+<li><a href="https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/deprecated/zabbix-server-mysql-3.2.4-1.el6.x86_64.rpm" target="_blank" rel="noopener">zabbix-server-mysql-3.2.4-1</a></li>
+<li><a href="https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/deprecated/zabbix-web-3.2.4-1.el6.noarch.rpm" target="_blank" rel="noopener">zabbix-web-3.2.4-1</a></li>
+<li><a href="https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/deprecated/zabbix-web-mysql-3.2.4-1.el6.noarch.rpm" target="_blank" rel="noopener">zabbix-web-mysql-3.2.4-1</a></li>
+</ul>
+<h5 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">yum -y install autoconf automake imake libxml2-devel expat-devel cmake gcc gcc-c++ libaio libaio-devel bzr bison libtool ncurses5-devel  </span><br><span class="line"><span class="comment"># 解决依赖关系，安装所需环境</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span></span><br><span class="line">wget http://mirrors.sohu.com/mysql/MySQL-5.6/mysql-5.6.35-linux-glibc2.5-x86_64.tar.gz</span><br><span class="line">tar xf mysql-5.6.35-linux-glibc2.5-x86_64.tar.gz -C /usr/<span class="built_in">local</span>/</span><br><span class="line"><span class="comment"># 下载解压</span></span><br><span class="line"></span><br><span class="line">groupadd -r mysql</span><br><span class="line">useradd -g mysql -r -s /sbin/nologin -M mysql</span><br><span class="line"><span class="comment"># 创建用户和组</span></span><br><span class="line"></span><br><span class="line">ln -sv /usr/<span class="built_in">local</span>/mysql-5.6.35-linux-glibc2.5-x86_64/ /usr/<span class="built_in">local</span>/mysql</span><br><span class="line"><span class="comment"># 创建软连接</span></span><br><span class="line">chown -R  mysql.mysql /usr/<span class="built_in">local</span>/mysql/</span><br><span class="line"><span class="comment"># 属主、数组修改</span></span><br><span class="line"></span><br><span class="line">install -cdv /data</span><br><span class="line">chown mysql.mysql /data/</span><br><span class="line"><span class="comment"># 创建数据存放目录</span></span><br><span class="line"></span><br><span class="line">/usr/<span class="built_in">local</span>/mysql/scripts/mysql_install_db \</span><br><span class="line">--basedir=/usr/<span class="built_in">local</span>/mysql \</span><br><span class="line">--datadir=/data/ --user=mysql</span><br><span class="line"><span class="comment"># 初始化数据库</span></span><br><span class="line"></span><br><span class="line">cp /usr/<span class="built_in">local</span>/mysql/support-files/my-default.cnf /etc/my.cnf </span><br><span class="line"><span class="comment"># 创建配置文件</span></span><br><span class="line"></span><br><span class="line">cp /usr/<span class="built_in">local</span>/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld</span><br><span class="line"><span class="comment"># 修改 datadir=/data</span></span><br><span class="line"><span class="comment"># 创建服务脚本</span></span><br><span class="line"></span><br><span class="line">chkconfig --add mysqld </span><br><span class="line">chkconfig mysqld  on</span><br><span class="line">service mysqld start</span><br><span class="line"><span class="comment"># 启动服务</span></span><br></pre></td></tr></table></figure>
+<p>报错解答 <a href="https://icesquare.com/wordpress/mysql-starting-mysql-error-the-server-quit-without-updating-pid-file/" target="_blank" rel="noopener">https://icesquare.com/wordpress/mysql-starting-mysql-error-the-server-quit-without-updating-pid-file/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">netstat -tunlp  | grep 3306</span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了使用mysql的安装符合系统使用规范，并将其开发组件导出给系统使用，这里做如下配置</span></span><br><span class="line"><span class="comment"># 输出mysql的man手册至man命令的查找路径</span></span><br><span class="line"><span class="comment"># 编辑/etc/man.config，添加如下行即可：</span></span><br><span class="line">MANPATH  /usr/<span class="built_in">local</span>/mysql/man</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/mysql/bin:$PATH'</span> &gt;| /etc/profile.d/mysqlbin.sh</span><br><span class="line">. /etc/profile.d/mysqlbin.sh</span><br><span class="line"><span class="comment"># 修改PATH环境变量，让系统可以直接使用mysql的相关命令</span></span><br><span class="line"></span><br><span class="line">ln -sv /usr/<span class="built_in">local</span>/mysql/include/ /usr/include/mysql</span><br><span class="line"><span class="comment"># 输出mysql的头文件至系统头文件路径/usr/include</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'/usr/local/mysql/lib/'</span> &gt; /etc/ld.so.conf.d/mysqllib.conf</span><br><span class="line"><span class="comment"># 输出mysql的库文件给系统库查找路径</span></span><br><span class="line">ldconfig</span><br><span class="line"><span class="comment"># 让系统重新载入系统库</span></span><br><span class="line">ldconfig -p | grep mysql</span><br><span class="line"></span><br><span class="line">mysql&gt; use mysql;</span><br><span class="line">mysql&gt; select user,host,password from user;</span><br><span class="line">mysql&gt; drop user <span class="string">''</span>@<span class="string">'localhost'</span>;</span><br><span class="line">mysql&gt; drop user <span class="string">''</span>@<span class="string">'test'</span>;</span><br><span class="line">mysql&gt; update user <span class="built_in">set</span> password=password(<span class="string">'hehedada'</span>) <span class="built_in">where</span> user=<span class="string">'root'</span>;</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"><span class="comment"># 删除匿名用户，修改密码</span></span><br><span class="line"></span><br><span class="line">mysql -u root -P 3306 -h 127.0.0.1 -p</span><br><span class="line"><span class="comment"># 测试</span></span><br></pre></td></tr></table></figure>
+<h5 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">yum -y install pcre-devel zlib-devel openssl-devel</span><br><span class="line"><span class="comment"># 解决依赖关系，安装所需环境</span></span><br><span class="line"></span><br><span class="line">groupadd -r nginx</span><br><span class="line">useradd -r -g nginx -s /bin/<span class="literal">false</span> -M nginx</span><br><span class="line"><span class="comment"># 添加用户nginx，实现以之运行nginx服务进程</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span></span><br><span class="line">wget http://nginx.org/download/nginx-1.11.12.tar.gz</span><br><span class="line">tar xf nginx-1.11.12.tar.gz </span><br><span class="line"><span class="comment"># 下载解压</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> nginx-1.11.12</span><br><span class="line">./configure \</span><br><span class="line">--prefix=/usr/<span class="built_in">local</span>/nginx \</span><br><span class="line">--sbin-path=/usr/<span class="built_in">local</span>/nginx/sbin/nginx \</span><br><span class="line">--conf-path=/usr/<span class="built_in">local</span>/nginx/conf/nginx.conf \</span><br><span class="line">--error-log-path=/usr/<span class="built_in">local</span>/nginx/logs/error.log \</span><br><span class="line">--http-log-path=/usr/<span class="built_in">local</span>/nginx/logs/access.log \</span><br><span class="line">--pid-path=/usr/<span class="built_in">local</span>/nginx/logs/nginx.pid \</span><br><span class="line">--lock-path=/usr/<span class="built_in">local</span>/nginx/logs/nginx.lock \</span><br><span class="line">--user=nginx \</span><br><span class="line">--group=nginx \</span><br><span class="line">--with-http_ssl_module \</span><br><span class="line">--with-http_flv_module \</span><br><span class="line">--with-http_stub_status_module \</span><br><span class="line">--with-http_gzip_static_module \</span><br><span class="line">--http-client-body-temp-path=/usr/<span class="built_in">local</span>/nginx/tmp/client_body_temp \</span><br><span class="line">--http-proxy-temp-path=/usr/<span class="built_in">local</span>/nginx/tmp/proxy_temp \</span><br><span class="line">--http-fastcgi-temp-path=/usr/<span class="built_in">local</span>/nginx/tmp/fastcgi_temp \</span><br><span class="line">--http-uwsgi-temp-path=/usr/<span class="built_in">local</span>/nginx/tmp/uwsgi_temp \</span><br><span class="line">--http-scgi-temp-path=/usr/<span class="built_in">local</span>/nginx/tmp/scgi_temp \</span><br><span class="line">--with-pcre | tee -a /tmp/nginx_configure.log</span><br><span class="line"><span class="comment"># 编译前配置</span></span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 编译安装</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/nginx/sbin/nginx -h</span><br><span class="line"><span class="comment"># 查看使用帮助</span></span><br><span class="line"></span><br><span class="line">/usr/<span class="built_in">local</span>/nginx/sbin/nginx -t</span><br><span class="line"><span class="comment"># 配置检查</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># nginx: [emerg] mkdir() "/usr/local/nginx/tmp/client_body_temp" failed (2: No such file or directory)</span></span><br><span class="line"><span class="comment"># 指定的目录未创建，需要手动创建</span></span><br><span class="line">mkdir -pv /usr/<span class="built_in">local</span>/nginx/tmp/</span><br><span class="line"></span><br><span class="line"><span class="comment"># nginx: [emerg] getpwnam("nginx") failed</span></span><br><span class="line"><span class="comment"># 检查nginx的用户名和组是否创建</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为nginx提供SysV init脚本，根据具体配置修改脚本内容<code>/etc/rc.d/init.d/nginx</code></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># nginx - this script starts and stops the nginx daemon</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig:   - 85 15 </span></span><br><span class="line"><span class="comment"># description:  Nginx is an HTTP(S) server, HTTP(S) reverse \</span></span><br><span class="line"><span class="comment">#               proxy and IMAP/POP3 proxy server</span></span><br><span class="line"><span class="comment"># processname: nginx</span></span><br><span class="line"><span class="comment"># config:      /usr/local/nginx/conf/nginx.conf</span></span><br><span class="line"><span class="comment"># config:      /etc/sysconfig/nginx</span></span><br><span class="line"><span class="comment"># pidfile:     /usr/local/nginx/logs/nginx.pid </span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Source networking configuration.</span></span><br><span class="line">. /etc/sysconfig/network</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Check that networking is up.</span></span><br><span class="line">[ <span class="string">"<span class="variable">$NETWORKING</span>"</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line"> </span><br><span class="line">nginx=<span class="string">"/usr/local/nginx/sbin/nginx"</span></span><br><span class="line"><span class="comment"># nginx命令路径</span></span><br><span class="line">prog=$(basename <span class="variable">$nginx</span>)</span><br><span class="line"> </span><br><span class="line">NGINX_CONF_FILE=<span class="string">" /usr/local/nginx/conf/nginx.conf"</span></span><br><span class="line"><span class="comment"># nginx配置文件路径</span></span><br><span class="line">[ -f /etc/sysconfig/nginx ] &amp;&amp; . /etc/sysconfig/nginx</span><br><span class="line"> </span><br><span class="line">lockfile=/usr/<span class="built_in">local</span>/nginx/logs/nginx.lock </span><br><span class="line"><span class="comment"># lock文件路径</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">make_dirs</span></span>() &#123;</span><br><span class="line">   <span class="comment"># make required directories</span></span><br><span class="line">   user=`<span class="variable">$nginx</span> -V 2&gt;&amp;1 | /bin/fgrep <span class="string">'configure arguments'</span> | /bin/sed -r <span class="string">'sS[^*]*--user=([^ ]*).*S\1Sg'</span> -`</span><br><span class="line">   options=`<span class="variable">$nginx</span> -V 2&gt;&amp;1 |  /bin/fgrep <span class="string">'configure arguments:'</span>`</span><br><span class="line">   <span class="keyword">for</span> opt <span class="keyword">in</span> <span class="variable">$options</span>; <span class="keyword">do</span></span><br><span class="line">       <span class="keyword">if</span> [ `<span class="built_in">echo</span> <span class="variable">$opt</span> | grep <span class="string">'.*-temp-path'</span>` ]; <span class="keyword">then</span></span><br><span class="line">           value=`<span class="built_in">echo</span> <span class="variable">$opt</span> | cut -d <span class="string">"="</span> -f 2`</span><br><span class="line">           <span class="keyword">if</span> [ ! -d <span class="string">"<span class="variable">$value</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">               <span class="comment"># echo "creating" $value</span></span><br><span class="line">               mkdir -p <span class="variable">$value</span> &amp;&amp; chown -R <span class="variable">$user</span> <span class="variable">$value</span></span><br><span class="line">           <span class="keyword">fi</span></span><br><span class="line">       <span class="keyword">fi</span></span><br><span class="line">   <span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line">    [ -x <span class="variable">$nginx</span> ] || <span class="built_in">exit</span> 5</span><br><span class="line">    [ -f <span class="variable">$NGINX_CONF_FILE</span> ] || <span class="built_in">exit</span> 6</span><br><span class="line">    make_dirs</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></span><br><span class="line">    daemon <span class="variable">$nginx</span> -c <span class="variable">$NGINX_CONF_FILE</span></span><br><span class="line">    retval=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; touch <span class="variable">$lockfile</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$retval</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></span><br><span class="line">    killproc <span class="variable">$prog</span> -QUIT</span><br><span class="line">    retval=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    [ <span class="variable">$retval</span> -eq 0 ] &amp;&amp; rm -f <span class="variable">$lockfile</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$retval</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">restart</span></span>() &#123;</span><br><span class="line">    configtest || <span class="built_in">return</span> $?</span><br><span class="line">    stop</span><br><span class="line">    sleep 1</span><br><span class="line">    start</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">reload</span></span>() &#123;</span><br><span class="line">    configtest || <span class="built_in">return</span> $?</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></span><br><span class="line">    killproc <span class="variable">$nginx</span> -HUP</span><br><span class="line">    RETVAL=$?</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">force_reload</span></span>() &#123;</span><br><span class="line">    restart</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">configtest</span></span>() &#123;</span><br><span class="line">  <span class="variable">$nginx</span> -t -c <span class="variable">$NGINX_CONF_FILE</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">rh_status</span></span>() &#123;</span><br><span class="line">    status <span class="variable">$prog</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">rh_status_q</span></span>() &#123;</span><br><span class="line">    rh_status &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">    start)</span><br><span class="line">        rh_status_q &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    stop)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 0</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    restart|configtest)</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    reload)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 7</span><br><span class="line">        <span class="variable">$1</span></span><br><span class="line">        ;;</span><br><span class="line">    force-reload)</span><br><span class="line">        force_reload</span><br><span class="line">        ;;</span><br><span class="line">    status)</span><br><span class="line">        rh_status</span><br><span class="line">        ;;</span><br><span class="line">    condrestart|try-restart)</span><br><span class="line">        rh_status_q || <span class="built_in">exit</span> 0</span><br><span class="line">            ;;</span><br><span class="line">    *)</span><br><span class="line">        <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest&#125;"</span></span><br><span class="line">        <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.d/init.d/nginx</span><br><span class="line">chkconfig --add nginx</span><br><span class="line">chkconfig nginx on</span><br><span class="line">service nginx start</span><br><span class="line"><span class="comment"># 服务启动</span></span><br><span class="line"></span><br><span class="line">netstat -tunlp | grep :80</span><br><span class="line"><span class="comment"># 验证</span></span><br></pre></td></tr></table></figure>
+<h5 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a>安装php</h5><p>Mcrypt是PHP的一个扩展，完成了常用加密算法的封装。其实该扩展是对mcrypt标准类库的封装，mcrypt完成了相当多的常用加密算法，如DES, TripleDES, Blowfish (default), 3-WAY, SAFER-SK64, SAFER-SK128, TWOFISH, TEA, RC2 和 GOST加密算法，并且提供了CBC、OFB、CFB 和 ECB 四种块加密的模型。<br>要使用该扩展，必须首先安装mcrypt标准类库，注意的是mcrypt软件依赖libmcrypt和mhash两个库。</p>
+<ul>
+<li>环境和库</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum -y groupinstall <span class="string">"Desktop Platform Development"</span> </span><br><span class="line"><span class="comment"># 桌面平台环境，开发所需</span></span><br><span class="line">yum -y install zlib-devel libxml2-devel libjpeg-devel libjpeg-turbo-devel libiconv-devel libmcrypt-devel mhash mcrypt freetype-devel libpng-devel gd-devel libcurl-devel libxslt-devel libxslt-devel openssl-devel  bzip2 bzip2-devel</span><br><span class="line"><span class="comment"># 依赖库安装</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>libmcrypt（安装mcrypt需要此软件包）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span></span><br><span class="line">wget http://nchc.dl.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz</span><br><span class="line">tar xf libmcrypt-2.5.8.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> libmcrypt-2.5.8</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mhash（安装mcrypt需要此软件包）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span></span><br><span class="line">wget https://acelnmp.googlecode.com/files/mhash-0.9.9.9.tar.gz</span><br><span class="line">tar xf mhash-0.9.9.9.tar.gz </span><br><span class="line"><span class="built_in">cd</span> mhash-0.9.9.9</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mcrypt扩展</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span></span><br><span class="line">wget https://lcmp.googlecode.com/files/mcrypt-2.6.8.tar.gz</span><br><span class="line">tar xf mcrypt-2.6.8.tar.gz</span><br><span class="line"></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/libmcrypt-config /usr/bin/libmcrypt_config</span><br><span class="line"><span class="comment"># 添加链接，以免libmcrypt未搜索到</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">'/usr/local/lib'</span> &gt; /etc/ld.so.conf.d/libmcrypt_lg.conf</span><br><span class="line">ldconfig</span><br><span class="line"><span class="comment"># 添加库搜索路径</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line"><span class="comment"># 由于在配置Mcrypt时，会找不到libmcrypt的链接库，导致无法编译</span></span><br><span class="line"><span class="comment"># 因为Libmcrypt的链接库在/usr/local/lib文件夹下。</span></span><br><span class="line"><span class="comment"># 因此在配置mcrypt时要加入LD_LIBRARY_PATH=/usr/local/lib导入键接库</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> mcrypt-2.6.8</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/mcrypt </span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编译安装php</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span></span><br><span class="line">wget http://cn.php.net/distributions/php-5.4.27.tar.bz2</span><br><span class="line">tar xf php-5.4.27.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> php-5.4.27</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加库链接</span></span><br><span class="line">ln -sv /usr/<span class="built_in">local</span>/mysql/lib/libmysqlclient.so.18 /usr/lib64/</span><br><span class="line"></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php5.6.30 \</span><br><span class="line">--with-mysql=/usr/<span class="built_in">local</span>/mysql \</span><br><span class="line">--with-mysqli=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config \</span><br><span class="line">--without-pdo-sqlite \</span><br><span class="line">--without-sqlite3 \</span><br><span class="line">--with-freetype-dir \</span><br><span class="line">--with-jpeg-dir \</span><br><span class="line">--with-png-dir \</span><br><span class="line">--with-zlib \</span><br><span class="line">--<span class="built_in">enable</span>-xml \</span><br><span class="line">--with-libxml-dir=/usr  \</span><br><span class="line">--<span class="built_in">disable</span>-rpath \</span><br><span class="line">--<span class="built_in">enable</span>-bcmath \</span><br><span class="line">--<span class="built_in">enable</span>-shmop \</span><br><span class="line">--<span class="built_in">enable</span>-sysvsem \</span><br><span class="line">--<span class="built_in">enable</span>-inline-optimization \</span><br><span class="line">--with-curl \</span><br><span class="line">--<span class="built_in">enable</span>-mbregex \</span><br><span class="line">--<span class="built_in">enable</span>-mbstring \</span><br><span class="line">--<span class="built_in">enable</span>-sockets \</span><br><span class="line">--with-mcrypt=/usr/<span class="built_in">local</span>/mcrypt \</span><br><span class="line">--with-mhash \</span><br><span class="line">--with-config-file-path=/etc \</span><br><span class="line">--with-gd \</span><br><span class="line">--<span class="built_in">enable</span>-gd-native-ttf \</span><br><span class="line">--with-openssl \</span><br><span class="line">--<span class="built_in">enable</span>-pcntl \</span><br><span class="line">--with-xmlrpc \</span><br><span class="line">--<span class="built_in">enable</span>-zip \</span><br><span class="line">--<span class="built_in">enable</span>-soap \</span><br><span class="line">--<span class="built_in">enable</span>-short-tags \</span><br><span class="line">--<span class="built_in">enable</span>-static \</span><br><span class="line">--with-config-file-scan-dir=/etc/php.d \</span><br><span class="line">--with-bz2 \</span><br><span class="line">--with-xsl \</span><br><span class="line">--<span class="built_in">enable</span>-fpm \</span><br><span class="line">--with-fpm-user=nginx \</span><br><span class="line">--with-fpm-group=nginx \</span><br><span class="line">--with-gettext \</span><br><span class="line">--<span class="built_in">enable</span>-ftp |  tee -a /tmp/php_install.log</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>说明<ul>
+<li>如果使用PHP5.3以上版本，为了链接MySQL数据库，可以指定mysqlnd，这样在本机就不需要先安装MySQL或MySQL开发包了。mysqlnd从php 5.3开始可用，可以编译时绑定到它（而不用和具体的MySQL客户端库绑定形成依赖），但从PHP 5.4开始它就是默认设置了。</li>
+<li>如果MySQL和PHP不在一台主机，使用with-mysql时，都直接指定为mysqlnd，表示MySQL不在本机，而是在另外的其他主机上<br><code>./configure --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ln -sv /usr/<span class="built_in">local</span>/php5.6.30/ /usr/<span class="built_in">local</span>/php</span><br><span class="line"><span class="comment"># 添加链接</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/php/bin:/usr/local/php/sbin:$PATH'</span> &gt; /etc/profile.d/php.sh</span><br><span class="line"><span class="built_in">source</span>  /etc/profile.d/php.sh</span><br><span class="line"><span class="comment"># 添加环境变量</span></span><br><span class="line"></span><br><span class="line">cp /root/php-5.4.27/php.ini-production /usr/<span class="built_in">local</span>/php/lib/php.ini</span><br><span class="line">cp /root/php-5.4.27/php.ini-production /etc/php.ini</span><br><span class="line"><span class="comment"># 生成php配置文件</span></span><br><span class="line"></span><br><span class="line">cp /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf.default  /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf</span><br><span class="line"><span class="comment"># 创建php-fpm服务程序的配置文件</span></span><br><span class="line"></span><br><span class="line">cp /root/php-5.4.27/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm</span><br><span class="line"><span class="comment"># 创建服务脚本</span></span><br><span class="line"></span><br><span class="line">chmod +x /etc/rc.d/init.d/php-fpm</span><br><span class="line">chkconfig --add php-fpm</span><br><span class="line">chkconfig php-fpm on</span><br><span class="line"><span class="comment"># 添加服务</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置php-fpm，并启用pid文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/<span class="built_in">local</span>/php/etc/php-fpm.conf`</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">pm.max_children = 50</span><br><span class="line"><span class="comment"># 最大子进程数</span></span><br><span class="line">pm.start_servers = 5</span><br><span class="line"><span class="comment"># 程序启动时启动的子进程数</span></span><br><span class="line">pm.min_spare_servers = 2</span><br><span class="line"><span class="comment"># 最小空闲进程数</span></span><br><span class="line">pm.max_spare_servers = 8</span><br><span class="line"><span class="comment"># 最大空闲进程数</span></span><br><span class="line">pid = /usr/<span class="built_in">local</span>/php/var/run/php-fpm.pid</span><br><span class="line"><span class="comment"># pid文件路径（和php-fpm服务脚本中pid保持一致）</span></span><br><span class="line">error_log = <span class="built_in">log</span>/php-fpm.log</span><br><span class="line"><span class="comment"># 启用记录错误日志</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>服务验证</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">service php-fpm start</span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用如下命令来验正（如果此命令输出有中几个php-fpm进程就说明启动成功了）：</span></span><br><span class="line">ps aux | grep php-fpm</span><br><span class="line"></span><br><span class="line">netstat -tnlp | grep php-fpm</span><br><span class="line"><span class="comment"># 默认情况下，fpm监听在127.0.0.1的9000端口，也可以使用如下命令验正其是否已经监听在相应的套接字。</span></span><br></pre></td></tr></table></figure>
+<h4 id="部署Zabbix-server"><a href="#部署Zabbix-server" class="headerlink" title="部署Zabbix-server"></a>部署<a href="http://repo.zabbix.com/" target="_blank" rel="noopener">Zabbix-server</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel sqlite-devel unixODBC-devel OpenIPMI-devel libssh2-devel java-devel iksemel-devel curl-devel libxml2-devel</span><br><span class="line"><span class="comment"># 依赖库安装</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/zabbix-agent-3.2.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/zabbix-get-3.2.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/zabbix-sender-3.2.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/deprecated/zabbix-server-mysql-3.2.4-1.el6.x86_64.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/deprecated/zabbix-web-3.2.4-1.el6.noarch.rpm</span><br><span class="line">wget https://mirrors.aliyun.com/zabbix/zabbix/3.2/rhel/6/x86_64/deprecated/zabbix-web-mysql-3.2.4-1.el6.noarch.rpm</span><br><span class="line"><span class="comment"># 手动下载rpm包</span></span><br><span class="line"></span><br><span class="line">yum localinstall  zabbix-server-mysql-3.2.4-1.el6.x86_64.rpm zabbix-get-3.2.4-1.el6.x86_64.rpm zabbix-web-3.2.4-1.el6.noarch.rpm zabbix-web-mysql-3.2.4-1.el6.noarch.rpm</span><br><span class="line"><span class="comment"># 使用yum进行本地安装</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>报错解决</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Error: Package: zabbix-server-mysql-3.2.4-1.el6.x86_64 (/zabbix-server-mysql-3.2.4-1.el6.x86_64)</span><br><span class="line">           Requires: libiksemel.so.3()(64bit)</span><br><span class="line">Error: Package: zabbix-server-mysql-3.2.4-1.el6.x86_64 (/zabbix-server-mysql-3.2.4-1.el6.x86_64)</span><br><span class="line">           Requires: fping</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解决方法</span></span><br><span class="line">rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm </span><br><span class="line">yum -y install iksemel fping</span><br></pre></td></tr></table></figure>
+<p>参考：<a href="https://pkgs.org/download/libiksemel.so.3()(64bit" target="_blank" rel="noopener">https://pkgs.org/download/libiksemel.so.3()(64bit</a>)</p>
+<h4 id="数据库优化"><a href="#数据库优化" class="headerlink" title="数据库优化"></a>数据库优化</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line"><span class="comment">#这个配置段设置启动MySQL服务的条件；在这种情况下，no-auto-rehash确保这个服务启动得比较快。</span></span><br><span class="line">no-auto-rehash</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">user = mysql  </span><br><span class="line">port = 3306  </span><br><span class="line"><span class="comment"># socket = /var/lib/mysql/mysql.sock  </span></span><br><span class="line">basedir = /usr/<span class="built_in">local</span>/mysql  </span><br><span class="line">datadir = /data</span><br><span class="line">open_files_limit = 10240</span><br><span class="line"></span><br><span class="line">back_log = 600  </span><br><span class="line"><span class="comment"># 在MYSQL暂时停止响应新请求之前，短时间内的多少个请求可以被存在堆栈中。如果系统在短时间内有很多连接，则需要增大该参数的值，该参数值指定到来的TCP/IP连接的监听队列的大小。默认值80。</span></span><br><span class="line"></span><br><span class="line">max_connections = 800  </span><br><span class="line"><span class="comment"># MySQL允许最大的进程连接数，如果经常出现Too Many Connections的错误提示，则需要增大此值。默认151</span></span><br><span class="line"></span><br><span class="line">max_connect_errors = 3000  </span><br><span class="line"><span class="comment"># 设置每个主机的连接请求异常中断的最大次数，当超过该次数，MYSQL服务器将禁止host的连接请求，直到mysql服务器重启或通过flush hosts命令清空此host的相关信息。默认100</span></span><br><span class="line"></span><br><span class="line">external-locking = FALSE  </span><br><span class="line"><span class="comment"># 使用–skip-external-locking MySQL选项以避免外部锁定。该选项默认开启</span></span><br><span class="line"></span><br><span class="line">max_allowed_packet = 8M  </span><br><span class="line"><span class="comment"># 设置在网络传输中一次消息传输量的最大值。系统默认值 为4MB，最大值是1GB，必须设置1024的倍数。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#sort_buffer_size = 2M  </span></span><br><span class="line"><span class="comment"># Sort_Buffer_Size 是一个connection级参数，在每个connection（session）第一次需要使用这个buffer的时候，一次性分配设置的内存。</span></span><br><span class="line"><span class="comment"># Sort_Buffer_Size 并不是越大越好，由于是connection级的参数，过大的设置+高并发可能会耗尽系统内存资源。例如：500个连接将会消耗 500*sort_buffer_size(8M)=4G内存</span></span><br><span class="line"><span class="comment">#Sort_Buffer_Size 超过2KB的时候，就会使用mmap() 而不是 malloc() 来进行内存分配，导致效率降低。 系统默认2M，使用默认值即可</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#join_buffer_size = 2M  </span></span><br><span class="line"><span class="comment"># 用于表间关联缓存的大小，和sort_buffer_size一样，该参数对应的分配内存也是每个连接独享。系统默认2M，使用默认值即可</span></span><br><span class="line"></span><br><span class="line">thread_cache_size = 100  </span><br><span class="line"><span class="comment"># 默认38</span></span><br><span class="line"><span class="comment"># 服务器线程缓存这个值表示可以重新利用保存在缓存中线程的数量,当断开连接时如果缓存中还有空间,那么客户端的线程将被放到缓存中,如果线程重新被请求，那么请求将从缓存中读取,如果缓存中是空的或者是新的请求，那么这个线程将被重新创建,如果有很多新的线程，增加这个值可以改善系统性能.通过比较 Connections 和 Threads_created 状态的变量，可以看到这个变量的作用。设置规则如下：1GB 内存配置为8，2GB配置为16，3GB配置为32，4GB或更高内存，可配置更大。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#thread_concurrency = 2 </span></span><br><span class="line"><span class="comment">#系统默认为10，使用10先观察</span></span><br><span class="line"><span class="comment"># 设置thread_concurrency的值的正确与否, 对mysql的性能影响很大, 在多个cpu(或多核)的情况下，错误设置了thread_concurrency的值, 会导致mysql不能充分利用多cpu(或多核), 出现同一时刻只能一个cpu(或核)在工作的情况。thread_concurrency应设为CPU核数的2倍. 比如有一个双核的CPU, 那么thread_concurrency的应该为4; 2个双核的cpu, thread_concurrency的值应为8</span></span><br><span class="line"></span><br><span class="line">query_cache_size = 2M  </span><br><span class="line"><span class="comment"># 在MyISAM引擎优化中，这个参数也是一个重要的优化参数。但也爆露出来一些问题。机器的内存越来越大，习惯性把参数分配的值越来越大。这个参数加大后也引发了一系列问题。我们首先分析一下 query_cache_size的工作原理：一个SELECT查询在DB中工作后，DB会把该语句缓存下来，当同样的一个SQL再次来到DB里调用时，DB在该表没发生变化的情况下把结果从缓存中返回给Client。这里有一个关建点，就是DB在利用Query_cache工作时，要求该语句涉及的表在这段时间内没有发生变更。那如果该表在发生变更时，Query_cache里的数据又怎么处理呢？首先要把Query_cache和该表相关的语句全部置为失效，然后在写入更新。那么如果Query_cache非常大，该表的查询结构又比较多，查询语句失效也慢，一个更新或是Insert就会很慢，这样看到的就是Update或是Insert怎么这么慢了。所以在数据库写入量或是更新量也比较大的系统，该参数不适合分配过大。而且在高并发，写入量大的系统，建议把该功能禁掉。</span></span><br><span class="line"></span><br><span class="line">query_cache_limit = 4M  </span><br><span class="line"><span class="comment">#指定单个查询能够使用的缓冲区大小，缺省为1M</span></span><br><span class="line"></span><br><span class="line">query_cache_min_res_unit = 1M  </span><br><span class="line"><span class="comment"># 默认是4KB，设置值大对大数据查询有好处，但如果你的查询都是小数据查询，就容易造成内存碎片和浪费</span></span><br><span class="line"><span class="comment"># 查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%</span></span><br><span class="line"><span class="comment"># 如果查询缓存碎片率超过20%，可以用FLUSH QUERY CACHE整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话。</span></span><br><span class="line"><span class="comment"># 查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size * 100%</span></span><br><span class="line"><span class="comment"># 查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小;查询缓存利用率在80%以上而且Qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</span></span><br><span class="line"><span class="comment"># 查询缓存命中率 = (Qcache_hits – Qcache_inserts) / Qcache_hits * 100%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#default-storage-engine = MyISAM</span></span><br><span class="line"><span class="comment">#default_table_type = InnoDB </span></span><br><span class="line"><span class="comment"># 开启失败</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#thread_stack = 192K  </span></span><br><span class="line"><span class="comment"># 设置MYSQL每个线程的堆栈大小，默认值足够大，可满足普通操作。可设置范围为128K至4GB，默认为256KB，使用默认观察</span></span><br><span class="line"></span><br><span class="line">transaction_isolation = READ-COMMITTED  </span><br><span class="line"><span class="comment"># 设定默认的事务隔离级别.可用的级别如下:READ UNCOMMITTED-读未提交 READ COMMITTE-读已提交 REPEATABLE READ -可重复读 SERIALIZABLE -串行</span></span><br><span class="line"></span><br><span class="line">tmp_table_size = 2M  </span><br><span class="line"><span class="comment"># tmp_table_size 的默认大小是 32M。如果一张临时表超出该大小，MySQL产生一个 The table tbl_name is full 形式的错误，如果你做很多高级 GROUP BY 查询，增加 tmp_table_size 值。如果超过该值，则会将临时表写入磁盘。</span></span><br><span class="line">max_heap_table_size = 2M</span><br><span class="line"></span><br><span class="line">expire_logs_days = 7  </span><br><span class="line">key_buffer_size = 16M  </span><br><span class="line"><span class="comment"># 批定用于索引的缓冲区大小，增加它可以得到更好的索引处理性能，对于内存在4GB左右的服务器来说，该参数可设置为256MB或384MB。</span></span><br><span class="line"></span><br><span class="line">read_buffer_size = 1M  </span><br><span class="line"><span class="comment"># 默认128K</span></span><br><span class="line"><span class="comment"># MySql读入缓冲区大小。对表进行顺序扫描的请求将分配一个读入缓冲区，MySql会为它分配一段内存缓冲区。read_buffer_size变量控制这一缓冲区的大小。如果对表的顺序扫描请求非常频繁，并且你认为频繁扫描进行得太慢，可以通过增加该变量值以及内存缓冲区大小提高其性能。和sort_buffer_size一样，该参数对应的分配内存也是每个连接独享。</span></span><br><span class="line"></span><br><span class="line">read_rnd_buffer_size = 1M  </span><br><span class="line"><span class="comment"># MySql的随机读（查询操作）缓冲区大小。当按任意顺序读取行时(例如，按照排序顺序)，将分配一个随机读缓存区。进行排序查询时，MySql会首先扫描一遍该缓冲，以避免磁盘搜索，提高查询速度，如果需要排序大量数据，可适当调高该值。但MySql会为每个客户连接发放该缓冲空间，所以应尽量适当设置该值，以避免内存开销过大。</span></span><br><span class="line"></span><br><span class="line">bulk_insert_buffer_size = 1M  </span><br><span class="line"><span class="comment">#批量插入数据缓存大小，可以有效提高插入效率，默认为8M</span></span><br><span class="line"></span><br><span class="line">myisam_sort_buffer_size = 1M  </span><br><span class="line"><span class="comment"># MyISAM表发生变化时重新排序所需的缓冲 默认8M</span></span><br><span class="line"></span><br><span class="line">myisam_max_sort_file_size = 10G  </span><br><span class="line"><span class="comment"># MySQL重建索引时所允许的最大临时文件的大小 (当 REPAIR, ALTER TABLE 或者 LOAD DATA INFILE).</span></span><br><span class="line"><span class="comment"># 如果文件大小比此值更大,索引会通过键值缓冲创建(更慢)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#myisam_max_extra_sort_file_size = 10G </span></span><br><span class="line"><span class="comment"># 5.6无此值设置</span></span><br><span class="line"><span class="comment">#myisam_repair_threads = 1   默认为1</span></span><br><span class="line"><span class="comment"># 如果一个表拥有超过一个索引, MyISAM 可以通过并行排序使用超过一个线程去修复他们.</span></span><br><span class="line"><span class="comment"># 这对于拥有多个CPU以及大量内存情况的用户,是一个很好的选择.</span></span><br><span class="line"></span><br><span class="line">myisam_recover  </span><br><span class="line"><span class="comment"># 自动检查和修复没有适当关闭的 MyISAM 表</span></span><br><span class="line">skip-name-resolve  </span><br><span class="line">lower_case_table_names = 1  </span><br><span class="line">server-id = 1</span><br><span class="line"></span><br><span class="line">innodb_additional_mem_pool_size = 6M  </span><br><span class="line"><span class="comment"># 这个参数用来设置 InnoDB 存储的数据目录信息和其它内部数据结构的内存池大小，类似于Oracle的library cache。这不是一个强制参数，可以被突破。</span></span><br><span class="line"></span><br><span class="line">innodb_buffer_pool_size = 32M  </span><br><span class="line"><span class="comment"># 这对Innodb表来说非常重要。Innodb相比MyISAM表对缓冲更为敏感。MyISAM可以在默认的 key_buffer_size 设置下运行的可以，然而Innodb在默认的 innodb_buffer_pool_size 设置下却跟蜗牛似的。由于Innodb把数据和索引都缓存起来，无需留给操作系统太多的内存，因此如果只需要用Innodb的话则可以设置它高达 70-80% 的可用内存。一些应用于 key_buffer 的规则有 — 如果你的数据量不大，并且不会暴增，那么无需把 innodb_buffer_pool_size 设置的太大了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#innodb_data_file_path = ibdata1:1024M:autoextend 设置过大导致报错，默认12M观察</span></span><br><span class="line"><span class="comment"># 表空间文件 重要数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#innodb_file_io_threads = 4   </span></span><br><span class="line"><span class="comment"># 不明确，使用默认值</span></span><br><span class="line"><span class="comment"># 文件IO的线程数，一般为 4，但是在 Windows 下，可以设置得较大。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">innodb_thread_concurrency = 4</span><br><span class="line"><span class="comment">#服务器有几个CPU就设置为几，建议用默认设置，一般为8.</span></span><br><span class="line"></span><br><span class="line">innodb_flush_log_at_trx_commit = 2  </span><br><span class="line"><span class="comment"># 如果将此参数设置为1，将在每次提交事务后将日志写入磁盘。为提供性能，可以设置为0或2，但要承担在发生故障时丢失数据的风险。设置为0表示事务日志写入日志文件，而日志文件每秒刷新到磁盘一次。设置为2表示事务日志将在提交时写入日志，但日志文件每次刷新到磁盘一次。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#innodb_log_buffer_size = 16M   </span></span><br><span class="line"><span class="comment"># 使用默认8M</span></span><br><span class="line"><span class="comment"># 此参数确定些日志文件所用的内存大小，以M为单位。缓冲区更大能提高性能，但意外的故障将会丢失数据.MySQL开发人员建议设置为1－8M之间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#innodb_log_file_size = 128M  </span></span><br><span class="line"><span class="comment"># 使用默认48M</span></span><br><span class="line"><span class="comment"># 此参数确定数据日志文件的大小，以M为单位，更大的设置可以提高性能，但也会增加恢复故障数据库所需的时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#innodb_log_files_in_group = 3   </span></span><br><span class="line"><span class="comment"># 使用默认2</span></span><br><span class="line"><span class="comment">#为提高性能，MySQL可以以循环方式将日志文件写到多个文件。推荐设置为3M</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#innodb_max_dirty_pages_pct = 90  </span></span><br><span class="line"><span class="comment"># 使用默认75观察</span></span><br><span class="line"><span class="comment"># Buffer_Pool中Dirty_Page所占的数量，直接影响InnoDB的关闭时间。参数innodb_max_dirty_pages_pct 可以直接控制了Dirty_Page在Buffer_Pool中所占的比率，而且幸运的是innodb_max_dirty_pages_pct是可以动态改变的。所以，在关闭InnoDB之前先将innodb_max_dirty_pages_pct调小，强制数据块Flush一段时间，则能够大大缩短 MySQL关闭的时间。</span></span><br><span class="line"></span><br><span class="line">innodb_lock_wait_timeout = 120  </span><br><span class="line"><span class="comment"># 默认为50秒 </span></span><br><span class="line"><span class="comment"># InnoDB 有其内置的死锁检测机制，能导致未完成的事务回滚。但是，如果结合InnoDB使用MyISAM的lock tables 语句或第三方事务引擎,则InnoDB无法识别死锁。为消除这种可能性，可以将innodb_lock_wait_timeout设置为一个整数值，指示 MySQL在允许其他事务修改那些最终受事务回滚的数据之前要等待多长时间(秒数)</span></span><br><span class="line"></span><br><span class="line">innodb_file_per_table = 0  </span><br><span class="line"><span class="comment"># 默认为No</span></span><br><span class="line"><span class="comment"># 独享表空间（关闭）</span></span><br><span class="line"></span><br><span class="line">[mysqldump]</span><br><span class="line">quick  </span><br><span class="line"><span class="comment"># max_allowed_packet = 32M</span></span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line"><span class="built_in">log</span>-error=/data/mysqld.err</span><br><span class="line">pid-file=/data/mysqld.pid</span><br><span class="line"></span><br><span class="line">sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES</span><br></pre></td></tr></table></figure>
+<p>报错解决：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ERROR! The server quit without updating PID file (/data/zabbix.pid).</span><br><span class="line"><span class="comment"># 1 配置文件my.cnf中的pid-file的路径最好是datadir目录下的和主机名相同的文件</span></span><br><span class="line"><span class="comment"># 2 读取错误日志文件分析问题</span></span><br><span class="line"><span class="comment"># 3 不丢失数据的情况下， 尝试 pkill -9 mysqld，然后重新启动服务，多尝试几次</span></span><br></pre></td></tr></table></figure>
+<h4 id="为zabbix创建数据库"><a href="#为zabbix创建数据库" class="headerlink" title="为zabbix创建数据库"></a>为zabbix创建数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">shell&gt; mysql -uroot -p&lt;root_password&gt;</span><br><span class="line">mysql&gt; show variables like '%char%';</span><br><span class="line">+<span class="comment">--------------------------+---------------------------------------------------------------+</span></span><br><span class="line">| Variable_name            | Value                                                         |</span><br><span class="line">+<span class="comment">--------------------------+---------------------------------------------------------------+</span></span><br><span class="line">| character_set_client     | utf8                                                          |</span><br><span class="line">| character_set_connection | utf8                                                          |</span><br><span class="line">| character_set_database   | latin1                                                        |</span><br><span class="line">| character_set_filesystem | binary                                                        |</span><br><span class="line">| character_set_results    | utf8                                                          |</span><br><span class="line">| character_set_server     | latin1                                                        |</span><br><span class="line">| character_set_system     | utf8                                                          |</span><br><span class="line">| character_sets_dir       | /usr/local/mysql-5.6.35-linux-glibc2.5-x86_64/share/charsets/ |</span><br><span class="line">+<span class="comment">--------------------------+---------------------------------------------------------------+</span></span><br><span class="line">8 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">create</span> <span class="keyword">database</span> zabbix <span class="built_in">character</span> <span class="keyword">set</span> utf8 <span class="keyword">collate</span> utf8_bin; </span><br><span class="line">Query OK, 1 row affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; grant all privileges on zabbix.* to monitor@localhost identified by 'monitor';</span><br><span class="line">Query OK, 0 rows affected (0.03 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; quit</span><br><span class="line">Bye</span><br></pre></td></tr></table></figure>
+<ul>
+<li>导入数据库</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zcat /usr/share/doc/zabbix-server-mysql-3.2.*/create.sql.gz | mysql -umonitor -pmonitor zabbix</span><br><span class="line"><span class="comment"># 注意需要指定zabbix的数据库及帐号密码</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置Nginx-PHP-fpm"><a href="#配置Nginx-PHP-fpm" class="headerlink" title="配置Nginx + PHP-fpm"></a>配置Nginx + PHP-fpm</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">user  nginx;</span><br><span class="line">worker_processes  auto;</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    sendfile        on;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line">    include extra/*.conf;</span><br><span class="line">	<span class="comment"># 将extra目录下的conf文件包含</span></span><br><span class="line">｝</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/<span class="built_in">local</span>/nginx/conf/extra/</span><br><span class="line">vim /usr/<span class="built_in">local</span>/nginx/conf/extra/zabbix.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> zabbix.test.com;</span><br><span class="line">    <span class="attribute">root</span> html/zabbix;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">index</span> index.php index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">location</span> <span class="regexp">~ .*\.(php|php5)?$</span></span><br><span class="line"><span class="regexp"></span>    &#123;</span><br><span class="line">        <span class="attribute">fastcgi_pass</span> <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">        <span class="attribute">fastcgi_index</span> index.php;</span><br><span class="line">        <span class="attribute">include</span> fastcgi.conf;</span><br><span class="line">    &#125;</span><br><span class="line">        <span class="attribute">access_log</span> logs/zabbix_access.log;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">service nginx configtest</span><br><span class="line">service nginx reload</span><br><span class="line">rm /usr/<span class="built_in">local</span>/nginx/html/*</span><br><span class="line">cp -ar /usr/share/zabbix/ /usr/<span class="built_in">local</span>/nginx/html/</span><br><span class="line">chown -R nginx:nginx /usr/<span class="built_in">local</span>/nginx/html/</span><br><span class="line"><span class="comment"># /etc/zabbix/web/这个不给权限 nginx的errorlog会有报错</span></span><br><span class="line">chown nginx:nginx /etc/zabbix/web</span><br></pre></td></tr></table></figure>
+<h4 id="zabbix前端-php-参数配置"><a href="#zabbix前端-php-参数配置" class="headerlink" title="zabbix前端 php 参数配置"></a>zabbix前端 php 参数配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/<span class="built_in">local</span>/php/lib/php.ini</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">max_execution_time = 300</span><br><span class="line">memory_limit = 128M </span><br><span class="line">post_max_size = 16M</span><br><span class="line">upload_max_filesize = 2M</span><br><span class="line">max_input_time = 300</span><br><span class="line">always_populate_raw_post_data = -1</span><br><span class="line">date.timezone = Asia/Shanghai</span><br><span class="line"><span class="comment"># date.timezone Europe/Riga</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/<span class="built_in">local</span>/php/lib/php.ini /etc/php.ini </span><br><span class="line">/etc/init.d/php-fpm restart</span><br></pre></td></tr></table></figure>
+<h4 id="zabbix-server配置"><a href="#zabbix-server配置" class="headerlink" title="zabbix-server配置"></a>zabbix-server配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/zabbix/zabbix_server.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DBHost=localhost</span><br><span class="line">DBName=zabbix</span><br><span class="line">DBUser=monitor</span><br><span class="line">DBPassword=monitor</span><br><span class="line">DBSocket=/tmp/mysql.sock</span><br><span class="line"><span class="comment"># 如果是本机的话，一般在/tmp目录下</span></span><br><span class="line">DBPort=3306</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add zabbix-server</span><br><span class="line">chkconfig zabbix-server on</span><br><span class="line">service zabbix-server start</span><br></pre></td></tr></table></figure>
+<h4 id="安装zabbix的管理页面"><a href="#安装zabbix的管理页面" class="headerlink" title="安装zabbix的管理页面"></a>安装zabbix的管理页面</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/监控/" rel="tag"># 监控</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/" rel="next" title="MySQL安装(通用二进制包)">
+                <i class="fa fa-chevron-left"></i> MySQL安装(通用二进制包)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/01/Nginx服务器特性/" rel="prev" title="Nginx服务器特性">
+                Nginx服务器特性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Zabbix介绍"><span class="nav-number">1.1.</span> <span class="nav-text">Zabbix介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zabbix功能"><span class="nav-number">1.2.</span> <span class="nav-text">Zabbix功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zabbix特性"><span class="nav-number">1.3.</span> <span class="nav-text">Zabbix特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zabbix缺点"><span class="nav-number">1.4.</span> <span class="nav-text">Zabbix缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zabbix组件"><span class="nav-number">1.5.</span> <span class="nav-text">Zabbix组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zabbix-环境需求"><span class="nav-number">2.</span> <span class="nav-text">Zabbix 环境需求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#软硬件需求"><span class="nav-number">2.1.</span> <span class="nav-text">软硬件需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#支持的平台"><span class="nav-number">2.2.</span> <span class="nav-text">支持的平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件需求"><span class="nav-number">2.3.</span> <span class="nav-text">软件需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库硬盘容量计算"><span class="nav-number">2.4.</span> <span class="nav-text">数据库硬盘容量计算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zabbix部署"><span class="nav-number">3.</span> <span class="nav-text">Zabbix部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#部署LNMP"><span class="nav-number">3.1.</span> <span class="nav-text">部署LNMP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装MySQL"><span class="nav-number">3.1.1.</span> <span class="nav-text">安装MySQL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Nginx"><span class="nav-number">3.1.2.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装php"><span class="nav-number">3.1.3.</span> <span class="nav-text">安装php</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署Zabbix-server"><span class="nav-number">3.2.</span> <span class="nav-text">部署Zabbix-server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库优化"><span class="nav-number">3.3.</span> <span class="nav-text">数据库优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为zabbix创建数据库"><span class="nav-number">3.4.</span> <span class="nav-text">为zabbix创建数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Nginx-PHP-fpm"><span class="nav-number">3.5.</span> <span class="nav-text">配置Nginx + PHP-fpm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zabbix前端-php-参数配置"><span class="nav-number">3.6.</span> <span class="nav-text">zabbix前端 php 参数配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zabbix-server配置"><span class="nav-number">3.7.</span> <span class="nav-text">zabbix-server配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装zabbix的管理页面"><span class="nav-number">3.8.</span> <span class="nav-text">安装zabbix的管理页面</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

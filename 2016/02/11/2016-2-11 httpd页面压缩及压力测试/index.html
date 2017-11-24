@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,http," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="httpd页面压缩及压力测试调用模块压缩 使用mod_deflate模块压缩纯文本页面优化传输速度，可以写为一行，也可以写多行，默认为gzip 如果服务器CPU比较空闲，带宽比较紧张可考虑压缩；若CPU比较繁忙则建议关闭压缩  12345httpd -M | grep deflate# 检查模块vim /etc/htt">
+<meta name="keywords" content="web,http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="httpd页面压缩及压力测试">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/11/2016-2-11 httpd页面压缩及压力测试/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="httpd页面压缩及压力测试调用模块压缩 使用mod_deflate模块压缩纯文本页面优化传输速度，可以写为一行，也可以写多行，默认为gzip 如果服务器CPU比较空闲，带宽比较紧张可考虑压缩；若CPU比较繁忙则建议关闭压缩  12345httpd -M | grep deflate# 检查模块vim /etc/httpd/conf.d/deflate.conf# 创建自定义压缩配置 123456">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-03T03:32:10.361Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="httpd页面压缩及压力测试">
+<meta name="twitter:description" content="httpd页面压缩及压力测试调用模块压缩 使用mod_deflate模块压缩纯文本页面优化传输速度，可以写为一行，也可以写多行，默认为gzip 如果服务器CPU比较空闲，带宽比较紧张可考虑压缩；若CPU比较繁忙则建议关闭压缩  12345httpd -M | grep deflate# 检查模块vim /etc/httpd/conf.d/deflate.conf# 创建自定义压缩配置 123456">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/11/2016-2-11 httpd页面压缩及压力测试/"/>
+
+
+
+
+
+  <title>httpd页面压缩及压力测试 | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/11/2016-2-11 httpd页面压缩及压力测试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">httpd页面压缩及压力测试</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-11T16:13:33+08:00">
+                2016-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="httpd页面压缩及压力测试"><a href="#httpd页面压缩及压力测试" class="headerlink" title="httpd页面压缩及压力测试"></a>httpd页面压缩及压力测试</h3><h4 id="调用模块压缩"><a href="#调用模块压缩" class="headerlink" title="调用模块压缩"></a>调用模块压缩</h4><ul>
+<li>使用mod_deflate模块压缩纯文本页面优化传输速度，可以写为一行，也可以写多行，默认为gzip</li>
+<li>如果服务器CPU比较空闲，带宽比较紧张可考虑压缩；若CPU比较繁忙则建议关闭压缩</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">httpd -M | grep deflate</span><br><span class="line"><span class="comment"># 检查模块</span></span><br><span class="line"></span><br><span class="line">vim /etc/httpd/conf.d/deflate.conf</span><br><span class="line"><span class="comment"># 创建自定义压缩配置</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">SetOutputFilter DEFLATE</span><br><span class="line"><span class="comment"># 启用DEFLATE过滤器来实现输出内容过滤，并完成文件压缩</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># mod_deflate configuration</span></span><br><span class="line">&lt;IfModule mod_deflate.c&gt;</span><br><span class="line"> </span><br><span class="line">	<span class="comment"># Restrict compression to these MIME types</span></span><br><span class="line">	<span class="comment"># 明确说明对哪种格式的文档做压缩</span></span><br><span class="line">	AddOutputFilterByType DEFLATE text/plain</span><br><span class="line">	AddOutputFilterByType DEFLATE text/html</span><br><span class="line">	AddOutputFilterByType DEFLATE application/xhtml+xml</span><br><span class="line">	AddOutputFilterByType DEFLATE text/xml</span><br><span class="line">	AddOutputFilterByType DEFLATE application/xml</span><br><span class="line">	AddOutputFilterByType DEFLATE application/x-javascript</span><br><span class="line">	AddOutputFilterByType DEFLATE text/javascript</span><br><span class="line">	AddOutputFilterByType DEFLATE text/css</span><br><span class="line"> </span><br><span class="line">	<span class="comment"># Level of compression (Highest 9 - Lowest 1)默认为6</span></span><br><span class="line">	<span class="comment"># 压缩比</span></span><br><span class="line">	DeflateCompressionLevel 9</span><br><span class="line">	 </span><br><span class="line">	<span class="comment"># 判定哪种格式的浏览器不使用压缩机制</span></span><br><span class="line">	<span class="comment"># Netscape 4.x has some problems.</span></span><br><span class="line">	BrowserMatch ^Mozilla/4 gzip-only-text/html</span><br><span class="line">	 </span><br><span class="line">	<span class="comment"># Netscape 4.06-4.08 have some more problems</span></span><br><span class="line">	BrowserMatch ^Mozilla/4\.0[678] no-gzip</span><br><span class="line">	 </span><br><span class="line">	<span class="comment"># MSIE masquerades as Netscape, but it is fine</span></span><br><span class="line">	BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html</span><br><span class="line"></span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="apache扩展命令"><a href="#apache扩展命令" class="headerlink" title="apache扩展命令"></a>apache扩展命令</h4><ul>
+<li>apachectl：Apache HTTP服务控制工具</li>
+<li>ab： Apache HTTP服务器性能测试工具</li>
+<li>apxs：Apache 扩展工具</li>
+<li>configure：配置源代码</li>
+<li>dbmmanage：为基本认证创建和更新DBM格式的用户认证文件</li>
+<li>htcacheclean：清理磁盘缓存</li>
+<li>htdigest：为摘要认证创建和更新用户认证文件。</li>
+<li>htdbm：操作 DBM 密码数据库。</li>
+<li>htpasswd：为基本认证创建和更新用户认证文件。</li>
+<li>httxt2dbm：为 RewriteMap 创建 dbm 文件。</li>
+<li>logresolve：将 Apache 日志文件中的 IP 地址解析到主机名称。</li>
+<li>rotatelogs：不关闭 Apache 而切换日志文件。</li>
+<li>suexec：执行外部程序前切换用户。</li>
+</ul>
+<h4 id="资源限定"><a href="#资源限定" class="headerlink" title="资源限定"></a>资源限定</h4><ul>
+<li>软限制：可以超出的限制，但仅能超出一定时长</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ulimit</span>：只能修改软限制</span><br><span class="line">  -n [N]：显示或限制能打开的最大的文件句柄数</span><br><span class="line">  -u [N]：所能够打开的最大进程数</span><br></pre></td></tr></table></figure>
+<ul>
+<li>硬限制：绝对不能超出的限制<ul>
+<li>主配置：<code>/etc/security/limits.conf</code></li>
+<li>扩展配置：<code>/etc/security/limits.d/*.conf</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改/etc/security/limits.conf</span></span><br><span class="line"><span class="comment"># 对谁进行限定    类型  要限定的选项 值</span></span><br><span class="line">apache          hard    nofile          65535</span><br><span class="line">apache          hard    nproc           30000</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 立即生效</span></span><br><span class="line"><span class="built_in">ulimit</span> -n 65535</span><br><span class="line"><span class="built_in">ulimit</span> -u 30000</span><br></pre></td></tr></table></figure>
+<h4 id="ab工具的初步使用"><a href="#ab工具的初步使用" class="headerlink" title="ab工具的初步使用"></a>ab工具的初步使用</h4><ul>
+<li>-c 模拟的并发数</li>
+<li>-n 模拟的总请求数</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ab -c 100 -n 5000 http://192.168.237.68/index.html </span><br><span class="line"><span class="comment"># 一般并发数应该小于等于请求数</span></span><br></pre></td></tr></table></figure>
+<p>其他压力测试工具</p>
+<ul>
+<li>http_load webbench seige(只做参考)</li>
+<li>tcp_copy</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/http/" rel="tag"># http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/10/2016-2-10 httpd2.4.23配置实践/" rel="next" title="httpd2.4.23配置实践">
+                <i class="fa fa-chevron-left"></i> httpd2.4.23配置实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/12/2016-2-12 Linux五种IO模型/" rel="prev" title="Linux五种IO模型">
+                Linux五种IO模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#httpd页面压缩及压力测试"><span class="nav-number">1.</span> <span class="nav-text">httpd页面压缩及压力测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调用模块压缩"><span class="nav-number">1.1.</span> <span class="nav-text">调用模块压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#apache扩展命令"><span class="nav-number">1.2.</span> <span class="nav-text">apache扩展命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#资源限定"><span class="nav-number">1.3.</span> <span class="nav-text">资源限定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ab工具的初步使用"><span class="nav-number">1.4.</span> <span class="nav-text">ab工具的初步使用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

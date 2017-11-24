@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="security,log," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="SElinux SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制访问控制的实现，是 Linux历史上最杰出的新安全子系统。NSA是在Linux社区的帮助下开发了一种访问控制体系，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。  SElinux的用">
+<meta name="keywords" content="security,log">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SElinux和Rsyslog">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/26/2016-2-26 Selinux和Rsyslog/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="SElinux SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制访问控制的实现，是 Linux历史上最杰出的新安全子系统。NSA是在Linux社区的帮助下开发了一种访问控制体系，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。  SElinux的用途在于增强系统抵御 0-Day 攻击(利用尚未公开的漏洞实现的攻击行为)的能力。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-26T10:54:41.897Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SElinux和Rsyslog">
+<meta name="twitter:description" content="SElinux SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制访问控制的实现，是 Linux历史上最杰出的新安全子系统。NSA是在Linux社区的帮助下开发了一种访问控制体系，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。  SElinux的用途在于增强系统抵御 0-Day 攻击(利用尚未公开的漏洞实现的攻击行为)的能力。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/26/2016-2-26 Selinux和Rsyslog/"/>
+
+
+
+
+
+  <title>SElinux和Rsyslog | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/26/2016-2-26 Selinux和Rsyslog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SElinux和Rsyslog</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-26T15:10:27+08:00">
+                2016-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/security/" itemprop="url" rel="index">
+                    <span itemprop="name">security</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="SElinux"><a href="#SElinux" class="headerlink" title="SElinux"></a>SElinux</h3><ul>
+<li><p>SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制访问控制的实现，是 Linux历史上最杰出的新安全子系统。NSA是在Linux社区的帮助下开发了一种访问控制体系，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。</p>
+</li>
+<li><p>SElinux的用途在于增强系统抵御 0-Day 攻击(利用尚未公开的漏洞实现的攻击行为)的能力。所以它不是网络防火墙或 ACL 的替代品，在用途上也不重复。</p>
+</li>
+<li><p>获取当前 SELinux 运行状态</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getenforce</span><br></pre></td></tr></table></figure>
+<p>可能返回结果有三种：Enforcing、Permissive 和 Disabled。Disabled 代表 SELinux 被禁用，Permissive 代表仅记录安全警告但不阻止可疑行为，Enforcing 代表记录警告且阻止可疑行为。</p>
+<ul>
+<li>改变 SELinux 运行状态</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setenforce [ Enforcing | Permissive | 1 | 0 ]</span><br></pre></td></tr></table></figure>
+<p> 该命令可以立刻改变 SELinux 运行状态，在 Enforcing 和 Permissive 之间切换，结果保持至关机。一个典型的用途是看看到底是不是 SELinux 导致某个服务或者程序无法运行。若是在 setenforce 0 之后服务或者程序依然无法运行，那么就可以肯定不是 SELinux 导致的。</p>
+<p> 若是想要永久变更系统 SELinux 运行环境，可以通过更改配置文件 <code>/etc/sysconfig/selinux</code> 实现。注意当从 Disabled 切换到 Permissive 或者 Enforcing 模式后需要重启计算机并为整个文件系统重新创建安全标签(<code>touch /.autorelabel &amp;&amp; reboot</code>)</p>
+<ul>
+<li><p>SELinux 运行策略</p>
+<ul>
+<li>配置文件 <code>/etc/sysconfig/selinux</code> 还包含了 SELinux 运行策略的信息，通过改变变量 SELINUXTYPE 的值实现，该值有两种可能：<code>targeted</code> 代表仅针对预制的几种网络服务和访问请求使用 SELinux 保护，<code>strict</code> 代表所有网络服务和访问请求都要经过 SELinux</li>
+</ul>
+</li>
+</ul>
+<p>参考文档：<a href="http://blog.csdn.net/myarrow/article/details/9856095/" target="_blank" rel="noopener">http://blog.csdn.net/myarrow/article/details/9856095/</a> </p>
+<h3 id="Rsyslog"><a href="#Rsyslog" class="headerlink" title="Rsyslog"></a>Rsyslog</h3><p>rsyslog是UNIX系统中提供的一种日志记录方法(RFC3164)，rsyslog本身是一个服务器，程序中凡是使用rsyslog记录的信息都会发送到该服务器，服务器根据配置决定此信息是否记录，是记录到磁盘文件还是其他地方，这样使系统内所有应用程序都能以统一的方式记录日志，为系统日志的统一审计提供了方便。</p>
+<h5 id="日志管理服务分类"><a href="#日志管理服务分类" class="headerlink" title="日志管理服务分类"></a>日志管理服务分类</h5><ul>
+<li>rsyslogd 普通日志管理服务：采集各种服务产生的信息根据日志服务配置文件内容将信息进行分类保存。</li>
+<li>klogd 内核信息日志文件服务：专门记录内核信息</li>
+<li>logrotate 日志文件轮替服务：解决日志文件内容过多消耗内存的日志文件替换服务</li>
+</ul>
+<h5 id="常见日志分类"><a href="#常见日志分类" class="headerlink" title="常见日志分类"></a>常见日志分类</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/var/<span class="built_in">log</span>/cron          <span class="comment"># crontab 例行性任务调度产生信息</span></span><br><span class="line">/var/<span class="built_in">log</span>/maillog        <span class="comment"># 邮件往来信息</span></span><br><span class="line">/var/<span class="built_in">log</span>/secure        <span class="comment"># 涉及帐号密码的登陆信息</span></span><br><span class="line">/var/<span class="built_in">log</span>/faillog  /var/<span class="built_in">log</span>/wtmp  <span class="comment"># 记录系统登陆者信息</span></span><br><span class="line">/var/<span class="built_in">log</span>/yum.log     <span class="comment"># yum使用的信息</span></span><br><span class="line">在<span class="built_in">log</span> 目录里面一般还有各种的网络服务日志文件，例如http samba 等等。</span><br></pre></td></tr></table></figure>
+<h5 id="日志格式"><a href="#日志格式" class="headerlink" title="日志格式"></a>日志格式</h5><p>syslog记录的日志格式为：<br>时间 主机名 进程 日志内容</p>
+<h5 id="文件信息"><a href="#文件信息" class="headerlink" title="文件信息"></a>文件信息</h5><p>rsyslog设备依据两个重要的文件：<code>/etc/rc.d/init.d/rsyslog</code> 守护进程和 <code>/etc/rsyslog.conf</code> 配置文件。通常情况下，多数rsyslog信息被写到 <code>/var/adm</code> 或 <code>/var/log</code> 目录下的信息文件中(messages.*)。一个典型的rsyslog记录包括生成程序的名字和一个文本信息。它还包括一个设备和一个优先级范围。</p>
+<p>通过使用rsyslog.conf文件，可以对生成的日志的位置及其相关信息进行灵活的配置。该配置文件指明了rsyslog守护程序记录日志的行为，该程序在启动时查询配置文件。该文件由不同程序或消息分类的单个条目组成，每个占一行。对每类消息提供一个选择域和一个动作域。这些域由tab隔开：</p>
+<ul>
+<li>选择域指明消息的类型和优先级;</li>
+<li>动作域指明syslogd接收到一个与选择标准相匹配的消息时所执行的动作。</li>
+</ul>
+<p>syslog.conf行的基本语法是：</p>
+<blockquote>
+<p>消息类型.优先级 动作域</p>
+</blockquote>
+<p>其中，每个选择域是由消息类型和优先级组成。当指明一个优先级时，syslogd将记录一个拥有相同或更高优先级的消息。Linux中一些主要的消息类型如表2所示，表3列出了一些优先级信息：</p>
+<h5 id="rsyslog消息类型"><a href="#rsyslog消息类型" class="headerlink" title="rsyslog消息类型"></a>rsyslog消息类型</h5><table>
+<thead>
+<tr>
+<th>消息类型</th>
+<th>消息来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kern</td>
+<td>内核</td>
+</tr>
+<tr>
+<td>User</td>
+<td>用户程序</td>
+</tr>
+<tr>
+<td>Damon</td>
+<td>系统守护进程</td>
+</tr>
+<tr>
+<td>Mail</td>
+<td>电子邮件系统</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>与安全权限相关的命令</td>
+<td></td>
+</tr>
+<tr>
+<td>Lpr</td>
+<td>打印机</td>
+</tr>
+<tr>
+<td>News</td>
+<td>新闻组信息</td>
+</tr>
+<tr>
+<td>Uucp</td>
+<td>Uucp程序</td>
+</tr>
+<tr>
+<td>Cron</td>
+<td>记录当前登录的每个用户信息</td>
+</tr>
+<tr>
+<td>wtmp</td>
+<td>一个用户每次登录进入和退出时间的永久记录</td>
+</tr>
+<tr>
+<td>Authpriv</td>
+<td>授权信息</td>
+</tr>
+<tr>
+<td>local0 ~ local7</td>
+<td>8个自定义</td>
+</tr>
+</tbody>
+</table>
+<h5 id="priority"><a href="#priority" class="headerlink" title="priority"></a>priority</h5><table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emerg</td>
+<td>最高的紧急程度状态</td>
+</tr>
+<tr>
+<td>alert</td>
+<td>紧急状态</td>
+</tr>
+<tr>
+<td>Cirt</td>
+<td>重要信息</td>
+</tr>
+<tr>
+<td>warning</td>
+<td>警告</td>
+</tr>
+<tr>
+<td>err</td>
+<td>临界状态</td>
+</tr>
+<tr>
+<td>notice</td>
+<td>出现不寻常的事情</td>
+</tr>
+<tr>
+<td>info</td>
+<td>一般性消息</td>
+</tr>
+<tr>
+<td>Debug</td>
+<td>调试级信息</td>
+</tr>
+<tr>
+<td>None</td>
+<td>不记录任何日志信息</td>
+</tr>
+</tbody>
+</table>
+<h5 id="通配机制"><a href="#通配机制" class="headerlink" title="通配机制"></a>通配机制</h5><ul>
+<li>* 是把本项服务生成的所有日志消息都发送到操作动作指定的地点。就像它在规则表达式里的作用一样，星号代表“任何东西”。“mail.*”将把所有优先级的消息都发送到操作动作指定的/var/log/mail文件里。</li>
+<li>= 大于该等级的信息等级</li>
+<li>! 不等于该等级，除了该等级以外的信息等级</li>
+<li>- 异步写入，常用语邮件服务器，如<code>mail.*                                                  -/var/log/maillog</code></li>
+</ul>
+<h5 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h5><ul>
+<li>记录到文件，如<code>/var/log/messages</code></li>
+<li>发送到日志服务器，@1.2.4.8</li>
+<li>管道，<code>| command</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/security/" rel="tag"># security</a>
+          
+            <a href="/tags/log/" rel="tag"># log</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/25/2016-2-25 iptables_Command_Examples/" rel="next" title="iptables Command & Examples">
+                <i class="fa fa-chevron-left"></i> iptables Command & Examples
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/27/2016-2-27 MySQL基础/" rel="prev" title="MySQL基础">
+                MySQL基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SElinux"><span class="nav-number">1.</span> <span class="nav-text">SElinux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rsyslog"><span class="nav-number">2.</span> <span class="nav-text">Rsyslog</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#日志管理服务分类"><span class="nav-number">2.0.1.</span> <span class="nav-text">日志管理服务分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见日志分类"><span class="nav-number">2.0.2.</span> <span class="nav-text">常见日志分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#日志格式"><span class="nav-number">2.0.3.</span> <span class="nav-text">日志格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件信息"><span class="nav-number">2.0.4.</span> <span class="nav-text">文件信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rsyslog消息类型"><span class="nav-number">2.0.5.</span> <span class="nav-text">rsyslog消息类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#priority"><span class="nav-number">2.0.6.</span> <span class="nav-text">priority</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通配机制"><span class="nav-number">2.0.7.</span> <span class="nav-text">通配机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Target"><span class="nav-number">2.0.8.</span> <span class="nav-text">Target</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,nginx," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="nginx.vim  使用vim对nginx配置文件做语法高亮 站点： http://www.vim.org/scripts/script.php?script_id=1886 123456mkdir -pv ~/.vim/syntax# 语法目录创建wget http://www.vim.org/scripts/do">
+<meta name="keywords" content="web,nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx常用参数配置说明">
+<meta property="og:url" content="http://linuxgeeks.github.io/2017/01/02/Nginx常用参数配置说明/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="nginx.vim  使用vim对nginx配置文件做语法高亮 站点： http://www.vim.org/scripts/script.php?script_id=1886 123456mkdir -pv ~/.vim/syntax# 语法目录创建wget http://www.vim.org/scripts/download_script.php?src_id=19394 -O ~/.v">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-01-08T13:07:29.738Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx常用参数配置说明">
+<meta name="twitter:description" content="nginx.vim  使用vim对nginx配置文件做语法高亮 站点： http://www.vim.org/scripts/script.php?script_id=1886 123456mkdir -pv ~/.vim/syntax# 语法目录创建wget http://www.vim.org/scripts/download_script.php?src_id=19394 -O ~/.v">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2017/01/02/Nginx常用参数配置说明/"/>
+
+
+
+
+
+  <title>Nginx常用参数配置说明 | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/02/Nginx常用参数配置说明/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx常用参数配置说明</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-02T16:36:38+08:00">
+                2017-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  nginx.vim</p>
+<ul>
+<li>使用vim对nginx配置文件做语法高亮</li>
+<li><p>站点： <a href="http://www.vim.org/scripts/script.php?script_id=1886" target="_blank" rel="noopener">http://www.vim.org/scripts/script.php?script_id=1886</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv ~/.vim/syntax</span><br><span class="line"><span class="comment"># 语法目录创建</span></span><br><span class="line">wget http://www.vim.org/scripts/download_script.php?src_id=19394 -O ~/.vim/syntax/nginx.vim</span><br><span class="line"><span class="comment"># 下载nginx.vim到~/vim/syntax/目录下</span></span><br><span class="line">au BufRead,BufNewFile /etc/nginx/*,/usr/<span class="built_in">local</span>/nginx/conf/*  setfiletype nginx <span class="string">' </span></span><br><span class="line"><span class="string"># 编辑~/.vim/filetype.vim，写入代码；路径要按照实际安装路径来修改</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>配置文件<code>/usr/local/nginx/conf/nginx.conf</code></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">events</span><br><span class="line">&#123;</span><br><span class="line">....</span><br><span class="line">&#125;</span><br><span class="line">http</span><br><span class="line">&#123;</span><br><span class="line">....</span><br><span class="line">    server</span><br><span class="line">     &#123;</span><br><span class="line">        location&#123;&#125;</span><br><span class="line">        ....</span><br><span class="line">     &#125;</span><br><span class="line">    server</span><br><span class="line">     &#123;</span><br><span class="line">        <span class="section">location</span> &#123;&#125;</span><br><span class="line">        ....</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="正常运行的必备配置"><a href="#正常运行的必备配置" class="headerlink" title="正常运行的必备配置"></a>正常运行的必备配置</h3><h4 id="user"><a href="#user" class="headerlink" title="user"></a>user</h4><blockquote>
+<p>Syntax:    user user [group];<br>Default:    user nobody nobody;<br>Context:    main</p>
+</blockquote>
+<p>Defines user and group credentials used by worker processes. If group is omitted, a group whose name equals that of user is used.<br>Nginx以哪个用户和组身份运行；如果在configure指定，则运行时以指定的用户和组为准</p>
+<h4 id="pid"><a href="#pid" class="headerlink" title="pid"></a>pid</h4><blockquote>
+<p>Syntax:    pid file;<br>Default:    pid nginx.pid;<br>Context:    main</p>
+</blockquote>
+<p>Defines a file that will store the process ID of the main process.<br>Nginx进程标识符存放路径；如果在configure指定，则运行时以指定的pid文件为准</p>
+<h4 id="worker-rlimit-nofile"><a href="#worker-rlimit-nofile" class="headerlink" title="worker_rlimit_nofile"></a>worker_rlimit_nofile</h4><blockquote>
+<p>Syntax:    worker_rlimit_nofile number;<br>Default:    —<br>Context:    main</p>
+</blockquote>
+<p>Changes the limit on the maximum number of open files (RLIMIT_NOFILE) for worker processes. Used to increase the limit without restarting the main process.<br>指定一个worker进程所能够打开的最大文件描述符数；理论值应该是最多打开文件数（ulimit -n）与nginx进程数相除，但是nginx分配请求并不是那么均匀，所以最好与（ulimit -n ）的值保持一致。</p>
+<h4 id="worker-rlimit-sigpending"><a href="#worker-rlimit-sigpending" class="headerlink" title="worker_rlimit_sigpending"></a>worker_rlimit_sigpending</h4><blockquote>
+<p>(Since Linux 2.6.8) Specifies the limit on the number of signals that may be queued for the real user ID of the calling process.</p>
+</blockquote>
+<p>设定每个用户能够发往worker进程的信号的数量；</p>
+<h3 id="优化性能相关的配置"><a href="#优化性能相关的配置" class="headerlink" title="优化性能相关的配置"></a>优化性能相关的配置</h3><h4 id="worker-processes"><a href="#worker-processes" class="headerlink" title="worker_processes"></a>worker_processes</h4><blockquote>
+<p>Syntax:    worker_processes number | auto;<br>Default:    worker_processes 1;<br>Context:    main</p>
+</blockquote>
+<p>Defines the number of worker processes.</p>
+<ul>
+<li>work进程的个数 ，通常其数值应该为cpu的物理核心数减1</li>
+<li>可以根据物理CPU自动设定。 worker不使用进程或线程处理请求，而是直接将worker绑定到CPU上,，这样就没有进程切换的说法了。</li>
+</ul>
+<h4 id="worker-cpu-affinity"><a href="#worker-cpu-affinity" class="headerlink" title="worker_cpu_affinity"></a>worker_cpu_affinity</h4><blockquote>
+<p>Syntax:    worker_cpu_affinity cpumask …;<br>worker_cpu_affinity auto [cpumask];<br>Default:    —<br>Context:    main</p>
+</blockquote>
+<p>Binds worker processes to the sets of CPUs. Each CPU set is represented by a bitmask of allowed CPUs. There should be a separate set defined for each of the worker processes. By default, worker processes are not bound to any specific CPUs.<br>仅用于Linux。将worker进程与指定的CPU进行绑定，这种绑定不能隔离CPU，CPU还可能会响应其它进程请求。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">work_procrsses</span> <span class="number">6</span></span><br><span class="line">worker_cpu_affinity <span class="number">00000001</span> <span class="number">00000010</span> <span class="number">00000100</span> <span class="number">00001000</span> <span class="number">00010000</span> <span class="number">00100000</span>;</span><br><span class="line"><span class="comment"># Bind each worker process to one CPU only.</span></span><br><span class="line"><span class="comment"># 分别给每个worker进程绑定一个CPU.</span></span><br><span class="line"><span class="attribute">worker_processes</span>    <span class="number">2</span>;</span><br><span class="line"><span class="attribute">worker_cpu_affinity</span> <span class="number">0101</span> <span class="number">1010</span>;</span><br><span class="line"><span class="comment"># Binds the first worker process to CPU0/CPU2, and the second worker process to CPU1/CPU3. The second example is suitable for hyper-threading.</span></span><br><span class="line"><span class="comment"># 将CPU0/CPU2绑定给第一个worker进程，将CPU1/CPU3绑定给第二个worker进程。</span></span><br></pre></td></tr></table></figure>
+<h4 id="ssl-engine"><a href="#ssl-engine" class="headerlink" title="ssl_engine"></a>ssl_engine</h4><blockquote>
+<p>Syntax:    ssl_engine device;<br>Default:    —<br>Context:    main</p>
+</blockquote>
+<p>Defines the name of the hardware SSL accelerator.<br>在存在ssl硬件加速器的服务器上，指定所使用的ssl硬件加速设备</p>
+<h4 id="timer-resolution"><a href="#timer-resolution" class="headerlink" title="timer_resolution"></a>timer_resolution</h4><blockquote>
+<p>Syntax:    timer_resolution interval;<br>Default:    —<br>Context:    main</p>
+</blockquote>
+<p>Reduces timer resolution in worker processes, thus reducing the number of gettimeofday() system calls made. By default, gettimeofday() is called each time a kernel event is received. With reduced resolution, gettimeofday() is only called once per specified interval.</p>
+<ul>
+<li>每次内核事件调用返回时，都会使用gettimeday()来更新nginx缓存时钟；</li>
+<li>timer_resolution用于定义每隔多久才会由gettimeday()更新一次缓存时钟；</li>
+<li>更新越频繁系统压力越大；</li>
+<li><em>x86-64系统上，gettimeday()代价已经很小，可以不做此配置</em>；</li>
+</ul>
+<h4 id="worker-priority"><a href="#worker-priority" class="headerlink" title="worker_priority"></a>worker_priority</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">worker_priority</span> -<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Syntax:    worker_priority number;<br>Default:    worker_priority 0;<br>Context:    main</p>
+</blockquote>
+<p>Defines the scheduling priority for worker processes like it is done by the nice command: a negative number means higher priority. Allowed range normally varies from -20 to 20.<br>worker进程的优先级，默认为0；20到19之间的值，值越小越优先调用</p>
+<h3 id="跟事件相关的配置"><a href="#跟事件相关的配置" class="headerlink" title="跟事件相关的配置"></a>跟事件相关的配置</h3><h4 id="accept-mutex"><a href="#accept-mutex" class="headerlink" title="accept_mutex"></a>accept_mutex</h4><blockquote>
+<p>Syntax:    accept_mutex on | off;<br>Default:    accept_mutex off;<br>Context:    events</p>
+</blockquote>
+<p>If accept_mutex is enabled, worker processes will accept new connections by turn. Otherwise, all worker processes will be notified about new connections, and if volume of new connections is low, some of the worker processes may just waste system resources.<br>是否打开nginx的负载均衡锁</p>
+<ul>
+<li>此锁能够让多个worker进行轮流地、序列化地与新的客户端建立连接；</li>
+<li>而通常当一个worker进程的负载达到其上限的7/8，master就尽可能不将请求调度至此worker</li>
+</ul>
+<h4 id="lock-file"><a href="#lock-file" class="headerlink" title="lock_file"></a>lock_file</h4><blockquote>
+<p>Syntax:    lock_file file;<br>Default:    lock_file logs/nginx.lock;<br>Context:    main</p>
+</blockquote>
+<p>nginx uses the locking mechanism to implement accept_mutex and serialize access to shared memory. On most systems the locks are implemented using atomic operations, and this directive is ignored. On other systems the “lock file” mechanism is used. This directive specifies a prefix for the names of lock files.<br>锁文件</p>
+<h4 id="accept-mutex-delay"><a href="#accept-mutex-delay" class="headerlink" title="accept_mutex_delay"></a>accept_mutex_delay</h4><blockquote>
+<p>Syntax:    accept_mutex_delay time;<br>Default:    accept_mutex_delay 500ms;<br>Context:    events</p>
+</blockquote>
+<p>If accept_mutex is enabled, specifies the maximum time during which a worker process will try to restart accepting new connections if another worker process is currently accepting new connections.</p>
+<ul>
+<li>使用accept锁以后，只有一个worker能取得锁，一个worker进程为取得accept锁的等待时长，即用户建立等待的时间</li>
+<li>如果某worker进程在某次试图取得锁时失败了，至少要等待#ms才能再锁。</li>
+</ul>
+<h4 id="multi-accept"><a href="#multi-accept" class="headerlink" title="multi_accept"></a>multi_accept</h4><blockquote>
+<p>Syntax:    multi_accept on | off;<br>Default:    multi_accept off;<br>Context:    events<br>multi_accept on|off;</p>
+</blockquote>
+<p>If multi_accept is disabled, a worker process will accept one new connection at a time. Otherwise, a worker process will accept all new connections at a time.<br>是否允许一次性地响应多个用户连接请求</p>
+<h4 id="use"><a href="#use" class="headerlink" title="use"></a>use</h4><blockquote>
+<p>Syntax:    use method;<br>Default:    —<br>Context:    events</p>
+</blockquote>
+<p>Specifies the connection processing method to use. There is normally no need to specify it explicitly, because nginx will by default use the most efficient method.</p>
+<p>use [epoll|rtsig|select|poll];<br>指定使用哪种事件驱动模型，建议让nginx自动选择，linux上一般用epoll</p>
+<h4 id="worker-commections"><a href="#worker-commections" class="headerlink" title="worker_commections"></a>worker_commections</h4><blockquote>
+<p>Syntax:    worker_connections number;<br>Default:    worker_connections 512;<br>Context:    events</p>
+</blockquote>
+<p>Sets the maximum number of simultaneous connections that can be opened by a worker process.</p>
+<p>It should be kept in mind that this number includes all connections (e.g. connections with proxied servers, among others), not only connections with clients. Another consideration is that the actual number of simultaneous connections cannot exceed the current limit on the maximum number of open files, which can be changed by worker_rlimit_nofile.</p>
+<p>每个worker能够并发响应的最大请求数，如果为代理服务器的话，worker_rlimit_nofile=worker_commections*2</p>
+<h3 id="用于调试、定位问题"><a href="#用于调试、定位问题" class="headerlink" title="用于调试、定位问题"></a>用于调试、定位问题</h3><p>只调试nginx时使用</p>
+<h4 id="daemon"><a href="#daemon" class="headerlink" title="daemon"></a>daemon</h4><blockquote>
+<p>Syntax:    daemon on | off;<br>Default:    daemon on;<br>Context:    main</p>
+</blockquote>
+<p>Determines whether nginx should become a daemon. Mainly used during development.<br>关闭提供守护进程的模式，是否让nignx运行于后台；调试时应该为off，使得所有信息直接输出在控制台</p>
+<h4 id="master-process"><a href="#master-process" class="headerlink" title="master_process"></a>master_process</h4><blockquote>
+<p>Syntax:    master_process on | off;<br>Default:    master_process on;<br>Context:    main</p>
+</blockquote>
+<p>Determines whether worker processes are started. This directive is intended for nginx developers.<br>是否以master/worker模式运行nginx，默认为on，调试时可以设置为off以方便追踪</p>
+<h4 id="error-log"><a href="#error-log" class="headerlink" title="error_log"></a>error_log</h4><blockquote>
+<p>Syntax:    error_log file [level];<br>Default:    error_log logs/error.log error;<br>Context:    main, http, mail, stream, server, location</p>
+</blockquote>
+<p>Configures logging. Several logs can be specified on the same level (1.5.2).<br>错误日志文件及其级别，调试时可以使用debug级别，但要求在编译时必须使用–with-debug启用debug功能，默认通常为error级别</p>
+<h3 id="http配置"><a href="#http配置" class="headerlink" title="http配置"></a>http配置</h3><p>必须使用虚拟机来配置站点，每个虚拟主机使用一个server{}段来配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	   server&#123;</span><br><span class="line">	   </span><br><span class="line">	   &#125;</span><br><span class="line"><span class="comment"># 定义一个虚拟主机，server可以出现一次或多次。nginx支持使用基于主机名或IP的虚拟主机</span></span><br></pre></td></tr></table></figure>
+<p>非虚拟主机的配置和公共选项，需要定义在server之外，http之内</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">	<span class="attribute">directive</span> value;</span><br><span class="line">	....</span><br><span class="line">	server&#123;</span><br><span class="line">	......</span><br><span class="line">	&#125;</span><br><span class="line">	server&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="listen"><a href="#listen" class="headerlink" title="listen"></a>listen</h4><blockquote>
+<p>Syntax:    listen address[:port] [default_server] [ssl]<br>listen port [default_server] [ssl]<br>listen unix:path [default_server] [ssl]<br>Default:    listen <em>:80 | </em>:8000;<br>Context:    server</p>
+</blockquote>
+<p>Sets the address and port for IP, or the path for a UNIX-domain socket on which the server will accept requests. Both address and port, or only address or only port can be specified. An address may also be a hostname, for example:<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">listen</span> <span class="number">127.0.0.1:8000</span>;</span><br><span class="line"><span class="attribute">listen</span> <span class="number">127.0.0.1</span>;</span><br><span class="line"><span class="attribute">listen</span> <span class="number">8000</span>;</span><br><span class="line"><span class="attribute">listen</span> *:<span class="number">8000</span>;</span><br><span class="line"><span class="attribute">listen</span> localhost:<span class="number">8000</span>;</span><br></pre></td></tr></table></figure></p>
+<p>设置监听的地址或端口</p>
+<ul>
+<li>default_server：定义此server为http中默认的server；</li>
+<li>如果所有的server中没有任何一个listen使用此参数，那么第一个server即为默认server;</li>
+</ul>
+<h4 id="ssl"><a href="#ssl" class="headerlink" title="ssl"></a>ssl</h4><blockquote>
+<p>Syntax:    ssl on | off;<br>Default:    ssl off;<br>Context:    http, server</p>
+</blockquote>
+<p>Enables the HTTPS protocol for the given virtual server.<br>是否启用https服务器</p>
+<h4 id="rcvbuf和sndbuf"><a href="#rcvbuf和sndbuf" class="headerlink" title="rcvbuf和sndbuf"></a>rcvbuf和sndbuf</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rcvbuf=SIZE;</span><br><span class="line"><span class="comment"># 接收缓存大小</span></span><br><span class="line">sndbuf=SIZE;</span><br><span class="line"><span class="comment"># 发送缓存大小</span></span><br></pre></td></tr></table></figure>
+<h4 id="server-name"><a href="#server-name" class="headerlink" title="server_name"></a>server_name</h4><blockquote>
+<p>Syntax:    server_name name …;<br>Default:    server_name “”;<br>Context:    server</p>
+</blockquote>
+<p>Sets names of a virtual server<br>设置主机名</p>
+<ul>
+<li>server_name可以跟多个主机名，名称可以使用通配符和正则表达式（通常以~开头）；</li>
+<li>当nginx收到一个请求时，会取出其首部的server的值，而后跟众server_name进行比较：<ul>
+<li>先做精确匹配</li>
+<li>左侧通配符匹配</li>
+<li>右侧通配符匹配</li>
+<li>正则表达式匹配</li>
+</ul>
+</li>
+</ul>
+<h4 id="server-name-hash-bucket-size"><a href="#server-name-hash-bucket-size" class="headerlink" title="server_name_hash_bucket_size"></a>server_name_hash_bucket_size</h4><blockquote>
+<p>Syntax:    server_names_hash_bucket_size size;<br>Default:    server_names_hash_bucket_size 32|64|128;<br>Context:    http</p>
+</blockquote>
+<p>Sets the bucket size for the server names hash tables. The default value depends on the size of the processor’s cache line. The details of setting up hash tables are provided in a separate document.<br>为了实现快速主机查找，nginx使用hash表来保存主机名</p>
+<h4 id="location"><a href="#location" class="headerlink" title="location"></a>location</h4><blockquote>
+<p>Syntax1:    location [ = | ~ | ~* | ^~ ] uri { … }<br>Syntax2:    location @name { … }<br>Default:    —<br>Context:    server, location</p>
+</blockquote>
+<p>Sets configuration depending on a request URI.<br>允许根据用户请求的URI来匹配指定的各location以进行访问配置；匹配到时，将被location块中的配置所处理</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">=：精确匹配</span><br><span class="line">~：正则表达式模式匹配，匹配时区分字符大小写</span><br><span class="line">~*：正则表达式模式匹配，匹配时忽略字符大小写</span><br><span class="line">^~:只需要前半部分与uri匹配即可，不检查正则表达式</span><br><span class="line"><span class="comment"># 匹配优先级：</span></span><br><span class="line"><span class="comment"># 字符字面量最精确匹配、正则表达式检索（由多个时，由第一个匹配到的所处理），按字符字面量</span></span><br></pre></td></tr></table></figure>
+<h3 id="文件路径定义"><a href="#文件路径定义" class="headerlink" title="文件路径定义"></a>文件路径定义</h3><h4 id="root"><a href="#root" class="headerlink" title="root"></a>root</h4><blockquote>
+<p>Syntax:    root path;<br>Default:    root html;<br>Context:    http, server, location, if in location</p>
+</blockquote>
+<p>Sets the root directory for requests. For example, with the following configuration<br>设置web资源路径，用于指定请求的根文档目录，从根开始匹配</p>
+<h4 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h4><blockquote>
+<p>Syntax:    alias path;<br>Default:    —<br>Context:    location</p>
+</blockquote>
+<p>Defines a replacement for the specified location. For example, with the following configuration<br>指定路径别名，只能用于location中，从最后一个/开始匹配</p>
+<h4 id="index"><a href="#index" class="headerlink" title="index"></a>index</h4><blockquote>
+<p>Syntax:    index filename;<br>Default:    index index.html index.htm;<br>Context:    location</p>
+</blockquote>
+<p>定义默认页面，可以跟多个值。自左向右匹配</p>
+<h4 id="error-page"><a href="#error-page" class="headerlink" title="error_page"></a>error_page</h4><blockquote>
+<p>Syntax:    error_page code … [=[response]] uri;<br>Default:    —<br>Context:    http, server, location, if in location</p>
+</blockquote>
+<p>Defines the URI that will be shown for the specified errors. A uri value can contain variables.<br>当对于某个请求发回错误时，如果匹配上了error_page指令中设定的code，则重定向至新的新URI中</p>
+<h4 id="try-files"><a href="#try-files" class="headerlink" title="try_files"></a>try_files</h4><blockquote>
+<p>Syntax1:    try_files file … uri;<br>Syntax2:    try_files file … =code;<br>Default:    —<br>Context:    server, location</p>
+</blockquote>
+<p>Checks the existence of files in the specified order and uses the first found file for request processing; the processing is performed in the current context. The path to a file is constructed from the file parameter according to the root and alias directives. It is possible to check directory’s existence by specifying a slash at the end of a name, e.g. “$uri/”. If none of the files were found, an internal redirect to the uri specified in the last parameter is made.<br>自左向右尝试读取有path所指定路径，在第一找到即停止并返回，如果所有path均不存在，则返回最后一个uri</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~* ^/document/(.*)<span class="variable">$&#123;</span></span></span><br><span class="line"><span class="regexp"><span class="variable">	root /www/htdocs</span></span></span><br><span class="line"><span class="regexp"><span class="variable">	try_files $uri /docu/$1 /temp.html</span></span></span><br><span class="line"><span class="regexp"><span class="variable">&#125;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="网络连接相关设置"><a href="#网络连接相关设置" class="headerlink" title="网络连接相关设置"></a>网络连接相关设置</h3><h4 id="keepalive-timeout"><a href="#keepalive-timeout" class="headerlink" title="keepalive_timeout"></a>keepalive_timeout</h4><blockquote>
+<p>Syntax:    keepalive_timeout timeout [header_timeout];<br>Default:    keepalive_timeout 75s;<br>Context:    http, server, location</p>
+</blockquote>
+<p>The first parameter sets a timeout during which a keep-alive client connection will stay open on the server side. The zero value disables keep-alive client connections. The optional second parameter sets a value in the “Keep-Alive: timeout=time” response header field. Two parameters may differ.</p>
+<p>The “Keep-Alive: timeout=time” header field is recognized by Mozilla and Konqueror. MSIE closes keep-alive connections by itself in about 60 seconds.</p>
+<p>设置持久连接的超时时长</p>
+<h4 id="keepalive-requests"><a href="#keepalive-requests" class="headerlink" title="keepalive_requests"></a>keepalive_requests</h4><blockquote>
+<p>Syntax:    keepalive_requests number;<br>Default:    keepalive_requests 100;<br>Context:    http, server, location<br>This directive appeared in version 0.8.0.</p>
+</blockquote>
+<p>Sets the maximum number of requests that can be served through one keep-alive connection. After the maximum number of requests are made, the connection is closed.<br>在一次持久连接中允许承载的最大请求数</p>
+<h4 id="keepalive-disable"><a href="#keepalive-disable" class="headerlink" title="keepalive_disable"></a>keepalive_disable</h4><blockquote>
+<p>Syntax:    keepalive_disable none | browser …;<br>Default:    keepalive_disable msie6;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Disables keep-alive connections with misbehaving browsers. The browser parameters specify which browsers will be affected. The value msie6 disables keep-alive connections with old versions of MSIE, once a POST request is received. The value safari disables keep-alive connections with Safari and Safari-like browsers on Mac OS X and Mac OS X-like operating systems. The value none enables keep-alive connections with all browsers.</p>
+<p>对指定的浏览器禁止使用长连接</p>
+<h4 id="tcp-nodelay"><a href="#tcp-nodelay" class="headerlink" title=".tcp_nodelay"></a>.tcp_nodelay</h4><blockquote>
+<p>Syntax:    tcp_nodelay on | off;<br>Default:    tcp_nodelay on;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Enables or disables the use of the TCP_NODELAY option. The option is enabled only when a connection is transitioned into the keep-alive state.<br>对keepalive连接是否使用tcp_nodelay选项</p>
+<h4 id="client-header-timeout"><a href="#client-header-timeout" class="headerlink" title="client_header_timeout"></a>client_header_timeout</h4><blockquote>
+<p>Syntax:    client_header_timeout time;<br>Default:    client_header_timeout 60s;<br>Context:    http, server</p>
+</blockquote>
+<p>Defines a timeout for reading client request header. If a client does not transmit the entire header within this time, the 408 (Request Time-out) error is returned to the client.<br>设置客读取http请求首部的超时时长</p>
+<h4 id="client-body-timeout"><a href="#client-body-timeout" class="headerlink" title="client_body_timeout"></a>client_body_timeout</h4><blockquote>
+<p>Syntax:    client_body_timeout time;<br>Default:    client_body_timeout 60s;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Defines a timeout for reading client request body. The timeout is set only for a period between two successive read operations, not for the transmission of the whole request body. If a client does not transmit anything within this time, the 408 (Request Time-out) error is returned to the client.<br>设置读取http请求包体的超时时间</p>
+<h4 id="send-timeout"><a href="#send-timeout" class="headerlink" title="send_timeout"></a>send_timeout</h4><blockquote>
+<p>Syntax:    send_timeout time;<br>Default:    send_timeout 60s;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Sets a timeout for transmitting a response to the client. The timeout is set only between two successive write operations, not for the transmission of the whole response. If the client does not receive anything within this time, the connection is closed.<br>设置发送响应的超时时长</p>
+<h3 id="对客户端请求的限制"><a href="#对客户端请求的限制" class="headerlink" title="对客户端请求的限制"></a>对客户端请求的限制</h3><h4 id="limit-except"><a href="#limit-except" class="headerlink" title="limit_except"></a>limit_except</h4><blockquote>
+<p>Syntax:    limit_except method … { … }<br>Default:    —<br>Context:    location</p>
+</blockquote>
+<p>Limits allowed HTTP methods inside a location. The method parameter can be one of the following: GET, HEAD, POST, PUT, DELETE, MKCOL, COPY, MOVE, OPTIONS, PROPFIND, PROPPATCH, LOCK, UNLOCK, or PATCH. Allowing the GET method makes the HEAD method also allowed. Access to other methods can be limited using the ngx_http_access_module and ngx_http_auth_basic_module modules directives:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">limit_except</span> GET &#123;</span><br><span class="line">    <span class="attribute">allow</span> <span class="number">192.168.1.0</span>/<span class="number">32</span>;</span><br><span class="line">    <span class="attribute">deny</span>  all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Please note that this will limit access to all methods except GET and HEAD.<br>在location中对指定范围之外的其他方法的访问控制</p>
+<h4 id="client-max-body-size"><a href="#client-max-body-size" class="headerlink" title="client_max_body_size"></a>client_max_body_size</h4><blockquote>
+<p>Syntax:    client_max_body_size size;<br>Default:    client_max_body_size 1m;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Sets the maximum allowed size of the client request body, specified in the “Content-Length” request header field. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size.</p>
+<p>设置http请求包体的最大值，常用于限定客户端所能够请求的最大包体，根据请求首部中的Content-Length来检查，以避免无用的传输</p>
+<h4 id="limit-rate"><a href="#limit-rate" class="headerlink" title="limit_rate"></a>limit_rate</h4><blockquote>
+<p>Syntax:    limit_rate rate;<br>Default:    limit_rate 0;<br>Context:    http, server, location, if in location</p>
+</blockquote>
+<p>Limits the rate of response transmission to a client. The rate is specified in bytes per second. The zero value disables rate limiting. The limit is set per a request, and so if a client simultaneously opens two connections, the overall rate will be twice as much as the specified limit.</p>
+<p>Rate limit can also be set in the $limit_rate variable. It may be useful in cases where rate should be limited depending on a certain condition:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$slow</span>) &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$limit_rate</span> <span class="number">4k</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>限制客户端每秒传输的字节数，默认为0表示没有限制</p>
+<h5 id="limit-rate-after"><a href="#limit-rate-after" class="headerlink" title="limit_rate_after"></a>limit_rate_after</h5><blockquote>
+<p>Syntax:    limit_rate_after size;<br>Default:    limit_rate_after 0;<br>Context:    http, server, location, if in location</p>
+</blockquote>
+<p>This directive appeared in version 0.8.0.<br>Sets the initial amount after which the further transmission of a response to a client will be rate limited.</p>
+<p>Example:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /flv/ &#123;</span><br><span class="line">    flv;</span><br><span class="line">    <span class="attribute">limit_rate_after</span> <span class="number">500k</span>;</span><br><span class="line">    <span class="attribute">limit_rate</span>       <span class="number">50k</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>nginx向客户端发送响应报文时，如果文件超过指定的大小，则后续的发送过程开始限速</p>
+<h3 id="文件操作的优化"><a href="#文件操作的优化" class="headerlink" title="文件操作的优化"></a>文件操作的优化</h3><h4 id="sendfile"><a href="#sendfile" class="headerlink" title="sendfile"></a>sendfile</h4><blockquote>
+<p>Syntax:    sendfile on | off;<br>Default:    sendfile off;<br>Context:    http, server, location, if in location</p>
+</blockquote>
+<p>Enables or disables the use of sendfile().<br>是否启用sendfile功能</p>
+<h4 id="aio"><a href="#aio" class="headerlink" title="aio"></a>aio</h4><blockquote>
+<p>Syntax:    aio on | off | threads[=pool];<br>Default:    aio off;<br>Context:    http, server, location<br>This directive appeared in version 0.8.11.</p>
+</blockquote>
+<p>Enables or disables the use of asynchronous file I/O (AIO) on FreeBSD and Linux<br>是否启用aio功能</p>
+<h4 id="open-file-cache"><a href="#open-file-cache" class="headerlink" title="open_file_cache"></a>open_file_cache</h4><blockquote>
+<p>Syntax1:    open_file_cache off;<br>Syntax2:    open_file_cache max=N [inactive=time];<br>Default:    open_file_cache off;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Configures a cache that can store:</p>
+<ul>
+<li>open file descriptors, their sizes and modification times;</li>
+<li>information on existence of directories;</li>
+<li>file lookup errors, such as “file not found”, “no read permission”, and so on.</li>
+</ul>
+<p>是否打开文件缓存功能</p>
+<ul>
+<li>max：用于缓存条目的最大值，允许打开的缓存条目最大数，当满两类以后将根据LRU（最小最少连接数）算法进行置换</li>
+<li>inactive：某缓存条目在指定时长内没有被访问过时，将自动被删除；通常默认为60s</li>
+</ul>
+<p>缓存的信息包括：</p>
+<ul>
+<li>文件句柄、文件大小和上次修改时间;</li>
+<li>已经打开的目录结构;</li>
+<li>没有找到或没有访问权限的信息;</li>
+</ul>
+<h4 id="open-file-cache-errors"><a href="#open-file-cache-errors" class="headerlink" title="open_file_cache_errors"></a>open_file_cache_errors</h4><blockquote>
+<p>Syntax:    open_file_cache_errors on | off;<br>Default:    open_file_cache_errors off;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Enables or disables caching of file lookup errors by open_file_cache.<br>是否缓存 文件找不到 或 没有权限访问 等相关信息</p>
+<h4 id="open-file-cache-valid"><a href="#open-file-cache-valid" class="headerlink" title="open_file_cache_valid"></a>open_file_cache_valid</h4><blockquote>
+<p>Syntax:    open_file_cache_valid time;<br>Default:    open_file_cache_valid 60s;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Sets a time after which open_file_cache elements should be validated.<br>多长时间检查一次缓存中的条目是否超出非活动时长，默认为60s</p>
+<h4 id="open-file-cache-min-use"><a href="#open-file-cache-min-use" class="headerlink" title="open_file_cache_min_use"></a>open_file_cache_min_use</h4><blockquote>
+<p>Syntax:    open_file_cache_min_uses number;<br>Default:    open_file_cache_min_uses 1;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Sets the minimum number of file accesses during the period configured by the inactive parameter of the open_file_cache directive, required for a file descriptor to remain open in the cache.<br>在inactive指定的时长内被访问超过此处指定的次数时，才不会被删除</p>
+<h3 id="对客户端请求的特殊处理"><a href="#对客户端请求的特殊处理" class="headerlink" title="对客户端请求的特殊处理"></a>对客户端请求的特殊处理</h3><h4 id="ignore-invalid-headers"><a href="#ignore-invalid-headers" class="headerlink" title="ignore_invalid_headers"></a>ignore_invalid_headers</h4><blockquote>
+<p>Syntax:    ignore_invalid_headers on | off;<br>Default:    ignore_invalid_headers on;<br>Context:    http, server</p>
+</blockquote>
+<p>Controls whether header fields with invalid names should be ignored. Valid names are composed of English letters, digits, hyphens, and possibly underscores (as controlled by the underscores_in_headers directive).</p>
+<p>If the directive is specified on the server level, its value is only used if a server is a default one. The value specified also applies to all virtual servers listening on the same address and port.</p>
+<p>是否忽略不合法的http首部。off意味着请求首部中出现不合规的首部将拒绝响应</p>
+<h4 id="log-not-found"><a href="#log-not-found" class="headerlink" title="log_not_found"></a>log_not_found</h4><blockquote>
+<p>Syntax:    log_not_found on | off;<br>Default:    log_not_found on;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Enables or disables logging of errors about not found files into error_log.<br>用户访问的文件不存在时，是否将其记录到错误日志中</p>
+<h4 id="resolver-address"><a href="#resolver-address" class="headerlink" title="resolver address"></a>resolver address</h4><blockquote>
+<p>Syntax:    resolver address … [valid=time] [ipv6=on|off];<br>Default:    —<br>Context:    http, server, location</p>
+</blockquote>
+<p>Configures name servers used to resolve names of upstream servers into addresses<br>指定nginx使用的dns服务器地址</p>
+<h4 id="resolve-timeout"><a href="#resolve-timeout" class="headerlink" title="resolve timeout"></a>resolve timeout</h4><blockquote>
+<p>Syntax:    resolver_timeout time;<br>Default:    resolver_timeout 30s;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Sets a timeout for name resolution<br>指定DNS解析超时时长</p>
+<h5 id="server-tokens"><a href="#server-tokens" class="headerlink" title="server_tokens"></a>server_tokens</h5><blockquote>
+<p>Syntax:    server_tokens on | off | string;<br>Default:    server_tokens on;<br>Context:    http, server, location</p>
+</blockquote>
+<p>Enables or disables emitting nginx version in error messages and in the “Server” response header field.<br>是否在错误页面中显示nginx的版本号</p>
+<h3 id="核心模块的内置变量："><a href="#核心模块的内置变量：" class="headerlink" title="核心模块的内置变量："></a>核心模块的内置变量：</h3><ul>
+<li>$uri：当前请求的uri，不带参数</li>
+<li>$request_uri：请求的uri，带完整参数</li>
+<li>$host：http请求报文中host首部；如果请求中没有host首部，则以处理此请求的主机的主机名代替</li>
+<li>$hostname：nginx服务运行所在主机的主机名</li>
+<li>$remote_addr：客户端IP</li>
+<li>$remote_port: 客户端port</li>
+<li>$remote_user：使用用户认证时客户端用户输入的用户名</li>
+<li>$request_filename：用户请求中的URI经过本地root或alias转换后映射的本地的文件路径</li>
+<li>$request_method：请求方法</li>
+<li>$server_addr：服务器地址</li>
+<li>$server_name: 服务器名称</li>
+<li>$server_port：服务器端口</li>
+<li>$server_protocol：服务器向客户端发送响应时的协议，如http/1.1，http/1.0</li>
+<li>$scheme：在请求中使用的scheme 映射协议本身的协议</li>
+<li>$http_HEADER：匹配请求报文中指定的HEADER，$http_host匹配请求报文中的host首部</li>
+<li>$sent_http_HEADER：匹配响应报文中指定的HERDER，例如$http_content_type匹配相应报文中的content-type首部</li>
+<li>$document_root：当前请求映射到的root配置</li>
+</ul>
+<h3 id="URL-rewrite"><a href="#URL-rewrite" class="headerlink" title="URL rewrite"></a>URL rewrite</h3><ul>
+<li>nginx通过ngx_http_rewrite_module模块支持url重写、支持if条件判断，但不支持else。</li>
+<li>该模块需要PCRE支持，应在编译 nginx 时指定PCRE源码目录。</li>
+</ul>
+<h4 id="rewrite指令执行顺序"><a href="#rewrite指令执行顺序" class="headerlink" title="rewrite指令执行顺序"></a>rewrite指令执行顺序</h4><ol>
+<li>执行server块的rewrite指令(这里的块指的是server关键字后{}包围的区域，其它xx块类似)</li>
+<li>执行location匹配</li>
+<li>执行选定的location中的rewrite指令</li>
+</ol>
+<blockquote>
+<p>如果其中某步URI被重写，则重新循环执行1-3，直到找到真实存在的文件<br>如果循环超过10次，则返回500 Internal ServerError错误</p>
+</blockquote>
+<h4 id="break"><a href="#break" class="headerlink" title="break"></a>break</h4><blockquote>
+<p>Syntax:    break;<br>Default:    —<br>Context:    server,location,if</p>
+</blockquote>
+<p>Stops processing the current set of ngx_http_rewrite_module directives.<br>停止处理当前的ngx_http_rewrite_module的指令</p>
+<p>Example：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> (<span class="variable">$slow</span>) &#123;</span><br><span class="line">    <span class="attribute">limit_rate</span> <span class="number">10k</span>;</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><blockquote>
+<p>Syntax:    if(condition){…}<br>Default:    —<br>Context:    server,location</p>
+</blockquote>
+<p>The specified condition is evaluated. If true, this module directives specified inside the braces are executed, and the request is assigned the configuration inside the if directive. Configurations inside the if directives are inherited from the previous configuration level.<br>对给定的条件condition进行判断。如果为真，大括号内的rewrite指令将被执行。</p>
+<ul>
+<li>if条件(conditon)可以是如下任何内容：<ul>
+<li>一个变量名；false如果这个变量是空字符串或者以0开始的字符串；</li>
+<li>使用= ，!= 比较的一个变量和字符串</li>
+<li>使用~， ~*与正则表达式匹配的变量，如果这个正则表达式中包含 } 则整个表达式需要用 “ 或’ ‘ 包围</li>
+<li>使用-f ，!-f 检查一个文件是否存在</li>
+<li>使用-d, !-d 检查一个目录是否存在</li>
+<li>使用-e ，!-e 检查一个文件、目录、符号链接是否存在</li>
+<li>使用-x ， !-x 检查一个文件是否可执行</li>
+</ul>
+</li>
+</ul>
+<p>Example：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> (<span class="variable">$http_user_agent</span> <span class="regexp">~ MSIE)</span> &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(.*)$</span> /msie/<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$http_cookie</span> ~*<span class="string">"id=([^;]+)(?:;|$)"</span>) &#123;</span><br><span class="line">    <span class="attribute">set</span> <span class="variable">$id</span> <span class="variable">$1</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$request_method</span> = POST) &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">405</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$slow</span>) &#123;</span><br><span class="line">    <span class="attribute">limit_rate</span> <span class="number">10k</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="return"><a href="#return" class="headerlink" title="return"></a>return</h4><blockquote>
+<p>Syntax1:    return code [text];<br>Syntax2:    return code URL;<br>Syntax3:    return URL;<br>Default:    —<br>Context:    server, location, if</p>
+</blockquote>
+<p>Stops processing and returns the specified code to a client. The non-standard code 444 closes a connection without sending a response header.</p>
+<ul>
+<li>停止处理并返回指定状态码(code)给客户端</li>
+<li>非标准状态码444表示关闭连接且不给客户端发响应头。</li>
+<li>从0.8.42版本起，return 支持响应URL重定向(对于301，302，303，307），或者文本响应(对于其他状态码)</li>
+<li>对于文本或者URL重定向可以包含变量</li>
+</ul>
+<h4 id="rewrite"><a href="#rewrite" class="headerlink" title="rewrite"></a>rewrite</h4><blockquote>
+<p>Syntax:    rewrite regex replacement [flag];<br>Default:    —<br>Context:    server, location, if</p>
+</blockquote>
+<p>If the specified regular expression matches a request URI, URI is changed as specified in the replacement string. The rewrite directives are executed sequentially in order of their appearance in the configuration file. It is possible to terminate further processing of the directives using flags. If a replacement string starts with “http://”, “https://”, or “$scheme”, the processing stops and the redirect is returned to a client.</p>
+<ul>
+<li>如果一个URI匹配指定的正则表达式regex，URI就按照replacement重写。 rewrite按配置文件中出现的顺序执行。flags标志可以停止继续处理。 如果replacement以 http:// 或 https:// 开始，将不再继续处理，这个重定向将返回给客户端。</li>
+<li>flag：标志位<ul>
+<li>last 一旦被当前规则匹配并重写后立即停止检查后续的其他rewrite的规则，而后通过重写后的规则重新发起请求</li>
+<li>break 一旦被当前规则匹配并重写后立即停止检查后续的其他rewrite的规则，而后继续由nginx进行后续的操作</li>
+<li>redirect 如果replacement不是以http:// 或 https:// 开始 ，返回302临时重定向</li>
+<li>permant 返回301永久重定向</li>
+</ul>
+</li>
+<li>最终完整的重定向URL包括请求scheme( http:// https:// 等),请求的server_name_in_redirect和 port_in_redirec三部分，说白了也就是http协议 域名 端口三部分组成。</li>
+</ul>
+<p>Example：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="comment">#...</span></span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(/download/.*)/media/(.*)\..*$</span> <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.mp3 <span class="literal">last</span>;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(/download/.*)/audio/(.*)\..*$</span> <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.ra  <span class="literal">last</span>;</span><br><span class="line">    <span class="attribute">return</span>  <span class="number">403</span>;</span><br><span class="line">    <span class="comment">#...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一般将rewrite写在location中时都使用break标志，或者将rewrite写在if上下文中；如下所示, 那么应使用break而不是last , 否则last将循环10次匹配，然后返回 500错误:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /download/ &#123;</span><br><span class="line">    rewrite ^(/download/.*)/media/(.*)\..*$ <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.mp3 <span class="built_in">break</span>;</span><br><span class="line">    rewrite ^(/download/.*)/audio/(.*)\..*$ <span class="variable">$1</span>/mp3/<span class="variable">$2</span>.ra  <span class="built_in">break</span>;</span><br><span class="line">    <span class="built_in">return</span>  403;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果客户端使用IE浏览器，则重定向到/nginx-ie目录下</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> (<span class="variable">$http_user_agent</span><span class="regexp">~ MSIE)</span> &#123;</span><br><span class="line">     <span class="attribute">rewrite</span><span class="regexp"> ^(.*)$</span> /nginx-ie/<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>禁止访问多个目录</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> ~^/(cron|templates)/ &#123;</span><br><span class="line">     <span class="attribute">deny</span> all;</span><br><span class="line">     break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>禁止访问以/data开头的文件</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ ^/data</span> &#123;</span><br><span class="line">     <span class="attribute">deny</span> all;</span><br><span class="line">     break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>禁止访问.sh、.flv、.mp4为文件名后缀的URL地址</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> ~.*\.(sh|flv|mp4)?$ &#123;</span><br><span class="line">     <span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：<br>    （1）、在写URI地址的时候，留意 <strong>.</strong> 是否要转义字符操作<br>    （2）、如果正则表达regex式中包含 } 或 <strong>;</strong> , 那么整个表达式需要用双引号或单引号包围<br>    （3）、如果被替换的URI中含有参数（即类似/app/test.php?id=5之类的URI），默认情况下参数id=5会自动附加到替换串上，如果不想自动附带后面的参数，可以在replacement后加一个问号。如下，我们加了一个自定义的参数user=$1,然后在结尾处放了一个问号?，把原先的参数去掉。<br>Example：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^/users/(.*)$</span> /show?user=<span class="variable">$1</span>? <span class="literal">last</span>;</span><br><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^/test(.*)$</span> http://www.test.com/home? <span class="literal">permanent</span>; </span><br><span class="line"><span class="comment"># 结果是http://www.test.com/home</span></span><br></pre></td></tr></table></figure>
+<h4 id="rewrite-log"><a href="#rewrite-log" class="headerlink" title="rewrite_log"></a>rewrite_log</h4><blockquote>
+<p>Syntax:    rewrite_log on | off;<br>Default:    rewrite_log off;<br>Context:    http, server, location, if</p>
+</blockquote>
+<p>Enables or disables logging of ngx_http_rewrite_module module directives processing results into the error_log at the notice level.<br>是否将重写过程记录在错误日志中，默认为notice级别；默认为off</p>
+<h3 id="配置使用nginx"><a href="#配置使用nginx" class="headerlink" title="配置使用nginx"></a>配置使用nginx</h3><h4 id="nginx虚拟主机"><a href="#nginx虚拟主机" class="headerlink" title="nginx虚拟主机"></a>nginx虚拟主机</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">	listen</span><br><span class="line">	server_name</span><br><span class="line">	root</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="访问控制access模块"><a href="#访问控制access模块" class="headerlink" title="访问控制access模块"></a>访问控制access模块</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">allow</span><br><span class="line">deny</span><br><span class="line"><span class="comment">#至上而下依次认证，默认为通过</span></span><br></pre></td></tr></table></figure>
+<h4 id="基于用户认证"><a href="#基于用户认证" class="headerlink" title="基于用户认证"></a>基于用户认证</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /admin/ &#123;</span><br><span class="line">	root</span><br><span class="line">	<span class="attribute">auth_basic</span> <span class="string">"标题"</span> </span><br><span class="line">	auth_basic_user_file <span class="string">"密码的存放位置"</span> </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 使用htpasswd创建密码</span></span><br></pre></td></tr></table></figure>
+<h4 id="建立下载站点"><a href="#建立下载站点" class="headerlink" title="建立下载站点"></a>建立下载站点</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /download/&#123;</span><br><span class="line">	root</span><br><span class="line">	<span class="attribute">autoindex</span> <span class="literal">on</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="防盗链"><a href="#防盗链" class="headerlink" title="防盗链"></a>防盗链</h4><ul>
+<li>定义合规的引用</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">valid_referers</span> <span class="literal">none</span> |<span class="literal">blocked</span> |server_names|string ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>判断不合规的引用</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> (<span class="variable">$invaild_referer</span>) &#123;</span><br><span class="line">	<span class="attribute">rewrite</span><span class="regexp"> ^/.*$</span> http://www.a.com/403.html</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="状态页"><a href="#状态页" class="headerlink" title=".状态页"></a>.状态页</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">       <span class="attribute">server_name</span> <span class="number">127.0.0.1</span>;</span><br><span class="line">       <span class="attribute">location</span> /nginx_status &#123;</span><br><span class="line">                <span class="attribute">stub_status</span> <span class="literal">on</span>;</span><br><span class="line">                <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">                <span class="attribute">allow</span> <span class="number">127.0.0.1</span>;</span><br><span class="line">                <span class="attribute">deny</span> all;</span><br><span class="line">                &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>输出<br>Active connections: 3176<br>server accepts handled requests<br>12633357212 12633357212 16331056076<br>Reading: 4 Writing: 97 Waiting: 3075</p>
+<ul>
+<li>Active connections:   当前 Nginx 正处理的活动连接数。</li>
+<li>serveraccepts handled requests — 总共处理了 233851 个连接 , 成功创建 233851 次握手 (证明中间没有失败的 ), 总共处理了 687942 个请求 ( 平均每次握手处理了 2.94 个数据请求 )。</li>
+<li>Reading :     nginx当前读取到客户端的 Header 信息数。</li>
+<li>Writing :        nginx 当前返回给客户端的 Header 信息数。</li>
+<li>Waiting:         开启 keep-alive 的情况下，这个值等于 active – (reading + writing)， 意思就是 Nginx 已经处理完正在等候下一次请求指令的驻留连接。</li>
+</ul>
+</li>
+</ul>
+<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gzip</span><br><span class="line"><span class="attribute">gzip</span> <span class="literal">on</span>|<span class="literal">off</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>gzip_buffer 使用的缓存大小</li>
+<li>gzip_comp_level 压缩的级别</li>
+<li>gzip_disable 不压缩的类型或浏览器</li>
+<li>gzip_min_length 最少压缩的大小</li>
+<li>gzip_http_version 压缩完成以后发送http的版本</li>
+<li>gzip_types：只压缩的格式</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/01/Nginx编译安装/" rel="next" title="Nginx编译安装">
+                <i class="fa fa-chevron-left"></i> Nginx编译安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/" rel="prev" title="CentOS 7 网卡配置文件说明">
+                CentOS 7 网卡配置文件说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件结构"><span class="nav-number">1.</span> <span class="nav-text">文件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正常运行的必备配置"><span class="nav-number">2.</span> <span class="nav-text">正常运行的必备配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#user"><span class="nav-number">2.1.</span> <span class="nav-text">user</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pid"><span class="nav-number">2.2.</span> <span class="nav-text">pid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#worker-rlimit-nofile"><span class="nav-number">2.3.</span> <span class="nav-text">worker_rlimit_nofile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#worker-rlimit-sigpending"><span class="nav-number">2.4.</span> <span class="nav-text">worker_rlimit_sigpending</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化性能相关的配置"><span class="nav-number">3.</span> <span class="nav-text">优化性能相关的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#worker-processes"><span class="nav-number">3.1.</span> <span class="nav-text">worker_processes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#worker-cpu-affinity"><span class="nav-number">3.2.</span> <span class="nav-text">worker_cpu_affinity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ssl-engine"><span class="nav-number">3.3.</span> <span class="nav-text">ssl_engine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#timer-resolution"><span class="nav-number">3.4.</span> <span class="nav-text">timer_resolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#worker-priority"><span class="nav-number">3.5.</span> <span class="nav-text">worker_priority</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟事件相关的配置"><span class="nav-number">4.</span> <span class="nav-text">跟事件相关的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#accept-mutex"><span class="nav-number">4.1.</span> <span class="nav-text">accept_mutex</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lock-file"><span class="nav-number">4.2.</span> <span class="nav-text">lock_file</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#accept-mutex-delay"><span class="nav-number">4.3.</span> <span class="nav-text">accept_mutex_delay</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#multi-accept"><span class="nav-number">4.4.</span> <span class="nav-text">multi_accept</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#use"><span class="nav-number">4.5.</span> <span class="nav-text">use</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#worker-commections"><span class="nav-number">4.6.</span> <span class="nav-text">worker_commections</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用于调试、定位问题"><span class="nav-number">5.</span> <span class="nav-text">用于调试、定位问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#daemon"><span class="nav-number">5.1.</span> <span class="nav-text">daemon</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#master-process"><span class="nav-number">5.2.</span> <span class="nav-text">master_process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#error-log"><span class="nav-number">5.3.</span> <span class="nav-text">error_log</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http配置"><span class="nav-number">6.</span> <span class="nav-text">http配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#listen"><span class="nav-number">6.1.</span> <span class="nav-text">listen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ssl"><span class="nav-number">6.2.</span> <span class="nav-text">ssl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rcvbuf和sndbuf"><span class="nav-number">6.3.</span> <span class="nav-text">rcvbuf和sndbuf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#server-name"><span class="nav-number">6.4.</span> <span class="nav-text">server_name</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#server-name-hash-bucket-size"><span class="nav-number">6.5.</span> <span class="nav-text">server_name_hash_bucket_size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#location"><span class="nav-number">6.6.</span> <span class="nav-text">location</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件路径定义"><span class="nav-number">7.</span> <span class="nav-text">文件路径定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#root"><span class="nav-number">7.1.</span> <span class="nav-text">root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#alias"><span class="nav-number">7.2.</span> <span class="nav-text">alias</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#index"><span class="nav-number">7.3.</span> <span class="nav-text">index</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#error-page"><span class="nav-number">7.4.</span> <span class="nav-text">error_page</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-files"><span class="nav-number">7.5.</span> <span class="nav-text">try_files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络连接相关设置"><span class="nav-number">8.</span> <span class="nav-text">网络连接相关设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keepalive-timeout"><span class="nav-number">8.1.</span> <span class="nav-text">keepalive_timeout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keepalive-requests"><span class="nav-number">8.2.</span> <span class="nav-text">keepalive_requests</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keepalive-disable"><span class="nav-number">8.3.</span> <span class="nav-text">keepalive_disable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcp-nodelay"><span class="nav-number">8.4.</span> <span class="nav-text">.tcp_nodelay</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#client-header-timeout"><span class="nav-number">8.5.</span> <span class="nav-text">client_header_timeout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#client-body-timeout"><span class="nav-number">8.6.</span> <span class="nav-text">client_body_timeout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#send-timeout"><span class="nav-number">8.7.</span> <span class="nav-text">send_timeout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对客户端请求的限制"><span class="nav-number">9.</span> <span class="nav-text">对客户端请求的限制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#limit-except"><span class="nav-number">9.1.</span> <span class="nav-text">limit_except</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#client-max-body-size"><span class="nav-number">9.2.</span> <span class="nav-text">client_max_body_size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#limit-rate"><span class="nav-number">9.3.</span> <span class="nav-text">limit_rate</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#limit-rate-after"><span class="nav-number">9.3.1.</span> <span class="nav-text">limit_rate_after</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件操作的优化"><span class="nav-number">10.</span> <span class="nav-text">文件操作的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sendfile"><span class="nav-number">10.1.</span> <span class="nav-text">sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#aio"><span class="nav-number">10.2.</span> <span class="nav-text">aio</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#open-file-cache"><span class="nav-number">10.3.</span> <span class="nav-text">open_file_cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#open-file-cache-errors"><span class="nav-number">10.4.</span> <span class="nav-text">open_file_cache_errors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#open-file-cache-valid"><span class="nav-number">10.5.</span> <span class="nav-text">open_file_cache_valid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#open-file-cache-min-use"><span class="nav-number">10.6.</span> <span class="nav-text">open_file_cache_min_use</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对客户端请求的特殊处理"><span class="nav-number">11.</span> <span class="nav-text">对客户端请求的特殊处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ignore-invalid-headers"><span class="nav-number">11.1.</span> <span class="nav-text">ignore_invalid_headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#log-not-found"><span class="nav-number">11.2.</span> <span class="nav-text">log_not_found</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#resolver-address"><span class="nav-number">11.3.</span> <span class="nav-text">resolver address</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#resolve-timeout"><span class="nav-number">11.4.</span> <span class="nav-text">resolve timeout</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#server-tokens"><span class="nav-number">11.4.1.</span> <span class="nav-text">server_tokens</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心模块的内置变量："><span class="nav-number">12.</span> <span class="nav-text">核心模块的内置变量：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#URL-rewrite"><span class="nav-number">13.</span> <span class="nav-text">URL rewrite</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rewrite指令执行顺序"><span class="nav-number">13.1.</span> <span class="nav-text">rewrite指令执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#break"><span class="nav-number">13.2.</span> <span class="nav-text">break</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#if"><span class="nav-number">13.3.</span> <span class="nav-text">if</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#return"><span class="nav-number">13.4.</span> <span class="nav-text">return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rewrite"><span class="nav-number">13.5.</span> <span class="nav-text">rewrite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rewrite-log"><span class="nav-number">13.6.</span> <span class="nav-text">rewrite_log</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置使用nginx"><span class="nav-number">14.</span> <span class="nav-text">配置使用nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx虚拟主机"><span class="nav-number">14.1.</span> <span class="nav-text">nginx虚拟主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问控制access模块"><span class="nav-number">14.2.</span> <span class="nav-text">访问控制access模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于用户认证"><span class="nav-number">14.3.</span> <span class="nav-text">基于用户认证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建立下载站点"><span class="nav-number">14.4.</span> <span class="nav-text">建立下载站点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#防盗链"><span class="nav-number">14.5.</span> <span class="nav-text">防盗链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#状态页"><span class="nav-number">14.6.</span> <span class="nav-text">.状态页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩"><span class="nav-number">14.7.</span> <span class="nav-text">压缩</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,http," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HTTP协议超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。http是一种stateless（无状态）协议，一次事务结束后连接将立即断开。 协议版本 http0.9：只能传输html文档，1991年 http1.0：支持多媒体数据的处理，保持连接。">
+<meta name="keywords" content="web,http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 基础">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/07/2016-2-7 HTTP基础/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="HTTP协议超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。http是一种stateless（无状态）协议，一次事务结束后连接将立即断开。 协议版本 http0.9：只能传输html文档，1991年 http1.0：支持多媒体数据的处理，保持连接。具有缓存功能 http1.1：支持更多的请求方法，更加精细的缓存控制，持久连接">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/%E5%9F%BA%E6%9C%ACweb%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B.png">
+<meta property="og:updated_time" content="2017-03-03T03:31:37.236Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP 基础">
+<meta name="twitter:description" content="HTTP协议超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。http是一种stateless（无状态）协议，一次事务结束后连接将立即断开。 协议版本 http0.9：只能传输html文档，1991年 http1.0：支持多媒体数据的处理，保持连接。具有缓存功能 http1.1：支持更多的请求方法，更加精细的缓存控制，持久连接">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/%E5%9F%BA%E6%9C%ACweb%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/07/2016-2-7 HTTP基础/"/>
+
+
+
+
+
+  <title>HTTP 基础 | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/07/2016-2-7 HTTP基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP 基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-07T08:31:28+08:00">
+                2016-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h4><p>超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。http是一种stateless（无状态）协议，一次事务结束后连接将立即断开。</p>
+<h4 id="协议版本"><a href="#协议版本" class="headerlink" title="协议版本"></a>协议版本</h4><ul>
+<li>http0.9：只能传输html文档，1991年</li>
+<li>http1.0：支持多媒体数据的处理，保持连接。具有缓存功能</li>
+<li>http1.1：支持更多的请求方法，更加精细的缓存控制，持久连接</li>
+</ul>
+<h4 id="HTTP报文"><a href="#HTTP报文" class="headerlink" title="HTTP报文"></a>HTTP报文</h4><p>HTTP报文由从客户机到服务器的请求和从服务器到客户机的响应构成。</p>
+<h5 id="请求报文"><a href="#请求报文" class="headerlink" title="请求报文"></a>请求报文</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 请求行 － 通用信息头 － 请求头 － 实体头 － 报文主体</span></span><br><span class="line">&lt;method&gt;&lt;request-url&gt;&lt;version&gt;</span><br><span class="line">&lt;headers&gt;</span><br><span class="line">&lt;entity-body&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="响应报文"><a href="#响应报文" class="headerlink" title="响应报文"></a>响应报文</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 状态行 － 通用信息头 － 响应头 － 实体头 － 报文主体</span></span><br><span class="line">&lt;version&gt;&lt;status&gt;&lt;reason-phrase&gt;</span><br><span class="line">&lt;headers&gt;</span><br><span class="line">&lt;entity-body&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;method&gt;        <span class="comment"># 请求方法，希望服务器端执行的动作，如GET、HEAD、POST等</span></span><br><span class="line">&lt;request-url&gt;	<span class="comment"># 请求的资源，可以是相对路径，也可以是完整的URL</span></span><br><span class="line">&lt;version&gt;       <span class="comment"># 协议版本，格式HTTP/&lt;major&gt;。&lt;minor&gt;，如http/1.0</span></span><br><span class="line">&lt;headers&gt;       <span class="comment"># HTTP首部</span></span><br><span class="line">&lt;status&gt;	<span class="comment"># 状态码</span></span><br><span class="line">&lt;reason-phrase&gt;	<span class="comment"># 原因短语，数字状态吗易读信息</span></span><br><span class="line">&lt;entity-body&gt;	<span class="comment"># 主体部分</span></span><br></pre></td></tr></table></figure>
+<h4 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h4><ul>
+<li>安全方法：客户端只需要请求而不需要操作服务器的资源<ul>
+<li>GET：请求获取一个资源，需要服务器发送传回响应</li>
+<li>HEAD：跟GET相似，但不需要服务发送资源而仅传回响应报文首部</li>
+</ul>
+</li>
+<li>提交表单方法<ul>
+<li>POST：支持HTML表单提交，表单中有用户填入的数据，这些数据会发送到服务器端，由服务器存储至某位置</li>
+</ul>
+</li>
+<li>危险方法：<ul>
+<li>PUT：与GET相反，向服务写入文档、发布系统</li>
+<li>DELETE：请求删除URL指向的资源</li>
+<li>OPTIONS：探测服务器端对某资源所支持的请求方法</li>
+<li>TRACE：追踪请求资源要经过的防火墙、代理或网关等</li>
+</ul>
+</li>
+<li>扩展方法：<ul>
+<li>LOCK</li>
+<li>MKCOL</li>
+<li>COPY</li>
+<li>MOVE</li>
+</ul>
+</li>
+</ul>
+<h4 id="常见状态码"><a href="#常见状态码" class="headerlink" title="常见状态码"></a>常见状态码</h4><ul>
+<li>1XX：客户端信息性状态码<ul>
+<li>100 Continue：服务器仅接收到部分请求，但是一旦服务器并没有拒绝该请求，客户端应该继续发送其余的请求。</li>
+<li>101 Switching Protocols：服务器转换协议，服务器将遵从客户的请求转换到另外一种协议。</li>
+</ul>
+</li>
+<li>2XX：成功状态码<ul>
+<li>200 OK：请求成功（其后是对GET和POST请求的应答文档）</li>
+<li>201 Created：请求被创建完成，同时新的资源被创建</li>
+<li>202 Accepted：供处理的请求已被接受，但是处理未完成</li>
+</ul>
+</li>
+<li>3XX：重定向状态码<ul>
+<li>301 Moved Permanebtly：永久重定向，在响应报文中使用首部“Location：URL”指定资源现在所在的位置</li>
+<li>302 Found：临时重定向，在响应报文中使用首部“Location：URL”指定临时资源位置</li>
+<li>304 Not Modified：条件式请求中使用</li>
+</ul>
+</li>
+<li>4XX：客户端错误<ul>
+<li>403 Forbidden：请求被服务器拒绝</li>
+<li>404 Not Found：服务器无法找到请求的URL</li>
+<li>405 Method Not Allowed：不允许使用此方法请求响应的URL</li>
+</ul>
+</li>
+<li>5XX：服务器错误<ul>
+<li>500 Internal Server Error：服务器内部错误</li>
+<li>502 Bad Gateway：代理服务器从上游收到一条伪（无效的）响应</li>
+<li>503 Service Unavailable：服务器此时无法提供服务，但将来可能可用</li>
+<li>504 Gateway Timeout：网关超时</li>
+</ul>
+</li>
+</ul>
+<h4 id="HTTP首部"><a href="#HTTP首部" class="headerlink" title="HTTP首部"></a>HTTP首部</h4><h5 id="通用首部"><a href="#通用首部" class="headerlink" title="通用首部"></a>通用首部</h5><p>请求和响应都可以使用的</p>
+<ul>
+<li>Connection：定义C/S之间关于请求/响应的有关选项，对于http/1.0：Connection keep-alibe</li>
+<li>Via：显示了报文经过的中间节点</li>
+<li>Cache-Control：缓存指示</li>
+</ul>
+<h5 id="请求首部"><a href="#请求首部" class="headerlink" title="请求首部"></a>请求首部</h5><p>只有请求首部的</p>
+<ul>
+<li>Cilent-IP：请求端IP</li>
+<li>Host：请求的主机名和端口号，虚拟主机环境下用于标识不同的虚拟主机</li>
+<li>Referer：指明了请求当前资源的原始资源的URL，即跳转到当前资源的来源URL</li>
+<li>User-Agent：用户代理，使用什么工具发出的请求</li>
+</ul>
+<blockquote>
+<p>Accept首部：用户标明客户自己更倾向于支持使用的方式</p>
+<ul>
+<li>Accept：指明服务器能发送的媒体类型</li>
+<li>Accept-Charset：支持使用的字符集</li>
+<li>Accept-Encoding：支持使用的编码方式</li>
+<li>Accept-Language：支持使用语言</li>
+</ul>
+<p>条件请求首部：</p>
+<ul>
+<li>Expect：期望的行为</li>
+<li>If-Modified-Since：是否在指定的时间以来修改过此资源</li>
+<li>If-None-Match： </li>
+</ul>
+<p>跟安全相关的请求首部：</p>
+<ul>
+<li>Authorication：客户端提交给服务端的认证数据，如账号和密码</li>
+<li>Cookie：客户端发送给服务器端身份标识</li>
+<li>Cookie2</li>
+</ul>
+</blockquote>
+<h5 id="响应首部"><a href="#响应首部" class="headerlink" title="响应首部"></a>响应首部</h5><p>只有响应首部的</p>
+<ul>
+<li>Age：响应持续的时间</li>
+<li>Server：向客户端标明服务器程序名称和版本</li>
+</ul>
+<blockquote>
+<p>协商首部：</p>
+<ul>
+<li>Accept-Ranges：对当前资源来讲，服务器所能够接受的范围类型</li>
+<li>Vary：首部列表，服务器会根据列表中的内容挑选出最适合的版本发送给客户端<br>跟安全相关的响应首部</li>
+<li>Set-Cookie：服务器端在某客户端第一次请求时发给的令牌</li>
+<li>Set-Cookie2：</li>
+<li>WWW-Authenication：质询，即要求客户端提供账号和密码</li>
+</ul>
+</blockquote>
+<h5 id="实体首部"><a href="#实体首部" class="headerlink" title="实体首部"></a>实体首部</h5><p>用于定义实体属性的</p>
+<ul>
+<li>Location：资源的新位置</li>
+<li>Allow：允许对此资源使用的请求方法</li>
+</ul>
+<blockquote>
+<ul>
+<li>内容首部：用来表明内容格式、类型等</li>
+<li>Contern-Encoding：内容编码</li>
+<li>Contern-Language：内容语言</li>
+<li>Contern-Length：内容长度</li>
+<li>Contern-type：内容类型</li>
+<li>Contern-Range：内容范围</li>
+<li>Contern-Location：内容位置</li>
+</ul>
+<p>缓存首部：</p>
+<ul>
+<li>ETag：实体标签</li>
+<li>Expires：过期标签</li>
+<li>Last-Modified：上一次的修改时间</li>
+</ul>
+</blockquote>
+<h5 id="扩展首部"><a href="#扩展首部" class="headerlink" title="扩展首部"></a>扩展首部</h5><p>非标准首部，可能是由程序开发者创建的，例如X-Forward-For</p>
+<h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><p>一次请求以及与其对应的响应，称为一个事务。</p>
+<ul>
+<li>提高事务处理性能的方法：<ul>
+<li>持久连接 </li>
+<li>并行连接</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p> 并行连接的缺点：</p>
+<ul>
+<li>每个事务都会打开/关闭一条新的连接，耗费时间和带宽</li>
+<li>由于TCP的慢启动特性，每条新连接的性能都会有所降低</li>
+<li>可打开的并行连接数量实际上是有限的. </li>
+</ul>
+</blockquote>
+<ul>
+<li>一次基本的web服务请求过程<br><img src="http://ohlli9uc9.bkt.clouddn.com/%E5%9F%BA%E6%9C%ACweb%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B.png" alt=""></li>
+<li>Web服务器的输入输出结构<ul>
+<li>单线程I/O结构</li>
+<li>多线程I/O结构</li>
+<li>复用的I/O结构（一个进程响应多个请求）</li>
+<li>复用多线程I/O结构：多个线程，每个线程响应多个请求</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/http/" rel="tag"># http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/06/2016-2-6 DHCP/" rel="next" title="DHCP Service">
+                <i class="fa fa-chevron-left"></i> DHCP Service
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/08/2016-2-8 httpd安装配置/" rel="prev" title="httpd及安装配置">
+                httpd及安装配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP协议"><span class="nav-number">1.</span> <span class="nav-text">HTTP协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协议版本"><span class="nav-number">2.</span> <span class="nav-text">协议版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP报文"><span class="nav-number">3.</span> <span class="nav-text">HTTP报文</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#请求报文"><span class="nav-number">3.1.</span> <span class="nav-text">请求报文</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#响应报文"><span class="nav-number">3.2.</span> <span class="nav-text">响应报文</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求方法"><span class="nav-number">4.</span> <span class="nav-text">请求方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见状态码"><span class="nav-number">5.</span> <span class="nav-text">常见状态码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP首部"><span class="nav-number">6.</span> <span class="nav-text">HTTP首部</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#通用首部"><span class="nav-number">6.1.</span> <span class="nav-text">通用首部</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#请求首部"><span class="nav-number">6.2.</span> <span class="nav-text">请求首部</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#响应首部"><span class="nav-number">6.3.</span> <span class="nav-text">响应首部</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实体首部"><span class="nav-number">6.4.</span> <span class="nav-text">实体首部</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展首部"><span class="nav-number">6.5.</span> <span class="nav-text">扩展首部</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">7.</span> <span class="nav-text">事务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

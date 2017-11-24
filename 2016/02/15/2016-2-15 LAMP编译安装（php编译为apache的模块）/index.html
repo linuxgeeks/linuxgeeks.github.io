@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="LAMP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="由于php既要编译成httpd的模块，又要连接mysql，因此先安装httpd和MySQL，最后安装php 环境准备： 12yum -y groupinstall &quot;Compatibility libraries&quot; &quot;Development tools&quot; &quot;Server">
+<meta name="keywords" content="LAMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LAMP编译安装（php编译为apache的模块）">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/15/2016-2-15 LAMP编译安装（php编译为apache的模块）/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="由于php既要编译成httpd的模块，又要连接mysql，因此先安装httpd和MySQL，最后安装php 环境准备： 12yum -y groupinstall &quot;Compatibility libraries&quot; &quot;Development tools&quot; &quot;Server Platform Development&quot;# 解决依赖关系，安装开发环境软件包组 MySQL5.5.53二进制通用包安装准备数据">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-03T03:32:40.824Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LAMP编译安装（php编译为apache的模块）">
+<meta name="twitter:description" content="由于php既要编译成httpd的模块，又要连接mysql，因此先安装httpd和MySQL，最后安装php 环境准备： 12yum -y groupinstall &quot;Compatibility libraries&quot; &quot;Development tools&quot; &quot;Server Platform Development&quot;# 解决依赖关系，安装开发环境软件包组 MySQL5.5.53二进制通用包安装准备数据">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/15/2016-2-15 LAMP编译安装（php编译为apache的模块）/"/>
+
+
+
+
+
+  <title>LAMP编译安装（php编译为apache的模块） | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/15/2016-2-15 LAMP编译安装（php编译为apache的模块）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LAMP编译安装（php编译为apache的模块）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-15T12:43:14+08:00">
+                2016-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于php既要编译成httpd的模块，又要连接mysql，因此先安装httpd和MySQL，最后安装php</p>
+<p>环境准备：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y groupinstall <span class="string">"Compatibility libraries"</span> <span class="string">"Development tools"</span> <span class="string">"Server Platform Development"</span></span><br><span class="line"><span class="comment"># 解决依赖关系，安装开发环境软件包组</span></span><br></pre></td></tr></table></figure>
+<h3 id="MySQL5-5-53二进制通用包安装"><a href="#MySQL5-5-53二进制通用包安装" class="headerlink" title="MySQL5.5.53二进制通用包安装"></a>MySQL5.5.53二进制通用包安装</h3><h5 id="准备数据存放的文件系统"><a href="#准备数据存放的文件系统" class="headerlink" title="准备数据存放的文件系统"></a>准备数据存放的文件系统</h5><ul>
+<li>新建一个逻辑卷，并将其挂载至特定目录即可。这里不再给出过程。</li>
+<li>逻辑卷的挂载目录为/data，而后需要创建/data/mysqldata目录做为mysql数据的存放目录。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv /data</span><br><span class="line">fdisk /dev/sdb &lt;&lt; <span class="string">'EOF'</span></span><br><span class="line">n</span><br><span class="line">p</span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">+18G</span><br><span class="line">t</span><br><span class="line">8e</span><br><span class="line">w</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">kpartx -af /dev/sdb</span><br><span class="line">partx -a /dev/sdb</span><br><span class="line">cat /proc/partitions </span><br><span class="line">pvcreate /dev/sdb1</span><br><span class="line">vgcreate myvg /dev/sdb1</span><br><span class="line">lvcreate -L 10G -n mysqldata myvg</span><br><span class="line">mke2fs -t ext4 /dev/myvg/mysqldata </span><br><span class="line"><span class="built_in">echo</span> <span class="string">'/dev/myvg/mysqldata        /data                   ext4    defaults,noatime 0 0 '</span> &gt;&gt; /etc/fstab</span><br><span class="line">mount -a</span><br><span class="line"><span class="comment"># 为MySQL单独挂载一块硬盘，对其进行分区，创建lvm并挂载</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /data/;mkdir -pv mysqldata;</span><br><span class="line">chown -R mysql.mysql /data/mysqldata/</span><br><span class="line"><span class="comment"># 创建mysql的数据存放目录</span></span><br></pre></td></tr></table></figure>
+<h5 id="解决依赖关系并安装所需环境"><a href="#解决依赖关系并安装所需环境" class="headerlink" title="解决依赖关系并安装所需环境"></a>解决依赖关系并安装所需环境</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install autoconf automake imake libxml2-devel expat-devel cmake gcc gcc-c++ libaio libaio-devel bzr bison libtool ncurses5-devel</span><br></pre></td></tr></table></figure>
+<h5 id="新建用户以安全方式运行进程"><a href="#新建用户以安全方式运行进程" class="headerlink" title="新建用户以安全方式运行进程"></a>新建用户以安全方式运行进程</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">groupadd -r mysql</span><br><span class="line"><span class="comment"># 添加一个系统组</span></span><br><span class="line">useradd -g mysql -r -s /sbin/nologin mysql</span><br><span class="line"><span class="comment"># 添加一个不允许登录系统的MySQL系统用户</span></span><br></pre></td></tr></table></figure>
+<h5 id="安装并初始化mysql-5-5-33"><a href="#安装并初始化mysql-5-5-33" class="headerlink" title="安装并初始化mysql-5.5.33"></a>安装并初始化mysql-5.5.33</h5><p>首先下载平台对应的mysql版本至本地，这里是64位平台，因此选择的为mysql-5.5.53-linux2.6-x86_64.tar.gz，下载位置为：<a href="http://mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.53-linux2.6-x86_64.tar.gz" target="_blank" rel="noopener">http://mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.53-linux2.6-x86_64.tar.gz</a> 。32位平台需要下载i686的包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tar xf mysql-5.5.53-linux2.6-x86_64.tar.gz -C /usr/<span class="built_in">local</span>/</span><br><span class="line"><span class="comment"># 解压二进制包到指定目录</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/;ln -sv mysql-5.5.53-linux2.6-x86_64 mysql</span><br><span class="line"><span class="comment"># 创建软链接，方便以后MySQL版本升级或更新</span></span><br><span class="line"><span class="built_in">cd</span> mysql</span><br><span class="line">chown -R mysql.mysql /usr/<span class="built_in">local</span>/mysql/*</span><br><span class="line"><span class="comment"># 属主、数组修改</span></span><br><span class="line"></span><br><span class="line">chown -R root.mysql /usr/<span class="built_in">local</span>/mysql*</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</span><br><span class="line">scripts/mysql_install_db --datadir=/data/mysqldata/ --user=mysql</span><br><span class="line"><span class="comment"># 对系统库做初始化</span></span><br></pre></td></tr></table></figure>
+<h5 id="为mysql提供主配置文件"><a href="#为mysql提供主配置文件" class="headerlink" title="为mysql提供主配置文件"></a>为mysql提供主配置文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp support-files/my-large.cnf /etc/my.cnf</span><br><span class="line"><span class="comment"># 创建并修改MySQL配置文件</span></span><br><span class="line">sed -ri <span class="string">'/\[mysqld\]/adatadir=/data/mysqldata'</span> /etc/my.cnf </span><br><span class="line"><span class="comment"># 指定mysql数据文件的存放位置</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># thread_concurrency = 2</span></span><br><span class="line">sed -ri <span class="string">"sS(thread_concurrency =).*S\1 <span class="variable">$(( `/bin/egrep -cw "processor" /proc/cpuinfo ` * 2 )</span>)S"</span> /etc/my.cnf </span><br><span class="line"><span class="comment"># 修改此文件中thread_concurrency的值为你的CPU个数乘以2</span></span><br></pre></td></tr></table></figure>
+<h5 id="为mysql提供sysv服务脚本"><a href="#为mysql提供sysv服务脚本" class="headerlink" title="为mysql提供sysv服务脚本"></a>为mysql提供sysv服务脚本</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cp -a support-files/mysql.server /etc/rc.d/init.d/mysqld</span><br><span class="line">chmod +x /etc/rc.d/init.d/mysqld</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br><span class="line">chkconfig --list mysqld</span><br><span class="line"><span class="comment"># 创建服务脚本，添加到系统服务</span></span><br><span class="line"></span><br><span class="line">service mysqld start</span><br><span class="line"><span class="comment"># 启动服务</span></span><br></pre></td></tr></table></figure>
+<h5 id="附加配置"><a href="#附加配置" class="headerlink" title="附加配置"></a>附加配置</h5><p>为了使用mysql的安装符合系统使用规范，并将其开发组件导出给系统使用，这里做如下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出mysql的man手册至man命令的查找路径</span></span><br><span class="line"><span class="comment"># 编辑/etc/man.config，添加如下行即可：</span></span><br><span class="line">MANPATH  /usr/<span class="built_in">local</span>/mysql/man</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/mysql/bin:$PATH'</span> &gt;| /etc/profile.d/mysqlbin.sh</span><br><span class="line">. /etc/profile.d/mysqlbin.sh</span><br><span class="line"><span class="comment">#修改PATH环境变量，让系统可以直接使用mysql的相关命令</span></span><br><span class="line"></span><br><span class="line">ln -sv /usr/<span class="built_in">local</span>/mysql/include/ /usr/include/mysql</span><br><span class="line"><span class="comment"># 输出mysql的头文件至系统头文件路径/usr/include</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'/usr/local/mysql/lib/'</span> &gt; /etc/ld.so.conf.d/mysqllib.conf</span><br><span class="line"><span class="comment"># 输出mysql的库文件给系统库查找路径</span></span><br><span class="line">ldconf</span><br><span class="line"><span class="comment"># 让系统重新载入系统库</span></span><br><span class="line">ldconfig -p | grep mysql</span><br><span class="line"></span><br><span class="line">mysql&gt; use mysql;</span><br><span class="line">mysql&gt; select user,host,password from user;</span><br><span class="line">mysql&gt; drop user <span class="string">''</span>@<span class="string">'localhost'</span>;</span><br><span class="line">mysql&gt; drop user <span class="string">''</span>@<span class="string">'test'</span>;</span><br><span class="line">mysql&gt; update user <span class="built_in">set</span> password=password(<span class="string">'hehedada'</span>) <span class="built_in">where</span> user=<span class="string">'root'</span>;</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"><span class="comment"># 删除匿名用户，修改密码</span></span><br><span class="line"></span><br><span class="line">mysql -u root -P 3306 -h 127.0.0.1 -p</span><br><span class="line"><span class="comment"># 测试</span></span><br></pre></td></tr></table></figure>
+<h3 id="httpd2-4-23编译安装"><a href="#httpd2-4-23编译安装" class="headerlink" title="httpd2.4.23编译安装"></a>httpd2.4.23编译安装</h3><p>站点：</p>
+<ul>
+<li>httpd站点：<a href="http://httpd.apache.org/" target="_blank" rel="noopener">http://httpd.apache.org/</a></li>
+<li>apr-util站点：<a href="https://www.apache.org/dist/apr/apr-util-1.5.4.tar.bz2" target="_blank" rel="noopener">https://www.apache.org/dist/apr/apr-util-1.5.4.tar.bz2</a></li>
+<li>apr站点：<a href="https://www.apache.org/dist/apr/apr-1.5.2.tar.bz2" target="_blank" rel="noopener">https://www.apache.org/dist/apr/apr-1.5.2.tar.bz2</a></li>
+</ul>
+<h5 id="解决依赖关系"><a href="#解决依赖关系" class="headerlink" title="解决依赖关系"></a>解决依赖关系</h5><p>httpd2.4.23需要较新版本的apr和apr-util，因此需要事先对其进行升级。升级方式有两种，一种是通过源代码编译安装，一种是直接升级rpm包。这里选择使用编译源代码的方式进行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">service httpd stop</span><br><span class="line"><span class="comment"># 停止现有的httpd服务</span></span><br><span class="line"></span><br><span class="line">chkconfig httpd off</span><br><span class="line"><span class="comment"># 关闭现有httpd服务的启动</span></span><br><span class="line"></span><br><span class="line">yum -y install pcre-devel zlib-devel gcc gcc-c++</span><br><span class="line"><span class="comment"># 安装pcre(Perl语言正则表达式库)、zlib库</span></span><br><span class="line"></span><br><span class="line">tar xf apr-1.5.2.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> apr-1.5.2</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 安装apr(apache portable runtime)</span></span><br><span class="line"></span><br><span class="line">tar xf apr-util-1.5.4.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> apr-util-1.5.4</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apr-util-1.5.4 --with-apr=/usr/<span class="built_in">local</span>/apr-1.5.2/</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 安装apr-util</span></span><br><span class="line"></span><br><span class="line">附：apache官方对APR的介绍：</span><br><span class="line"></span><br><span class="line">The mission of the Apache Portable Runtime (APR) project is to create and maintain software libraries that provide a predictable and consistent interface to underlying platform-specific implementations. The primary goal is to provide an API to <span class="built_in">which</span> software developers may code and be assured of predictable <span class="keyword">if</span> not identical behaviour regardless of the platform on <span class="built_in">which</span> their software is built, relieving them of the need to code special-case conditions to work around or take advantage of platform-specific deficiencies or features.</span><br></pre></td></tr></table></figure>
+<h5 id="安装httpd2-4-23"><a href="#安装httpd2-4-23" class="headerlink" title="安装httpd2.4.23"></a>安装httpd2.4.23</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar xf httpd-2.4.23.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> httpd-2.4.23</span><br><span class="line"> ./configure --prefix=/usr/<span class="built_in">local</span>/apache --sysconfdir=/etc/httpd2.4.23 --<span class="built_in">enable</span>-so  --<span class="built_in">enable</span>-headers --<span class="built_in">enable</span>-expires --<span class="built_in">enable</span>-ssl --<span class="built_in">enable</span>-cgi --<span class="built_in">enable</span>-rewrite --with-zlib --with-pcre --with-apr=/usr/<span class="built_in">local</span>/apr-1.5.2/ --with-apr-util=/usr/<span class="built_in">local</span>/apr-util-1.5.4/ --<span class="built_in">enable</span>-modeles=most --<span class="built_in">enable</span>-mpms-shared=all --with-mpm=event --<span class="built_in">enable</span>-deflate</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>补充：</p>
+<ul>
+<li>构建MPM为静态模块</li>
+</ul>
+<p>在全部平台中，MPM都可以构建为静态模块。在构建时选择一种MPM，链接到服务器中。如果要改变MPM，必须重新构建。为了使用指定的MPM，请在执行configure脚本 时，使用参数 –with-mpm=NAME。NAME是指定的MPM名称。编译完成后，可以使用 ./httpd -l 来确定选择的MPM。 此命令会列出编译到服务器程序中的所有模块，包括 MPM。</p>
+<ul>
+<li>构建 MPM 为动态模块</li>
+</ul>
+<p>在Unix或类似平台中，MPM可以构建为动态模块，与其它动态模块一样在运行时加载。 构建 MPM 为动态模块允许通过修改LoadModule指令内容来改变MPM，而不用重新构建服务器程序。在执行configure脚本时，使用–enable-mpms-shared选项即可启用此特性。当给出的参数为all时，所有此平台支持的MPM模块都会被安装。还可以在参数中给出模块列表。默认MPM，可以自动选择或者在执行configure脚本时通过–with-mpm选项来指定，然后出现在生成的服务器配置文件中。编辑LoadModule指令内容可以选择不同的MPM。</p>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><p>备份配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/httpd2.4.23/httpd.conf&#123;,.bak&#125;</span><br></pre></td></tr></table></figure>
+<p>在配置文件/etc/httpd2.4.23/httpd.conf加入pid配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PidFile "/var/run/httpd.pid"</span><br></pre></td></tr></table></figure>
+<h5 id="提供SysV服务脚本"><a href="#提供SysV服务脚本" class="headerlink" title="提供SysV服务脚本"></a>提供SysV服务脚本</h5><p>服务脚本<code>/etc/rc.d/init.d/httpd</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># httpd        Startup script for the Apache HTTP Server</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig: - 85 15</span></span><br><span class="line"><span class="comment"># description: Apache is a World Wide Web server.  It is used to serve \</span></span><br><span class="line"><span class="comment">#        HTML files and CGI.</span></span><br><span class="line"><span class="comment"># processname: httpd</span></span><br><span class="line"><span class="comment"># config: /etc/httpd2.4.23/httpd.conf</span></span><br><span class="line"><span class="comment"># config: /etc/sysconfig/httpd</span></span><br><span class="line"><span class="comment"># pidfile: /var/run/httpd.pid</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f /etc/sysconfig/httpd ]; <span class="keyword">then</span></span><br><span class="line">        . /etc/sysconfig/httpd</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Start httpd in the C locale by default.</span></span><br><span class="line">HTTPD_LANG=<span class="variable">$&#123;HTTPD_LANG-"C"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This will prevent initlog from swallowing up a pass-phrase prompt if</span></span><br><span class="line"><span class="comment"># mod_ssl needs a pass-phrase from the user.</span></span><br><span class="line">INITLOG_ARGS=<span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set HTTPD=/usr/sbin/httpd.worker in /etc/sysconfig/httpd to use a server</span></span><br><span class="line"><span class="comment"># with the thread-based "worker" MPM; BE WARNED that some modules may not</span></span><br><span class="line"><span class="comment"># work correctly with a thread-based MPM; notably PHP will refuse to start.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Path to the apachectl script, server binary, and short-form for messages.</span></span><br><span class="line">apachectl=/usr/<span class="built_in">local</span>/apache/bin/apachectl</span><br><span class="line">httpd=<span class="variable">$&#123;HTTPD-/usr/local/apache/bin/httpd&#125;</span></span><br><span class="line">prog=httpd</span><br><span class="line">pidfile=<span class="variable">$&#123;PIDFILE-/var/run/httpd.pid&#125;</span></span><br><span class="line">lockfile=<span class="variable">$&#123;LOCKFILE-/var/lock/subsys/httpd&#125;</span></span><br><span class="line">RETVAL=0</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line">        <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></span><br><span class="line">        LANG=<span class="variable">$HTTPD_LANG</span> daemon --pidfile=<span class="variable">$&#123;pidfile&#125;</span> <span class="variable">$httpd</span> <span class="variable">$OPTIONS</span></span><br><span class="line">        RETVAL=$?</span><br><span class="line">        <span class="built_in">echo</span></span><br><span class="line">        [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; touch <span class="variable">$&#123;lockfile&#125;</span></span><br><span class="line">        <span class="built_in">return</span> <span class="variable">$RETVAL</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></span><br><span class="line">  killproc -p <span class="variable">$&#123;pidfile&#125;</span> -d 10 <span class="variable">$httpd</span></span><br><span class="line">  RETVAL=$?</span><br><span class="line">  <span class="built_in">echo</span></span><br><span class="line">  [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm -f <span class="variable">$&#123;lockfile&#125;</span> <span class="variable">$&#123;pidfile&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">reload</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></span><br><span class="line">    <span class="keyword">if</span> ! LANG=<span class="variable">$HTTPD_LANG</span> <span class="variable">$httpd</span> <span class="variable">$OPTIONS</span> -t &gt;&amp;/dev/null; <span class="keyword">then</span></span><br><span class="line">        RETVAL=$?</span><br><span class="line">        <span class="built_in">echo</span> $<span class="string">"not reloading due to configuration syntax error"</span></span><br><span class="line">        failure $<span class="string">"not reloading <span class="variable">$httpd</span> due to configuration syntax error"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        killproc -p <span class="variable">$&#123;pidfile&#125;</span> <span class="variable">$httpd</span> -HUP</span><br><span class="line">        RETVAL=$?</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># See how we were called.</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">  start)</span><br><span class="line">  start</span><br><span class="line">  ;;</span><br><span class="line">  stop)</span><br><span class="line">  stop</span><br><span class="line">  ;;</span><br><span class="line">  status)</span><br><span class="line">        status -p <span class="variable">$&#123;pidfile&#125;</span> <span class="variable">$httpd</span></span><br><span class="line">  RETVAL=$?</span><br><span class="line">  ;;</span><br><span class="line">  restart)</span><br><span class="line">  stop</span><br><span class="line">  start</span><br><span class="line">  ;;</span><br><span class="line">  condrestart)</span><br><span class="line">  <span class="keyword">if</span> [ -f <span class="variable">$&#123;pidfile&#125;</span> ] ; <span class="keyword">then</span></span><br><span class="line">    stop</span><br><span class="line">    start</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">  ;;</span><br><span class="line">  reload)</span><br><span class="line">        reload</span><br><span class="line">  ;;</span><br><span class="line">  graceful|<span class="built_in">help</span>|configtest|fullstatus)</span><br><span class="line">  <span class="variable">$apachectl</span> <span class="variable">$@</span></span><br><span class="line">  RETVAL=$?</span><br><span class="line">  ;;</span><br><span class="line">  *)</span><br><span class="line">  <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$prog</span> &#123;start|stop|restart|condrestart|reload|status|fullstatus|graceful|help|configtest&#125;"</span></span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span></span><br></pre></td></tr></table></figure>
+<p>添加权限<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.d/init.d/httpd</span><br></pre></td></tr></table></figure></p>
+<h5 id="添加服务和环境变量"><a href="#添加服务和环境变量" class="headerlink" title="添加服务和环境变量"></a>添加服务和环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add httpd</span><br><span class="line">chkconfig --level 2345 httpd on</span><br><span class="line">chkconfig --list httpd</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/apache/bin/:$PATH'</span> &gt; /etc/profile.d/apachebin.sh</span><br><span class="line">. /etc/profile.d/apachebin.sh</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'192.1.68.2.105    www.test.com'</span> &gt;&gt; /etc/hosts </span><br><span class="line"><span class="comment"># 避免启动服务时报解析错误</span></span><br></pre></td></tr></table></figure>
+<h5 id="服务启动和验证"><a href="#服务启动和验证" class="headerlink" title="服务启动和验证"></a>服务启动和验证</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service httpd start</span><br><span class="line">ss -tnl | grep 80</span><br><span class="line">service httpd status</span><br></pre></td></tr></table></figure>
+<p>报错：<code>httpd dead but subsys locked</code></p>
+<p>解决方法：<code>rm -f /var/lock/subsys/httpd</code>，并检查pid配置是否正确</p>
+<h3 id="编译安装php-5-4-27"><a href="#编译安装php-5-4-27" class="headerlink" title="编译安装php-5.4.27"></a>编译安装php-5.4.27</h3><h5 id="解决依赖关系-1"><a href="#解决依赖关系-1" class="headerlink" title="解决依赖关系"></a>解决依赖关系</h5><p>Mcrypt是PHP的一个扩展，完成了常用加密算法的封装。其实该扩展是对mcrypt标准类库的封装，mcrypt完成了相当多的常用加密算法，如DES, TripleDES, Blowfish (default), 3-WAY, SAFER-SK64, SAFER-SK128, TWOFISH, TEA, RC2 和 GOST加密算法，并且提供了CBC、OFB、CFB 和 ECB 四种块加密的模型。<br>要使用该扩展，必须首先安装mcrypt标准类库，注意的是mcrypt软件依赖libmcrypt和mhash两个库。</p>
+<ul>
+<li>环境和库</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum -y groupinstall <span class="string">"Desktop Platform Development"</span> </span><br><span class="line"><span class="comment"># 桌面平台环境，开发所需</span></span><br><span class="line">yum -y install bzip2-devel</span><br><span class="line"><span class="comment"># 依赖库安装</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>libmcrypt（安装mcrypt需要此软件包）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://nchc.dl.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz</span><br><span class="line">tar xf libmcrypt-2.5.8.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> libmcrypt-2.5.8</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mhash（安装mcrypt需要此软件包）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">https://acelnmp.googlecode.com/files/mhash-0.9.9.9.tar.gz</span><br><span class="line">tar xf mhash-0.9.9.9.tar.gz </span><br><span class="line"><span class="built_in">cd</span> mhash-0.9.9.9</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mcrypt扩展</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wget https://lcmp.googlecode.com/files/mcrypt-2.6.8.tar.gz</span><br><span class="line">tar xf mcrypt-2.6.8.tar.gz</span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/libmcrypt-config /usr/bin/libmcrypt_config</span><br><span class="line"><span class="comment"># 添加链接，以免libmcrypt未搜索到</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">'/usr/local/lib'</span> &gt; /etc/ld.so.conf.d/libmcrypt_lg.conf</span><br><span class="line">ldconfig</span><br><span class="line"><span class="comment"># 添加库搜索路径</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/lib:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line"><span class="comment"># 由于在配置Mcrypt时，会找不到libmcrypt的链接库，导致无法编译</span></span><br><span class="line"><span class="comment"># 因为Libmcrypt的链接库在/usr/local/lib文件夹下。</span></span><br><span class="line"><span class="comment"># 因此在配置mcrypt时要加入LD_LIBRARY_PATH=/usr/local/lib导入键接库</span></span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/mcrypt </span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h5 id="编译安装php-5-4-27-1"><a href="#编译安装php-5-4-27-1" class="headerlink" title="编译安装php-5.4.27"></a>编译安装php-5.4.27</h5><ul>
+<li>站点<ul>
+<li><a href="http://php.net/releases/" target="_blank" rel="noopener">http://php.net/releases/</a></li>
+<li><a href="http://php.net/get/php-5.4.27.tar.bz2/from/a/mirror" target="_blank" rel="noopener">http://php.net/get/php-5.4.27.tar.bz2/from/a/mirror</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar xf php-5.4.27.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> php-5.4.27</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/php --with-mysql=/usr/<span class="built_in">local</span>/mysql --with-openssl --with-mysqli=/usr/<span class="built_in">local</span>/mysql/bin/mysql_config --<span class="built_in">enable</span>-mbstring --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --<span class="built_in">enable</span>-xml --with-libxml-dir=/usr  --<span class="built_in">enable</span>-sockets --with-apxs2=/usr/<span class="built_in">local</span>/apache/bin/apxs --with-mcrypt=/usr/<span class="built_in">local</span>/mcrypt  --with-mhash --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d --with-bz2  --<span class="built_in">enable</span>-maintainer-zts</span><br><span class="line">make &amp;&amp; make intall</span><br><span class="line">ls /usr/<span class="built_in">local</span>/php/</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>说明</p>
+<ul>
+<li>这里为了支持apache的worker或event这两个MPM，编译时使用了–enable-maintainer-zts选项。</li>
+<li>如果使用PHP5.3以上版本，为了链接MySQL数据库，可以指定mysqlnd，这样在本机就不需要先安装MySQL或MySQL开发包了。mysqlnd从php 5.3开始可用，可以编译时绑定到它（而不用和具体的MySQL客户端库绑定形成依赖），但从PHP 5.4开始它就是默认设置了。</li>
+<li>如果MySQL和PHP不在一台主机，使用with-mysql时，都直接指定为mysqlnd，表示MySQL不在本机，而是在另外的其他主机上<br><code>./configure --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd</code></li>
+</ul>
+</li>
+<li><p>参数说明</p>
+</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">--prefix    <span class="comment"># 程序安装路径</span></span><br><span class="line">--with-mysql=   <span class="comment"># mysql安装路径，对mysql的支持</span></span><br><span class="line">--with-openssl  <span class="comment"># 启用ssl支持</span></span><br><span class="line">--with-mysqli=  <span class="comment"># mysqli扩展技术不仅可以调用MySQL的存储过程、处理MySQL事务，而且还可以使访问数据库工作变得更加稳定</span></span><br><span class="line">--enable-mbstring   <span class="comment"># 启用多字节字符串支持</span></span><br><span class="line">--with-freetype-dir <span class="comment"># 打开对freetype字体库的支持 </span></span><br><span class="line">--with-jpeg-dir     <span class="comment"># 打开对jpeg图片的支持</span></span><br><span class="line">--with-png-dir      <span class="comment"># 打开对png图片的支持</span></span><br><span class="line">--with-zlib     <span class="comment"># 使用压缩库</span></span><br><span class="line">--enable-xml    <span class="comment"># 启用解析xml文件</span></span><br><span class="line">--with-libxml-dir=  <span class="comment"># libxml的路径</span></span><br><span class="line">--enable-sockets    <span class="comment"># 支持基于socket通信</span></span><br><span class="line">--with-apxs2=/usr/local/apache/bin/apxs     <span class="comment"># 整合 apache，apxs功能是使用mod_so中的LoadModule指令，加载指定模块到 apache，要求 apache 要打开SO模块</span></span><br><span class="line">--with-mcrypt   <span class="comment"># mcrypt算法扩展</span></span><br><span class="line">--with-mhash    <span class="comment"># mhash算法扩展</span></span><br><span class="line">--with-config-file-path=    <span class="comment"># 配置文件路径</span></span><br><span class="line">--with-config-file-scan-dir=    <span class="comment"># 此目录下所有.ini结尾的文件都被当作配置文件的一部分</span></span><br><span class="line">--with-bz2      <span class="comment"># 打开对bz2文件的支持  </span></span><br><span class="line">--enable-maintainer-zts     <span class="comment"># 如果apache使用了event选项</span></span><br></pre></td></tr></table></figure>
+<h5 id="提供配置文件"><a href="#提供配置文件" class="headerlink" title="提供配置文件"></a>提供配置文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp php.ini-production /etc/php.ini</span><br></pre></td></tr></table></figure>
+<h5 id="配置apache，支持php"><a href="#配置apache，支持php" class="headerlink" title="配置apache，支持php"></a>配置apache，支持php</h5><p><code>vim /etc/httpd2.4.23/httpd.conf</code></p>
+<ul>
+<li>定位<code>AddType</code>，添加如下二行</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php  .php</span><br><span class="line">AddType application/x-httpd-php-source  .phps</span><br></pre></td></tr></table></figure>
+<ul>
+<li>定位至<code>DirectoryIndex index.html</code>，修改为：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DirectoryIndex  index.php  index.html</span><br></pre></td></tr></table></figure>
+<h5 id="服务验证"><a href="#服务验证" class="headerlink" title="服务验证"></a>服务验证</h5><ul>
+<li>重新启动httpd，或让其重新载入配置文件即可测试php是否已经可以正常使用。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service httpd restart</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生成验证页面</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/apache/htdocs/</span><br><span class="line">mv index.html index.php</span><br></pre></td></tr></table></figure>
+<p>测试页面index.php链接MySQL示例如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $link = mysql_connect(<span class="string">'127.0.0.1'</span>,<span class="string">'root'</span>,<span class="string">'hehedada'</span>);</span><br><span class="line">    <span class="keyword">if</span> ($link)</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Success..."</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Failure..."</span>;</span><br><span class="line"></span><br><span class="line">    mysql_close();</span><br><span class="line">    phpinfo();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="安装xcache，为php加速"><a href="#安装xcache，为php加速" class="headerlink" title="安装xcache，为php加速"></a>安装xcache，为php加速</h5><ul>
+<li><p>站点：</p>
+<ul>
+<li><a href="http://xcache.lighttpd.net/" target="_blank" rel="noopener">http://xcache.lighttpd.net/</a></li>
+<li><a href="http://xcache.lighttpd.net/pub/Releases/3.0.4/xcache-3.0.4.tar.gz" target="_blank" rel="noopener">http://xcache.lighttpd.net/pub/Releases/3.0.4/xcache-3.0.4.tar.gz</a></li>
+</ul>
+</li>
+<li><p>安装</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -xf xcache-3.0.4.tar.gz</span><br><span class="line"><span class="built_in">cd</span> xcache-3.0.4</span><br><span class="line">/usr/<span class="built_in">local</span>/php/bin/phpize</span><br><span class="line">./configure --<span class="built_in">enable</span>-xcache --with-php-config=/usr/<span class="built_in">local</span>/php/bin/php-config</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 安装结束时，会出现类似如下行：</span></span><br><span class="line"><span class="comment"># Installing shared extensions:     /usr/local/php/lib/php/extensions/no-debug-zts-20100525/</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>编辑php.ini，整合php和xcache</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将xcache提供的样例配置导入php.ini</span></span><br><span class="line">mkdir /etc/php.d</span><br><span class="line">cp xcache.ini /etc/php.d</span><br><span class="line"><span class="comment"># xcache.ini文件在xcache的源码目录中</span></span><br></pre></td></tr></table></figure>
+<p>编辑<code>/etc/php.d/xcache.ini</code>，找到<code>zend_extension</code>开头的行，修改为如下行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zend_extension = /usr/local/php/lib/php/extensions/no-debug-zts<span class="number">-20100525</span>/xcache.so</span><br></pre></td></tr></table></figure>
+<p>注意：如果php.ini文件中有多条zend_extension指令行，要确保此新增的行排在第一位。</p>
+<h5 id="启用服务器状态"><a href="#启用服务器状态" class="headerlink" title="启用服务器状态"></a>启用服务器状态</h5><p>mod_status模块可以让管理员查看服务器的执行状态，它通过一个HTML页面展示了当前服务器的统计数据。这些数据通常包括但不限于：<br>(1) 处于工作状态的worker进程数；<br>(2) 空闲状态的worker进程数；<br>(3) 每个worker的状态，包括此worker已经响应的请求数，及由此worker发送的内容的字节数；<br>(4) 当前服务器总共发送的字节数；<br>(5) 服务器自上次启动或重启以来至当前的时长；<br>(6) 平均每秒钟响应的请求数、平均每秒钟发送的字节数、平均每个请求所请求内容的字节数；</p>
+<ul>
+<li>状态信息不应该被所有人随意访问，因此应该限制仅允许某些特定地址的客户端查看。比如使用Require ip 172.16.0.0/16来限制仅允许指定网段的主机查看此页面</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">htpasswd -cm /etc/httpd2.4.23/.htpasswd  monitor</span><br><span class="line"><span class="comment"># -m 使用MD5加密用户密码</span></span><br><span class="line"><span class="comment"># 添加第一个用户时，-c选项生成密码文件</span></span><br><span class="line"><span class="comment"># 添加后续用户时，无需-c选项了</span></span><br></pre></td></tr></table></figure>
+<p>在配置文件<code>/etc/httpd2.4.23/extra/httpd-info.conf</code>中添加如下内容</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;Location /server-status&gt;</span><br><span class="line">        Options None</span><br><span class="line">        SetHandler server-status</span><br><span class="line">        AuthType Basic</span><br><span class="line">        AuthName "Private Area"</span><br><span class="line">        AuthBasicProvider file</span><br><span class="line">        AuthUserFile "/etc/httpd2.4.23/.htpasswd"</span><br><span class="line">        Require valid-user</span><br><span class="line">&lt;/Location&gt;</span><br></pre></td></tr></table></figure>
+<p>在<code>/etc/httpd2.4.23/httpd.conf</code>搜索下行，去掉<code>#</code>注释，对status文件包含</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Real-time info on requests and configuration </span><br><span class="line">Include /etc/httpd2.4.23/extra/httpd-info.conf</span><br></pre></td></tr></table></figure>
+<h5 id="附加测试"><a href="#附加测试" class="headerlink" title="附加测试"></a>附加测试</h5><p>测试环境：<br>  主机CPU：Intel(R) Core(TM) i7-4710MQ CPU @ 2.50GHz<br>  内存大小：1000MB<br>ab测试示例：未启用xcache和启用xcache后，对phpMyAdmin的主而面进行请求测试的结果如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ab -c 10 -n 1000 http://192.168.2.110/phpmyadmin/index.php</span><br></pre></td></tr></table></figure>
+<p>xcache之前</p>
+<p>Requests per second:    27.99 [#/sec] (mean)<br>Time per request:       357.221 [ms] (mean)<br>Time per request:       35.722 [ms] (mean, across all concurrent requests)</p>
+<p>xcache之后</p>
+<p>Requests per second:    110.27 [#/sec] (mean)<br>Time per request:       90.690 [ms] (mean)<br>Time per request:       9.069 [ms] (mean, across all concurrent requests)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LAMP/" rel="tag"># LAMP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/14/2016-2-14 LAMP（前言）/" rel="next" title="LAMP（前言）">
+                <i class="fa fa-chevron-left"></i> LAMP（前言）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/16/2016-2-16 LAMP编译安装（php基于fastcgi协议编译为php-fpm）/" rel="prev" title="LAMP编译安装（php基于fastcgi协议编译为php-fpm）">
+                LAMP编译安装（php基于fastcgi协议编译为php-fpm） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL5-5-53二进制通用包安装"><span class="nav-number">1.</span> <span class="nav-text">MySQL5.5.53二进制通用包安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备数据存放的文件系统"><span class="nav-number">1.0.1.</span> <span class="nav-text">准备数据存放的文件系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解决依赖关系并安装所需环境"><span class="nav-number">1.0.2.</span> <span class="nav-text">解决依赖关系并安装所需环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#新建用户以安全方式运行进程"><span class="nav-number">1.0.3.</span> <span class="nav-text">新建用户以安全方式运行进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装并初始化mysql-5-5-33"><span class="nav-number">1.0.4.</span> <span class="nav-text">安装并初始化mysql-5.5.33</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为mysql提供主配置文件"><span class="nav-number">1.0.5.</span> <span class="nav-text">为mysql提供主配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为mysql提供sysv服务脚本"><span class="nav-number">1.0.6.</span> <span class="nav-text">为mysql提供sysv服务脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#附加配置"><span class="nav-number">1.0.7.</span> <span class="nav-text">附加配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#httpd2-4-23编译安装"><span class="nav-number">2.</span> <span class="nav-text">httpd2.4.23编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#解决依赖关系"><span class="nav-number">2.0.1.</span> <span class="nav-text">解决依赖关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装httpd2-4-23"><span class="nav-number">2.0.2.</span> <span class="nav-text">安装httpd2.4.23</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置"><span class="nav-number">2.0.3.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提供SysV服务脚本"><span class="nav-number">2.0.4.</span> <span class="nav-text">提供SysV服务脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加服务和环境变量"><span class="nav-number">2.0.5.</span> <span class="nav-text">添加服务和环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务启动和验证"><span class="nav-number">2.0.6.</span> <span class="nav-text">服务启动和验证</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装php-5-4-27"><span class="nav-number">3.</span> <span class="nav-text">编译安装php-5.4.27</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#解决依赖关系-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">解决依赖关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编译安装php-5-4-27-1"><span class="nav-number">3.0.2.</span> <span class="nav-text">编译安装php-5.4.27</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提供配置文件"><span class="nav-number">3.0.3.</span> <span class="nav-text">提供配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置apache，支持php"><span class="nav-number">3.0.4.</span> <span class="nav-text">配置apache，支持php</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务验证"><span class="nav-number">3.0.5.</span> <span class="nav-text">服务验证</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装xcache，为php加速"><span class="nav-number">3.0.6.</span> <span class="nav-text">安装xcache，为php加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启用服务器状态"><span class="nav-number">3.0.7.</span> <span class="nav-text">启用服务器状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#附加测试"><span class="nav-number">3.0.8.</span> <span class="nav-text">附加测试</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

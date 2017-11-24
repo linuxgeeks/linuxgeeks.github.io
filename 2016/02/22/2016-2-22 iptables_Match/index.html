@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iptables," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通用匹配 无需依赖模块，自身可完成检查匹配     匹配参数 说明     ！ 使用叹号对条件取反   -p 指定协议（tcp，udp，icmp等），可使用all来指定所有协议   -s - -src，指定数据包源地址，可使用IP地址、网络地址、主机名   -d - -dst，指定目的地址   -i 指定数据报文流入接">
+<meta name="keywords" content="iptables">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iptables Match">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/22/2016-2-22 iptables_Match/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="通用匹配 无需依赖模块，自身可完成检查匹配     匹配参数 说明     ！ 使用叹号对条件取反   -p 指定协议（tcp，udp，icmp等），可使用all来指定所有协议   -s - -src，指定数据包源地址，可使用IP地址、网络地址、主机名   -d - -dst，指定目的地址   -i 指定数据报文流入接口，用于PREROUTING、INPUT、FORWARD   -o 指定数据报文">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-03T03:33:54.466Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iptables Match">
+<meta name="twitter:description" content="通用匹配 无需依赖模块，自身可完成检查匹配     匹配参数 说明     ！ 使用叹号对条件取反   -p 指定协议（tcp，udp，icmp等），可使用all来指定所有协议   -s - -src，指定数据包源地址，可使用IP地址、网络地址、主机名   -d - -dst，指定目的地址   -i 指定数据报文流入接口，用于PREROUTING、INPUT、FORWARD   -o 指定数据报文">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/22/2016-2-22 iptables_Match/"/>
+
+
+
+
+
+  <title>iptables Match | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/22/2016-2-22 iptables_Match/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iptables Match</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-22T10:24:41+08:00">
+                2016-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index">
+                    <span itemprop="name">Network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="通用匹配"><a href="#通用匹配" class="headerlink" title="通用匹配"></a>通用匹配</h4><ul>
+<li>无需依赖模块，自身可完成检查匹配</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>匹配参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>！</td>
+<td>使用叹号对条件取反</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>指定协议（tcp，udp，icmp等），可使用all来指定所有协议</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>- -src，指定数据包源地址，可使用IP地址、网络地址、主机名</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>- -dst，指定目的地址</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>指定数据报文流入接口，用于PREROUTING、INPUT、FORWARD</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>指定数据报文流出接口，用于OUTPUT、POSTROUTING、FORWARD</td>
+</tr>
+</tbody>
+</table>
+<h4 id="扩展匹配"><a href="#扩展匹配" class="headerlink" title="扩展匹配"></a>扩展匹配</h4><ul>
+<li>需要依赖模块来完成检查匹配</li>
+</ul>
+<h5 id="隐式扩展"><a href="#隐式扩展" class="headerlink" title="隐式扩展"></a>隐式扩展</h5><ul>
+<li>不用特别指明由那个模块进行的扩展，当使用-p {tcp|udp|icmp}中的一种时，可以直接使用扩展专用选项</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>扩展条件</th>
+<th>扩展选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-p tcp</td>
+<td>--sport</td>
+<td>来源端口</td>
+</tr>
+<tr>
+<td></td>
+<td>--dport</td>
+<td>目的端口</td>
+</tr>
+<tr>
+<td></td>
+<td>--tcp-flags</td>
+<td>tcp标志位</td>
+</tr>
+<tr>
+<td></td>
+<td>--syn</td>
+<td>第一次握手</td>
+</tr>
+<tr>
+<td>-p udp</td>
+<td>--sport</td>
+<td>来源端口</td>
+</tr>
+<tr>
+<td></td>
+<td>--dport</td>
+<td>目的端口</td>
+</tr>
+<tr>
+<td>-p icmp</td>
+<td>--icmp-type</td>
+<td>icmp类型</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>--tcp-flags mask comp</p>
+</blockquote>
+<ul>
+<li><p>只检查mask指定的TCP的标志位，是逗号分开的标志位列表，comp表示此列表中出现在mask中，且必须为1.如果没有出现在mask中，而comp中出现的，必须为0</p>
+<ul>
+<li><p><code>--tcp-flags SYN,FIN,ACK,RST SYN</code> 或 <code>--syn</code> ：TCP三次握手的第一次</p>
+</li>
+<li><p><code>--tcp-flags SYN,FIN,ACK,RST SYN,ACK</code>：匹配四个标志位，其中syn和ack为1，其他为0</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>--icmp-type</p>
+</blockquote>
+<ul>
+<li><p>8：echo-request 0：echo-reply</p>
+<ul>
+<li><p>允许本机ping其他主机</p>
+<pre><code>iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
+</code></pre></li>
+<li><p>允许其他主机ping本机</p>
+<pre><code>iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type 0 -j ACCEPT
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h5 id="显示扩展（-m）"><a href="#显示扩展（-m）" class="headerlink" title="显示扩展（-m）"></a>显示扩展（-m）</h5><ul>
+<li><p>必须指明是由哪个模块进行的扩展，此功能可以使用额外的匹配机制  </p>
+<ul>
+<li><p><strong>-m state</strong>：状态扩展，结合ip_conntrack模块追踪回话的状态</p>
+<pre><code>NEW    新连接发起的请求
+ESTABLISHED    已经建立的连接(即:对于新请求的相应)
+INVALID    非法连接请求
+RELATED    相关连的连接(由命令发起，例如ftp)
+</code></pre><p>例如  </p>
+<blockquote>
+<p><code>-m state --state NEW -j ACCEPT</code><br>状态为new放行</p>
+<p><code>-m state --state NEW,ESTABLISHED -j ACCEPT</code><br>状态为new或established都放行</p>
+</blockquote>
+</li>
+<li><p><strong>-m multiport</strong>：离散的多端口扩展</p>
+<ul>
+<li><p>--source-ports，--sports  多个源端口</p>
+</li>
+<li><p>--destination-ports，--dports   多个目的端口</p>
+</li>
+<li><p>--ports   源和目的端口</p>
+</li>
+</ul>
+<p>例如  </p>
+<blockquote>
+<p><code>-m multiport --destnation-ports 21,22,80 -j ACCEPT</code><br>目标端口为21,22,80的数据包放行</p>
+</blockquote>
+</li>
+<li><p><strong>-m iprange</strong>：匹配IP范围</p>
+<ul>
+<li><p>--src-range ip1-ip100   源IP范围</p>
+</li>
+<li><p>--dst-range ip10-ip20 目的IP范围</p>
+</li>
+</ul>
+</li>
+<li><p><strong>-m connlimit</strong>：连接数限定</p>
+<ul>
+<li>--connlimit-above n 连接数达到n，一般进行取反使用</li>
+</ul>
+<p>例如  </p>
+<blockquote>
+<p><code>iptables -A INPUT -d 192.168.2.2 -p tcp --dport 80 -m connlimt !--connlimt-above 5 -j ACCEPT</code><br>连接数未达到5个则放行，否则丢弃</p>
+</blockquote>
+</li>
+<li><p><strong>-m limit</strong>：令牌桶过滤器，不控制最大上限</p>
+<ul>
+<li><p>--limit n[/second|/minute|/hour|/day]  单位时间内最多允许n个数据包，3/minute表示每分钟最多3个</p>
+</li>
+<li><p>--limit-burst 峰值，蜂拥而至的连接数有多大，默认为5</p>
+</li>
+</ul>
+<p>例如  </p>
+<blockquote>
+<pre><code>iptables -I INPUT -d 192.168.2.2 -p icmp --icmp-type 8 -m limit --limit 5/minute --limit-burst 6 -j ACCEPT
+
+iptables -I INPUT -d 192.168.2.2 -p icmp --icmp-type 8 -j DROP 
+</code></pre><p>目标为本机，协议为icmp，限定每分钟最多可以连接5个(1/12s)，一批最高峰值为6个，即前6个速度比较快，后面的按照5/minute作回应</p>
+</blockquote>
+</li>
+<li><p><strong>-m string</strong>：匹配请求的报文中的字符串，字符匹配检查高效算法：kmp， bm</p>
+<ul>
+<li><p>--algo {kmp|bm}   指定算法</p>
+</li>
+<li><p>--string “STRING”   指定普通字符串</p>
+</li>
+<li><p>--hex-string “HEX_STRING”   HEX_STRING为编码成16进制格式的字串；</p>
+</li>
+</ul>
+<p>例如  </p>
+<blockquote>
+<pre><code>iptables -I OUTPUT -s 192.168.2.2 -m string --algo kmp --string &quot;H7N9&quot; -j REJECT
+</code></pre><p>源地址为192.168.2.2，并且报文中匹配到H7N9则丢弃</p>
+</blockquote>
+</li>
+<li><p><strong>-m time</strong>：基于时间做访问控制</p>
+<ul>
+<li><p>--datestart YYYY[-MM][-DD[Thh[:mm[:ss]]]]   起始日期</p>
+</li>
+<li><p>--datestop   终止日期</p>
+</li>
+<li><p>--timestart hh:mm[:ss]   起始时间</p>
+</li>
+<li><p>--timestop hh:mm[:ss]   终止时间</p>
+</li>
+<li><p>--weekdays Sa[,Su]   一周中的哪些天 </p>
+</li>
+</ul>
+<p>例如  </p>
+<blockquote>
+<pre><code>iptables -I INPUT -d 172.16.100.7 -p tcp --dport 80 -m time --timestart 08:20 --timestop 18:40 --weekdays Mon,Tue,Thu,Fri -j REJECT
+</code></pre><p>周一、二、四、五的8:20到18:40禁止其他主机访问本机（172.16.100.7）的80端口</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考链接：</p>
+<p><a href="http://9612520.blog.51cto.com/9602520/1600273/" target="_blank" rel="noopener">http://9612520.blog.51cto.com/9602520/1600273/</a></p>
+<p><a href="http://www.2cto.com/article/201207/143654.html" target="_blank" rel="noopener">http://www.2cto.com/article/201207/143654.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iptables/" rel="tag"># iptables</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/21/2016-2-21 iptables_Options_&_Chain/" rel="next" title="iptables Options & Chain">
+                <i class="fa fa-chevron-left"></i> iptables Options & Chain
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/23/2016-2-23 iptables_Targets_Jump/" rel="prev" title="iptables Targets/Jump">
+                iptables Targets/Jump <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#通用匹配"><span class="nav-number">1.</span> <span class="nav-text">通用匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展匹配"><span class="nav-number">2.</span> <span class="nav-text">扩展匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#隐式扩展"><span class="nav-number">2.1.</span> <span class="nav-text">隐式扩展</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示扩展（-m）"><span class="nav-number">2.2.</span> <span class="nav-text">显示扩展（-m）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

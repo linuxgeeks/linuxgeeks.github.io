@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,http," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="新增特性 1) MPM支持在运行时装载--enable-mpms-shared=all --with-mpm=event # 启用默认的event2) 支持event3) 异步读写4) 在每模块及每目录上指定日志级别5) 每请求配置： 6) 增强版的表达式分析器7) 毫秒级的keepalive timeout8) 支持">
+<meta name="keywords" content="web,http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="httpd2.4.23编译安装">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/09/2016-2-9 httpd2.4.23编译安装/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="新增特性 1) MPM支持在运行时装载--enable-mpms-shared=all --with-mpm=event # 启用默认的event2) 支持event3) 异步读写4) 在每模块及每目录上指定日志级别5) 每请求配置： 6) 增强版的表达式分析器7) 毫秒级的keepalive timeout8) 支持主机名的虚拟主机不再需要NameVirtualHost指令9) 支持使用自定义变">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-03T03:31:54.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="httpd2.4.23编译安装">
+<meta name="twitter:description" content="新增特性 1) MPM支持在运行时装载--enable-mpms-shared=all --with-mpm=event # 启用默认的event2) 支持event3) 异步读写4) 在每模块及每目录上指定日志级别5) 每请求配置： 6) 增强版的表达式分析器7) 毫秒级的keepalive timeout8) 支持主机名的虚拟主机不再需要NameVirtualHost指令9) 支持使用自定义变">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/09/2016-2-9 httpd2.4.23编译安装/"/>
+
+
+
+
+
+  <title>httpd2.4.23编译安装 | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/09/2016-2-9 httpd2.4.23编译安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">httpd2.4.23编译安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-09T15:06:19+08:00">
+                2016-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="新增特性"><a href="#新增特性" class="headerlink" title="新增特性"></a>新增特性</h4><blockquote>
+<p>1) MPM支持在运行时装载<code>--enable-mpms-shared=all --with-mpm=event # 启用默认的event</code><br>2) 支持event<br>3) 异步读写<br>4) 在每模块及每目录上指定日志级别<br>5) 每请求配置：<if> <elseif><br>6) 增强版的表达式分析器<br>7) 毫秒级的keepalive timeout<br>8) 支持主机名的虚拟主机不再需要NameVirtualHost指令<br>9) 支持使用自定义变量</elseif></if></p>
+</blockquote>
+<ul>
+<li><p>新增模块</p>
+<ul>
+<li>mod_proxy_fcgi</li>
+<li>mod_ratelimit</li>
+<li>mod_request</li>
+<li>mod_remoteip</li>
+</ul>
+</li>
+<li><p>修改</p>
+<ul>
+<li>对于基于IP的访问做了修改，不在使用order,allow,deny这些机制；而是统一使用require进行</li>
+</ul>
+</li>
+</ul>
+<h4 id="下载站点"><a href="#下载站点" class="headerlink" title="下载站点"></a>下载站点</h4><ul>
+<li>httpd站点：<a href="http://httpd.apache.org/" target="_blank" rel="noopener">http://httpd.apache.org/</a></li>
+<li>apr-util站点：<a href="https://www.apache.org/dist/apr/apr-util-1.5.4.tar.bz2" target="_blank" rel="noopener">https://www.apache.org/dist/apr/apr-util-1.5.4.tar.bz2</a></li>
+<li>apr站点：<a href="https://www.apache.org/dist/apr/apr-1.5.2.tar.bz2" target="_blank" rel="noopener">https://www.apache.org/dist/apr/apr-1.5.2.tar.bz2</a></li>
+</ul>
+<h4 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停止现有的httpd服务</span></span><br><span class="line">service httpd stop</span><br><span class="line"><span class="comment"># 关闭现有httpd服务的启动</span></span><br><span class="line">chkconfig httpd off</span><br><span class="line"><span class="comment"># 解决依赖关系，安装开发环境软件包组</span></span><br><span class="line">yum -y groupinstall <span class="string">"Compatibility libraries"</span> <span class="string">"Development tools"</span> <span class="string">"Server Platform Development"</span></span><br><span class="line"><span class="comment"># 安装pcre(Perl语言正则表达式库)、zlib及zlib库、gcc及gcc++</span></span><br><span class="line">yum -y install pcre-devel zlib-devel gcc gcc-c++</span><br><span class="line"><span class="comment"># httpd依赖于更高版本的apr和apr-util</span></span><br><span class="line"><span class="comment"># 安装apr(apache portable runtime)及</span></span><br><span class="line">tar xf apr-1.5.2.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> apr-1.5.2</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apr-1.5.2</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 安装apr-util</span></span><br><span class="line">tar xf apr-util-1.5.4.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> apr-util-1.5.4</span><br><span class="line">./configure --prefix=/usr/<span class="built_in">local</span>/apr-util-1.5.4 --with-apr=/usr/<span class="built_in">local</span>/apr-1.5.2/</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 安装httpd2.4.23</span></span><br><span class="line">tar xf httpd-2.4.23.tar.bz2 </span><br><span class="line"><span class="built_in">cd</span> httpd-2.4.23</span><br><span class="line"> ./configure --prefix=/usr/<span class="built_in">local</span>/apache --sysconfdir=/etc/httpd2.4.23 --<span class="built_in">enable</span>-so  --<span class="built_in">enable</span>-headers --<span class="built_in">enable</span>-expires --<span class="built_in">enable</span>-ssl --<span class="built_in">enable</span>-cgi --<span class="built_in">enable</span>-rewrite --with-zlib --with-pcre --with-apr=/usr/<span class="built_in">local</span>/apr-1.5.2/ --with-apr-util=/usr/<span class="built_in">local</span>/apr-util-1.5.4/ --<span class="built_in">enable</span>-modeles=most --<span class="built_in">enable</span>-mpms-shared=all --with-mpm=event --<span class="built_in">enable</span>-deflate</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment">#--prefix=/usr/local/apache</span></span><br><span class="line"><span class="comment">#    设定httpd的安装目录</span></span><br><span class="line"><span class="comment">#--sysconfdir=/etc/httpd2.4.23</span></span><br><span class="line"><span class="comment">#    设定httpd的配置文件目录</span></span><br><span class="line"><span class="comment">#--enable-so</span></span><br><span class="line"><span class="comment">#    激活apache服务的DSO（Dynamic Shared Objects动态共享目标）</span></span><br><span class="line"><span class="comment">#    即在以后可以以DSO的方式编译安装共享模块</span></span><br><span class="line"><span class="comment">#    这个模块本身不能以DSO方式编译支持共享模块，如果没有这个则PHP模块无法加入</span></span><br><span class="line"><span class="comment">#--enable-headers</span></span><br><span class="line"><span class="comment">#    提供允许对HTTP请求头的控制 </span></span><br><span class="line"><span class="comment">#--enable-expires</span></span><br><span class="line"><span class="comment">#    激活通过配置文件控制HTTP的“Expires:”和“Cache-Control:”头内容</span></span><br><span class="line"><span class="comment">#    即对网站图片、js、css等内容，提供客户端浏览器缓存的设置</span></span><br><span class="line"><span class="comment">#    这个是apache调优的一个重要选项之一。</span></span><br><span class="line"><span class="comment">#--enable-ssl </span></span><br><span class="line"><span class="comment">#    支持ssl</span></span><br><span class="line"><span class="comment">#--enable-cgi</span></span><br><span class="line"><span class="comment">#    支持cgi</span></span><br><span class="line"><span class="comment">#--enable-rewrite</span></span><br><span class="line"><span class="comment">#    支持url重写</span></span><br><span class="line"><span class="comment">#--with-zlib</span></span><br><span class="line"><span class="comment">#    支持zlib压缩，传输层的压缩（不指定具体的路径，默认在系统中搜索）</span></span><br><span class="line"><span class="comment">#--with-pcre</span></span><br><span class="line"><span class="comment">#    支持正则化（不指定具体的路径，默认在系统中搜索）</span></span><br><span class="line"><span class="comment">#--with-apr=/usr/local/apr-1.5.2/</span></span><br><span class="line"><span class="comment">#    指定apr的路径</span></span><br><span class="line"><span class="comment">#--with-apr-util=/usr/local/apr-util-1.5.4/</span></span><br><span class="line"><span class="comment">#    指定apr-util的路径</span></span><br><span class="line"><span class="comment">#--enable-modules=most</span></span><br><span class="line"><span class="comment">#    指定要编译的模块(most/all)</span></span><br><span class="line"><span class="comment">#--enable-mpms-shared=all</span></span><br><span class="line"><span class="comment">#    指定要编译mpm</span></span><br><span class="line"><span class="comment">#--with-mpm=event</span></span><br><span class="line"><span class="comment">#    指定httpd默认的MPM的工作方式 </span></span><br><span class="line"><span class="comment">#--enable-deflate</span></span><br><span class="line"><span class="comment">#    提供对内容的压缩传输编码支持，一般是html、js、css等内容的站点。</span></span><br><span class="line"><span class="comment">#    使用此参数会打打提高传输速度，提升访问者访问的体验。</span></span><br><span class="line"><span class="comment">#    在生产环境中，这是apache调优的一个重要选项之一。</span></span><br></pre></td></tr></table></figure>
+<h4 id="后续配置"><a href="#后续配置" class="headerlink" title="后续配置"></a>后续配置</h4><ul>
+<li>添加环境变量</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'export PATH=/usr/local/apache/bin:$PATH'</span> &gt; /etc/profile.d/httpd.sh</span><br><span class="line"><span class="comment"># 新建终端登录验证</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改用户和组<br><code>vim /etc/httpd2.4.23/httpd.conf</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#User daemon</span></span><br><span class="line"><span class="comment">#Group daemon</span></span><br><span class="line"></span><br><span class="line">User apache</span><br><span class="line">Group apache</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改ServerName</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ServerName www.example.com:80</span></span><br><span class="line">ServerName localhost:80</span><br></pre></td></tr></table></figure>
+<ul>
+<li>导出头文件：此步骤非必选，开发好的程序有可能会调用</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sv /usr/<span class="built_in">local</span>/appache/include /usr/include/httpd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>导出库文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ldconfig -p | grep apr</span><br><span class="line"><span class="comment"># 显示当前系统的库文件</span></span><br><span class="line">ldconfig -v | grep apr</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"/usr/local/apr-util-1.5.4/lib/"</span> &gt;&gt; /etc/ld.so.conf.d/httpd.conf                        </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"/usr/local/apr-1.5.2/lib/"</span> &gt;&gt; /etc/ld.so.conf.d/httpd.conf</span><br><span class="line">ldconfig -v | grep apr</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>导出帮助文件<br><code>/etc/man.config</code><br>文件配置： 新增一行<code>MANPATH /usr/local/apache/man</code><br>手动指定：<code>man -M /usr/local/apache/man httpd</code><br>验证：执行<code>man htpasswd</code>验证</p>
+</li>
+<li><p>加入系统服务</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/<span class="built_in">local</span>/apache/bin/apachectl /etc/init.d/httpd</span><br><span class="line">service httpd start</span><br><span class="line">netstat -lntp|grep 80</span><br><span class="line">lsof -i :80</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'/usr/local/apache/bin/apachectl start'</span> &gt;&gt; /etc/rc.d/rc.local</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/http/" rel="tag"># http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/08/2016-2-8 httpd安装配置/" rel="next" title="httpd及安装配置">
+                <i class="fa fa-chevron-left"></i> httpd及安装配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/10/2016-2-10 httpd2.4.23配置实践/" rel="prev" title="httpd2.4.23配置实践">
+                httpd2.4.23配置实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#新增特性"><span class="nav-number">1.</span> <span class="nav-text">新增特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载站点"><span class="nav-number">2.</span> <span class="nav-text">下载站点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译安装"><span class="nav-number">3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后续配置"><span class="nav-number">4.</span> <span class="nav-text">后续配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

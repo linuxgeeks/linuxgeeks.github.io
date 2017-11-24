@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="系统安装,无人值守,kickstart," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="应用场景公司同时上线几十甚至上百台服务器，需要在短时间内完成系统安装。如果通过光驱、U盘的方式逐台安装，不仅效率低，也不利于维护。 批量装机软件简介 Kickstart是一种无人值守的安装方式。它的工作原理是在安装过程中记录人工干预填写的各种参数，并生成一个名为ks.cfg的文件。如果在自动安装过程中出现要填写参数的情">
+<meta name="keywords" content="系统安装,无人值守,kickstart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kickstart无人值守安装 CentOS 6.8">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/01/29/2016-1-29 Kickstart无人值守安装/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="应用场景公司同时上线几十甚至上百台服务器，需要在短时间内完成系统安装。如果通过光驱、U盘的方式逐台安装，不仅效率低，也不利于维护。 批量装机软件简介 Kickstart是一种无人值守的安装方式。它的工作原理是在安装过程中记录人工干预填写的各种参数，并生成一个名为ks.cfg的文件。如果在自动安装过程中出现要填写参数的情况，安装程序首先会去查找ks.cfg文件，如果找到合适的参数，就采用所找到的参数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/pxe.jpg">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/pxe2.png">
+<meta property="og:updated_time" content="2017-04-02T09:29:58.647Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kickstart无人值守安装 CentOS 6.8">
+<meta name="twitter:description" content="应用场景公司同时上线几十甚至上百台服务器，需要在短时间内完成系统安装。如果通过光驱、U盘的方式逐台安装，不仅效率低，也不利于维护。 批量装机软件简介 Kickstart是一种无人值守的安装方式。它的工作原理是在安装过程中记录人工干预填写的各种参数，并生成一个名为ks.cfg的文件。如果在自动安装过程中出现要填写参数的情况，安装程序首先会去查找ks.cfg文件，如果找到合适的参数，就采用所找到的参数">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/pxe.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/01/29/2016-1-29 Kickstart无人值守安装/"/>
+
+
+
+
+
+  <title>Kickstart无人值守安装 CentOS 6.8 | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/01/29/2016-1-29 Kickstart无人值守安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kickstart无人值守安装 CentOS 6.8</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-29T11:41:17+08:00">
+                2016-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统安装/" itemprop="url" rel="index">
+                    <span itemprop="name">系统安装</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>公司同时上线几十甚至上百台服务器，需要在短时间内完成系统安装。如果通过光驱、U盘的方式逐台安装，不仅效率低，也不利于维护。</p>
+<h3 id="批量装机软件简介"><a href="#批量装机软件简介" class="headerlink" title="批量装机软件简介"></a>批量装机软件简介</h3><ul>
+<li><p>Kickstart是一种无人值守的安装方式。它的工作原理是在安装过程中记录人工干预填写的各种参数，并生成一个名为ks.cfg的文件。如果在自动安装过程中出现要填写参数的情况，安装程序首先会去查找ks.cfg文件，如果找到合适的参数，就采用所找到的参数；如果没有找到合适的参数，便会弹出对话框让安装者手工填写。所以，如果ks.cfg文件涵盖了安装过程中所有需要填写的参数，那么安装者完全可以只告诉安装程序从何处下载ks.cfg文件，然后就去忙自己的事情。等安装完毕，安装程序会根据ks.cfg中的设置重启/关闭系统，并结束安装。</p>
+</li>
+<li><p>Cobbler集中和简化了通过网络安装操作系统需要使用到的DHCP、TFTP和DNS服务的配置。Cobbler不仅有一个命令行界面，还提供了一个Web界面，大大降低了使用者的入门水平。Cobbler内置了一个轻量级配置管理系统，但它也支持和其它配置管理系统集成，如Puppet，暂时不支持SaltStack。</p>
+</li>
+</ul>
+<p><strong>简单的说，Cobbler是对kickstart的封装，简化安装步骤、使用流程，降低使用者的门槛</strong></p>
+<h3 id="PXE"><a href="#PXE" class="headerlink" title="PXE"></a>PXE</h3><h5 id="什么是PXE？"><a href="#什么是PXE？" class="headerlink" title="什么是PXE？"></a>什么是PXE？</h5><ul>
+<li>PXE(Pre-boot Execution Environment，预启动执行环境)是由Intel公司开发的最新技术，工作于Client/Server的网络模式，支持工作站通过网络从远端服务器下载映像，并由此支持通过网络启动操作系统。</li>
+<li>通过网络接口启动计算机，不依赖本地存储设备（如硬盘）或本地已安装的操作系统</li>
+<li>在启动过程中，PXE客户端会调用网际协议(IP)、用户数据报协议(UDP)、动态主机设定协议(DHCP)、小型文件传输协议(TFTP)等网络协议。</li>
+<li>终端要求服务器分配IP地址，再用TFTP（trivial file transfer protocol）或MTFTP(multicast trivial file transfer protocol)协议下载一个启动软件包到本机内存中执行，由这个启动软件包完成终端基本软件设置，从而引导预先安装在服务器中的终端操作系统。</li>
+<li>严格来说，PXE 并不是一种安装方式，而是一种引导方式。进行 PXE 安装的必要条件是在要安装的计算机中必须包含一个 PXE 支持的网卡（NIC），即网卡中必须要有 PXE Client。PXE 协议可以使计算机通过网络启动。此协议分为 Client端 和 Server 端，而PXE Client则在网卡的 ROM 中。当计算机引导时，BIOS 把 PXE Client 调入内存中执行，然后由 PXE Client 将放置在远端的文件通过网络下载到本地运行。运行 PXE 协议需要设置 DHCP 服务器和 TFTP 服务器。DHCP 服务器会给 PXE Client（将要安装系统的主机）分配一个 IP 地址，由于是给 PXE Client 分配 IP 地址，所以在配置 DHCP 服务器时需要增加相应的 PXE 设置。此外，在 PXE Client 的 ROM 中，已经存在了 TFTP Client，那么它就可以通过 TFTP 协议到 TFTP Server 上下载所需的文件了。</li>
+<li>PXE技术与RPL技术不同之处为RPL是静态路由，PXE是动态路由。RPL是根据网卡上的ID号加上其他记录组成的一个Frame（帧）向服务器发出请求。而服务器中已有这个ID数据，匹配成功则进行远程启动。PXE则是根据服务器端收到的工件站MAC地址，使用DHCP服务为这个MAC地址指定个IP地址。每次启动可能同一台工作站有与上次启动有不同的IP，即动态分配地址。</li>
+</ul>
+<h5 id="PXE工作过程"><a href="#PXE工作过程" class="headerlink" title="PXE工作过程"></a>PXE工作过程</h5><p><img src="http://ohlli9uc9.bkt.clouddn.com/pxe.jpg" alt=""></p>
+<ul>
+<li>1、PXE Client向DHCP发送请求</li>
+</ul>
+<blockquote>
+<p>PXE Client开机后，PXE BootROM（自启动芯片）获得控制权之前执行自我测试，然后以UDP发送一个广播请求（FIND帧） ，向本网络中的DHCP服务器索取IP；</p>
+</blockquote>
+<ul>
+<li>2、DHCP服务器提供信息 </li>
+</ul>
+<blockquote>
+<p>DHCP 收到客户端的请求，送回DHCP响应应，包括用户端的IP地址、预设通信通道、PXE文件的放置位置(一般放在一台TFTP服务器上) 以及开机映像文件；</p>
+</blockquote>
+<ul>
+<li>3、 PXE客户端请求下载启动文件</li>
+</ul>
+<blockquote>
+<ul>
+<li>客户端收到服务器发回的响应后则会回应一个帧，以请求传送启动所需文件，并把自己的MAC地址写到服务器端的Netnames.db文件中。</li>
+<li>启动所需文件包含：pxelinux.0、pxelinux.cfg / default、vmlinuz、initrd.img等文件。</li>
+</ul>
+</blockquote>
+<ul>
+<li>4、Boot Server响应客户端请求并传送文件 </li>
+</ul>
+<blockquote>
+<ul>
+<li>当服务器收到客户端的请求后，他们之间之后将有更多的信息在客户端与服务器之间作应答, 用以决定启动参数。</li>
+<li>BootROM基于TFTP通讯协议从Boot Server下载启动安装程序所必须的文件(pxelinux.0、pxelinux.cfg / default)。default文件下载完成后，会根据该文件中定义的引导顺序，启动Linux安装程序的引导内核。</li>
+</ul>
+</blockquote>
+<ul>
+<li>5、请求下载自动应答文件 </li>
+</ul>
+<blockquote>
+<p>客户端通过pxelinux.cfg / default文件成功的引导Linux安装内核后，安装程序首先必须确定你通过什么安装介质来安装linux，如果是通过网络安装(NFS, FTP, HTTP)，则会在这个时候初始化网络，并定位安装源位置。接着会读取default文件中指定的自动应答文件ks.cfg所在位置，根据该位置请求下载该文件。</p>
+<p><strong>注意：</strong>在第2步和第5步初始化2次网络，这是由于PXE获取的是安装用的内核以及安装程序等，而安装程序要获取的是安装系统所需的二进制包以及配置文件。因此PXE模块和安装程序是相对独立的，PXE的网络配置并不能传递给安装程序，从而进行两次获取IP地址过程，但IP地址在DHCP的租期内是一样的。</p>
+</blockquote>
+<ul>
+<li>6、客户端安装操作系统 </li>
+</ul>
+<blockquote>
+<p>将ks.cfg文件下载回来后，通过该文件找到OS Server，并按照该文件的配置请求下载安装过程需要的软件包。<br>OS Server和客户端建立连接后，将开始传输软件包，客户端将开始安装操作系统。安装完成后，将提示重新引导计算机。</p>
+</blockquote>
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p>OS Server可以使用http、nfs、ftp服务器，此处使用http作为系统文件下载服务器</p>
+<p>PXE+Kickstart 无人值守安装操作系统流程图<br><img src="http://ohlli9uc9.bkt.clouddn.com/pxe2.png" alt=""></p>
+<h3 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h3><p>虚拟机：VMware® Workstation 12 Pro<br>系统：CentOS release 6.8</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service iptables stop</span><br><span class="line">setenforce permissive</span><br></pre></td></tr></table></figure>
+<h3 id="网络环境"><a href="#网络环境" class="headerlink" title="网络环境"></a>网络环境</h3><ul>
+<li>虚拟机NAT8模式的地址段 192.168.247.0 255.255.255.0，可以在虚拟网络编辑器自定义设定</li>
+<li>Windows的物理机将自己可以上网的网卡在属性中共享给 <code>VMware Network Adapter VMnet8</code>，确保虚拟机可以联网，以便网络yum源安装软件</li>
+<li>DHCP、TFTP、HTTP均安装在一台服务器，IP地址为 192.168.247.6，网络模式为NAT8</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>虚拟机网卡采用NAT模式，不要使用桥接模式，因为后续会搭建DHCP服务器，在同一局域网多个DHCP服务会有冲突。</li>
+<li>VMware的NAT模式的dhcp服务也关闭，避免干扰。 <ul>
+<li>“编辑” - “虚拟网络编辑器” - “使用本地DHCP服务将IP地址分配给虚拟机”，将其关闭</li>
+</ul>
+</li>
+<li>基本设置完成后，Windows物理机中<code>VMware Network Adapter VMnet8</code>的网卡上的IP为192.168.247.1，netmask为255.255.255.0，此网卡作为本子网的网关</li>
+</ul>
+<h3 id="DHCP配置"><a href="#DHCP配置" class="headerlink" title="DHCP配置"></a>DHCP配置</h3><ul>
+<li>安装DHCP服务</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">yum -y install dhcp</span><br><span class="line"><span class="comment"># 安装DHCP</span></span><br><span class="line"></span><br><span class="line">\cp -arf /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf </span><br><span class="line">cp /etc/dhcp/dhcpd.conf&#123;,.bak&#125;;</span><br><span class="line">cat &gt;| /etc/dhcp/dhcpd.conf &lt;&lt; <span class="string">'EOF'</span></span><br><span class="line">ddns-update-style interim;</span><br><span class="line">ignore client-updates;</span><br><span class="line">allow booting; <span class="comment"># 定义能够PXE启动</span></span><br><span class="line">allow bootp;  <span class="comment"># 定义支持bootp</span></span><br><span class="line">subnet 192.168.247.0 netmask 255.255.255.0 &#123;                                        </span><br><span class="line">        range 192.168.247.100 192.168.247.200; <span class="comment"># 可分配的起始IP-结束IP                                                               </span></span><br><span class="line">        option subnet-mask 255.255.255.0;      <span class="comment"># 子网掩码                          </span></span><br><span class="line">        option routers 192.168.247.1; <span class="comment"># 设置路由器地址（网关）                      </span></span><br><span class="line">        default-lease-time 21600;     <span class="comment"># 设置默认的IP租用期限                         </span></span><br><span class="line">        max-lease-time 43200;         <span class="comment"># 设置最大的IP租用期限</span></span><br><span class="line">        filename <span class="string">"pxelinux.0"</span>;        <span class="comment"># 告知客户端从TFTP根目录下载pxelinux.0文件</span></span><br><span class="line">        next-server 192.168.247.6;    <span class="comment"># 告知客户端TFTP服务器的ip ，此处为本机IP  </span></span><br><span class="line">&#125; </span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># 配置dchpd</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s@\(DHCPDARGS=\).*@\1eth0@'</span> /etc/sysconfig/dhcpd</span><br><span class="line"><span class="comment"># 绑定网卡</span></span><br><span class="line"></span><br><span class="line">/etc/init.d/dhcpd start</span><br><span class="line"><span class="comment"># 服务启动</span></span><br><span class="line">chkconfig dhcpd on</span><br><span class="line"><span class="comment"># 添加开机启动</span></span><br></pre></td></tr></table></figure>
+<h3 id="TFTP配置"><a href="#TFTP配置" class="headerlink" title="TFTP配置"></a>TFTP配置</h3><p>TFTP（Trivial File Transfer Protocol,简单文件传输协议）是TCP/IP协议族中的一个用来在客户机与服务器之间进行简单文件传输的协议，提供不复杂、开销不大的文件传输服务。端口号为69。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yum -y install tftp-server</span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line"></span><br><span class="line">sed -ri <span class="string">'sS(disable( |\t)+= ).*S\1noS'</span> /etc/xinetd.d/tftp</span><br><span class="line"><span class="comment"># 将disable后的值改为no</span></span><br><span class="line"></span><br><span class="line">/etc/init.d/xinetd restart</span><br><span class="line">chkconfig xinetd on</span><br><span class="line"><span class="comment"># 因为tftp服务是挂载在超级进程xinetd 下的，所以通过启动xinetd 来启动tftp服务。</span></span><br><span class="line"></span><br><span class="line">netstat -unlpt | grep --color  69</span><br></pre></td></tr></table></figure>
+<h3 id="HTTP配置"><a href="#HTTP配置" class="headerlink" title="HTTP配置"></a>HTTP配置</h3><p>可以用Apache或Nginx提供HTTP服务。Python的模块web服务会有报错，不建议采用。</p>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd</span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line"></span><br><span class="line">/etc/init.d/httpd start</span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line"></span><br><span class="line">chkconfig --level 2345 httpd on</span><br><span class="line"><span class="comment"># 添加开机自启</span></span><br></pre></td></tr></table></figure>
+<h3 id="OS-Server"><a href="#OS-Server" class="headerlink" title="OS Server"></a>OS Server</h3><p>准备CentOS6.8的镜像，插入服务器，拷贝系统安装文件</p>
+<ul>
+<li>挂载</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">install -cdv /mnt/cdrom</span><br><span class="line">mount -r /dev/cdrom /mnt/cdrom</span><br><span class="line">df -h</span><br><span class="line">cp -r /mnt/cdrom /var/www/html/CentOS-6.8</span><br></pre></td></tr></table></figure>
+<p>浏览器访问 <a href="http://192.168.247.6/CentOS-6.8/" target="_blank" rel="noopener">http://192.168.247.6/CentOS-6.8/</a> 检验配置是否正确</p>
+<h3 id="配置PXE启动程序"><a href="#配置PXE启动程序" class="headerlink" title="配置PXE启动程序"></a>配置PXE启动程序</h3><ul>
+<li>syslinux是一个功能强大的引导加载程序，而且兼容各种介质。</li>
+<li>syslinux是一个小型的Linux操作系统，它的目的是简化首次安装Linux的时间，并建立修护或其它特殊用途的启动盘。如果没有找到pxelinux.0这个文件,可以安装一下。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">yum -y install syslinux</span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line"></span><br><span class="line">cp /usr/share/syslinux/pxelinux.0 /var/lib/tftpboot/</span><br><span class="line"><span class="comment"># 复制启动菜单程序文件</span></span><br><span class="line"></span><br><span class="line">cp -a /var/www/html/CentOS-6.8/isolinux/* /var/lib/tftpboot/</span><br><span class="line">ls /var/lib/tftpboot/</span><br><span class="line"></span><br><span class="line">mkdir -p /var/lib/tftpboot/pxelinux.cfg</span><br><span class="line">cp -a /var/www/html/CentOS-6.8/isolinux/isolinux.cfg /var/lib/tftpboot/pxelinux.cfg/default</span><br><span class="line"><span class="comment"># 新建一个pxelinux.cfg目录，存放客户端的配置文件</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>pxe的配置文件default参数配置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /var/lib/tftpboot/pxelinux.cfg/default</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">default linux    <span class="comment"># 默认启动的是 'label linux' 中标记的启动内核</span></span><br><span class="line">prompt 1      <span class="comment"># 开启会显示命令行'boot: '提示符。prompt值为0时则不提示，将会直接启动'default'参数中指定的内容。</span></span><br><span class="line">timeout 30    <span class="comment"># timeout时间是引导时等待用户手动选择的时间，设为1可直接引导，单位为1/10秒。</span></span><br><span class="line">display boot.msg</span><br><span class="line"><span class="comment"># 菜单背景图片、标题、颜色。</span></span><br><span class="line">menu background splash.jpg</span><br><span class="line">menu title Welcome to CentOS 6.8!</span><br><span class="line">menu color border 0 <span class="comment">#ffffffff #00000000</span></span><br><span class="line">menu color sel 7 <span class="comment">#ffffffff #ff000000</span></span><br><span class="line">menu color title 0 <span class="comment">#ffffffff #00000000</span></span><br><span class="line">menu color tabmsg 0 <span class="comment">#ffffffff #00000000</span></span><br><span class="line">menu color unsel 0 <span class="comment">#ffffffff #00000000</span></span><br><span class="line">menu color hotsel 0 <span class="comment">#ff000000 #ffffffff</span></span><br><span class="line">menu color hotkey 7 <span class="comment">#ffffffff #ff000000</span></span><br><span class="line">menu color scrollbar 0 <span class="comment">#ffffffff #00000000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># label指定在boot:提示符下输入的关键字，比如boot:linux[ENTER]，这个会启动label linux下标记的kernel和initrd.img文件。</span></span><br><span class="line">label linux       <span class="comment"># 一个标签就是前面图片的一行选项。</span></span><br><span class="line">  menu label ^Install or upgrade an existing system</span><br><span class="line">  menu default</span><br><span class="line">  kernel vmlinuz  <span class="comment"># 指定要启动的内核。同样要注意路径，默认是/var/lib/tftpboot目录。</span></span><br><span class="line">  append ks=http://192.168.247.6/CentOS-6.8/ks.cfg initrd=initrd.img ksdevice=eth0   </span><br><span class="line"><span class="comment"># 指定追加给内核的参数，告诉系统，从哪里获取ks.cfg文件</span></span><br><span class="line"><span class="comment"># initrd.img是一个最小的linux系统.</span></span><br><span class="line"><span class="comment"># 如果有多张网卡，默认会弹出让你选择需要从哪张网卡获取，导致无法实现全自动化,使用ksdevice指定默认网卡</span></span><br><span class="line">label vesa</span><br><span class="line">  menu label Install system with ^basic video driver</span><br><span class="line">  kernel vmlinuz</span><br><span class="line">  append initrd=initrd.img nomodeset</span><br><span class="line">label rescue</span><br><span class="line">  menu label ^Rescue installed system</span><br><span class="line">  kernel vmlinuz</span><br><span class="line">  append initrd=initrd.img rescue</span><br><span class="line">label <span class="built_in">local</span></span><br><span class="line">  menu label Boot from ^<span class="built_in">local</span> drive</span><br><span class="line">  localboot 0xffff</span><br><span class="line">label memtest86</span><br><span class="line">  menu label ^Memory <span class="built_in">test</span></span><br><span class="line">  kernel memtest</span><br><span class="line">  append -</span><br></pre></td></tr></table></figure>
+<h3 id="ks-cfg"><a href="#ks-cfg" class="headerlink" title="ks.cfg"></a>ks.cfg</h3><blockquote>
+<p>通常，在安装操作系统的过程中，需要大量的和服务器交互操作，为了减少这个交互过程，kickstart就诞生了。使用这种kickstart，只需事先定义好一个Kickstart自动应答配置文件ks.cfg（通常存放在安装服务器上），并让安装程序知道该配置文件的位置，在安装过程中安装程序就可以自己从该文件中读取安装配置，这样就避免了在安装过程中多次的人机交互，从而实现无人值守的自动化安装。</p>
+</blockquote>
+<h5 id="生成kickstart配置文件的三种方法"><a href="#生成kickstart配置文件的三种方法" class="headerlink" title="生成kickstart配置文件的三种方法"></a>生成kickstart配置文件的三种方法</h5><ul>
+<li>每安装好一台Centos机器，Centos安装程序都会创建一个kickstart配置文件，记录你的真实安装配置。如果你希望实现和某系统类似的安装，可以基于该系统的kickstart配置文件来生成你自己的kickstart配置文件。（生成的文件名字叫anaconda-ks.cfg位于/root/anaconda-ks.cfg）</li>
+<li>Centos提供了一个图形化的kickstart配置工具。在任何一个安装好的Linux系统上运行该工具，就可以很容易地创建你自己的kickstart配置文件。kickstart配置工具命令为redhat-config-kickstart（RHEL3）或system-config-kickstart（RHEL4，RHEL5）.网上有很多用CentOS桌面版生成ks文件的文章。</li>
+<li>阅读kickstart配置文件的手册。用任何一个文本编辑器都可以创建你自己的kickstart配置文件。</li>
+</ul>
+<h5 id="ks-cfg文件组成"><a href="#ks-cfg文件组成" class="headerlink" title="ks.cfg文件组成"></a>ks.cfg文件组成</h5><ul>
+<li><p>命令段<br>键盘类型，语言，安装方式等系统的配置，有必选项和可选项，如果缺少某项必选项，安装时会中断并提示用户选择此项的选项</p>
+</li>
+<li><p>软件包段<br>在安装过程中默认安装的软件包，安装软件时会自动分析依赖关系。</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%packages</span><br><span class="line">@compat-libraries</span><br><span class="line">@development</span><br><span class="line"><span class="comment"># @groupname：指定安装的包组</span></span><br><span class="line"><span class="comment"># package_name：指定安装的包</span></span><br><span class="line"><span class="comment"># -package_name：指定不安装的包</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>脚本段(可选)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">%pre</span><br><span class="line"><span class="comment"># 安装系统前执行的命令或脚本(由于只依赖于启动镜像，支持的命令很少)</span></span><br><span class="line"></span><br><span class="line">%post</span><br><span class="line"><span class="comment"># 安装系统后执行的命令或脚本(基本支持所有命令)</span></span><br></pre></td></tr></table></figure>
+<p>这里使用anaconda-ks.cfg并做了更改，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Kickstart file automatically generated by anaconda.</span></span><br><span class="line"><span class="comment"># CentOS 6.8 </span></span><br><span class="line"><span class="comment"># Platform=x86, AMD64, or Intel EM64T </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#version=DEVEL</span></span><br><span class="line"></span><br><span class="line">firstboot --<span class="built_in">disable</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Firewall configuration</span></span><br><span class="line">firewall --disabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install OS instead of upgrade </span></span><br><span class="line">install</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use text mode install </span></span><br><span class="line"><span class="comment">#text</span></span><br><span class="line"><span class="comment"># 6.X系统可能文本模式安装导致初始化失败，此项注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Use graphical install</span></span><br><span class="line">graphical</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use network installation</span></span><br><span class="line">url --url=<span class="string">"http://192.168.247.6/CentOS-6.8"</span></span><br><span class="line"><span class="comment"># 这个选项告诉安装程序：到服务器192.168.247.6 的HTTP根目录下的CentOS-6.8目录下寻找安装介质</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># System language</span></span><br><span class="line">lang en_US.UTF-8</span><br><span class="line"></span><br><span class="line"><span class="comment"># System keyboard</span></span><br><span class="line">keyboard us</span><br><span class="line"></span><br><span class="line"><span class="comment"># System timezone</span></span><br><span class="line">timezone  Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment"># Network information</span></span><br><span class="line">network --onboot no --device eth0 --bootproto dhcp --noipv6</span><br><span class="line"></span><br><span class="line"><span class="comment"># Root password</span></span><br><span class="line">rootpw  --iscrypted <span class="variable">$6</span><span class="variable">$ZE3J70TVR5F1LApI</span><span class="variable">$N</span>.4/XjFTpzcwe3fdbBda4RACxjJWNcBZ0WWe57goL2prx1xjk0ayhVL42uEVdyh5A1tu0BMqUb7/UjEk4QJhX0</span><br><span class="line"></span><br><span class="line"><span class="comment"># System authorization information</span></span><br><span class="line">auth  --useshadow  --passalgo=sha512</span><br><span class="line"></span><br><span class="line"><span class="comment"># Do not configure the X Window System</span></span><br><span class="line">skipx</span><br><span class="line"></span><br><span class="line"><span class="comment"># SELinux configuration</span></span><br><span class="line">selinux --disabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># Installation logging level</span></span><br><span class="line">logging --level=info</span><br><span class="line"></span><br><span class="line"><span class="comment"># Reboot after installation</span></span><br><span class="line">reboot</span><br><span class="line"><span class="comment"># 此选项必须存在，也必须文中设定位置，不然kickstart显示一条消息，并等待用户按任意键后才重新引导；</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># System bootloader configuration</span></span><br><span class="line">bootloader --location=mbr --password=<span class="string">"hehedadada"</span></span><br><span class="line">key --skip</span><br><span class="line"><span class="comment"># 如果是红帽系统，此选项可以跳过输入序列号过程；如果是CentOS 系列，则可以不保留此项内容；</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Clear the Master Boot Record</span></span><br><span class="line">zerombr</span><br><span class="line"></span><br><span class="line"><span class="comment"># Partition clearing information</span></span><br><span class="line">clearpart --all --initlabel</span><br><span class="line"><span class="comment"># 此条命令必须添加，不然系统会让用户手动选择是否清除所有数据，这就需要人为干预了，从而导致自动化过程失败；</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Disk partitioning information</span></span><br><span class="line">part /boot --asprimary --fstype=<span class="string">"ext4"</span> --size=500</span><br><span class="line">part swap --fstype=<span class="string">"swap"</span> --size=2048</span><br><span class="line">part / --asprimary --fstype=<span class="string">"ext4"</span> --grow --size=1</span><br><span class="line"></span><br><span class="line">%packages</span><br><span class="line">@base</span><br><span class="line">@compat-libraries</span><br><span class="line">@development</span><br><span class="line">vim-enhanced</span><br><span class="line"><span class="built_in">bind</span>-utils</span><br><span class="line">ntpdate</span><br><span class="line">nmap</span><br><span class="line">tcpdump</span><br><span class="line">dos2unix</span><br><span class="line"></span><br><span class="line">%post</span><br><span class="line"><span class="comment"># 禁用 ctrl+alt+del</span></span><br><span class="line">/bin/sed -ri <span class="string">'sSexec /sbin/shutdown -r now.*S#&amp;Sg'</span> /etc/init/control-alt-delete.conf </span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭 IPv6</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> -s /etc/modprobe.conf;<span class="keyword">then</span></span><br><span class="line">    /bin/sed -ri <span class="string">'s#(^options ipv6 disable=).*#\11#;s#(^alias net-pf-10 ).*#\1off#'</span> /etc/modprobe.conf;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">/bin/cat &gt;&gt;/etc/modprobe.conf &lt;&lt;- <span class="string">'EOF'</span></span><br><span class="line">options ip_conntrack hashsize=65536</span><br><span class="line">options ipv6 <span class="built_in">disable</span>=1</span><br><span class="line"><span class="built_in">alias</span> net-pf-10 off</span><br><span class="line">EOF</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">/sbin/chkconfig ip6tables off</span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用Zero Configuration Network</span></span><br><span class="line"><span class="comment"># 当系统无法连接DHCP server的时候，就会尝试通过ZEROCONF来获取IP,并添加一条169.254.0.0/16的路由条目</span></span><br><span class="line">Netwfile=<span class="string">"/etc/sysconfig/network"</span></span><br><span class="line"><span class="keyword">if</span> /bin/fgrep -q <span class="string">'NOZEROCONF='</span> <span class="variable">$&#123;Netwfile&#125;</span>;<span class="keyword">then</span></span><br><span class="line">    /bin/sed -ri <span class="string">'s#(NOZEROCONF=).*#\1yes#'</span> <span class="variable">$&#123;Netwfile&#125;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'NOZEROCONF=yes'</span> &gt;&gt; <span class="variable">$&#123;Netwfile&#125;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用sshd使用DNS功能</span></span><br><span class="line">/bin/egrep -q <span class="string">'^UseDNS no'</span> /etc/ssh/sshd_config || /bin/sed -ri <span class="string">'/#UseDNS /aUseDNS no'</span> /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对grep系列命令添加别名，支持颜色高亮显示</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias grep='grep --color'"</span> &gt;&gt; /root/.bashrc;</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias egrep='egrep --color'"</span> &gt;&gt; /root/.bashrc;</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"alias fgrep='fgrep --color'"</span> &gt;&gt; /root/.bashrc;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 记录bash历史命令的执行时间</span></span><br><span class="line">time=<span class="string">'HISTTIMEFORMAT="%Y-%m-%d\ %H:%M:%S  "'</span></span><br><span class="line"><span class="keyword">if</span> /bin/egrep -qs <span class="string">"<span class="variable">$&#123;time&#125;</span>"</span> /etc/profile;<span class="keyword">then</span></span><br><span class="line">    :</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    /bin/sed -ri <span class="string">'/export PATH USER.*HISTSIZE/a'</span><span class="string">"<span class="variable">$&#123;time&#125;</span>"</span><span class="string">'\nexport HISTTIMEFORMAT'</span> /etc/profile</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用vim的语法高亮</span></span><br><span class="line">/bin/egrep -q <span class="string">'^syntax'</span> /root/.vimrc || <span class="built_in">echo</span> <span class="string">'syntax on'</span> &gt;&gt; /root/.vimrc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭不常用服务</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `/sbin/chkconfig --list | /bin/awk <span class="string">'/2:on/&#123;if($1~/apmd|crond|network|snmpd|sshd|syslog/)&#123;&#125;else&#123;print $1&#125;&#125;'</span>`;<span class="keyword">do</span></span><br><span class="line">    /sbin/chkconfig --level 2345 <span class="variable">$&#123;i&#125;</span> off</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">unset</span> i</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">IPT=<span class="string">'/sbin/iptables'</span></span><br><span class="line"><span class="comment">#=================================================================</span></span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t filter -P INPUT ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t filter -P OUTPUT ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t filter -P FORWARD ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t nat -P PREROUTING ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t nat -P POSTROUTING ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t nat -P OUTPUT ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle -P PREROUTING ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle -P INPUT ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle -P FORWARD ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle -P OUTPUT ACCEPT</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle -P POSTROUTING ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -F -t filter</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -F -t nat</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -F -t mangle</span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -X -t filter</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -X -t nat</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -X -t mangle</span><br><span class="line"></span><br><span class="line"><span class="comment"># TCPMSS</span></span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle  -I PREROUTING -i eth+ -p tcp --syn -m tcpmss --mss 1400:1500 -j TCPMSS --<span class="built_in">set</span>-mss 1360</span><br><span class="line"><span class="variable">$&#123;IPT&#125;</span> -t mangle  -I POSTROUTING -o eth+ -p tcp --tcp-flags SYN,RST,ACK SYN,ACK -m tcpmss --mss 1400:1500 -j TCPMSS --<span class="built_in">set</span>-mss 1360</span><br><span class="line"></span><br><span class="line">/sbin/service iptables save</span><br><span class="line"></span><br><span class="line">/bin/sed -r -i <span class="string">'s/(^id:)./\12/'</span> /etc/inittab</span><br><span class="line"></span><br><span class="line"><span class="built_in">test</span> -s /etc/motd || /bin/cat &lt;&lt; <span class="string">'EOF'</span> &gt; /etc/motd</span><br><span class="line"></span><br><span class="line">                              _oo8oo_</span><br><span class="line">                             o8888888o</span><br><span class="line">                             88<span class="string">" . "</span>88</span><br><span class="line">                             (| -_- |)</span><br><span class="line">                             0\  =  /0</span><br><span class="line">                           ___/<span class="string">'==='</span>\___</span><br><span class="line">                         .<span class="string">' \\|     |// '</span>.</span><br><span class="line">                        / \\|||  :  |||// \</span><br><span class="line">                       / _||||| -:- |||||_ \</span><br><span class="line">                      |   | \\\  -  /// |   |</span><br><span class="line">                      | \_|  <span class="string">''</span>\---/<span class="string">''</span>  |_/ |</span><br><span class="line">                      \  .-\__  <span class="string">'-'</span>  __/-.  /</span><br><span class="line">                    ___<span class="string">'. .'</span>  /--.--\  <span class="string">'. .'</span>___</span><br><span class="line">                 .<span class="string">""</span> <span class="string">'&lt;  '</span>.___\_&lt;|&gt;_/___.<span class="string">'  &gt;'</span> <span class="string">""</span>.</span><br><span class="line">                | | :  `- \`.:`\ _ /`:.`/ -`  : | |</span><br><span class="line">                \  \ `-.   \_ __\ /__ _/   .-` /  /</span><br><span class="line">            =====`-.____`.___ \_____/ ___.`____.-`=====</span><br><span class="line">                              `=---=`  </span><br><span class="line">  </span><br><span class="line">           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">                      God bless         Never crash</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">%end</span><br></pre></td></tr></table></figure>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>保证网络配置正常，避免发生网络冲突（比如虚拟机使用本网段的第二个地址作为tftp服务器有可能导致tftp无法响应客户端）</li>
+<li>iptables均为关闭状态</li>
+<li>安装模式最好保持默认（某些系统使用文本模式安装将导致失败）</li>
+<li>确保配置了自动清除分区的参数</li>
+<li>如果有多网卡环境的待安装服务器，pxelinux.cfg/default 中要使用ksdevice选择默认网卡</li>
+<li><p>确保selinux 状态 setenforce 0</p>
+<h3 id="ks-cfg文件参数对照"><a href="#ks-cfg文件参数对照" class="headerlink" title="ks.cfg文件参数对照"></a>ks.cfg文件参数对照</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>install</td>
+<td>告知安装程序，这是一次全新安装，而不是upgrade(升级)</td>
+</tr>
+<tr>
+<td>url --url=”<a href="http://192.168.247.6/CentOS-6.8/" target="_blank" rel="noopener">http://192.168.247.6/CentOS-6.8/</a>“</td>
+<td>通过HTTP从远程服务器上的安装树中安装。</td>
+</tr>
+<tr>
+<td>url --url ftp://<username>:<password>@<server>/<dir></dir></server></password></username></td>
+<td>通过FTP从远程服务器上的安装树中安装。</td>
+</tr>
+<tr>
+<td>nfs --server=nfsserver.example.com --dir=/tmp/install-tree</td>
+<td>从指定的NFS服务器安装</td>
+</tr>
+<tr>
+<td>text</td>
+<td>使用文本模式安装</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>设置在安装过程中使用的语言以及系统的缺省语言。lang en_US.UTF-8</td>
+</tr>
+<tr>
+<td>keyboard</td>
+<td>设置系统键盘类型。keyboard us</td>
+</tr>
+<tr>
+<td>zerombr</td>
+<td>清除mbr引导信息。</td>
+</tr>
+<tr>
+<td>bootloader</td>
+<td>bootloader --location=mbr --driveorder=sda --append=”crashkernel=auto rhgb quiet”</td>
+</tr>
+<tr>
+<td></td>
+<td>--location= 指定引导记录被写入的位置.有效的值如下:mbr(缺省),partition(在包含内核的分区的第一个扇区安装引导装载程序)或none(不安装引导装载程序)。</td>
+</tr>
+<tr>
+<td></td>
+<td>--driveorder,指定在BIOS引导顺序中居首的驱动器。</td>
+</tr>
+<tr>
+<td></td>
+<td>--append=,指定内核参数.要指定多个参数,使用空格分隔它们。</td>
+</tr>
+<tr>
+<td>network</td>
+<td>为通过网络的kickstart安装以及所安装的系统配置联网信息。</td>
+</tr>
+<tr>
+<td>network --bootproto=dhcp --device=eth0 --onboot=yes --noipv6 --hostname=CentOS6</td>
+<td>--bootproto=[dhcp/bootp/static]中的一种，缺省值是dhcp。bootp和dhcp被认为是相同的。</td>
+</tr>
+<tr>
+<td></td>
+<td>static方法要求在kickstart文件里输入所有的网络信息。</td>
+</tr>
+<tr>
+<td></td>
+<td>network --bootproto=static --ip=10.0.0.100 --netmask=255.255.255.0 --gateway=10.0.0.2 --nameserver=10.0.0.2</td>
+</tr>
+<tr>
+<td></td>
+<td>请注意所有配置信息都必须在一行上指定,不能使用反斜线来换行。</td>
+</tr>
+<tr>
+<td></td>
+<td>--ip=,要安装的机器的IP地址.</td>
+</tr>
+<tr>
+<td></td>
+<td>--gateway=,IP地址格式的默认网关.</td>
+</tr>
+<tr>
+<td></td>
+<td>--netmask=,安装的系统的子网掩码.</td>
+</tr>
+<tr>
+<td></td>
+<td>--hostname=,安装的系统的主机名.</td>
+</tr>
+<tr>
+<td></td>
+<td>--onboot=,是否在引导时启用该设备.</td>
+</tr>
+<tr>
+<td></td>
+<td>--noipv6=,禁用此设备的IPv6.</td>
+</tr>
+<tr>
+<td></td>
+<td>--nameserver=,配置dns解析.</td>
+</tr>
+<tr>
+<td>timezone</td>
+<td>设置系统时区 timezone  Asia/Shanghai</td>
+</tr>
+<tr>
+<td>authconfig</td>
+<td>系统认证信息。authconfig --enableshadow --passalgo=sha512 设置密码加密方式为sha512 启用shadow文件。</td>
+</tr>
+<tr>
+<td>rootpw</td>
+<td>root密码</td>
+</tr>
+<tr>
+<td>clearpart</td>
+<td>清空分区。clearpart --all --initlabel --all 从系统中清除所有分区--initlable 初始化磁盘标签</td>
+</tr>
+<tr>
+<td>part</td>
+<td>磁盘分区。</td>
+</tr>
+<tr>
+<td></td>
+<td>part /boot --fstype=ext4 --asprimary –size=500</td>
+</tr>
+<tr>
+<td></td>
+<td>part swap --size=2048</td>
+</tr>
+<tr>
+<td></td>
+<td>part / --fstype=ext4 --grow --asprimary --size=200</td>
+</tr>
+<tr>
+<td></td>
+<td>--fstype=,为分区设置文件系统类型.有效的类型为ext2,ext3,ext4,swap和vfat。</td>
+</tr>
+<tr>
+<td></td>
+<td>--asprimary,强迫把分区分配为主分区,否则提示分区失败。</td>
+</tr>
+<tr>
+<td></td>
+<td>--size=,以MB为单位的分区最小值.在此处指定一个整数值,如500.不要在数字后面加MB。</td>
+</tr>
+<tr>
+<td></td>
+<td>--grow,告诉分区使用所有可用空间(若有),或使用设置的最大值。</td>
+</tr>
+<tr>
+<td>selinux</td>
+<td>关闭selinux。selinux –disabled</td>
+</tr>
+<tr>
+<td>firewall</td>
+<td>关闭防火墙。firewall –disabled</td>
+</tr>
+<tr>
+<td>logging</td>
+<td>设置日志级别。logging --level=info</td>
+</tr>
+</tbody>
+</table>
+<p>参考文档：<a href="https://access.redhat.com/documentation/zh-TW/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/ch-kickstart2.html" target="_blank" rel="noopener">https://access.redhat.com/documentation/zh-TW/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/ch-kickstart2.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/系统安装/" rel="tag"># 系统安装</a>
+          
+            <a href="/tags/无人值守/" rel="tag"># 无人值守</a>
+          
+            <a href="/tags/kickstart/" rel="tag"># kickstart</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/25/2016-1-25 软件包管理/" rel="next" title="软件包管理">
+                <i class="fa fa-chevron-left"></i> 软件包管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/31/2016-1-31 加密类型及算法/" rel="prev" title="加密类型及算法">
+                加密类型及算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">1.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量装机软件简介"><span class="nav-number">2.</span> <span class="nav-text">批量装机软件简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PXE"><span class="nav-number">3.</span> <span class="nav-text">PXE</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是PXE？"><span class="nav-number">3.0.1.</span> <span class="nav-text">什么是PXE？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PXE工作过程"><span class="nav-number">3.0.2.</span> <span class="nav-text">PXE工作过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流程图"><span class="nav-number">4.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统环境"><span class="nav-number">5.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络环境"><span class="nav-number">6.</span> <span class="nav-text">网络环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP配置"><span class="nav-number">7.</span> <span class="nav-text">DHCP配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TFTP配置"><span class="nav-number">8.</span> <span class="nav-text">TFTP配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP配置"><span class="nav-number">9.</span> <span class="nav-text">HTTP配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OS-Server"><span class="nav-number">10.</span> <span class="nav-text">OS Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置PXE启动程序"><span class="nav-number">11.</span> <span class="nav-text">配置PXE启动程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ks-cfg"><span class="nav-number">12.</span> <span class="nav-text">ks.cfg</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#生成kickstart配置文件的三种方法"><span class="nav-number">12.0.1.</span> <span class="nav-text">生成kickstart配置文件的三种方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ks-cfg文件组成"><span class="nav-number">12.0.2.</span> <span class="nav-text">ks.cfg文件组成</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项"><span class="nav-number">13.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ks-cfg文件参数对照"><span class="nav-number">14.</span> <span class="nav-text">ks.cfg文件参数对照</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

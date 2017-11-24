@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,http," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="文件说明 /etc/httpd2.4.23/httpd.conf # 主配置文件/etc/httpd2.4.23/extra/httpd-default.conf # 默认配置文件(包括keepalive和AccessFileName设置等)/etc/httpd2.4.23/extra/httpd-userdir.co">
+<meta name="keywords" content="web,http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="httpd2.4.23配置实践">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/10/2016-2-10 httpd2.4.23配置实践/index.html">
+<meta property="og:site_name" content="������ӻ���">
+<meta property="og:description" content="文件说明 /etc/httpd2.4.23/httpd.conf # 主配置文件/etc/httpd2.4.23/extra/httpd-default.conf # 默认配置文件(包括keepalive和AccessFileName设置等)/etc/httpd2.4.23/extra/httpd-userdir.conf # 用户目录配置文件/etc/httpd2.4.23/extra/http">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-03T03:32:02.081Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="httpd2.4.23配置实践">
+<meta name="twitter:description" content="文件说明 /etc/httpd2.4.23/httpd.conf # 主配置文件/etc/httpd2.4.23/extra/httpd-default.conf # 默认配置文件(包括keepalive和AccessFileName设置等)/etc/httpd2.4.23/extra/httpd-userdir.conf # 用户目录配置文件/etc/httpd2.4.23/extra/http">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/10/2016-2-10 httpd2.4.23配置实践/"/>
+
+
+
+
+
+  <title>httpd2.4.23配置实践 | ������ӻ���</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">������ӻ���</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ɽ��·��Ϊ����ѧ�����Ŀ�����</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/10/2016-2-10 httpd2.4.23配置实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="��͢��">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="������ӻ���">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">httpd2.4.23配置实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-10T12:14:29+08:00">
+                2016-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="文件说明"><a href="#文件说明" class="headerlink" title="文件说明"></a>文件说明</h4><blockquote>
+<p>/etc/httpd2.4.23/httpd.conf # 主配置文件<br>/etc/httpd2.4.23/extra/httpd-default.conf # 默认配置文件(包括keepalive和AccessFileName设置等)<br>/etc/httpd2.4.23/extra/httpd-userdir.conf # 用户目录配置文件<br>/etc/httpd2.4.23/extra/httpd-mpm.conf # MPM配置文件<br>/etc/httpd2.4.23/extra/httpd-ssl.conf # SSL配置文件<br>/etc/httpd2.4.23/extra/httpd-vhosts.conf # 虚拟主机配置文件<br>/etc/httpd2.4.23/extra/httpd-info.conf # server-status页面配置文件</p>
+</blockquote>
+<h4 id="监听配置"><a href="#监听配置" class="headerlink" title="监听配置"></a>监听配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 此指令可出现多次，用于同时监听不同的套接字</span></span><br><span class="line"><span class="comment">#Listen 12.34.56.78:80</span></span><br><span class="line">Listen 80</span><br></pre></td></tr></table></figure>
+<h4 id="Keep-alive"><a href="#Keep-alive" class="headerlink" title="Keep-alive"></a>Keep-alive</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/extra/httpd-default.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">KeepAlive On</span><br><span class="line">MaxKeepAliveRequests 100</span><br><span class="line"><span class="comment"># 一次连接最多接受的请求数量</span></span><br><span class="line">KeepAliveTimeout 5</span><br><span class="line"><span class="comment"># 超时时间</span></span><br></pre></td></tr></table></figure>
+<h4 id="页面访问属性"><a href="#页面访问属性" class="headerlink" title="页面访问属性"></a>页面访问属性</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory <span class="string">"/usr/local/apache/htdocs"</span>&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 选项说明</span><br><span class="line">Options：</span><br><span class="line">	None 所有选项都不启用</span><br><span class="line">	All 所有选项都启用</span><br><span class="line">	Indexes 缺少指定的默认页面时，允许将目录中的所有文件以列表形式返回给客户端，比较危险；</span><br><span class="line">	FollowSymLinks 允许跟随符号链接所指向的原始文件</span><br><span class="line">	ExecCGI 允许使用mod_cgi模块执行CGI脚本</span><br><span class="line">	Includes 允许使用mod_include模块实现服务器包含</span><br><span class="line">	MutilViews 允许使用mod_negotiation实现内容协商</span><br><span class="line">	SymLinksIfOwnerMatch 在链接文件属主属组与原始文件的属主数组向同时,允许跟随符号链接所指向的原始文件</span><br></pre></td></tr></table></figure>
+<h4 id="默认主页面"><a href="#默认主页面" class="headerlink" title="默认主页面"></a>默认主页面</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule dir_module&gt;</span><br><span class="line">    DirectoryIndex index.html</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="配置用户目录"><a href="#配置用户目录" class="headerlink" title="配置用户目录"></a>配置用户目录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LoadModule autoindex_module modules/mod_autoindex.so</span><br><span class="line">Include /etc/httpd2.4.23/extra/httpd-autoindex.conf</span><br><span class="line">LoadModule userdir_module modules/mod_userdir.so</span><br><span class="line">Include /etc/httpd2.4.23/extra/httpd-userdir.conf</span><br><span class="line"><span class="comment"># 开启这几项</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/extra/httpd-autoindex.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IndexOptions FancyIndexing HTMLTable VersionSort NameWidth=* FoldersFirst Charset=UTF-8 SuppressDescription SuppressHTMLPreamble</span><br><span class="line"><span class="comment"># FancyIndexing 支持美化显示；</span></span><br><span class="line"><span class="comment"># HTMLTable 允许底层代码把文件列表生成在一个table元素里面；</span></span><br><span class="line"><span class="comment"># VersionSort 安装版本排序；</span></span><br><span class="line"><span class="comment"># NameWidth=* 页面自动匹配文件名宽度；</span></span><br><span class="line"><span class="comment"># FoldersFirst 安装文件夹优先排列；</span></span><br><span class="line"><span class="comment"># Charset=UTF-8 支持中文显示；</span></span><br><span class="line"><span class="comment"># SuppressDescription 不显示文件描述</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/extra/httpd-userdir.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认配置，无需修改即可使用</span></span><br><span class="line">UserDir public_html</span><br><span class="line"></span><br><span class="line">&lt;Directory <span class="string">"/home/*/public_html"</span>&gt;</span><br><span class="line">    AllowOverride FileInfo AuthConfig Limit Indexes</span><br><span class="line">    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec</span><br><span class="line">    Require method GET POST OPTIONS</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv /home/litingjie/public_html</span><br><span class="line">chmod +x /home/litingjie/</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..10&#125;;<span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> &gt; /home/litingjie/public_html/<span class="variable">$&#123;i&#125;</span>.txt;<span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>使用浏览器访问测试：<code>192.168.237.68/~litingjie</code></p>
+<h4 id="mpm模块切换配置"><a href="#mpm模块切换配置" class="headerlink" title="mpm模块切换配置"></a>mpm模块切换配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#LoadModule mpm_event_module modules/mod_mpm_event.so</span></span><br><span class="line">LoadModule mpm_prefork_module modules/mod_mpm_prefork.so</span><br></pre></td></tr></table></figure>
+<h4 id="基于IP访问控制"><a href="#基于IP访问控制" class="headerlink" title="基于IP访问控制"></a>基于IP访问控制</h4><ul>
+<li>允许所有主机访问：Require all granted</li>
+<li>拒绝所有主机访问：Require all deny</li>
+<li>控制特定ip访问：<ul>
+<li>Require ip IPADDR：授权指定来源的主机访问</li>
+<li>Require not ip IPADDR：拒绝指定来源地址的主机访问<br>   IPADDR：<ul>
+<li>单个IP：192.168.1.1</li>
+<li>network/mask： 192.168.1.0/255.255.255.0</li>
+<li>network/Lenth：192.168.1.0/24</li>
+<li>net：192.168.1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>控制特定主机访问：<ul>
+<li>Require host HOSTNAME</li>
+<li>Require no host HOSTNAME<br>   HOSTNAME:<ul>
+<li>FQDN：www.nettest.com，具体的主机</li>
+<li>DOMAIN：.nettest.com，域内的所有主机</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory <span class="string">"/usr/local/apache/htdocs"</span>&gt;</span><br><span class="line">    Options Indexes FollowSymLinks</span><br><span class="line">    AllowOverride None</span><br><span class="line">    Require ip 192.168.2.1</span><br><span class="line">    Require not ip 192.168.1.0/255.255.255.0</span><br><span class="line">    Require no host .nettest.com</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="基于用户访问控制"><a href="#基于用户访问控制" class="headerlink" title="基于用户访问控制"></a>基于用户访问控制</h4><ul>
+<li>认证类型<ul>
+<li>basic：基本认证，帐号和密码明文发送；（模块：mod_auth_basic）</li>
+<li>digest：摘要认证，hash编程之后发送；（模块：mod_auth_digest）</li>
+</ul>
+</li>
+<li>认证提供者（即帐号和密码的存放位置）<ul>
+<li>File(默认)：模块mod_authn_file</li>
+<li>SQL数据库：模块mod_authn_dbd</li>
+<li>dbm：模块mod_authn_dbm</li>
+<li>ldap：模块mod_authnz_ldap</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">htpasswd -cm /etc/httpd2.4.23/.htpasswd  monitor</span><br><span class="line"><span class="comment"># -m 使用MD5加密用户密码</span></span><br><span class="line"><span class="comment"># 添加第一个用户时，-c选项生成密码文件</span></span><br><span class="line"><span class="comment"># 添加后续用户时，无需-c选项了</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在 httpd.conf 中编写如下配置</span></span><br><span class="line">&lt;Location /server-status&gt;</span><br><span class="line">        Options None</span><br><span class="line">        SetHandler server-status</span><br><span class="line">        AuthType Basic</span><br><span class="line">        AuthName <span class="string">"Private Area"</span></span><br><span class="line">        AuthBasicProvider file</span><br><span class="line">        AuthUserFile <span class="string">"/etc/httpd2.4.23/.htpasswd"</span></span><br><span class="line">        Require valid-user</span><br><span class="line">&lt;/Location&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="虚拟主机配置"><a href="#虚拟主机配置" class="headerlink" title="虚拟主机配置"></a>虚拟主机配置</h4><p>基于IP，port和FQDN；基于FQDN不再需要NameVirtualHost指令</p>
+<ul>
+<li>注释掉中心主机</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DocumentRoot: The directory out of which you will serve your</span></span><br><span class="line"><span class="comment"># documents. By default, all requests are taken from this directory, but</span></span><br><span class="line"><span class="comment"># symbolic links and aliases may be used to point to other locations.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># DocumentRoot "/usr/local/apache/htdocs"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>开启虚拟主机</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Virtual hosts</span></span><br><span class="line">Include /etc/httpd2.4.23/extra/httpd-vhosts.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置虚拟主机</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/extra/httpd-vhosts.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/www/a.com/htdocs/"</span></span><br><span class="line">    ServerAdmin webadmin@a.com</span><br><span class="line">    ServerName www.a.com</span><br><span class="line">    ServerAlias a.com</span><br><span class="line">    ErrorLog <span class="string">"logs/www.a.com-error_log"</span></span><br><span class="line">    CustomLog <span class="string">"logs/www.a.com-access_log"</span> combined</span><br><span class="line">    &lt;Directory <span class="string">"/www/a.com/htdocs/"</span>&gt;</span><br><span class="line">        Options None</span><br><span class="line">        AllowOverride none</span><br><span class="line">        Require all granted</span><br><span class="line">    &lt;/Directory&gt;</span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost *:80&gt;</span><br><span class="line">    DocumentRoot <span class="string">"/www/b.cn/htdocs/"</span></span><br><span class="line">    ServerAdmin webadmin@b.cn</span><br><span class="line">    ServerName www.b.cn</span><br><span class="line">    ServerAlias b.cn</span><br><span class="line">    ErrorLog <span class="string">"logs/www.b.cn-error_log"</span></span><br><span class="line">    CustomLog <span class="string">"logs/www.b.cn-access_log"</span> combined</span><br><span class="line">    &lt;Directory <span class="string">"/www/b.cn/htdocs/"</span>&gt;</span><br><span class="line">        Options None</span><br><span class="line">        AllowOverride none</span><br><span class="line">        Require all granted</span><br><span class="line">    &lt;/Directory&gt;</span><br><span class="line">&lt;/VirtualHost&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="CGI配置"><a href="#CGI配置" class="headerlink" title="CGI配置"></a>CGI配置</h4><ul>
+<li>文件配置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule alias_module&gt;</span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># 中间注释部分省略</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    ScriptAlias /cgi-bin/ <span class="string">"/usr/local/apache/cgi-bin/"</span></span><br><span class="line">&lt;/IfModule&gt;</span><br><span class="line"></span><br><span class="line">&lt;IfModule mpm_prefork_module&gt;</span><br><span class="line">        LoadModule cgi_module modules/mod_cgi.so</span><br><span class="line">	<span class="comment"># 启用模块</span></span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建测试脚本</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/<span class="built_in">local</span>/apache/cgi-bin/test.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">cat &lt;&lt; EOF</span><br><span class="line">Content-Type: text/html</span><br><span class="line"></span><br><span class="line"><span class="comment">#这里要有一个空行否则可能会测试不成功</span></span><br><span class="line">&lt;pre&gt;</span><br><span class="line">&lt;h1&gt;Hello world&lt;/h1&gt;</span><br><span class="line">The hostname is: `hostname`.</span><br><span class="line">The time is: `date`.</span><br><span class="line">&lt;/pre&gt;</span><br><span class="line"></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /usr/<span class="built_in">local</span>/apache/cgi-bin/test.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试<br>在浏览器地址栏访问<code>192.168.237.68/cgi-bin/test.sh</code></li>
+</ul>
+<h4 id="页面压缩"><a href="#页面压缩" class="headerlink" title="页面压缩"></a>页面压缩</h4><ul>
+<li>使用模块mod_deflate，压缩页面优化传输速度以节约带宽成本，cpu比较繁忙的服务器不建议压缩</li>
+<li>启用压缩模块：gzip,deflate</li>
+</ul>
+<p>具体配置如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启压缩模块</span></span><br><span class="line">LoadModule deflate_module modules/mod_deflate.so</span><br><span class="line"><span class="comment"># 在 httpd.conf 尾部编写如下配置</span></span><br><span class="line">SetOutputFilter DEFALTE</span><br><span class="line"><span class="comment"># 使用mod_deflate模块</span></span><br><span class="line">&lt;IfModule deflate_module&gt;</span><br><span class="line"><span class="comment"># Restrict compression to these MIME types</span></span><br><span class="line"><span class="comment"># 明确说明对哪种格式的文档做压缩</span></span><br><span class="line">AddOutputFilterByType DEFLATE text/plain</span><br><span class="line">AddOutputFilterByType DEFLATE text/html</span><br><span class="line">AddOutputFilterByType DEFLATE application/xhtml+xml</span><br><span class="line">AddOutputFilterByType DEFLATE text/xml</span><br><span class="line">AddOutputFilterByType DEFLATE application/xml</span><br><span class="line">AddOutputFilterByType DEFLATE application/x-javascript</span><br><span class="line">AddOutputFilterByType DEFLATE text/javascript</span><br><span class="line">AddOutputFilterByType DEFLATE text/css</span><br><span class="line"><span class="comment"># Level of compression (Highest 9 - Lowest 1)默认为6</span></span><br><span class="line"><span class="comment"># 压缩等级(0-9),数值越大CPU压力也就越大</span></span><br><span class="line">DeflateCompressionLevel 9</span><br><span class="line"><span class="comment"># 非Mozilla4标准浏览器仅开启gzip压缩</span></span><br><span class="line">BrowserMatch ^Mozilla/4 gzip-only-text/html</span><br><span class="line"><span class="comment"># Mozilla4.06,4.07,4.08版本不开启压缩</span></span><br><span class="line">BrowserMatch ^Mozilla/4\.0[678] no-gzip</span><br><span class="line"><span class="comment"># IE浏览器不开启压缩</span></span><br><span class="line">BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="Server-Info"><a href="#Server-Info" class="headerlink" title="Server Info"></a>Server Info</h4><ul>
+<li>httpd内生的status信息，且此信息可以通过web予以显示，为服务器监控提供便利</li>
+<li>处理器：文件被调用时Apache内部表现形式：一般每种文件类型都有其隐式处理器；否则需要自己定义</li>
+<li>显式的定义使用的处理器：SetHandler</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SetHandler中的内容必要要经过用户认证</span></span><br><span class="line">htpasswd -cm /etc/httpd2.4.23/.htpasswd  monitor</span><br><span class="line"><span class="comment"># -m 使用MD5加密用户密码</span></span><br><span class="line"><span class="comment"># 添加第一个用户时，-c选项生成密码文件</span></span><br><span class="line"><span class="comment"># 添加后续用户时，无需-c选项了</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/httpd.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Real-time info on requests and configuration </span></span><br><span class="line">Include /etc/httpd2.4.23/extra/httpd-info.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd2.4.23/extra/httpd-info.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在文件中中编写如下配置</span></span><br><span class="line">&lt;Location /server-status&gt;</span><br><span class="line">        Options None</span><br><span class="line">        SetHandler server-status</span><br><span class="line">        AuthType Basic</span><br><span class="line">        AuthName <span class="string">"Private Area"</span></span><br><span class="line">        AuthBasicProvider file</span><br><span class="line">        AuthUserFile <span class="string">"/etc/httpd2.4.23/.htpasswd"</span></span><br><span class="line">        Require valid-user</span><br><span class="line">&lt;/Location&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 其他SetHandler可设置的值及对应模块</span></span><br><span class="line">default-handler: 使用 default_handler() 发送文件，它是用来处理静态内容的处理器(核心)。</span><br><span class="line">send-as-is: 直接发送，不增加 HTTP 头(mod_asis)。</span><br><span class="line">cgi-script: 按 CGI 脚本处理(mod_cgi)。</span><br><span class="line">imap-file: 按 imagemap 规则处理(mod_imagemap)。</span><br><span class="line">server-info: 取得服务器配置信息(mod_info)。</span><br><span class="line">server-status: 取得服务器状态报告(mod_status)。</span><br><span class="line"><span class="built_in">type</span>-map: 用于内容协商，按类型映射文件处理(mod_negotiation)。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试<br>在浏览器地址栏访问<code>192.168.237.68/server-status</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>您的支持将鼓励我继续写作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="��͢�� 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="��͢�� 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/http/" rel="tag"># http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/09/2016-2-9 httpd2.4.23编译安装/" rel="next" title="httpd2.4.23编译安装">
+                <i class="fa fa-chevron-left"></i> httpd2.4.23编译安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/11/2016-2-11 httpd页面压缩及压力测试/" rel="prev" title="httpd页面压缩及压力测试">
+                httpd页面压缩及压力测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="��͢��" />
+            
+              <p class="site-author-name" itemprop="name">��͢��</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件说明"><span class="nav-number">1.</span> <span class="nav-text">文件说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监听配置"><span class="nav-number">2.</span> <span class="nav-text">监听配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Keep-alive"><span class="nav-number">3.</span> <span class="nav-text">Keep-alive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面访问属性"><span class="nav-number">4.</span> <span class="nav-text">页面访问属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认主页面"><span class="nav-number">5.</span> <span class="nav-text">默认主页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置用户目录"><span class="nav-number">6.</span> <span class="nav-text">配置用户目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mpm模块切换配置"><span class="nav-number">7.</span> <span class="nav-text">mpm模块切换配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于IP访问控制"><span class="nav-number">8.</span> <span class="nav-text">基于IP访问控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于用户访问控制"><span class="nav-number">9.</span> <span class="nav-text">基于用户访问控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟主机配置"><span class="nav-number">10.</span> <span class="nav-text">虚拟主机配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CGI配置"><span class="nav-number">11.</span> <span class="nav-text">CGI配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面压缩"><span class="nav-number">12.</span> <span class="nav-text">页面压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Server-Info"><span class="nav-number">13.</span> <span class="nav-text">Server Info</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">��͢��</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
