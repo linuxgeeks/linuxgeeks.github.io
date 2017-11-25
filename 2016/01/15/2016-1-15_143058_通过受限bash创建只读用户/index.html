@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -100,9 +100,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Muse',
     version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -165,7 +165,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">书山有路勤为径，学海无涯苦作舟</p>
+        <p class="site-subtitle"></p>
       
   </div>
 
@@ -473,7 +473,7 @@
     
       <div>
         <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>有钱任性，请我喝杯咖啡</div>
+  <div>有钱任性，请我吃包辣条</div>
   <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
     <span>打赏</span>
   </button>
@@ -501,6 +501,24 @@
       </div>
     
 
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2016/01/15/2016-1-15_143058_通过受限bash创建只读用户/" title="通过受限bash创建只读用户">http://linuxgeeks.github.io/2016/01/15/2016-1-15_143058_通过受限bash创建只读用户/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
     
 
     <footer class="post-footer">
@@ -615,6 +633,8 @@
 
   <aside id="sidebar" class="sidebar">
     
+      <div id="sidebar-dimmer"></div>
+    
     <div class="sidebar-inner">
 
       
@@ -639,7 +659,7 @@
                 alt="李廷杰" />
             
               <p class="site-author-name" itemprop="name">李廷杰</p>
-              <p class="site-description motion-element" itemprop="description"></p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -820,9 +840,9 @@
 
   
     <span class="site-uv">
-      <i class="fa fa-user">本站访客数</i>
+      <i class="fa fa-user">本站访客</i>
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      人次
+      人
     </span>
   
 
