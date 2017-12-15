@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell," />
+  <meta name="keywords" content="Haproxy,负载均衡," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="受限bash bash本身也有一定的限制功能，就是通过其(受限shell) restricted shell 功能。 如果bash是以rbash为名启动，或者使用-r选项运行，它就称为受限shell。 受限bash所做的限制包括： 阻止用户改变目录和环境变量 重定向输出 使用绝对路径运行命令 使用exec命令和其它一些">
-<meta name="keywords" content="Shell">
+<meta name="description" content="简介 Haproxy提供高可用性、负载均衡以及基于TCP和HTTP应用的代理，支持http的虚拟主机，它是免费、快速并且可靠的一种解决方案。HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理HAProxy运行在时下的硬件上，完全可以支持数以万计的并发连接。并且它的运行模式使得它可以很">
+<meta name="keywords" content="Haproxy,负载均衡">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通过受限bash创建只读用户">
-<meta property="og:url" content="http://linuxgeeks.github.io/2016/01/15/2016-1-15 143058 通过受限bash创建只读用户/index.html">
+<meta property="og:title" content="Haproxy简介">
+<meta property="og:url" content="http://linuxgeeks.github.io/2017/12/03/2017-12-03-202737-Haproxy简介/index.html">
 <meta property="og:site_name" content="老李的杂货铺">
-<meta property="og:description" content="受限bash bash本身也有一定的限制功能，就是通过其(受限shell) restricted shell 功能。 如果bash是以rbash为名启动，或者使用-r选项运行，它就称为受限shell。 受限bash所做的限制包括： 阻止用户改变目录和环境变量 重定向输出 使用绝对路径运行命令 使用exec命令和其它一些操作    限制的操作受限shell能够使系统环境更好控制。如果启动受限shel">
+<meta property="og:description" content="简介 Haproxy提供高可用性、负载均衡以及基于TCP和HTTP应用的代理，支持http的虚拟主机，它是免费、快速并且可靠的一种解决方案。HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理HAProxy运行在时下的硬件上，完全可以支持数以万计的并发连接。并且它的运行模式使得它可以很简单安全的整合进您当前的架构中， 同时可以保护你的web服务器不被暴露到网络上。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-03-27T06:47:36.118Z">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/web%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E7%AB%99%E7%82%B9%E6%9E%B6%E6%9E%84.png">
+<meta property="og:updated_time" content="2017-12-03T13:09:34.630Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="通过受限bash创建只读用户">
-<meta name="twitter:description" content="受限bash bash本身也有一定的限制功能，就是通过其(受限shell) restricted shell 功能。 如果bash是以rbash为名启动，或者使用-r选项运行，它就称为受限shell。 受限bash所做的限制包括： 阻止用户改变目录和环境变量 重定向输出 使用绝对路径运行命令 使用exec命令和其它一些操作    限制的操作受限shell能够使系统环境更好控制。如果启动受限shel">
+<meta name="twitter:title" content="Haproxy简介">
+<meta name="twitter:description" content="简介 Haproxy提供高可用性、负载均衡以及基于TCP和HTTP应用的代理，支持http的虚拟主机，它是免费、快速并且可靠的一种解决方案。HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理HAProxy运行在时下的硬件上，完全可以支持数以万计的并发连接。并且它的运行模式使得它可以很简单安全的整合进您当前的架构中， 同时可以保护你的web服务器不被暴露到网络上。">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/web%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E7%AB%99%E7%82%B9%E6%9E%B6%E6%9E%84.png">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://linuxgeeks.github.io/2016/01/15/2016-1-15 143058 通过受限bash创建只读用户/"/>
+  <link rel="canonical" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-202737-Haproxy简介/"/>
 
 
 
 
 
-  <title>通过受限bash创建只读用户 | 老李的杂货铺</title>
+  <title>Haproxy简介 | 老李的杂货铺</title>
   
 
 
@@ -311,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/01/15/2016-1-15 143058 通过受限bash创建只读用户/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-202737-Haproxy简介/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -328,7 +330,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">通过受限bash创建只读用户</h1>
+          <h1 class="post-title" itemprop="name headline">Haproxy简介</h1>
         
 
         <div class="post-meta">
@@ -340,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-15T14:30:58+08:00">
-                2016-01-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T20:27:38+08:00">
+                2017-12-03
               </time>
             
 
@@ -363,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Shell/" itemprop="url" rel="index">
-                    <span itemprop="name">Shell</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -399,7 +401,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  510
+                  2,004
                 </span>
               
 
@@ -415,7 +417,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  7
                 </span>
               
             </div>
@@ -436,32 +438,92 @@
       
 
       
-        <h3 id="受限bash"><a href="#受限bash" class="headerlink" title="受限bash"></a>受限bash</h3><ul>
-<li>bash本身也有一定的限制功能，就是通过其(受限shell) restricted shell 功能。</li>
-<li>如果bash是以rbash为名启动，或者使用-r选项运行，它就称为受限shell。</li>
-<li>受限bash所做的限制包括：<ul>
-<li>阻止用户改变目录和环境变量</li>
-<li>重定向输出</li>
-<li>使用绝对路径运行命令</li>
-<li>使用exec命令和其它一些操作</li>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><ol>
+<li>Haproxy提供高可用性、负载均衡以及基于TCP和HTTP应用的代理，支持http的虚拟主机，它是免费、快速并且可靠的一种解决方案。HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理HAProxy运行在时下的硬件上，完全可以支持数以万计的并发连接。并且它的运行模式使得它可以很简单安全的整合进您当前的架构中， 同时可以保护你的web服务器不被暴露到网络上。</li>
+<li>HAProxy实现了一种==事件驱动==、<strong>单一进程</strong>模型此模型支持非常大的并发连接数。多进程或多线程模型受内存限制 、系统调度器限制以及无处不在的锁限制，很少能处理数千并发连接。事件驱动模型因为在有更好的资源和时间管理的用户端(User-Space) 实现所有这些任务，所以没有这些问题。此模型的弊端是，在多核系统上，这些程序通常扩展性较差。这就是为什么他们必须进行优化以 使每个CPU时间片(Cycle)做更多的工作。</li>
+<li>HAProxy 支持连接拒绝 : 因为维护一个连接的打开的开销是很低的，有时我们很需要限制攻击蠕虫（attack bots），也就是说限制它们的连接打开从而限制它们的危害。 这个已经为一个陷于小型DDoS攻击的网站开发了而且已经拯救了很多站点，这个优点也是其它负载均衡器没有的。</li>
+<li>HAProxy 支持全透明代理（已具备硬件防火墙的典型特点）: 可以用客户端IP地址或者任何其他地址来连接后端服务器. 这个特性仅在Linux 2.4/2.6内核打了cttproxy补丁后才可以使用. 这个特性也使得为某特殊服务器处理部分流量同时又不修改服务器的地址成为可能。</li>
+</ol>
+<h1 id="主要版本"><a href="#主要版本" class="headerlink" title="主要版本"></a>主要版本</h1><h2 id="1-4"><a href="#1-4" class="headerlink" title="1.4"></a>1.4</h2><blockquote>
+<p>——提供较好的弹性：衍生于1.2版本，并提供了额外的新特性，其中大多数是期待已久的。</p>
+</blockquote>
+<ul>
+<li>客户端侧的长连接(client-side keep-alive)</li>
+<li>TCP加速(TCP speedups)</li>
+<li>响应池(response buffering)</li>
+<li>RDP协议</li>
+<li>基于源的粘性(source-based stickiness)</li>
+<li>更好的统计数据接口(a much better stats interfaces)</li>
+<li>更详细的健康状态检测机制(more verbose health checks)</li>
+<li>基于流量的健康评估机制(traffic-based health)</li>
+<li>支持HTTP认证</li>
+<li>服务器管理命令行接口(server management from the CLI)</li>
+<li>基于ACL的持久性(ACL-based persistence)</li>
+<li>日志分析器</li>
+</ul>
+<h2 id="1-3"><a href="#1-3" class="headerlink" title="1.3"></a>1.3</h2><blockquote>
+<p>——内容交换和超强负载：衍生于1.2版本，并提供了额外的新特性。</p>
+</blockquote>
+<ul>
+<li>内容交换(content switching)：基于任何请求标准挑选服务器池；</li>
+<li>ACL：编写内容交换规则；</li>
+<li>负载均衡算法(load-balancing algorithms)：更多的算法支持；</li>
+<li>内容探测(content inspection)：阻止非授权协议；</li>
+<li>透明代理(transparent proxy)：在Linux系统上允许使用客户端IP直接连入服务器；</li>
+<li>内核TCP拼接(kernel TCP splicing)：无copy方式在客户端和服务端之间转发数据以实现数G级别的数据速率；</li>
+<li>分层设计(layered design)：分别实现套接字、TCP、HTTP处理以提供更好的健壮性、更快的处理机制及便捷的演进能力；</li>
+<li>快速、公平调度器(fast and fair scheduler)：为某些任务指定优先级可实现理好的QoS；</li>
+<li>会话速率限制(session rate limiting)：适用于托管环境；</li>
+</ul>
+<h1 id="支持的平台及OS"><a href="#支持的平台及OS" class="headerlink" title="支持的平台及OS"></a>支持的平台及OS</h1><ul>
+<li>x86、x86_64、Alpha、SPARC、MIPS及PARISC平台上的Linux 2.4；</li>
+<li>x86、x86_64、ARM (ixp425)及PPC64平台上的Linux2.6；</li>
+<li>UltraSPARC 2和3上的Sloaris 8/9；</li>
+<li>Opteron和UltraSPARC平台上的Solaris 10；</li>
+<li>x86平台上的FreeBSD 4.1-8</li>
+<li>i386, amd64, macppc, alpha, sparc64和VAX平台上的OpenBSD 3.1-current；</li>
+</ul>
+<blockquote>
+<ul>
+<li><p>若要获得最高性能，需要在Linux 2.6或打了epoll补丁的Linux 2.4上运行haproxy 1.2.5以上的版本。</p>
+<ul>
+<li>1.1默认使用的polling系统为select()，其处理的文件数达数千个时性能便会急剧下降。</li>
+<li>1.2和1.3版本默认的为poll()，在有些操作系统上可会也会有性能方面的问题，但在Solaris上表现相当不错。</li>
+<li>1.3在Linux 2.6及打了epoll补丁的Linux 2.4上默认使用epoll，在FreeBSD上使用kqueue，这两种机制在任何负载上都能提供恒定的性能表现。</li>
 </ul>
 </li>
+<li><p>在较新版本的Linux 2.6(&gt;=2.6.27.19)上，HAProxy还能够使用splice()系统调用在接口间无复制地转发任何数据，这甚至可以达到10Gbps的性能。</p>
+</li>
 </ul>
-<h3 id="限制的操作"><a href="#限制的操作" class="headerlink" title="限制的操作"></a>限制的操作</h3><p>受限shell能够使系统环境更好控制。如果启动受限shell，以下操作将被禁止：</p>
+</blockquote>
+<p>基于以上事实，在x86或x86_64平台上，要获取最好性能的负载均衡器，建议按顺序考虑以下方案。</p>
+<ul>
+<li>Linux 2.6.32及之后版本上运行HAProxy 1.4；</li>
+<li>打了epoll补丁的Linux 2.4上运行HAProxy 1.4；</li>
+<li>FreeBSD上运行HAProxy 1.4；</li>
+<li>Solaris 10上运行HAProxy 1.4；</li>
+</ul>
+<h1 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h1><p>可以从三个因素来评估负载均衡器的性能：</p>
 <ol>
-<li>使用cd命令切换目录；</li>
-<li>设置或者取消SHELL、PATH、ENV或者BASH_ENV环境变量;</li>
-<li>以绝对路径运行命令(即命令名中不能包含目录分隔符“/”);</li>
-<li>以绝对路径指定的文件名作为内置命令”.”的参数;</li>
-<li>在启动时通过 shell 环境导入函数定义;</li>
-<li>在启动时通过 shell 环境解析 SHELLOPTS 的值;</li>
-<li>使用&gt;、&gt;|、&gt;&amp;、&amp;&gt;和&gt;&gt;等重定向操作重定向输出；</li>
-<li>使用exec命令使其它的命令代替当前shell;</li>
-<li>通过enable内置命令的 -f 和 -d 选项增加或删除内置命令;</li>
-<li>执行内置命令command时加上 -p 选项;</li>
-<li>通过 set +r 或 set +o restricted 关闭受限模式;</li>
+<li>会话率</li>
+<li>会话并发能力</li>
+<li>数据率</li>
 </ol>
-<h3 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ln -sv /bin/bash /bin/rbash</span><br><span class="line"><span class="comment"># 为限制用户创建rbash</span></span><br><span class="line"></span><br><span class="line">install -cdv /work/    </span><br><span class="line"><span class="comment"># 创建主工作目录</span></span><br><span class="line"></span><br><span class="line">useradd -d /work/ -s /bin/rbash loveyou</span><br><span class="line"><span class="comment"># 创建限制用户，指定家目录为/work，跳过skel文件复制，指定shell为/bin/rbash</span></span><br><span class="line"></span><br><span class="line">passwd loveyou</span><br><span class="line"><span class="comment"># 为限制用户创建密码</span></span><br><span class="line"></span><br><span class="line">mkdir -pv /work/subin</span><br><span class="line"><span class="comment"># 为限制用户创建允许使用的命令目录</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">test</span> `/usr/bin/id -g` -eq 500 &amp;&amp; <span class="built_in">export</span> PATH=/work/subin</span><br><span class="line"><span class="comment"># 修改环境变量/etc/profile，判断组ID，使可用命令为家目录下的subin目录</span></span><br><span class="line"></span><br><span class="line">ln -sv /bin/su /work/subin/su</span><br><span class="line">ln -sv /bin/cat /work/subin/cat</span><br><span class="line"><span class="comment"># 创建允许使用的命令</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> su=<span class="string">'su -l'</span></span><br><span class="line"><span class="comment"># 在/etc/profile前面定义别名</span></span><br></pre></td></tr></table></figure>
+<p>HAProxy借助于OS上几种常见的技术来实现性能的最大化。</p>
+<ul>
+<li>单进程、事件驱动模型显著降低了上下文切换的开销及内存占用。</li>
+<li>O(1)事件检查器(event checker)允许其在高并发连接中对任何连接的任何事件实现即时探测。</li>
+<li>在任何可用的情况下，单缓冲(single buffering)机制能以不复制任何数据的方式完成读写操作，这会节约大量的CPU时钟周期及内存带宽；</li>
+<li>借助于Linux 2.6 (&gt;= 2.6.27.19)上的splice()系统调用，HAProxy可以实现零复制转发(Zero-copy forwarding)，在Linux 3.5及以上的OS中还可以实现零复制启动(zero-starting)；</li>
+<li>MRU内存分配器在固定大小的内存池中可实现即时内存分配，这能够显著减少创建一个会话的时长；</li>
+<li>树型存储：侧重于使用作者多年前开发的弹性二叉树，实现了以O(log(N))的低开销来保持计时器命令、保持运行队列命令及管理轮询及最少连接队列；</li>
+<li>优化的HTTP首部分析：优化的首部分析功能避免了在HTTP首部分析过程中重读任何内存区域；</li>
+<li>精心地降低了昂贵的系统调用，大部分工作都在用户空间完成，如时间读取、缓冲聚合及文件描述符的启用和禁用等；</li>
+</ul>
+<p>所有的这些细微之处的优化实现了在中等规模负载之上依然有着相当低的CPU负载，甚至于在非常高的负载场景中，5%的用户空间占用率和95%的系统空间占用率也是非常普遍的现象，这意味着HAProxy进程消耗比系统空间消耗低20倍以上。因此，对OS进行性能调优是非常重要的。即使用户空间的占用率提高一倍，其CPU占用率也仅为10%，这也解释了为何7层处理对性能影响有限这一现象。由此，在高端系统上HAProxy的7层性能可轻易超过硬件负载均衡设备。</p>
+<p>在生产环境中，在7层处理上使用HAProxy作为昂贵的高端硬件负载均衡设备故障故障时的紧急解决方案也时长可见。硬件负载均衡设备在“报文”级别处理请求，这在支持跨报文请求(request across multiple packets)有着较高的难度，并且它们不缓冲任何数据，因此有着较长的响应时间。对应地，软件负载均衡设备使用TCP缓冲，可建立极长的请求，且有着较大的响应时间。</p>
+<h1 id="web反向代理及站点架构"><a href="#web反向代理及站点架构" class="headerlink" title="web反向代理及站点架构"></a>web反向代理及站点架构</h1><p><img src="http://ohlli9uc9.bkt.clouddn.com/web%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E7%AB%99%E7%82%B9%E6%9E%B6%E6%9E%84.png" alt=""></p>
+
       
     </div>
     
@@ -510,7 +572,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://linuxgeeks.github.io/2016/01/15/2016-1-15 143058 通过受限bash创建只读用户/" title="通过受限bash创建只读用户">http://linuxgeeks.github.io/2016/01/15/2016-1-15 143058 通过受限bash创建只读用户/</a>
+    <a href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-202737-Haproxy简介/" title="Haproxy简介">http://linuxgeeks.github.io/2017/12/03/2017-12-03-202737-Haproxy简介/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -525,7 +587,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
+            <a href="/tags/Haproxy/" rel="tag"><i class="fa fa-tag"></i> Haproxy</a>
+          
+            <a href="/tags/负载均衡/" rel="tag"><i class="fa fa-tag"></i> 负载均衡</a>
           
         </div>
       
@@ -538,8 +602,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/15/2016-1-15 100358 Bash Shell/" rel="next" title="Bash Shell">
-                <i class="fa fa-chevron-left"></i> Bash Shell
+              <a href="/2017/11/27/2017-11-27-110423-让谷歌TCP-BBR拥塞算法为TCP加速/" rel="next" title="让谷歌TCP-BBR拥塞算法为TCP加速">
+                <i class="fa fa-chevron-left"></i> 让谷歌TCP-BBR拥塞算法为TCP加速
               </a>
             
           </div>
@@ -548,8 +612,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/15/2016-1-15182351_Shell巧用总结/" rel="prev" title="Shell巧用总结">
-                Shell巧用总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/03/2017-12-03-214728-Haproxy安装配置/" rel="prev" title="Haproxy安装配置">
+                Haproxy安装配置 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -669,7 +733,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -680,7 +744,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -691,7 +755,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -797,7 +861,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#受限bash"><span class="nav-number">1.</span> <span class="nav-text">受限bash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限制的操作"><span class="nav-number">2.</span> <span class="nav-text">限制的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置步骤"><span class="nav-number">3.</span> <span class="nav-text">配置步骤</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要版本"><span class="nav-number">2.</span> <span class="nav-text">主要版本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4"><span class="nav-number">2.1.</span> <span class="nav-text">1.4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3"><span class="nav-number">2.2.</span> <span class="nav-text">1.3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持的平台及OS"><span class="nav-number">3.</span> <span class="nav-text">支持的平台及OS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能"><span class="nav-number">4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web反向代理及站点架构"><span class="nav-number">5.</span> <span class="nav-text">web反向代理及站点架构</span></a></li></ol></div>
             
 
           </div>
