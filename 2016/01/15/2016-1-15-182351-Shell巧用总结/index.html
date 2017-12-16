@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="配置,安装," />
+  <meta name="keywords" content="Shell,Bash," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="简介iftop是一款类似于top命令的实时流量监控工具，监控TCP/IP连接等，缺点就是无报表功能。可以用来监控网卡的实时流量（可以指定网段）、反向解析IP、显示端口信息等。必须以root身份才能运行。 安装方法 源码包编译安装 下载最新的源码包。建议使用网络yum源(最好是自带的) 准备编译所需的环境，make、gc">
-<meta name="keywords" content="配置,安装">
+<meta name="description" content="使用set和eval取当前的运行级别源码出自CentOS6.X系统sshd服务脚本：/etc/init.d/sshd 1runlevel=$(set -- $(runlevel); eval &quot;echo \$$#&quot; ) 解析：  将runlevel命令执行结果通过set --根据分隔符IFS，把值依">
+<meta name="keywords" content="Shell,Bash">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iftop流量监控工具">
-<meta property="og:url" content="http://linuxgeeks.github.io/2016/01/06/2016-1-6 iftop流量监控工具/index.html">
+<meta property="og:title" content="Shell巧用总结">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/01/15/2016-1-15-182351-Shell巧用总结/index.html">
 <meta property="og:site_name" content="老李的杂货铺">
-<meta property="og:description" content="简介iftop是一款类似于top命令的实时流量监控工具，监控TCP/IP连接等，缺点就是无报表功能。可以用来监控网卡的实时流量（可以指定网段）、反向解析IP、显示端口信息等。必须以root身份才能运行。 安装方法 源码包编译安装 下载最新的源码包。建议使用网络yum源(最好是自带的) 准备编译所需的环境，make、gcc、autoconf等。安装libpcap和libcurses依赖包    12">
+<meta property="og:description" content="使用set和eval取当前的运行级别源码出自CentOS6.X系统sshd服务脚本：/etc/init.d/sshd 1runlevel=$(set -- $(runlevel); eval &quot;echo \$$#&quot; ) 解析：  将runlevel命令执行结果通过set --根据分隔符IFS，把值依次赋给位置参数($1,$2,$3…)  123456789[ltj@centos6 ~]$ runl">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-04-28T03:03:34.413Z">
+<meta property="og:updated_time" content="2017-12-16T16:01:43.271Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iftop流量监控工具">
-<meta name="twitter:description" content="简介iftop是一款类似于top命令的实时流量监控工具，监控TCP/IP连接等，缺点就是无报表功能。可以用来监控网卡的实时流量（可以指定网段）、反向解析IP、显示端口信息等。必须以root身份才能运行。 安装方法 源码包编译安装 下载最新的源码包。建议使用网络yum源(最好是自带的) 准备编译所需的环境，make、gcc、autoconf等。安装libpcap和libcurses依赖包    12">
+<meta name="twitter:title" content="Shell巧用总结">
+<meta name="twitter:description" content="使用set和eval取当前的运行级别源码出自CentOS6.X系统sshd服务脚本：/etc/init.d/sshd 1runlevel=$(set -- $(runlevel); eval &quot;echo \$$#&quot; ) 解析：  将runlevel命令执行结果通过set --根据分隔符IFS，把值依次赋给位置参数($1,$2,$3…)  123456789[ltj@centos6 ~]$ runl">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://linuxgeeks.github.io/2016/01/06/2016-1-6 iftop流量监控工具/"/>
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/01/15/2016-1-15-182351-Shell巧用总结/"/>
 
 
 
 
 
-  <title>iftop流量监控工具 | 老李的杂货铺</title>
+  <title>Shell巧用总结 | 老李的杂货铺</title>
   
 
 
@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/01/06/2016-1-6 iftop流量监控工具/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/01/15/2016-1-15-182351-Shell巧用总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -328,7 +328,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iftop流量监控工具</h1>
+          <h1 class="post-title" itemprop="name headline">Shell巧用总结</h1>
         
 
         <div class="post-meta">
@@ -340,8 +340,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-06T16:23:44+08:00">
-                2016-01-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-15T18:23:51+08:00">
+                2016-01-15
               </time>
             
 
@@ -363,8 +363,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/杂货铺/" itemprop="url" rel="index">
-                    <span itemprop="name">杂货铺</span>
+                  <a href="/categories/Shell/" itemprop="url" rel="index">
+                    <span itemprop="name">Shell</span>
                   </a>
                 </span>
 
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  942
+                  846
                 </span>
               
 
@@ -436,55 +436,58 @@
       
 
       
-        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>iftop是一款类似于top命令的实时流量监控工具，监控TCP/IP连接等，缺点就是无报表功能。可以用来监控网卡的实时流量（可以指定网段）、反向解析IP、显示端口信息等。必须以root身份才能运行。</p>
-<h3 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h3><ul>
-<li>源码包编译安装<ul>
-<li>下载最新的源码包。建议使用网络yum源(最好是自带的)</li>
-<li>准备编译所需的环境，make、gcc、autoconf等。安装libpcap和libcurses依赖包</li>
+        <h3 id="使用set和eval取当前的运行级别"><a href="#使用set和eval取当前的运行级别" class="headerlink" title="使用set和eval取当前的运行级别"></a>使用<code>set</code>和<code>eval</code>取当前的运行级别</h3><p>源码出自<code>CentOS6.X</code>系统sshd服务脚本：<code>/etc/init.d/sshd</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runlevel=$(<span class="built_in">set</span> -- $(runlevel); <span class="built_in">eval</span> <span class="string">"echo \$<span class="variable">$#</span>"</span> )</span><br></pre></td></tr></table></figure>
+<p>解析：</p>
+<ul>
+<li>将<code>runlevel</code>命令执行结果通过<code>set --</code>根据分隔符<code>IFS</code>，把值依次赋给位置参数($1,$2,$3…)</li>
 </ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos6 ~]$ runlevel </span><br><span class="line">N 3</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">set</span> -- $(runlevel)</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">echo</span> <span class="variable">$1</span></span><br><span class="line">N</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">echo</span> <span class="variable">$2</span></span><br><span class="line">3</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">echo</span> <span class="variable">$1</span> <span class="variable">$2</span></span><br><span class="line">N 3</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>$#</code>取得位置参数的个数为两个</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos6 ~]$ <span class="built_in">echo</span> <span class="variable">$#</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>要取的数值为第二个即最后一个，使用$2即可取得第二个位置参数，这里的2使用$#来代替</li>
+<li>由于$$代表当前命令的PID，因此需要转义<code>$</code>即<code>\$$#</code></li>
+<li>要用eval做二次扫描，把<code>echo</code>的字符串当做命令解析，第二次解析<code>$2</code>的值为<code>3</code></li>
+<li>不进行解析的话<code>$2</code>只能当做纯字符串输出</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos6 ~]$ <span class="built_in">echo</span> $<span class="variable">$#</span> </span><br><span class="line">29826<span class="comment">#</span></span><br><span class="line"><span class="comment"># 这里$$输出了进程pid，然后输出#</span></span><br><span class="line"></span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">echo</span> \$<span class="variable">$#</span></span><br><span class="line"><span class="variable">$2</span></span><br><span class="line"><span class="comment"># 等同于 echo $2</span></span><br><span class="line"></span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">eval</span> <span class="string">"echo \$<span class="variable">$#</span>"</span></span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<h3 id="判断变量是否为整数"><a href="#判断变量是否为整数" class="headerlink" title="判断变量是否为整数"></a>判断变量是否为整数</h3><ul>
+<li>方法一：使用<code>expr</code>做计算，判断命令执行返回值</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">expr <span class="variable">$1</span> + 1 &amp;&gt;/dev/null</span><br><span class="line">[ $? -eq 0 ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"int"</span> || <span class="built_in">echo</span> <span class="string">"not int"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法二：使用变量字符串替换的结果做条件判断</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">num=2</span><br><span class="line">[ -n <span class="variable">$&#123;num&#125;</span> -a <span class="string">"<span class="variable">$&#123;num&#125;</span>"</span> = <span class="string">"<span class="variable">$&#123;num//[^0-9]/&#125;</span>"</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"int"</span> || <span class="built_in">echo</span> <span class="string">"not int"</span></span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">[ -n <span class="variable">$&#123;num&#125;</span> -a -z <span class="string">"<span class="variable">$&#123;num//[0-9]/&#125;</span>"</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"int"</span> || <span class="built_in">echo</span> <span class="string">"not int"</span></span><br></pre></td></tr></table></figure>
+<h3 id="匹配指定格式的文件名"><a href="#匹配指定格式的文件名" class="headerlink" title="匹配指定格式的文件名"></a>匹配指定格式的文件名</h3><ul>
+<li>源码出自<code>CentOS6.X</code>系统的命令脚本：<code>/usr/bin/ssh-copy-id</code></li>
+<li>这里的expr最好使用绝对路径</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">L_ID_FILE=<span class="string">"~/.ssh/test.pub"</span> </span><br><span class="line"><span class="keyword">if</span> expr <span class="string">"<span class="variable">$L_ID_FILE</span>"</span> : <span class="string">".*\.pub$"</span> &gt;/dev/null ; <span class="keyword">then</span></span><br><span class="line">    PUB_ID_FILE=<span class="string">"<span class="variable">$L_ID_FILE</span>"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    PUB_ID_FILE=<span class="string">"<span class="variable">$L_ID_FILE</span>.pub"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>解析：此处使用到了expr的表达式<code>expr STRING : REGEXP</code><br>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos6 ~]$ a=test.txt</span><br><span class="line">[ltj@centos6 ~]$ expr <span class="variable">$a</span> : <span class="string">".*\.txt$"</span></span><br><span class="line">8</span><br><span class="line">[ltj@centos6 ~]$ expr <span class="variable">$a</span> : <span class="string">".*\.txta$"</span></span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>字串STRING中一旦被正则表达式REGEXP，就返回匹配到的字符串的长度，否则返回0</p>
+<h3 id="判断字符串是否不为空"><a href="#判断字符串是否不为空" class="headerlink" title="判断字符串是否不为空"></a>判断字符串是否不为空</h3><p><code>test &quot;string&quot;</code>等同于<code>[ &quot;string&quot; ]</code>等同于<code>[ -n &quot;string&quot; ]</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos6 ~]$ <span class="built_in">test</span> <span class="string">"fdsa"</span> &amp;&amp; <span class="built_in">echo</span> not null || <span class="built_in">echo</span> 0</span><br><span class="line">not null</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">test</span> <span class="string">""</span> &amp;&amp; <span class="built_in">echo</span> not null || <span class="built_in">echo</span> 0    </span><br><span class="line">0</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">test</span> <span class="string">" "</span> &amp;&amp; <span class="built_in">echo</span> not null || <span class="built_in">echo</span> 0</span><br><span class="line">not null</span><br></pre></td></tr></table></figure>
+<h3 id="使用rename实现批量改文件名"><a href="#使用rename实现批量改文件名" class="headerlink" title="使用rename实现批量改文件名"></a>使用<code>rename</code>实现批量改文件名</h3><ul>
+<li>将后缀名<code>.conf</code>改为<code>.conf.bak</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos-7.3 ~]$ ls</span><br><span class="line">openvpn1.conf  openvpn2.conf  openvpn3.conf  openvpn4.conf  openvpn5.conf  openvpn6.conf</span><br><span class="line">[ltj@centos-7.3 ~]$ rename .conf&#123;,.bak&#125; openvpn*.conf</span><br><span class="line">[ltj@centos-7.3 ~]$ ls</span><br><span class="line">openvpn1.conf.bak  openvpn2.conf.bak  openvpn3.conf.bak  openvpn4.conf.bak  openvpn5.conf.bak  openvpn6.conf.bak</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将后缀名<code>.conf.bak</code>改为<code>.conf</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos-7.3 ~]$ ls</span><br><span class="line">openvpn1.conf.bak  openvpn2.conf.bak  openvpn3.conf.bak  openvpn4.conf.bak  openvpn5.conf.bak  openvpn6.conf.bak</span><br><span class="line">[ltj@centos-7.3 ~]$ rename .conf.bak .conf openvpn*.conf.bak</span><br><span class="line">[ltj@centos-7.3 ~]$ ls</span><br><span class="line">openvpn1.conf  openvpn2.conf  openvpn3.conf  openvpn4.conf  openvpn5.conf  openvpn6.conf</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS上安装所需依赖包：</span></span><br><span class="line">yum  -y install flex byacc libpcap ncurses ncurses-devel libpcap-devel</span><br><span class="line"><span class="comment"># Debian上安装所需依赖包：</span></span><br><span class="line"><span class="comment"># apt-get install flex byacc libpcap0.8 libncurses5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载源码包</span></span><br><span class="line">wget http://www.ex-parrot.com/~pdw/iftop/download/iftop-0.17.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar zxvf iftop-0.17.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译安装</span></span><br><span class="line"><span class="built_in">cd</span> iftop-0.17</span><br><span class="line">./configure --prefix=/mysoft/iftop/</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3 id="使用内置命令type取命令的路径"><a href="#使用内置命令type取命令的路径" class="headerlink" title="使用内置命令type取命令的路径"></a>使用内置命令<code>type</code>取命令的路径</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ltj@centos6 ~]$ <span class="built_in">type</span> -path ssh</span><br><span class="line">/usr/bin/ssh</span><br><span class="line">[ltj@centos6 ~]$ <span class="built_in">which</span> ssh</span><br><span class="line">/usr/bin/ssh</span><br></pre></td></tr></table></figure>
+<h3 id="检查域名是否被干扰"><a href="#检查域名是否被干扰" class="headerlink" title="检查域名是否被干扰"></a>检查域名是否被干扰</h3><p>思路：</p>
 <ul>
-<li>rpm包安装</li>
+<li>向根请求解析指定的域名，正常情况下根不会返回任何A记录，只会返回它所属下一级域的NS记录</li>
+<li>如果<code>dig +short</code>返回的值为空则说明域名未被干扰，</li>
+<li>如果返回一个A记录的IP地址，说明域名在请求解析的途中被拦截或干扰</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CentOS系统：</span></span><br><span class="line">yum -y install flex byacc  libpcap ncurses ncurses-devel</span><br><span class="line">wget ftp://fr2.rpmfind.net/linux/dag/redhat/el5/en/i386/dag/RPMS/iftop-0.17-1.el5.rf.i386.rpm</span><br><span class="line">rpm -ivh iftop-0.17-1.el5.rf.i386.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># Debian系统：</span></span><br><span class="line">apt-get install iftop</span><br></pre></td></tr></table></figure>
-<h3 id="界面说明"><a href="#界面说明" class="headerlink" title="界面说明"></a>界面说明</h3><ul>
-<li>&lt;= 和 =&gt; 是流量的方向</li>
-<li>TX：发送流量</li>
-<li>RX：接收流量</li>
-<li>TOTAL：总流量</li>
-<li>Cumm：运行iftop到目前时间的总流量</li>
-<li>peak：流量峰值</li>
-<li>rates：分别表示过去 2s 10s 40s 的平均流量</li>
-</ul>
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><p>-i  设定监测的网卡，如：# iftop -i eth1<br>-B  以bytes为单位显示流量(默认是bits)<br>-n  使host信息默认直接都显示IP，如：# iftop -n<br>-N  使端口信息默认直接都显示端口号，如: # iftop -N<br>-F  显示特定网段的进出流量，如# iftop -F 10.10.1.0/24或# iftop -F 10.10.1.0/255.255.255.0<br>-h  display this message，帮助，显示参数信息<br>-p  使用这个参数后，中间的列表显示的本地主机信息，出现了本机以外的IP信息;<br>-b  使流量图形条默认就显示;<br>-f  过滤计算包;<br>-P  使host信息及端口信息默认就都显示;<br>-m  设置界面最上边的刻度的最大值，刻度分五个大段显示，例：# iftop -m 100M</p>
-<h3 id="操作命令"><a href="#操作命令" class="headerlink" title="操作命令"></a>操作命令</h3><p>进入iftop画面后的操作命令:</p>
-<ul>
-<li>按h切换是否显示帮助;</li>
-<li>按n切换显示本机的IP或主机名;</li>
-<li>按s切换是否显示本机的host信息;</li>
-<li>按d切换是否显示远端目标主机的host信息;</li>
-<li>按t切换显示格式为2行/1行/只显示发送流量/只显示接收流量;</li>
-<li>按N切换显示端口号或端口服务名称;</li>
-<li>按S切换是否显示本机的端口信息;</li>
-<li>按D切换是否显示远端目标主机的端口信息;</li>
-<li>按p切换是否显示端口信息;</li>
-<li>按P切换暂停/继续显示;</li>
-<li>按b切换是否显示平均流量图形条;</li>
-<li>按B切换计算2秒或10秒或40秒内的平均流量;</li>
-<li>按T切换是否显示每个连接的总流量;</li>
-<li>按l打开屏幕过滤功能，输入要过滤的字符，比如ip,按回车后，屏幕就只显示这个IP相关的流量信息;</li>
-<li>按L切换显示画面上边的刻度;刻度不同，流量图形条会有变化;</li>
-<li>按j或按k可以向上或向下滚动屏幕显示的连接记录;</li>
-<li>按1或2或3可以根据右侧显示的三列流量数据进行排序;</li>
-<li>按&lt;根据左边的本机名或IP排序;</li>
-<li>按&gt;根据远端目标主机的主机名或IP排序;</li>
-<li>按o切换是否固定只显示当前的连接;</li>
-<li>按f可以编辑过滤代码</li>
-<li>按!可以使用shell命令</li>
-<li>按q退出监控。</li>
-</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">srcip=192.168.2.56</span><br><span class="line">name=<span class="string">"www.baidu.com"</span></span><br><span class="line">answer=$(dig +short -b <span class="variable">$&#123;srcip&#125;</span> @a.root-servers.net. <span class="variable">$&#123;name&#125;</span> 2&gt;/dev/null)</span><br><span class="line"><span class="built_in">test</span> -z <span class="string">"<span class="variable">$&#123;answer&#125;</span>"</span> &amp;&amp; <span class="built_in">echo</span> <span class="string">"ok"</span> || <span class="built_in">echo</span> <span class="string">"not ok"</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -534,7 +537,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://linuxgeeks.github.io/2016/01/06/2016-1-6 iftop流量监控工具/" title="iftop流量监控工具">http://linuxgeeks.github.io/2016/01/06/2016-1-6 iftop流量监控工具/</a>
+    <a href="http://linuxgeeks.github.io/2016/01/15/2016-1-15-182351-Shell巧用总结/" title="Shell巧用总结">http://linuxgeeks.github.io/2016/01/15/2016-1-15-182351-Shell巧用总结/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -549,9 +552,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/配置/" rel="tag"><i class="fa fa-tag"></i> 配置</a>
+            <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
           
-            <a href="/tags/安装/" rel="tag"><i class="fa fa-tag"></i> 安装</a>
+            <a href="/tags/Bash/" rel="tag"><i class="fa fa-tag"></i> Bash</a>
           
         </div>
       
@@ -564,8 +567,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/06/2016-1-6 Linux配置ADSL拨号上网/" rel="next" title="Linux配置ADSL拨号上网">
-                <i class="fa fa-chevron-left"></i> Linux配置ADSL拨号上网
+              <a href="/2016/01/15/2016-1-15-143058-通过受限bash创建只读用户/" rel="next" title="通过受限bash创建只读用户">
+                <i class="fa fa-chevron-left"></i> 通过受限bash创建只读用户
               </a>
             
           </div>
@@ -574,8 +577,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/07/2016-1-7 Linux使用中文man帮助手册/" rel="prev" title="Linux使用中文man帮助手册">
-                Linux使用中文man帮助手册 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/01/15/2016-1-15-124538-echo输出带颜色的文本/" rel="prev" title="echo输出带颜色的文本">
+                echo输出带颜色的文本 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -695,7 +698,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -717,7 +720,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -823,7 +826,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装方法"><span class="nav-number">2.</span> <span class="nav-text">安装方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#界面说明"><span class="nav-number">3.</span> <span class="nav-text">界面说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数说明"><span class="nav-number">4.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作命令"><span class="nav-number">5.</span> <span class="nav-text">操作命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用set和eval取当前的运行级别"><span class="nav-number">1.</span> <span class="nav-text">使用set和eval取当前的运行级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断变量是否为整数"><span class="nav-number">2.</span> <span class="nav-text">判断变量是否为整数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配指定格式的文件名"><span class="nav-number">3.</span> <span class="nav-text">匹配指定格式的文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断字符串是否不为空"><span class="nav-number">4.</span> <span class="nav-text">判断字符串是否不为空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用rename实现批量改文件名"><span class="nav-number">5.</span> <span class="nav-text">使用rename实现批量改文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用内置命令type取命令的路径"><span class="nav-number">6.</span> <span class="nav-text">使用内置命令type取命令的路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查域名是否被干扰"><span class="nav-number">7.</span> <span class="nav-text">检查域名是否被干扰</span></a></li></ol></div>
             
 
           </div>

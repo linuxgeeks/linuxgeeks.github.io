@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="配置,安装," />
+  <meta name="keywords" content="Linux命令," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="安装  1yum install rp-pppoe.x86_64  配置PPPOE客户端软件安装完软件包后，必须配置pppoe的配置文件/etc/ppp/pppoe.conf，从而让ADSL拨号时使用配置文件中的用户名、密码等参数。使用adsl-setup进行配置：  1234567891011121314151617">
-<meta name="keywords" content="配置,安装">
+<meta name="description" content="说明echo命令改变样式，以输出不同颜色的文本，必须有 -e 选项(开启echo中的转义)。格式如下：  12echo -e &quot;\033[字背景颜色；文字颜色m 字符串\033[0m&quot; echo -e &quot;\033[1;36;41m Something here \033[0m&quot; ">
+<meta name="keywords" content="Linux命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux配置ADSL拨号上网">
-<meta property="og:url" content="http://linuxgeeks.github.io/2016/01/06/2016-1-6 Linux配置ADSL拨号上网/index.html">
+<meta property="og:title" content="echo输出带颜色的文本">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/01/15/2016-1-15-124538-echo输出带颜色的文本/index.html">
 <meta property="og:site_name" content="老李的杂货铺">
-<meta property="og:description" content="安装  1yum install rp-pppoe.x86_64  配置PPPOE客户端软件安装完软件包后，必须配置pppoe的配置文件/etc/ppp/pppoe.conf，从而让ADSL拨号时使用配置文件中的用户名、密码等参数。使用adsl-setup进行配置：  123456789101112131415161718/usr/sbin/adsl-setup&amp;gt;&amp;gt;&amp;gt; Ente">
+<meta property="og:description" content="说明echo命令改变样式，以输出不同颜色的文本，必须有 -e 选项(开启echo中的转义)。格式如下：  12echo -e &quot;\033[字背景颜色；文字颜色m 字符串\033[0m&quot; echo -e &quot;\033[1;36;41m Something here \033[0m&quot;  \代表转义 033 代表键盘的Control键 1代表字体行为(高亮，闪烁，下划线等)； 36代表字体的颜色 41的位">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-03-27T07:07:59.277Z">
+<meta property="og:updated_time" content="2017-12-15T13:25:10.301Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux配置ADSL拨号上网">
-<meta name="twitter:description" content="安装  1yum install rp-pppoe.x86_64  配置PPPOE客户端软件安装完软件包后，必须配置pppoe的配置文件/etc/ppp/pppoe.conf，从而让ADSL拨号时使用配置文件中的用户名、密码等参数。使用adsl-setup进行配置：  123456789101112131415161718/usr/sbin/adsl-setup&amp;gt;&amp;gt;&amp;gt; Ente">
+<meta name="twitter:title" content="echo输出带颜色的文本">
+<meta name="twitter:description" content="说明echo命令改变样式，以输出不同颜色的文本，必须有 -e 选项(开启echo中的转义)。格式如下：  12echo -e &quot;\033[字背景颜色；文字颜色m 字符串\033[0m&quot; echo -e &quot;\033[1;36;41m Something here \033[0m&quot;  \代表转义 033 代表键盘的Control键 1代表字体行为(高亮，闪烁，下划线等)； 36代表字体的颜色 41的位">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://linuxgeeks.github.io/2016/01/06/2016-1-6 Linux配置ADSL拨号上网/"/>
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/01/15/2016-1-15-124538-echo输出带颜色的文本/"/>
 
 
 
 
 
-  <title>Linux配置ADSL拨号上网 | 老李的杂货铺</title>
+  <title>echo输出带颜色的文本 | 老李的杂货铺</title>
   
 
 
@@ -311,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/01/06/2016-1-6 Linux配置ADSL拨号上网/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/01/15/2016-1-15-124538-echo输出带颜色的文本/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -328,7 +328,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux配置ADSL拨号上网</h1>
+          <h1 class="post-title" itemprop="name headline">echo输出带颜色的文本</h1>
         
 
         <div class="post-meta">
@@ -340,8 +340,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-06T14:53:44+08:00">
-                2016-01-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-15T20:47:55+08:00">
+                2016-01-15
               </time>
             
 
@@ -363,8 +363,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/杂货铺/" itemprop="url" rel="index">
-                    <span itemprop="name">杂货铺</span>
+                  <a href="/categories/Command/" itemprop="url" rel="index">
+                    <span itemprop="name">Command</span>
                   </a>
                 </span>
 
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  508
+                  830
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  4
                 </span>
               
             </div>
@@ -436,26 +436,43 @@
       
 
       
-        <ul>
-<li>安装</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rp-pppoe.x86_64</span><br></pre></td></tr></table></figure>
+        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>echo命令改变样式，以输出不同颜色的文本，必须有 -e 选项(开启echo中的转义)。<br>格式如下： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[字背景颜色；文字颜色m 字符串\033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[1;36;41m Something here \033[0m"</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>配置PPPOE客户端软件<br>安装完软件包后，必须配置pppoe的配置文件<code>/etc/ppp/pppoe.conf</code>，从而让ADSL拨号时使用配置文件中的用户名、密码等参数。使用adsl-setup进行配置：</li>
+<li>\代表转义</li>
+<li>033 代表键盘的Control键</li>
+<li>1代表字体行为(高亮，闪烁，下划线等)；</li>
+<li>36代表字体的颜色</li>
+<li>41的位置代表背景色</li>
+<li>注：<ul>
+<li>字背景颜色和文字颜色之间是英文的分号’;’</li>
+<li>文字颜色后面有个m </li>
+<li>字符串前后可以没有空格，如果有的话，输出也是同样有空格 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/adsl-setup</span><br><span class="line">&gt;&gt;&gt; Enter your PPPoE user name :</span><br><span class="line"><span class="comment"># 输入ADSL帐号的用户名</span></span><br><span class="line">&gt;&gt;&gt; Enter the Ethernet interface connected to the ADSL modem</span><br><span class="line">For Solaris, this is likely to be something like /dev/hme0.</span><br><span class="line">For Linux, it will be ethn, <span class="built_in">where</span> ‘n’ is a number.</span><br><span class="line">(default eth0):</span><br><span class="line"><span class="comment"># 输入 eth0 ，这是ADSL相连的网卡的名字。</span></span><br><span class="line">&gt;&gt;&gt; Enter the demand value (default no):</span><br><span class="line"><span class="comment"># 输入 no</span></span><br><span class="line">&gt;&gt;&gt; Enter the DNS information here:</span><br><span class="line"><span class="comment"># 输入 server，这表示使用ADSL拨号自动获得的DNS服务器IP地址</span></span><br><span class="line">&gt;&gt;&gt; Please enter your PPPoE password:</span><br><span class="line"><span class="comment"># 输入ADSL帐号的密码</span></span><br><span class="line">&gt;&gt;&gt; Choose a <span class="built_in">type</span> of firewall (0-2):</span><br><span class="line"><span class="comment"># 输入 0 ，不使用防火墙</span></span><br><span class="line">&gt;&gt;&gt; Accept these settings and adjust configuration files (y/n)?</span><br><span class="line"><span class="comment"># 如果输入的信息正确，输入 y ,完成配置，否则，输入 n 重新输入。</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="文字和背景颜色搭配"><a href="#文字和背景颜色搭配" class="headerlink" title="文字和背景颜色搭配"></a>文字和背景颜色搭配</h1><h2 id="字体颜色"><a href="#字体颜色" class="headerlink" title="字体颜色"></a>字体颜色</h2><ul>
+<li>30~37</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[30m 黑色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[31m 红色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[32m 绿色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[33m 黄色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[34m 蓝色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[35m 紫色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[36m 天蓝字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[37m 白色字 \033[0m"</span></span><br></pre></td></tr></table></figure>
+<h2 id="字背景颜色范围"><a href="#字背景颜色范围" class="headerlink" title="字背景颜色范围"></a>字背景颜色范围</h2><ul>
+<li>40~47</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[40;37m 黑底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[41;37m 红底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[42;37m 绿底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[43;37m 黄底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[44;37m 蓝底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[45;37m 紫底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[46;37m 天蓝底白字 \033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[47;30m 白底黑字 \033[0m"</span></span><br></pre></td></tr></table></figure>
+<h2 id="控制选项说明"><a href="#控制选项说明" class="headerlink" title="控制选项说明"></a>控制选项说明</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">\033[0m <span class="comment"># 关闭所有属性 </span></span><br><span class="line">\033[1m <span class="comment"># 设置高亮度 </span></span><br><span class="line">\033[4m <span class="comment"># 下划线 </span></span><br><span class="line">\033[5m <span class="comment"># 闪烁 </span></span><br><span class="line">\033[7m <span class="comment"># 反显 </span></span><br><span class="line">\033[8m <span class="comment"># 消隐 </span></span><br><span class="line">\033[30m — \33[37m <span class="comment"># 设置前景色 </span></span><br><span class="line">\033[40m — \33[47m <span class="comment"># 设置背景色 </span></span><br><span class="line">\033[60A  <span class="comment"># 光标上移60行 </span></span><br><span class="line">\033[60B  <span class="comment"># 光标下移60行 </span></span><br><span class="line">\033[60C  <span class="comment"># 光标右移60行 </span></span><br><span class="line">\033[60G  <span class="comment"># 光标右移60行</span></span><br><span class="line">\033[60D  <span class="comment"># 光标左移60行 </span></span><br><span class="line">\033[y;xH <span class="comment"># 设置光标位置 </span></span><br><span class="line">\033[2J   <span class="comment"># 清屏 </span></span><br><span class="line">\033[K    <span class="comment"># 清除从光标到行尾的内容 </span></span><br><span class="line">\033[s    <span class="comment"># 保存光标位置 </span></span><br><span class="line">\033[u    <span class="comment"># 恢复光标位置 </span></span><br><span class="line">\033[?25l <span class="comment"># 隐藏光标 </span></span><br><span class="line">\033[?25h <span class="comment"># 显示光标</span></span><br></pre></td></tr></table></figure>
+<h1 id="额外说明"><a href="#额外说明" class="headerlink" title="额外说明"></a>额外说明</h1><ul>
+<li>前景颜色各数字是对应背景颜色减去10</li>
+<li>结束非常规字符序列的”m”要紧跟前面的数字，不能有空格</li>
+<li>命令也可以写成<code>echo -e &quot;^[[44;37;5m ME \033[0m COOL&quot;</code>，其中的”^[“需要先按Ctrl-V,然后再按<code>ESC</code>生成</li>
+</ul>
+<h1 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h1><ul>
+<li>写脚本时可调用系统的定义:<code>/etc/sysconfig/init</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># color =&gt; new RH6.0 bootup</span></span><br><span class="line"><span class="comment"># verbose =&gt; old-style bootup</span></span><br><span class="line"><span class="comment"># anything else =&gt; new style bootup without ANSI colors or positioning</span></span><br><span class="line">BOOTUP=color</span><br><span class="line"><span class="comment"># column to start "[  OK  ]" label in </span></span><br><span class="line">RES_COL=60</span><br><span class="line"><span class="comment"># terminal sequence to move to that column. You could change this</span></span><br><span class="line"><span class="comment"># to something like "tput hpa $&#123;RES_COL&#125;" if your terminal supports it</span></span><br><span class="line">MOVE_TO_COL=<span class="string">"echo -en \\033[<span class="variable">$&#123;RES_COL&#125;</span>G"</span></span><br><span class="line"><span class="comment"># terminal sequence to set color to a 'success' color (currently: green)</span></span><br><span class="line">SETCOLOR_SUCCESS=<span class="string">"echo -en \\033[0;32m"</span></span><br><span class="line"><span class="comment"># terminal sequence to set color to a 'failure' color (currently: red)</span></span><br><span class="line">SETCOLOR_FAILURE=<span class="string">"echo -en \\033[0;31m"</span></span><br><span class="line"><span class="comment"># terminal sequence to set color to a 'warning' color (currently: yellow)</span></span><br><span class="line">SETCOLOR_WARNING=<span class="string">"echo -en \\033[0;33m"</span></span><br><span class="line"><span class="comment"># terminal sequence to reset to the default color.</span></span><br><span class="line">SETCOLOR_NORMAL=<span class="string">"echo -en \\033[0;39m"</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>启动PPPOE客户端软件</li>
+<li>参考<code>/etc/init.d/functions</code>中的<code>echo_success</code>等函数，写个适合自己的函数</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/adsl-start</span><br><span class="line"><span class="comment"># 启动PPPOE客户端软件,进行连接</span></span><br><span class="line"><span class="comment"># 如果成功，将出现Connected；如果不成功，请检查网线、ADSL MODEM等物理设备，并查看 /var/log/messages中的信息</span></span><br><span class="line"></span><br><span class="line">/usr/sbin/adsl-stop</span><br><span class="line"><span class="comment"># 关闭和ISP的连接</span></span><br><span class="line"></span><br><span class="line">/usr/sbin/adsl-status</span><br><span class="line"><span class="comment"># 查看当前连接的状态</span></span><br><span class="line"></span><br><span class="line">chkconfig --add adsl</span><br><span class="line"><span class="comment"># 将在当前的运行级下加入ADSL的自启动脚本。</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>测试</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br><span class="line"><span class="comment"># 在输出中应该含有关于 ppp0 的一堆信息，其中还绑定了 IP 地址,说明已经从拨号中获得了IP地址。</span></span><br><span class="line"></span><br><span class="line">netstat -nr</span><br><span class="line"><span class="comment"># 查看路由表信息，这时的默认路由应该是上面获得的IP地址。</span></span><br><span class="line"><span class="comment"># 如果没有默认路由，我们可以手动增加：</span></span><br><span class="line">route add default gw 上面获得的IP地址</span><br></pre></td></tr></table></figure>
-<ul>
-<li>维护<br>添加计划任务定时拨号</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6 7 * * * root /usr/sbin/adsl-stop /etc/ppp/pppoe-eth1.conf;/usr/sbin/adsl-start /etc/ppp/pppoe-eth1.conf &gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Declare a default return value</span></span><br><span class="line">RETVAL=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># Echo log message to screen </span></span><br><span class="line"><span class="function"><span class="title">log_msg</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">test</span> <span class="variable">$&#123;RETVAL&#125;</span> -eq 0;<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -n <span class="string">"<span class="variable">$@</span>"</span>; echo_success; <span class="built_in">echo</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> -n <span class="string">"<span class="variable">$@</span>"</span>; echo_failure; <span class="built_in">echo</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -505,7 +522,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://linuxgeeks.github.io/2016/01/06/2016-1-6 Linux配置ADSL拨号上网/" title="Linux配置ADSL拨号上网">http://linuxgeeks.github.io/2016/01/06/2016-1-6 Linux配置ADSL拨号上网/</a>
+    <a href="http://linuxgeeks.github.io/2016/01/15/2016-1-15-124538-echo输出带颜色的文本/" title="echo输出带颜色的文本">http://linuxgeeks.github.io/2016/01/15/2016-1-15-124538-echo输出带颜色的文本/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -520,9 +537,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/配置/" rel="tag"><i class="fa fa-tag"></i> 配置</a>
-          
-            <a href="/tags/安装/" rel="tag"><i class="fa fa-tag"></i> 安装</a>
+            <a href="/tags/Linux命令/" rel="tag"><i class="fa fa-tag"></i> Linux命令</a>
           
         </div>
       
@@ -535,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/05/2016-1-5 Linux获取命令帮助/" rel="next" title="Linux获取命令帮助">
-                <i class="fa fa-chevron-left"></i> Linux获取命令帮助
+              <a href="/2016/01/15/2016-1-15-182351-Shell巧用总结/" rel="next" title="Shell巧用总结">
+                <i class="fa fa-chevron-left"></i> Shell巧用总结
               </a>
             
           </div>
@@ -545,8 +560,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/06/2016-1-6 iftop流量监控工具/" rel="prev" title="iftop流量监控工具">
-                iftop流量监控工具 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/01/16/2016-1-6-000936-使用lrzsz进行Windows与Linux间文件的上传-下载/" rel="prev" title="使用lrzsz进行Windows与Linux间文件的上传/下载">
+                使用lrzsz进行Windows与Linux间文件的上传/下载 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -637,8 +652,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -657,7 +681,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -679,7 +703,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -775,6 +799,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文字和背景颜色搭配"><span class="nav-number">2.</span> <span class="nav-text">文字和背景颜色搭配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字体颜色"><span class="nav-number">2.1.</span> <span class="nav-text">字体颜色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字背景颜色范围"><span class="nav-number">2.2.</span> <span class="nav-text">字背景颜色范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制选项说明"><span class="nav-number">2.3.</span> <span class="nav-text">控制选项说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#额外说明"><span class="nav-number">3.</span> <span class="nav-text">额外说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用建议"><span class="nav-number">4.</span> <span class="nav-text">使用建议</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
