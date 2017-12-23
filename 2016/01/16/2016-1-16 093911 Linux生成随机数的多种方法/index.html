@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="通过内部系统变量$RANDOM1echo $RANDOM 若超过5位可以加个固定10位整数，然后进行求余。 生成400000~500000的随机数：12345678910111213141516#!/bin/bash        function rand()&amp;#123;        min=$1        max=$(($2-$min+1))	# 生成0-32767之间的整数随机数	#">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-24T15:54:06.883Z">
+<meta property="og:updated_time" content="2017-12-20T09:30:47.964Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux生成随机数的多种方法">
 <meta name="twitter:description" content="通过内部系统变量$RANDOM1echo $RANDOM 若超过5位可以加个固定10位整数，然后进行求余。 生成400000~500000的随机数：12345678910111213141516#!/bin/bash        function rand()&amp;#123;        min=$1        max=$(($2-$min+1))	# 生成0-32767之间的整数随机数	#">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,034
+                  1,060
                 </span>
               
 
@@ -440,6 +440,7 @@
 <p>若超过5位可以加个固定10位整数，然后进行求余。</p>
 <p>生成400000~500000的随机数：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash    </span></span><br><span class="line">    </span><br><span class="line">function rand()&#123;    </span><br><span class="line">    min=$1    </span><br><span class="line">    max=$(($2-$min+1))</span><br><span class="line"><span class="meta">	#</span><span class="bash"> 生成0-32767之间的整数随机数</span></span><br><span class="line"><span class="meta">	#</span><span class="bash"> num=$(<span class="built_in">echo</span> <span class="variable">$RANDOM</span>)</span></span><br><span class="line"><span class="meta">	#</span><span class="bash"> 若要生成5位数以上的随机数，则需要加个固定10位整数，然后进行求余，如下：</span></span><br><span class="line">    num=$(($RANDOM+1000000000)) #增加一个10位的数再求余    </span><br><span class="line">    echo $(($num%$max+$min))    </span><br><span class="line">&#125;    </span><br><span class="line"></span><br><span class="line">rnd=$(rand 300000 600000)    </span><br><span class="line">echo $rnd    </span><br><span class="line">    </span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure></p>
 <h3 id="使用awk的随机函数"><a href="#使用awk的随机函数" class="headerlink" title="使用awk的随机函数"></a>使用awk的随机函数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'BEGIN&#123;srand();print rand()*1000000&#125;'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'function irand(min, max)&#123;max= max - min + 1;num= rand() * 1000000000;return int(num % max + min);&#125;!a[$1]++&#123;print $1,irand(1,30) &#125;'</span> filename</span><br></pre></td></tr></table></figure>
 <h3 id="使用openssl产生随机数"><a href="#使用openssl产生随机数" class="headerlink" title="使用openssl产生随机数"></a>使用openssl产生随机数</h3><p>openssl rand 用于产生指定长度个bytes的随机字符。-base64或-hex对随机字符串进行base64编码或用hex格式显示。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -base64 8 | md5sum | cut -c1-8    <span class="comment">#八位字母和数字的组合，3a61800e</span></span><br><span class="line">openssl rand -base64 8 | cksum | cut -c1-8       <span class="comment">#八位数字，10784736</span></span><br></pre></td></tr></table></figure>
 <h3 id="通过时间获得随机数（date）"><a href="#通过时间获得随机数（date）" class="headerlink" title="通过时间获得随机数（date）"></a>通过时间获得随机数（date）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">date +%s%N       <span class="comment">#生成19位数字，1287764807051101270</span></span><br><span class="line">date +%s%N | cut -c6-13   <span class="comment">#取八位数字，21793709</span></span><br><span class="line">date +%s%N | md5sum | head -c 8   <span class="comment">#八位字母和数字的组合，87022fda</span></span><br></pre></td></tr></table></figure>
@@ -678,7 +679,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -757,6 +758,14 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
