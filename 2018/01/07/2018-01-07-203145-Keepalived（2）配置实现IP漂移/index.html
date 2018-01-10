@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="负载均衡,ha,keepalived," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="IP漂移 这是一个Keepalived的单独使用配置实例。  基础环境配置为了配置方便，我们使用一个ansible服务器来批量操作多台节点，这里我们使用了两个节点：node1和node2来做效果演示  IP信息，三台节点时间要做同步  ansible：192.168.127.130 node1：192.168.127.">
+<meta name="keywords" content="负载均衡,ha,keepalived">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keepalived（2）配置实现IP漂移">
+<meta property="og:url" content="http://linuxgeeks.github.io/2018/01/07/2018-01-07-203145-Keepalived（2）配置实现IP漂移/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content="IP漂移 这是一个Keepalived的单独使用配置实例。  基础环境配置为了配置方便，我们使用一个ansible服务器来批量操作多台节点，这里我们使用了两个节点：node1和node2来做效果演示  IP信息，三台节点时间要做同步  ansible：192.168.127.130 node1：192.168.127.133 node2：192.168.127.134   ansible对node">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-10T15:21:55.634Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keepalived（2）配置实现IP漂移">
+<meta name="twitter:description" content="IP漂移 这是一个Keepalived的单独使用配置实例。  基础环境配置为了配置方便，我们使用一个ansible服务器来批量操作多台节点，这里我们使用了两个节点：node1和node2来做效果演示  IP信息，三台节点时间要做同步  ansible：192.168.127.130 node1：192.168.127.133 node2：192.168.127.134   ansible对node">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2018/01/07/2018-01-07-203145-Keepalived（2）配置实现IP漂移/"/>
+
+
+
+
+
+  <title>Keepalived（2）配置实现IP漂移 | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2018/01/07/2018-01-07-203145-Keepalived（2）配置实现IP漂移/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Keepalived（2）配置实现IP漂移</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T20:31:45+08:00">
+                2018-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/keepalived/" itemprop="url" rel="index">
+                    <span itemprop="name">keepalived</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,474
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="IP漂移"><a href="#IP漂移" class="headerlink" title="IP漂移"></a>IP漂移</h1><ul>
+<li>这是一个Keepalived的单独使用配置实例。</li>
+</ul>
+<h2 id="基础环境配置"><a href="#基础环境配置" class="headerlink" title="基础环境配置"></a>基础环境配置</h2><p>为了配置方便，我们使用一个ansible服务器来批量操作多台节点，这里我们使用了两个节点：node1和node2来做效果演示</p>
+<ul>
+<li><p>IP信息，三台节点时间要做同步</p>
+<ul>
+<li>ansible：192.168.127.130</li>
+<li>node1：192.168.127.133</li>
+<li>node2：192.168.127.134</li>
+</ul>
+</li>
+<li><p>ansible对node的ssh互信配置</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ansible server</span></span><br><span class="line"></span><br><span class="line">ssh-keygen  -t rsa -C <span class="string">'root@ansible'</span> -N <span class="string">''</span></span><br><span class="line"><span class="comment"># 创建ssh密钥</span></span><br><span class="line"></span><br><span class="line">ssh-copy-id root@192.168.127.133</span><br><span class="line">ssh-copy-id root@192.168.127.134</span><br><span class="line"><span class="comment"># 拷贝公钥，做到ssh互信</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>ansible针对Keepalived单独创建Inventory</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建Keepalived的Inventory</span></span><br><span class="line"><span class="comment"># /etc/ansible/keepalived.hosts</span></span><br><span class="line"></span><br><span class="line">[node]</span><br><span class="line">node1 ansible_ssh_host=192.168.127.133</span><br><span class="line">node2 ansible_ssh_host=192.168.127.134</span><br><span class="line"></span><br><span class="line">[node:vars]</span><br><span class="line">ssh_ansible_port=22</span><br><span class="line">ssh_ansible_user=root</span><br></pre></td></tr></table></figure>
+<h2 id="批量安装"><a href="#批量安装" class="headerlink" title="批量安装"></a>批量安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m yum -a <span class="string">'name=keepalived state=present'</span> </span><br><span class="line"><span class="comment"># 使用yum安装Keepalived</span></span><br><span class="line"></span><br><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'rpm -qc keepalived'</span> </span><br><span class="line"><span class="comment"># 查看生成的配置文件</span></span><br><span class="line"></span><br><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'cp /etc/keepalived/keepalived.conf&#123;,.bak&#125;'</span></span><br><span class="line"><span class="comment"># 配置文件备份</span></span><br></pre></td></tr></table></figure>
+<h2 id="节点的配置"><a href="#节点的配置" class="headerlink" title="节点的配置"></a>节点的配置</h2><p>按照如下做配置，其余配置不动</p>
+<ul>
+<li>节点node1</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">! Configuration File <span class="keyword">for</span> keepalived</span><br><span class="line"></span><br><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;</span><br><span class="line">   root@localhost  <span class="comment"># 收邮件人，可以定义多个</span></span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from kaadmin@localhost       <span class="comment"># 发邮件人，这里可以伪装</span></span><br><span class="line">   smtp_server 127.0.0.1   <span class="comment"># 发送邮件的服务器地址</span></span><br><span class="line">   smtp_connect_timeout 30 <span class="comment"># 连接超时时间</span></span><br><span class="line">   router_id LVS_DEVEL</span><br><span class="line">   vrrp_skip_check_adv_addr</span><br><span class="line">   vrrp_strict</span><br><span class="line">   vrrp_garp_interval 0</span><br><span class="line">   vrrp_gna_interval 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123; <span class="comment"># 每一个vrrp_instance就是定义一个虚拟路由器的</span></span><br><span class="line">    state MASTER     <span class="comment"># 由初始状态状态转换为 MASTER 状态</span></span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51 <span class="comment"># 虚拟路由的id号，一般不能大于255的</span></span><br><span class="line">    priority 100         <span class="comment"># 初始化优先级</span></span><br><span class="line">    advert_int 1         <span class="comment"># 初始化通告</span></span><br><span class="line">    authentication &#123;     <span class="comment"># 认证机制</span></span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111   <span class="comment"># 密码</span></span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;  <span class="comment"># 虚拟地址vip</span></span><br><span class="line">        192.168.200.163/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.164/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.165/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.166/24 brd 192.168.200.254 dev eth0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>节点node2配置；把node1配置文件复制到node2上一份，并修改初始状态和优先级<br>需要修改的地方：<code>state</code>和<code>priority</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance VI_1 &#123; <span class="comment"># 每一个vrrp_instance就是标识一个虚拟路由器的</span></span><br><span class="line">    state BACKUP     <span class="comment"># 由初始状态状态转换为 BACKUP 状态</span></span><br><span class="line">    interface eth0   <span class="comment"># 通过哪块网卡选举</span></span><br><span class="line">    virtual_router_id 51 <span class="comment"># 虚拟路由的id号，一般不能大于255的</span></span><br><span class="line">    priority 90          <span class="comment"># 初始化优先级，一定要比master的优先级要低</span></span><br><span class="line">    advert_int 1         <span class="comment"># 初始化通告</span></span><br><span class="line">    authentication &#123;     <span class="comment"># 认证机制</span></span><br><span class="line">        auth_type PASS   <span class="comment"># 认证方式，PASS为明文</span></span><br><span class="line">        auth_pass 1111   <span class="comment"># 密码</span></span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;  <span class="comment"># 虚拟地址（vip）池</span></span><br><span class="line">        192.168.200.163/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.164/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.165/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.166/24 brd 192.168.200.254 dev eth0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="测试与验证"><a href="#测试与验证" class="headerlink" title="测试与验证"></a>测试与验证</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'systemctl start keepalived'</span></span><br><span class="line"><span class="comment"># 启动两个节点的Keepalived服务</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'systemctl status keepalived'</span></span><br><span class="line"><span class="comment"># 查看两个节点的Keepalived服务状态</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">node1 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">● keepalived.service - LVS and VRRP High Availability Monitor</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/keepalived.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Wed 2018-01-10 21:16:31 CST; 4min 36s ago</span><br><span class="line">  Process: 2638 ExecStart=/usr/sbin/keepalived <span class="variable">$KEEPALIVED_OPTIONS</span> (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 2639 (keepalived)</span><br><span class="line">   CGroup: /system.slice/keepalived.service</span><br><span class="line">           ├─2639 /usr/sbin/keepalived -D</span><br><span class="line">           ├─2640 /usr/sbin/keepalived -D</span><br><span class="line">           └─2641 /usr/sbin/keepalived -D</span><br><span class="line"></span><br><span class="line"><span class="comment"># 省略部分内容......</span></span><br><span class="line"></span><br><span class="line">node2 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">● keepalived.service - LVS and VRRP High Availability Monitor</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/keepalived.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Wed 2018-01-10 21:16:31 CST; 4min 36s ago</span><br><span class="line">  Process: 3393 ExecStart=/usr/sbin/keepalived <span class="variable">$KEEPALIVED_OPTIONS</span> (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 3394 (keepalived)</span><br><span class="line">   CGroup: /system.slice/keepalived.service</span><br><span class="line">           ├─3394 /usr/sbin/keepalived -D</span><br><span class="line">           ├─3395 /usr/sbin/keepalived -D</span><br><span class="line">           └─3396 /usr/sbin/keepalived -D</span><br><span class="line">		   </span><br><span class="line"><span class="comment"># 省略部分内容......</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'ip addr show dev eth0 | egrep  "inet"'</span></span><br><span class="line"><span class="comment"># 查看两个节点上的VIP</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">node1 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.133/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line">    inet 192.168.200.163/24 brd 192.168.200.254 scope global eth0</span><br><span class="line">    inet 192.168.200.164/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.165/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.166/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line"></span><br><span class="line">node2 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.134/24 brd 192.168.127.255 scope global dynamic eth0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts node1 -m shell -a <span class="string">'systemctl stop keepalived'</span>   </span><br><span class="line"><span class="comment"># 停掉node1的Keepalived服务</span></span><br><span class="line"></span><br><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'ip addr show dev eth0 | egrep  "inet"'</span></span><br><span class="line"><span class="comment"># 再次查看两个节点上的VIP</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">node2 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.134/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line">    inet 192.168.200.163/24 brd 192.168.200.254 scope global eth0</span><br><span class="line">    inet 192.168.200.164/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.165/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.166/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line"></span><br><span class="line">node1 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.133/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line"><span class="comment">## vrrp_script使用范例</span></span><br><span class="line"></span><br><span class="line">可以在配置文件中手动通过 vrrp_script 定义一个外围的检测机制，并在 vrrp_instance 中通过定义 track_script 来追踪脚本执行过程，实现节点转移</span><br><span class="line"></span><br><span class="line">- keepalived会定时执行脚本并对脚本执行的结果进行分析，动态调整vrrp_instance的优先级。</span><br><span class="line">  - 如果脚本执行结果为0，并且weight配置的值大于0，则优先级相应的增加</span><br><span class="line">  - 如果脚本执行结果非0，并且weight配置的值小于0，则优先级相应的减少</span><br><span class="line">  - 其他情况，维持原本配置的优先级，即配置文件中priority对应的值。</span><br><span class="line"></span><br><span class="line">- 这里需要注意的是：</span><br><span class="line">  - 1） 优先级“不会”不断的提高或者降低，当track的对象恢复时，又是一致的</span><br><span class="line">  - 2） 可以编写多个检测脚本并为每个检测脚本设置不同的weight</span><br><span class="line">  - 3） 不管提高优先级还是降低优先级，最终优先级的范围是在[1,254]，不会出现优先级小于等于0或者优先级大于等于255的情况</span><br><span class="line"></span><br><span class="line">- 这样可以做到利用脚本检测业务进程的状态，并动态调整优先级从而实现主备切换。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">实验测试在两个节点上的`/etc/keepalived/keepalived.conf`中做如下的修改</span><br><span class="line"></span><br><span class="line">``` bash</span><br><span class="line">! Configuration File <span class="keyword">for</span> keepalived</span><br><span class="line"></span><br><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;</span><br><span class="line">   root@localhost  <span class="comment"># 收邮件人，可以定义多个</span></span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from kaadmin@localhost       <span class="comment"># 发邮件人，这里可以伪装</span></span><br><span class="line">   smtp_server 127.0.0.1   <span class="comment"># 发送邮件的服务器地址</span></span><br><span class="line">        chk_maintainace</span><br><span class="line">   smtp_connect_timeout 30 <span class="comment"># 连接超时时间</span></span><br><span class="line">   router_id LVS_DEVEL</span><br><span class="line">   vrrp_skip_check_adv_addr</span><br><span class="line">   vrrp_strict</span><br><span class="line">   vrrp_garp_interval 0</span><br><span class="line">   vrrp_gna_interval 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ----------------------------------------------------------------</span></span><br><span class="line">vrrp_script chk_maintainace &#123; <span class="comment"># 检测机制的脚本名称为chk_maintainace</span></span><br><span class="line">   script <span class="string">"/usr/local/keepalived/scripts/chk_down.sh"</span> </span><br><span class="line">   <span class="comment"># 可以是个脚本路径，也可以是脚本命令   interval 1 # 每隔1秒中检测一次</span></span><br><span class="line">   weight -20  </span><br><span class="line">   <span class="comment"># 优先级减20，设置的太小可能会不生效</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># ----------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123; <span class="comment"># 每一个vrrp_instance就是定义一个虚拟路由器的</span></span><br><span class="line">    state MASTER     <span class="comment"># 由初始状态状态转换为 MASTER 状态</span></span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51 <span class="comment"># 虚拟路由的id号，一般不能大于255的</span></span><br><span class="line">    priority 100         <span class="comment"># 初始化优先级</span></span><br><span class="line">    advert_int 1         <span class="comment"># 初始化通告</span></span><br><span class="line">    authentication &#123;     <span class="comment"># 认证机制</span></span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111   <span class="comment"># 密码</span></span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;  <span class="comment"># 虚拟地址vip</span></span><br><span class="line">        192.168.200.163/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.164/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.165/24 brd 192.168.200.254 dev eth0</span><br><span class="line">        192.168.200.166/24 brd 192.168.200.254 dev eth0</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment"># ----------------------------------------------------------------</span></span><br><span class="line">    track_script &#123; <span class="comment"># 调用外围脚本，追踪外围脚本执行过程</span></span><br><span class="line">        chk_maintainace</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment"># ----------------------------------------------------------------</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>脚本<code>/usr/local/keepalived/scripts/chk_down.sh</code>内容</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">Down_File=<span class="string">'/etc/keepalived/down'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> -e <span class="variable">$&#123;Down_File&#125;</span> ;<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'ip addr show dev eth0 | egrep  "inet"'</span></span><br><span class="line"><span class="comment"># 查看两个节点上的VIP</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">node1 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.133/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line">    inet 192.168.200.163/24 brd 192.168.200.254 scope global eth0</span><br><span class="line">    inet 192.168.200.164/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.165/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.166/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line"></span><br><span class="line">node2 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.134/24 brd 192.168.127.255 scope global dynamic eth0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts node1 -m shell -a <span class="string">'touch /etc/keepalived/down'</span></span><br><span class="line"><span class="comment"># 在node1上创建普通文件down，node2不动</span></span><br><span class="line"></span><br><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'systemctl restart keepalived'</span></span><br><span class="line"><span class="comment"># 两个节点均重启Keepalived服务</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'ip addr show dev eth0 | egrep  "inet"'</span></span><br><span class="line"><span class="comment"># 查看两个节点上的VIP</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">node1 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.133/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line"></span><br><span class="line">node2 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.134/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line">    inet 192.168.200.163/24 brd 192.168.200.254 scope global eth0</span><br><span class="line">    inet 192.168.200.164/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.165/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.166/24 brd 192.168.200.254 scope global secondary eth0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ansible -i /etc/ansible/keepalived.hosts node1 -m shell -a <span class="string">'rm -f /etc/keepalived/down'</span></span><br><span class="line"><span class="comment"># 在node1上删除普通文件down，node2不动</span></span><br><span class="line"></span><br><span class="line">ansible -i /etc/ansible/keepalived.hosts all -m shell -a <span class="string">'ip addr show dev eth0 | egrep  "inet"'</span></span><br><span class="line"><span class="comment"># 查看两个节点上的VIP</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">node1 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.133/24 brd 192.168.127.255 scope global dynamic eth0</span><br><span class="line">    inet 192.168.200.163/24 brd 192.168.200.254 scope global eth0</span><br><span class="line">    inet 192.168.200.164/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.165/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line">    inet 192.168.200.166/24 brd 192.168.200.254 scope global secondary eth0</span><br><span class="line"></span><br><span class="line">node2 | SUCCESS | rc=0 &gt;&gt;</span><br><span class="line">    inet 192.168.127.134/24 brd 192.168.127.255 scope global dynamic eth0</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2018/01/07/2018-01-07-203145-Keepalived（2）配置实现IP漂移/" title="Keepalived（2）配置实现IP漂移">http://linuxgeeks.github.io/2018/01/07/2018-01-07-203145-Keepalived（2）配置实现IP漂移/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/负载均衡/" rel="tag"><i class="fa fa-tag"></i> 负载均衡</a>
+          
+            <a href="/tags/ha/" rel="tag"><i class="fa fa-tag"></i> ha</a>
+          
+            <a href="/tags/keepalived/" rel="tag"><i class="fa fa-tag"></i> keepalived</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/07/2018-01-07-195142-Keepalived（1）安装配置/" rel="next" title="Keepalived（1）安装配置">
+                <i class="fa fa-chevron-left"></i> Keepalived（1）安装配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/07/2018-01-07-203907-Keepalived（3）在状态转换时进行通知/" rel="prev" title="Keepalived（3）在状态转换时进行通知">
+                Keepalived（3）在状态转换时进行通知 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IP漂移"><span class="nav-number">1.</span> <span class="nav-text">IP漂移</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础环境配置"><span class="nav-number">1.1.</span> <span class="nav-text">基础环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#批量安装"><span class="nav-number">1.2.</span> <span class="nav-text">批量安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点的配置"><span class="nav-number">1.3.</span> <span class="nav-text">节点的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试与验证"><span class="nav-number">1.4.</span> <span class="nav-text">测试与验证</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/05/31/2017-05-31 CentOS 7 网卡一致性命名规则/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/15/2017-12-15-212751-使用dig命令写一个定时解析脚本/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -329,7 +329,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/31/2017-05-31 CentOS 7 网卡一致性命名规则/" itemprop="url">CentOS 7 网卡一致性命名规则</a></h1>
+                <a class="post-title-link" href="/2017/12/15/2017-12-15-212751-使用dig命令写一个定时解析脚本/" itemprop="url">使用dig命令写一个定时解析脚本</a></h1>
         
 
         <div class="post-meta">
@@ -341,8 +341,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-31T19:14:32+08:00">
-                2017-05-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T21:27:52+08:00">
+                2017-12-15
               </time>
             
 
@@ -364,8 +364,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/配置/" itemprop="url" rel="index">
-                    <span itemprop="name">配置</span>
+                  <a href="/categories/脚本/" itemprop="url" rel="index">
+                    <span itemprop="name">脚本</span>
                   </a>
                 </span>
 
@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,057
+                  440
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  2
                 </span>
               
             </div>
@@ -434,12 +434,22 @@
       
         
           
-          说明参考：https://access.redhat.com/documentation/zh-CN/Red_Hat_Enterprise_Linux/7/html/Networking_Guide/ch-Consistent_Network_Device_Naming.html
-一致性网络设备命名
+          
+写在前面：
+
+写这个脚本是因为工作中需要收集一些域名的IP地址
+解析和收集的过程中发现有些域名解析的IP地址不固定，从而造成地址收集比较棘手
+
+
+环境依赖
+需要保证所需包是安装的
+
+12rpm -q bind-utilsyum -y install bind-utils
+脚本内容123456789
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/31/2017-05-31 CentOS 7 网卡一致性命名规则/#more" rel="contents">
+            <a class="btn" href="/2017/12/15/2017-12-15-212751-使用dig命令写一个定时解析脚本/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -490,7 +500,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/14/2017-12-14-102253-Cobbler无人值守安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -509,7 +519,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/" itemprop="url">CentOS 7 网卡配置文件说明</a></h1>
+                <a class="post-title-link" href="/2017/12/14/2017-12-14-102253-Cobbler无人值守安装/" itemprop="url">Cobbler无人值守安装CentOS 7.4</a></h1>
         
 
         <div class="post-meta">
@@ -521,8 +531,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T22:47:10+08:00">
-                2017-05-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-14T10:23:07+08:00">
+                2017-12-14
               </time>
             
 
@@ -544,8 +554,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/配置/" itemprop="url" rel="index">
-                    <span itemprop="name">配置</span>
+                  <a href="/categories/系统安装/" itemprop="url" rel="index">
+                    <span itemprop="name">系统安装</span>
                   </a>
                 </span>
 
@@ -575,7 +585,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  599
+                  5,134
                 </span>
               
 
@@ -591,7 +601,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  27
                 </span>
               
             </div>
@@ -614,13 +624,18 @@
       
         
           
-          摘要
-Redhat Linux的网络配置，基本上是通过修改几个配置文件来实现的，虽然也可以用ifconfig来设置IP，用route来配置默认网关，用hostname来配置主机名，但是重启后会丢失。
-在RedHat中，系统网络设备的配置文件保存在/etc/sysconfig/network-scri
+          
+
+在看Cobbler之前请先看一下Kickstart无人值守安装 。了解Cobbler的实现原理。
+Cobbler是独立的，不需要先安装Kickstart然后再安装Cobbler
+
+
+Cobbler介绍
+Cobbler是一个Linux服务器快速网络安装的服务，而且在经过调整也可以支持网络安装win
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/#more" rel="contents">
+            <a class="btn" href="/2017/12/14/2017-12-14-102253-Cobbler无人值守安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -671,7 +686,7 @@ Redhat Linux的网络配置，基本上是通过修改几个配置文件来实�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/02/Nginx常用参数配置说明/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-234034-Haproxy配置实例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -690,7 +705,7 @@ Redhat Linux的网络配置，基本上是通过修改几个配置文件来实�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/02/Nginx常用参数配置说明/" itemprop="url">Nginx常用参数配置说明</a></h1>
+                <a class="post-title-link" href="/2017/12/03/2017-12-03-234034-Haproxy配置实例/" itemprop="url">Haproxy配置实例</a></h1>
         
 
         <div class="post-meta">
@@ -702,8 +717,8 @@ Redhat Linux的网络配置，基本上是通过修改几个配置文件来实�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-02T16:36:38+08:00">
-                2017-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T23:40:34+08:00">
+                2017-12-03
               </time>
             
 
@@ -712,28 +727,6 @@ Redhat Linux的网络配置，基本上是通过修改几个配置文件来实�
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Services/" itemprop="url" rel="index">
-                    <span itemprop="name">Services</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -756,732 +749,7 @@ Redhat Linux的网络配置，基本上是通过修改几个配置文件来实�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6,254
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  30
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            nginx.vim
-
-使用vim对nginx配置文件做语法高亮
-站点： http://www.vim.org/scripts/script.php?script_id=1886
-123456mkdir -pv ~/.vim/syntax# 语法目录创建wget http://www.vim.or
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/02/Nginx常用参数配置说明/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/01/Nginx编译安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/01/Nginx编译安装/" itemprop="url">Nginx编译安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-01T19:22:28+08:00">
-                2017-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Services/" itemprop="url" rel="index">
-                    <span itemprop="name">Services</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,248
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          下载站点
-源码包站点：http://nginx.org/en/download.html下载链接：http://nginx.org/download/nginx-1.10.2.tar.gz
-
-编译安装环境准备1234567yum -y groupinstall "Compatibility libr
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/01/Nginx编译安装/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/01/Nginx服务器特性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/01/Nginx服务器特性/" itemprop="url">Nginx服务器特性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-01T18:35:47+08:00">
-                2017-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Services/" itemprop="url" rel="index">
-                    <span itemprop="name">Services</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  768
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          NginxNginx (读作”engine X”) 由Igor Sysoev(俄罗斯)于2005年编写，是一个免费、开源、高性能的HTTP服务器和反向代理，也可以作为一个IMAP/POP3代理服务器。根据 Netcraft 的 April 2015 Web Server Survey, 现在全世界1
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/01/Nginx服务器特性/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/12/2016-03-12 监控服务器 Zabbix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/12/2016-03-12 监控服务器 Zabbix/" itemprop="url">监控服务器 Zabbix</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-12T10:43:49+08:00">
-                2016-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Services/" itemprop="url" rel="index">
-                    <span itemprop="name">Services</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  9,270
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  41
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简介Linux下常用的系统监控软件有Nagios、Cacti、Zabbix、Monit等，这些开源的软件，可以帮助我们更好的管理机器，在第一时间内发现，并警告系统维护人员。
-Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状态，Zabbix SIA提供支持.
-
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/12/2016-03-12 监控服务器 Zabbix/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/" itemprop="url">MySQL安装(通用二进制包)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-28T11:40:23+08:00">
-                2016-02-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  949
+                  766
                 </span>
               
 
@@ -1520,14 +788,11 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
       
         
           
-          下载站点
-源码包站点：http://mirrors.sohu.com/mysql/下载链接：http://mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.53-linux2.6-x86_64.tar.gz
-
-源码包安装必须安装在/usr/local/下，目录名叫
+          haproxy是一款功能强大、灵活好用反向代理软件，提供了高可用、负载均衡、后端服务器代理的功能，它在7层负载均衡方面的功能很强大(支持cookie track, header rewrite等等)，支持双机热备，支持虚拟主机，拥有非常不错的服务器健康检查功能，当其代理的后端服务器出现故障, HAP
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/#more" rel="contents">
+            <a class="btn" href="/2017/12/03/2017-12-03-234034-Haproxy配置实例/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1578,7 +843,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/27/2016-2-27 MySQL基础/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-232752-Haproxy实现状态监控页面/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -1597,7 +862,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/27/2016-2-27 MySQL基础/" itemprop="url">MySQL基础</a></h1>
+                <a class="post-title-link" href="/2017/12/03/2017-12-03-232752-Haproxy实现状态监控页面/" itemprop="url">Haproxy实现状态监控页面</a></h1>
         
 
         <div class="post-meta">
@@ -1609,8 +874,8 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-27T21:56:24+08:00">
-                2016-02-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T23:27:53+08:00">
+                2017-12-03
               </time>
             
 
@@ -1632,8 +897,8 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -1663,7 +928,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,825
+                  164
                 </span>
               
 
@@ -1679,7 +944,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  1
                 </span>
               
             </div>
@@ -1702,11 +967,11 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
       
         
           
-          MySQL是什么？MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，目前属于 Oracle 旗下产品。MySQL 最流行的关系型数据库管理系统，在 WEB 应用方面MySQL是最好的 RDBMS (Relational Database Management System，关系
+          Haproxy监控页面12345678910listen stats                            #关联前端和后端定义一个完整的代理    mode http                           #设置代理协议    bind 0.0.0.0:1080   
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/27/2016-2-27 MySQL基础/#more" rel="contents">
+            <a class="btn" href="/2017/12/03/2017-12-03-232752-Haproxy实现状态监控页面/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1757,7 +1022,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/26/2016-2-26 Selinux和Rsyslog/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-223954-Haproxy配置文件参数说明/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -1776,7 +1041,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/26/2016-2-26 Selinux和Rsyslog/" itemprop="url">SElinux和Rsyslog</a></h1>
+                <a class="post-title-link" href="/2017/12/03/2017-12-03-223954-Haproxy配置文件参数说明/" itemprop="url">Haproxy配置文件参数说明</a></h1>
         
 
         <div class="post-meta">
@@ -1788,8 +1053,8 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-26T15:10:27+08:00">
-                2016-02-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T22:39:56+08:00">
+                2017-12-03
               </time>
             
 
@@ -1811,8 +1076,8 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/security/" itemprop="url" rel="index">
-                    <span itemprop="name">security</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -1842,7 +1107,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,487
+                  9,794
                 </span>
               
 
@@ -1858,7 +1123,7 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  39
                 </span>
               
             </div>
@@ -1881,13 +1146,18 @@ Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状�
       
         
           
-          SElinux
-SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制访问控制的实现，是 Linux历史上最杰出的新安全子系统。NSA是在Linux社区的帮助下开发了一种访问控制体系，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。
+          
+官方文档：http://www.haproxy.org/#docs
 
+配置HAProxy配置文件格式Haproxy的配置处理3类来主要参数来源：
+
+最优先处理的命令行参数；
+global配置段，用于设定全局配置参数；
+proxy相关配置段，如defaults、listen、frontend和bac
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/26/2016-2-26 Selinux和Rsyslog/#more" rel="contents">
+            <a class="btn" href="/2017/12/03/2017-12-03-223954-Haproxy配置文件参数说明/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1938,7 +1208,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/25/2016-2-25 iptables_Command_Examples/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-214728-Haproxy配置实现Web负载均衡/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -1957,7 +1227,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/25/2016-2-25 iptables_Command_Examples/" itemprop="url">iptables Command & Examples</a></h1>
+                <a class="post-title-link" href="/2017/12/03/2017-12-03-214728-Haproxy配置实现Web负载均衡/" itemprop="url">Haproxy配置实现Web负载均衡</a></h1>
         
 
         <div class="post-meta">
@@ -1969,8 +1239,8 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-25T08:20:21+08:00">
-                2016-02-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T21:47:29+08:00">
+                2017-12-03
               </time>
             
 
@@ -1992,8 +1262,8 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Network/" itemprop="url" rel="index">
-                    <span itemprop="name">Network</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -2023,7 +1293,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,172
+                  1,270
                 </span>
               
 
@@ -2039,7 +1309,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  7
                 </span>
               
             </div>
@@ -2062,11 +1332,756 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
       
         
           
-          日常处理SSH连接1234iptables -A INPUT -d 192.168.2.133 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT# 将目标为本机22端口，状态为新请求或者已建立的连接放行iptables -A O
+          环境说明Haproxy
+hostname：Haproxy
+运行服务：Haproxy
+IP地址
+eth0 : 192.168.127.130/24 brd 192.168.127.255
+eth1 : 172.20.35.21/22 brd 172.20.35.255
+
+
+
+web1
+hostname
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/25/2016-2-25 iptables_Command_Examples/#more" rel="contents">
+            <a class="btn" href="/2017/12/03/2017-12-03-214728-Haproxy配置实现Web负载均衡/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-205226-Haproxy编译安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/03/2017-12-03-205226-Haproxy编译安装/" itemprop="url">Haproxy编译安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T20:52:26+08:00">
+                2017-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,241
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+
+版本信息：
+系统：CentOS Linux release 7.4.1708 (Core)
+内核：4.14.8-1.el7.elrepo.x86_64 并启用了bbr算法
+Haproxy：haproxy-1.7.9
+
+
+Tips： CentOS 自6.4开始系统自带Haproxy
+解决依赖关系1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/03/2017-12-03-205226-Haproxy编译安装/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/12/03/2017-12-03-202737-Haproxy简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/03/2017-12-03-202737-Haproxy简介/" itemprop="url">Haproxy简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T20:27:38+08:00">
+                2017-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,004
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          简介
+Haproxy提供高可用性、负载均衡以及基于TCP和HTTP应用的代理，支持http的虚拟主机，它是免费、快速并且可靠的一种解决方案。HAProxy特别适用于那些负载特大的web站点，这些站点通常又需要会话保持或七层处理HAProxy运行在时下的硬件上，完全可以支持数以万计的并发连接。并且它的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/03/2017-12-03-202737-Haproxy简介/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/11/27/2017-11-27-110423-让谷歌TCP-BBR拥塞算法为TCP加速/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/27/2017-11-27-110423-让谷歌TCP-BBR拥塞算法为TCP加速/" itemprop="url">让谷歌TCP-BBR拥塞算法为TCP加速</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-27T11:04:36+08:00">
+                2017-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/配置/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,319
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          BBR简述
+Google 开源了其 TCP BBR 拥塞控制算法，并提交到了 Linux 内核，从 4.9 开始，Linux 内核已经用上了该算法。
+目的是要尽量跑满带宽，并且尽量不要有排队的情况。
+可以起到单边加速TCP连接的效果。
+TCP BBR致力于解决两个问题
+在有一定丢包率的网络链路上充分
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/27/2017-11-27-110423-让谷歌TCP-BBR拥塞算法为TCP加速/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/11/26/2017-11-26-133150-自定义Linux登录后的提示信息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/26/2017-11-26-133150-自定义Linux登录后的提示信息/" itemprop="url">自定义Linux登录后的提示信息</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-26T13:31:51+08:00">
+                2017-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/配置/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  294
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Linux登录成功后的欢迎语主要是在/etc/motd中配置，这个文件中填写自己想要显示的内容即可
+以下是几个供娱乐使用的提示信息模板
+
+12345678910111213141516171819202122                   _oo8oo_                  o
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/26/2017-11-26-133150-自定义Linux登录后的提示信息/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2108,7 +2123,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2160,7 +2175,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2171,7 +2186,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2182,7 +2197,7 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2235,6 +2250,10 @@ SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制�
                 
                   <li class="links-of-blogroll-item">
                     <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">

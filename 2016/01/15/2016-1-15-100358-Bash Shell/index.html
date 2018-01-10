@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Shell,Bash," />
+  <meta name="keywords" content="Bash,Shell," />
 
 
 
@@ -82,7 +82,7 @@
 
 
 <meta name="description" content="简介 计算机硬件是由 运算器、控制器、存储器、输入/输出设备等设备组成的，而能够让机箱内各种硬件设备各司其职东西就叫——kernel（内核）。内核负责驱动硬件、管理活动和分配/管理硬件资源，系统内核不能直接让用户操作。因为用户不能直接控制硬件也不能直接操作内核，于是便需要基于“系统调用接口”开发出的程序/服务来满足用户">
-<meta name="keywords" content="Shell,Bash">
+<meta name="keywords" content="Bash,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bash Shell">
 <meta property="og:url" content="http://linuxgeeks.github.io/2016/01/15/2016-1-15-100358-Bash Shell/index.html">
@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/whiptail7.jpg">
 <meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/whiptail8.jpg">
 <meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/whiptail9.jpg">
-<meta property="og:updated_time" content="2017-11-24T15:56:47.649Z">
+<meta property="og:updated_time" content="2018-01-05T17:01:51.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bash Shell">
 <meta name="twitter:description" content="简介 计算机硬件是由 运算器、控制器、存储器、输入/输出设备等设备组成的，而能够让机箱内各种硬件设备各司其职东西就叫——kernel（内核）。内核负责驱动硬件、管理活动和分配/管理硬件资源，系统内核不能直接让用户操作。因为用户不能直接控制硬件也不能直接操作内核，于是便需要基于“系统调用接口”开发出的程序/服务来满足用户日常工作。  “Shell“——也可称为“壳”，充当人与内核（硬件）的翻译官，用">
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  13,336
+                  13,403
                 </span>
               
 
@@ -506,11 +506,11 @@
 <li>!$     引用上一条命令的最后一个参数</li>
 </ul>
 </li>
-<li><code>↑</code> 或 <code>Ctrl</code> + <code>P</code><ul>
+<li><code>↑</code> 或 <code>Ctrl</code> + <code>p</code><ul>
 <li>引用上一条命令</li>
 </ul>
 </li>
-<li><p><code>↓</code> 或 <code>Ctrl</code> + <code>N</code></p>
+<li><p><code>↓</code> 或 <code>Ctrl</code> + <code>n</code></p>
 <ul>
 <li>引用下一条命令</li>
 </ul>
@@ -521,8 +521,14 @@
 <li>重复执行 <code>Esc</code> + <code>.</code> 则会倒序切换历史命令的最后一个参数</li>
 </ul>
 </li>
-<li><code>Ctrl</code> + <code>R</code><ul>
-<li>按下 <code>Ctrl</code> + <code>R</code> ，然后输入关键字搜索历史命令，按 <code>Enter</code> 执行命令</li>
+<li><p><code>!cmd:3</code>  </p>
+<ul>
+<li>引用上一条命令的第三个参数</li>
+</ul>
+</li>
+<li><p><code>Ctrl</code> + <code>r</code></p>
+<ul>
+<li>按下 <code>Ctrl</code> + <code>r</code> ，然后输入关键字搜索历史命令，按 <code>Enter</code> 执行命令</li>
 </ul>
 </li>
 </ul>
@@ -553,19 +559,22 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">command</span>) 或 `<span class="built_in">command</span>`</span><br></pre></td></tr></table></figure>
 <h4 id="命令行编辑"><a href="#命令行编辑" class="headerlink" title="命令行编辑"></a>命令行编辑</h4><ul>
-<li><code>Ctrl</code> + <code>A</code>    光标跳转到命令行行首</li>
-<li><code>Ctrl</code> + <code>E</code>    光标跳转到命令行行尾</li>
-<li><code>Ctrl</code> + <code>L</code>    清屏，等同于 <code>clear</code> 命令</li>
-<li><code>Ctrl</code> + <code>U</code>    剪切光标至命令行行首的内容</li>
-<li><code>Ctrl</code> + <code>K</code>    剪切光标至命令行行尾的内容</li>
-<li><code>Ctrl</code> + <code>W</code>   剪切光标之前一个单词</li>
-<li><code>Ctrl</code> + <code>Y</code>    复制剪切的内容</li>
-<li><code>Ctrl</code> + <code>B</code>    向左移动光标，等同于 <code>←</code></li>
-<li><code>Ctrl</code> + <code>F</code>    向右移动光标，等同于 <code>→</code></li>
-<li><code>Ctrl</code> + <code>X</code> + <code>X</code> 光标在命令行中最后两次出现的位置间互相切换</li>
-<li><code>Esc</code> + <code>B</code>    移动到当前单词的词首处</li>
-<li><code>Esc</code> + <code>F</code>    移动到当前单词的词尾处</li>
-<li><code>Esc</code> + <code>T</code>    交换光标前的最后两个单词</li>
+<li><code>Ctrl</code> + <code>a</code>    光标跳转到命令行行首</li>
+<li><code>Ctrl</code> + <code>e</code>    光标跳转到命令行行尾</li>
+<li><code>Ctrl</code> + <code>l</code>    清屏，等同于 <code>clear</code> 命令</li>
+<li><code>Ctrl</code> + <code>u</code>    剪切光标至命令行行首的内容</li>
+<li><code>Ctrl</code> + <code>k</code>    剪切光标至命令行行尾的内容</li>
+<li><code>Ctrl</code> + <code>w</code>   剪切光标之前一个单词</li>
+<li><code>Ctrl</code> + <code>y</code>    复制剪切的内容</li>
+<li><code>Ctrl</code> + <code>b</code>    向左移动光标，等同于 <code>←</code></li>
+<li><code>Ctrl</code> + <code>f</code>    向右移动光标，等同于 <code>→</code></li>
+<li><code>Ctrl</code> + <code>x</code> + <code>x</code> 光标在命令行中最后两次出现的位置间互相切换</li>
+<li><code>Esc</code> + <code>b</code>    移动到当前单词的词首处，等同于xterm终端下的<code>Ctrl</code>+<code>←</code></li>
+<li><code>Esc</code> + <code>f</code>    移动到当前单词的词尾处，等同于xterm终端下的<code>Ctrl</code>+<code>→</code></li>
+<li><code>Esc</code> + <code>t</code>    交换光标前的最后两个单词</li>
+<li><code>Esc</code> + <code>u</code>   将当前单词转换为大写</li>
+<li><code>Esc</code> + <code>l</code>   将当前单词转换为小写</li>
+<li><code>Esc</code> + <code>c</code>   将当前字母转换为大写</li>
 </ul>
 <h4 id="命令行展开"><a href="#命令行展开" class="headerlink" title="命令行展开"></a>命令行展开</h4><p>命令行中花括号内的内容类似因式分解展开</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> aa&#123;1,2,3&#125;X&#123;a,b&#125;  </span><br><span class="line">aa1Xa aa1Xb aa2Xa aa2Xb aa3Xa aa3Xb</span><br></pre></td></tr></table></figure>
@@ -1706,9 +1715,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
-          
             <a href="/tags/Bash/" rel="tag"><i class="fa fa-tag"></i> Bash</a>
+          
+            <a href="/tags/Shell/" rel="tag"><i class="fa fa-tag"></i> Shell</a>
           
         </div>
       
@@ -1852,7 +1861,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1863,7 +1872,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1874,7 +1883,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1927,6 +1936,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">

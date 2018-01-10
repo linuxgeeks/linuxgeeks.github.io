@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/24/2016-2-24 iptables_ip_conntrack/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/06/01/2017-06-01 CentOS7修改网卡名称/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -329,7 +329,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/24/2016-2-24 iptables_ip_conntrack/" itemprop="url">iptables ip_conntrack</a></h1>
+                <a class="post-title-link" href="/2017/06/01/2017-06-01 CentOS7修改网卡名称/" itemprop="url">CentOS 7 修改网卡名称</a></h1>
         
 
         <div class="post-meta">
@@ -341,8 +341,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-24T11:25:15+08:00">
-                2016-02-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-01T21:44:51+08:00">
+                2017-06-01
               </time>
             
 
@@ -364,8 +364,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Network/" itemprop="url" rel="index">
-                    <span itemprop="name">Network</span>
+                  <a href="/categories/配置/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
                   </a>
                 </span>
 
@@ -395,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  355
+                  1,103
                 </span>
               
 
@@ -411,7 +411,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  6
                 </span>
               
             </div>
@@ -434,12 +434,14 @@
       
         
           
-          ip_conntrackLinux内核NAT的模块，实时记录当前主机上client和server彼此建立的连接关系，且可以追踪某个连接和其他某个连接处于何种状态，既可以追踪TCP协议，也可以追踪UDP协议和ICMP协议。
-默认的timeout是432000秒（五天）。每个ip_conntrack记录
+          说明
+生产环境中，可能由于某些需要将要对托管于机房的服务器进行割接、带宽扩容等操作，为了能让网卡更容易让运维人员和机房识别，避免拔错网线等操作导致业务中断，在服务器上架前就应该对所有网卡依次编号。
+
+一般情况下，板载网卡(目前多数服务器为板载双网卡)的MAC地址相差1，其余外接网卡则是在使用ip a
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/24/2016-2-24 iptables_ip_conntrack/#more" rel="contents">
+            <a class="btn" href="/2017/06/01/2017-06-01 CentOS7修改网卡名称/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -490,7 +492,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/23/2016-2-23 iptables_Targets_Jump/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/05/31/2017-05-31 CentOS 7 网卡一致性命名规则/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -509,7 +511,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/23/2016-2-23 iptables_Targets_Jump/" itemprop="url">iptables Targets/Jump</a></h1>
+                <a class="post-title-link" href="/2017/05/31/2017-05-31 CentOS 7 网卡一致性命名规则/" itemprop="url">CentOS 7 网卡一致性命名规则</a></h1>
         
 
         <div class="post-meta">
@@ -521,8 +523,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-23T19:24:24+08:00">
-                2016-02-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-31T19:14:32+08:00">
+                2017-05-31
               </time>
             
 
@@ -544,8 +546,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Network/" itemprop="url" rel="index">
-                    <span itemprop="name">Network</span>
+                  <a href="/categories/配置/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
                   </a>
                 </span>
 
@@ -575,7 +577,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  401
+                  2,057
                 </span>
               
 
@@ -591,7 +593,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  8
                 </span>
               
             </div>
@@ -614,24 +616,12 @@
       
         
           
-          Target
-处理动作：指的是由规则指定的操作，对规则匹配到的包做什么样的动作
-
-ACCEPT放行，允许数据包通过
-
-DROP丢弃，不做任何回应
-
-REJECT拒绝数据包通过，并且回应给发送端一个错误信息
-
-DNAT目标地址转换 --to
-
-SNAT源地址转换需要使用--to-source
-
-RED
+          说明参考：https://access.redhat.com/documentation/zh-CN/Red_Hat_Enterprise_Linux/7/html/Networking_Guide/ch-Consistent_Network_Device_Naming.html
+一致性网络设备命名
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/23/2016-2-23 iptables_Targets_Jump/#more" rel="contents">
+            <a class="btn" href="/2017/05/31/2017-05-31 CentOS 7 网卡一致性命名规则/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -682,7 +672,7 @@ RED
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/22/2016-2-22 iptables_Match/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -701,7 +691,7 @@ RED
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/22/2016-2-22 iptables_Match/" itemprop="url">iptables Match</a></h1>
+                <a class="post-title-link" href="/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/" itemprop="url">CentOS 7 网卡配置文件说明</a></h1>
         
 
         <div class="post-meta">
@@ -713,8 +703,8 @@ RED
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-22T10:24:41+08:00">
-                2016-02-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T22:47:10+08:00">
+                2017-05-30
               </time>
             
 
@@ -736,8 +726,8 @@ RED
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Network/" itemprop="url" rel="index">
-                    <span itemprop="name">Network</span>
+                  <a href="/categories/配置/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
                   </a>
                 </span>
 
@@ -767,599 +757,7 @@ RED
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,052
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          通用匹配
-无需依赖模块，自身可完成检查匹配
-
-
-
-
-匹配参数
-说明
-
-
-
-
-！
-使用叹号对条件取反
-
-
--p
-指定协议（tcp，udp，icmp等），可使用all来指定所有协议
-
-
--s
-- -src，指定数据包源地址，可使用IP地址、网络地址、主机名
-
-
--d
-- -dst，指定目的地址
-
-
--i
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/02/22/2016-2-22 iptables_Match/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/21/2016-2-21 iptables_Options_&_Chain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/02/21/2016-2-21 iptables_Options_&_Chain/" itemprop="url">iptables Options & Chain</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-21T16:22:39+08:00">
-                2016-02-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Network/" itemprop="url" rel="index">
-                    <span itemprop="name">Network</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  575
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Options
-
-
-选项名
-功能及特点
-
-
-
-
--A
-（--append）在指定链的末尾添加一条新的规则
-
-
--D
-（--delete）删除指定链中的某条规则，按规则序号或内容确定要删除的规则
-
-
--I
-（--insert）在指定链中插入一条新的规则，默认在链的开头插入
-
-
--R
-（--replac
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/02/21/2016-2-21 iptables_Options_&_Chain/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/20/2016-2-20 iptables_Basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/02/20/2016-2-20 iptables_Basic/" itemprop="url">iptables Basic</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-20T10:52:34+08:00">
-                2016-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Network/" itemprop="url" rel="index">
-                    <span itemprop="name">Network</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  507
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          防火墙
-工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，被匹配到的报文作出相应处理的组件
-
-iptables
-linux的包过滤功能，即linux防火墙，它由netfilter 和 iptables 两个组件组成
-netfilter Framework 网络过滤框架，工作于kernel
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/02/20/2016-2-20 iptables_Basic/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/19/2016-2-19 Samaba/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李廷杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老李的杂货铺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/02/19/2016-2-19 Samaba/" itemprop="url">Samba</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-19T15:19:54+08:00">
-                2016-02-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Services/" itemprop="url" rel="index">
-                    <span itemprop="name">Services</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  724
+                  599
                 </span>
               
 
@@ -1398,14 +796,13 @@ netfilter Framework 网络过滤框架，工作于kernel
       
         
           
-          Samba
-Samba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。
-Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。
-Samba服务器的工作原理是
+          摘要
+Redhat Linux的网络配置，基本上是通过修改几个配置文件来实现的，虽然也可以用ifconfig来设置IP，用route来配置默认网关，用hostname来配置主机名，但是重启后会丢失。
+在RedHat中，系统网络设备的配置文件保存在/etc/sysconfig/network-scri
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/19/2016-2-19 Samaba/#more" rel="contents">
+            <a class="btn" href="/2017/05/30/2017-05-30 CentOS 7 网卡配置文件说明/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1456,7 +853,7 @@ Samba服务器的工作原理是
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/18/2016-2-18 Vsftpd/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/02/Nginx常用参数配置说明/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -1475,7 +872,7 @@ Samba服务器的工作原理是
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/18/2016-2-18 Vsftpd/" itemprop="url">Vsftpd</a></h1>
+                <a class="post-title-link" href="/2017/01/02/Nginx常用参数配置说明/" itemprop="url">Nginx常用参数配置说明</a></h1>
         
 
         <div class="post-meta">
@@ -1487,8 +884,8 @@ Samba服务器的工作原理是
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-18T09:44:42+08:00">
-                2016-02-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-02T16:36:38+08:00">
+                2017-01-02
               </time>
             
 
@@ -1541,7 +938,7 @@ Samba服务器的工作原理是
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,508
+                  6,254
                 </span>
               
 
@@ -1557,7 +954,7 @@ Samba服务器的工作原理是
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  13
+                  30
                 </span>
               
             </div>
@@ -1580,13 +977,15 @@ Samba服务器的工作原理是
       
         
           
-          FTP
-FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Internet上的控制文件的双向传输。基于不同的操作系统有不同的FTP应用程序，而所有这些应用程序都遵守同一种协议以传输文件。
-在FTP的使用当中，用户经常遇到两个概念：”下载”（Download）和”上
+            nginx.vim
+
+使用vim对nginx配置文件做语法高亮
+站点： http://www.vim.org/scripts/script.php?script_id=1886
+123456mkdir -pv ~/.vim/syntax# 语法目录创建wget http://www.vim.or
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/18/2016-2-18 Vsftpd/#more" rel="contents">
+            <a class="btn" href="/2017/01/02/Nginx常用参数配置说明/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1637,7 +1036,7 @@ FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Int
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/17/2016-2-17 邮件服务器/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/01/Nginx编译安装/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -1656,7 +1055,7 @@ FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Int
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/17/2016-2-17 邮件服务器/" itemprop="url">基础邮件服务器（Postfix+Dovecot）</a></h1>
+                <a class="post-title-link" href="/2017/01/01/Nginx编译安装/" itemprop="url">Nginx编译安装</a></h1>
         
 
         <div class="post-meta">
@@ -1668,8 +1067,8 @@ FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Int
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-17T09:41:19+08:00">
-                2016-02-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-01T19:22:28+08:00">
+                2017-01-01
               </time>
             
 
@@ -1722,7 +1121,7 @@ FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Int
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  6,333
+                  1,248
                 </span>
               
 
@@ -1738,7 +1137,7 @@ FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Int
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  27
+                  7
                 </span>
               
             </div>
@@ -1761,14 +1160,14 @@ FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Int
       
         
           
-          概述
-MUA（Mail User Agent）邮件用户代理：接收邮件所使用的邮件客户端程序，使用IMAP或POP3协议与服务器通信，它提供了阅读、发送和接收电子邮件的用户接口。常见的客户端：outlook、foxmail等
+          下载站点
+源码包站点：http://nginx.org/en/download.html下载链接：http://nginx.org/download/nginx-1.10.2.tar.gz
 
-MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
+编译安装环境准备1234567yum -y groupinstall "Compatibility libr
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/17/2016-2-17 邮件服务器/#more" rel="contents">
+            <a class="btn" href="/2017/01/01/Nginx编译安装/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1819,7 +1218,7 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/16/2016-2-16 LAMP编译安装（php基于fastcgi协议编译为php-fpm）/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/01/01/Nginx服务器特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -1838,7 +1237,7 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/16/2016-2-16 LAMP编译安装（php基于fastcgi协议编译为php-fpm）/" itemprop="url">LAMP编译安装（php基于fastcgi协议编译为php-fpm）</a></h1>
+                <a class="post-title-link" href="/2017/01/01/Nginx服务器特性/" itemprop="url">Nginx服务器特性</a></h1>
         
 
         <div class="post-meta">
@@ -1850,8 +1249,8 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-16T12:05:46+08:00">
-                2016-02-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-01T18:35:47+08:00">
+                2017-01-01
               </time>
             
 
@@ -1873,8 +1272,8 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
                   </a>
                 </span>
 
@@ -1904,7 +1303,7 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,226
+                  768
                 </span>
               
 
@@ -1920,7 +1319,7 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  25
+                  3
                 </span>
               
             </div>
@@ -1943,13 +1342,11 @@ MTA（Mail Transfer Agent）邮件传送代理：通过SMTP
       
         
           
-          环境准备：
-12yum -y groupinstall "Compatibility libraries" "Development tools" "Server Platform Development"# 解决依赖关系，安装开发环境软件包组
-MySQL5.5.53二进制通用包安装准备数据存放的文
+          NginxNginx (读作”engine X”) 由Igor Sysoev(俄罗斯)于2005年编写，是一个免费、开源、高性能的HTTP服务器和反向代理，也可以作为一个IMAP/POP3代理服务器。根据 Netcraft 的 April 2015 Web Server Survey, 现在全世界1
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/16/2016-2-16 LAMP编译安装（php基于fastcgi协议编译为php-fpm）/#more" rel="contents">
+            <a class="btn" href="/2017/01/01/Nginx服务器特性/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2000,7 +1397,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/15/2016-2-15 LAMP编译安装（php编译为apache的模块）/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/12/2016-03-12 监控服务器 Zabbix/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李廷杰">
@@ -2019,7 +1416,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/15/2016-2-15 LAMP编译安装（php编译为apache的模块）/" itemprop="url">LAMP编译安装（php编译为apache的模块）</a></h1>
+                <a class="post-title-link" href="/2016/03/12/2016-03-12 监控服务器 Zabbix/" itemprop="url">监控服务器 Zabbix</a></h1>
         
 
         <div class="post-meta">
@@ -2031,8 +1428,8 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-15T12:43:14+08:00">
-                2016-02-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-12T10:43:49+08:00">
+                2016-03-12
               </time>
             
 
@@ -2054,8 +1451,8 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
                   </a>
                 </span>
 
@@ -2085,7 +1482,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,192
+                  9,270
                 </span>
               
 
@@ -2101,7 +1498,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  20
+                  41
                 </span>
               
             </div>
@@ -2124,13 +1521,555 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
       
         
           
-          由于php既要编译成httpd的模块，又要连接mysql，因此先安装httpd和MySQL，最后安装php
-环境准备：
-12yum -y groupinstall "Compatibility libraries" "Development tools" "Server Platform Devel
+          简介Linux下常用的系统监控软件有Nagios、Cacti、Zabbix、Monit等，这些开源的软件，可以帮助我们更好的管理机器，在第一时间内发现，并警告系统维护人员。
+Zabbix介绍Alexei Vladishev创建了Zabbix项目，当前处于活跃开发状态，Zabbix SIA提供支持.
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/15/2016-2-15 LAMP编译安装（php编译为apache的模块）/#more" rel="contents">
+            <a class="btn" href="/2016/03/12/2016-03-12 监控服务器 Zabbix/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/" itemprop="url">MySQL安装(通用二进制包)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-28T11:40:23+08:00">
+                2016-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  949
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          下载站点
+源码包站点：http://mirrors.sohu.com/mysql/下载链接：http://mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.53-linux2.6-x86_64.tar.gz
+
+源码包安装必须安装在/usr/local/下，目录名叫
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/28/2016-2-28 MySQL安装(通用二进制包)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/27/2016-2-27 MySQL基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/27/2016-2-27 MySQL基础/" itemprop="url">MySQL基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-27T21:56:24+08:00">
+                2016-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,825
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MySQL是什么？MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，目前属于 Oracle 旗下产品。MySQL 最流行的关系型数据库管理系统，在 WEB 应用方面MySQL是最好的 RDBMS (Relational Database Management System，关系
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/27/2016-2-27 MySQL基础/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/26/2016-2-26 Selinux和Rsyslog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/26/2016-2-26 Selinux和Rsyslog/" itemprop="url">SElinux和Rsyslog</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-26T15:10:27+08:00">
+                2016-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/security/" itemprop="url" rel="index">
+                    <span itemprop="name">security</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,487
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          SElinux
+SELinux(Security-Enhanced Linux) 是美国国家安全局（NSA）对于强制访问控制的实现，是 Linux历史上最杰出的新安全子系统。NSA是在Linux社区的帮助下开发了一种访问控制体系，在这种访问控制体系的限制下，进程只能访问那些在他的任务中所需要文件。
+
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/26/2016-2-26 Selinux和Rsyslog/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2172,7 +2111,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2224,7 +2163,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2235,7 +2174,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2246,7 +2185,7 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2299,6 +2238,10 @@ MySQL5.5.53二进制通用包安装准备数据存放的文
                 
                   <li class="links-of-blogroll-item">
                     <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
