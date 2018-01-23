@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Linux下socks5搭建和应用]]></title>
+    <url>%2F2018%2F01%2F21%2F2018-01-21-223237-Linux%E4%B8%8Bsocks5%E6%90%AD%E5%BB%BA%E5%92%8C%E5%BA%94%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[socks介绍 SOCKS：防火墙安全会话转换协议 （Socks: Protocol for sessions traversal across firewall securely） SOCKS 协议提供一个框架，为在 TCP 和 UDP 域中的客户机/服务器应用程序能更方便安全地使用网络防火墙所提供的服务。 这个协议从概念上来讲是介于应用层和传输层之间的 “中介层（shim-layer）”，因而不提供如传递 ICMP 信息之类的网络层网关服务。 SOCKS5 是一个代理协议，它在使用TCP/IP协议通讯的前端机器和服务器机器之间扮演一个中介角色，使得内部网中的前端机器变得能够访问Internet网中的服务器，或者使通讯更加安全。 SOCKS5 服务器通过将前端发来的请求转发给真正的目标服务器， 模拟了一个前端的行为。在这里，前端和SOCKS5之间也是通过TCP/IP协议进行通讯，前端将原本要发送给真正服务器的请求发送给SOCKS5服务器，然后SOCKS5服务器将请求转发给真正的服务器。 安装socks5 解决依赖关系 1yum -y install pam-devel openldap-devel openssl-devel 编译安装 12345wget https://nchc.dl.sourceforge.net/project/ss5/ss5/3.8.9-8/ss5-3.8.9-8.tar.gztar xf ss5-3.8.9-8.tar.gz cd ss5-3.8.9/./configuremake &amp;&amp; make install 配置 配置备份 1mv /etc/opt/ss5/ss5.conf&#123;,.bak&#125; 修改认证方式/etc/opt/ss5/ss5.conf默认是无用户认证，需要使用-u 12auth 0.0.0.0/0 - upermit - 0.0.0.0/0 - 0.0.0.0/0 - - - - - 添加用户名密码/etc/opt/ss5/ss5.passwd每行一个 用户 密码，使用空格分隔 12test1 12345test2 56789 修改ss5启动的参数，自定义代理端口 /etc/sysconfig/ss5（如果不设置，默认是1080）此文件ss5启动时会主动加载 12# Add startup option hereSS5_OPTS=" -u root -b 0.0.0.0:10080" 创建服务控制脚本/usr/sbin/ss5_ctl.sh 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283#!/bin/bash## chkconfig: 345 20 80# description: This script takes care of starting \# and stopping ss5#OS=`uname -s`if [ $OS = "Linux" ] || [ $OS = "SunOS" ]; then # Source function library. . /etc/rc.d/init.d/functions# Source networking configuration. . /etc/sysconfig/network# Check that networking is up. [ "$&#123;NETWORKING&#125;" = "no" ] &amp;&amp; exit 0 [ -f /usr/sbin/ss5 ] || exit 0fi# Test custom variablestest -f /etc/sysconfig/ss5 &amp;&amp; . /etc/sysconfig/ss5# See how we were called.case "$1" in start) # Start daemon. echo -n "Starting ss5... " if [ $OS = "Linux" ]; then daemon /usr/sbin/ss5 -t $SS5_OPTS touch /var/lock/subsys/ss5 else if [ $OS = "SunOS" ]; then /usr/sbin/ss5 -t touch /var/lock/subsys/ss5 else /usr/local/sbin/ss5 -t fi fi echo "done" ;; stop) # Stop daemon. echo "Shutting down ss5... " if [ $OS = "Linux" ] || [ $OS = "SunOS" ]; then killproc ss5 rm -f /var/lock/subsys/ss5 else killall ss5 fi rm -f /var/run/ss5/ss5.pid echo "done" ;; reload) # Reload configuration if [ $OS = "Linux" ] || [ $OS = "SunOS" ]; then echo -n "Reloading ss5... " killproc ss5 -1 else pkill -HUP ss5 fi echo "done reload" ;; restart) # Restart daemon echo -n "Restarting ss5... " $0 stop $0 start ;; status) if [ $OS = "Linux" ] || [ $OS = "SunOS" ]; then status ss5 fi ;; *) echo "Usage: ss5 &#123; start | stop | status | restart | reload &#125;" exit 1 ;;esacexit 0 服务控制 12ss5_ctl.sh start netstat -tunlp | grep ss5 应用应用场景：办公室使用的是电信网络，运维工程师需要在办公室使用SecureCRT来远程一台配置了移动IP的服务器。由于电信到移动跨运营商导致无法使用SecureCRT直接ssh远程。因此可以使用一台配置了ss5的服务器来做代理。前面已经说明了怎么配置，接下来补充一下SecureCRT如何使用ss5。 添加firewall打开SecureCRT，打开 Options =&gt; Global Options... 对应的session使用firewall，选择要ssh远程的的session，右键单击属性，选择防火墙]]></content>
+      <categories>
+        <category>代理</category>
+      </categories>
+      <tags>
+        <tag>socks5</tag>
+        <tag>代理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[使用dialog创建交互式shell对话框]]></title>
     <url>%2F2018%2F01%2F21%2F2018-01-21-155425-%E4%BD%BF%E7%94%A8dialog%E5%88%9B%E5%BB%BA%E4%BA%A4%E4%BA%92%E5%BC%8Fshell%E5%AF%B9%E8%AF%9D%E6%A1%86%2F</url>
     <content type="text"><![CDATA[dialog是一个可以创建对话框的工具，需要手动安装，yum源安装即可。 系统默认自带whiptail也可实现对话框的创建 每个对话框提供的输出有两种形式： 将所有输出到stderr，不显示到屏幕； 使用退出状态码，OK为0，NO为1，ESC为255。 语法说明1Usage: dialog --common-options --boxType "Text" Height Width --box-specific-option --common-options 通用选项 --boxType 窗体类型 &quot;Text&quot;窗体的标题 Height 窗体的高度（字符个数） Width 窗体宽度（字符个数） 选项通用选项这个选项用来设置dialog box的背景、颜色和标题等。 --title &lt;title&gt;：窗体的标题 --backtitle &lt;backtitle&gt;：窗体的背景标题 --colors：使用颜色 \Z表示开始，\Zn表示结束。解读嵌入式\Z的对话框中的特殊文本序列，序列由下面的字符0-7, b，B, u, U等组成，恢复正常的设置使用\Zn。 --no-shadow：禁用窗体的阴影效果 --shadow：启用窗体的阴影效果 --insecure：输入部件的密码时，使用星号来代表每个字符。 --no-cancel：设置在输入框、菜单和复选框中不显cancel项。 --nook 没有ok键 --clear：完成清屏操作，在框体显示结束后，清除框体，这个参数只能单独使用，不能和别的参数联合使用。 --ok-label &lt;str&gt;：覆盖使用OK按钮标签，换做其它字符。 --cancel-label &lt;str&gt;：功能同上。 --begin &lt;y&gt; &lt;x&gt;：指定对话框左上角在屏幕上的坐标。 --timeout &lt;secs&gt;：超时（返回的错误代码），如果用户在指定的时间内没有给出相应动作，就按超时处理。 --defaultno：设定光标在yesno对话框的默认位置为no --default-item string ：设定在复选框中的默认值 --sleep &lt;secs&gt;：窗体的超时时间，如果用户没有在超时时间内进行选择，将会退出并返回一个错误码 --stderr：以标准错误方式输出。 --stdout：以标准方式输出。 --default-item &lt;str&gt;：设置在一份清单、表格或菜单中的默认项目，通常在框中的第一项是默认的。 窗体类型选项常见的对话框控件选项如下所示： --calendar：提供了一个日历，让你可以选择日期。 --checklist：允许你显示一个选项列表，每个选项都可以被单独的选择(复选框)。 --from：允许建立一个带标签的文本字段，并要求填写。 --fselect：提供一个路径，让你选择浏览的文件。 --gauge：显示一个表，呈现出完成的百分比，就是显示出进度。 --infobox：显示消息后，（没有等待响应）对话框立刻返回，但不清除屏幕(信息框)。 --inputbox：让用户输入文本(输入框)。 --inputmenu：提供一个可供用户编辑的菜单（可编辑的菜单框）。 --menu：显示一个列表供用户选择(菜单框)。 --msgbox：显示一条消息，并要求用户选择一个确定按钮(消息框)。 --pause：显示一个表格用来显示一个指定的暂停期的状态。 --passwordbox：显示一个输入框，它隐藏文本。 --passwordfrom：显示一个来源于标签并且隐藏的文本字段。 --radiolist：提供一个菜单项目组，只有一个项目，可以选择(单选框)。 --tailbox：在一个滚动窗口文件中使用tail命令来显示文本。 --tailboxbg：跟tailbox类似，但是在background模式下操作。 --textbox：在带有滚动条的文本框中显示文件的内容(文本框)。 --timebox：提供一个窗口，选择小时、分钟、秒。 --yesno：提供一个带有yes和no按钮的简单信息框(是/否框)。 使用示例创建消息框 语法 1dialog --title "&lt;message box title&gt;" --msgbox "&lt;text to show&gt;" &lt;height&gt; &lt;width&gt; 实例 1dialog --backtitle "Test the first message box" --title "Test Message Box" --colors --ok-label "YES" --msgbox "Create a message box with dialog. Choose \Z1YES\Zn to continue." 10 60 效果 创建输入框 格式 1dialog --inputbox text height width 示例 123#!/bin/bashuserName=$(dialog --backtitle "Add a user" --title "Username" --inputbox "Please input a username" 10 30 --stdout)echo "Username is:" $userName 效果 创建文本信息框 格式 1dialog --textbox file height width 示例 1dialog --textbox /etc/fstab 20 80 效果 创建yesno对话框 格式 1dialog --yesno text height width 示例 1dialog --title "yes/no" --no-shadow --yesno "Delete the file /tmp/test.txt?" 10 30 效果 创建一个菜单栏 格式 1dialog --menu text height width menu-height tag1 item1 tag2 item2 … 示例 12dialog --title "Pick a choice" --menu "Choose one" 12 35 5 A "Display the disk usage" B "Display the meminfo" C "Quit"# 进入菜单后按A、B、C可定位到某一个条目上，标准输出是tag 效果 创建文件选框 格式 1dialog --fselect filepath height width 示例 1dialog --title "Pick one file" --fselect /root/ 7 40 效果 创建复选框 格式 1dialog --checklist "Test" height width menu-height tag1 item1 tag2 item2 … 示例 1dialog --backtitle "Checklist" --checklist "Test" 20 50 10 Memory Memory_Size 1 Dsik Disk_Size 2 效果 创建密码框 格式 1dialog --passwordbox text height width [init] 示例 1dialog --title "Password" --passwordbox "Please give a password for the new user:" 10 35 密码暴露出来不安全，所以通常我们会加上一个安全选项--insecure，将每个字符用*来显示。 1dialog --title "Password" --insecure --passwordbox "Please give a password for the new user:" 10 30 效果 创建一个日历框 格式 1dialog --calendar "Date" height width day month year 示例 显示当前日期 1dialog --title "Calendar" --calendar "Date" 5 50 显示指定日期 1dialog --title "Calendar" --calendar "Date" 5 50 1 2 2013 效果 创建一个进度框 格式 1dialog --gauge text height width [&lt;percent&gt;] 示例 固定进度显示 1dialog --title "installation pro" --gauge "installation" 10 30 10 实时显示 1for i in &#123;1..100&#125; ;do echo $i;done | dialog --title "installation pro" --gauge "installation" 10 30 拷贝100个文件 1234567891011121314151617181920#!/bin/bashdeclare -i percent=0install -cd /tmp/test(for file in /etc/*;do if [ $&#123;percent&#125; -le 100 ];then cp -r $&#123;file&#125; /tmp/test/ 2&gt;/dev/null echo XXX # 两个XXX之间的内容替换标题 echo "Copy the file $&#123;file&#125; ... " echo XXX echo $&#123;percent&#125; fi ((percent=percent+1)) sleep 0.1done ) | dialog --title "Coping..." --gauge "Starting to copy files ... " 6 50 0 效果 创建表单 格式 1dialog --form text height width formheight [ label y x item y x flen ilen ] ... 其中：flen表示field length，定义了选定字段中显示的长度；ilen表示input-length, 定义了在外地输入的数据允许的长度。使用up/down（或ctrl/ N，ctrl/ P）在使用领域之间移动，使用tab键在窗口之间切换。 示例 12345dialog --title "Add a user" --form "Please input the infomation of new user:" 12 40 4 \ "Username:" 1 1 "" 1 15 15 0 \ "Full name:" 2 1 "" 2 15 15 0 \ "Home Dir:" 3 1 "" 3 15 15 0 \ "Shell:" 4 1 "" 4 15 15 0 效果 综合应用示例1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283#! /bin/bashyesno() &#123; dialog --title "First screen" --backtitle "Test Program" --clear --yesno \ "Start this test program or not ? \nThis decesion have to make by you." 16 51 # yes is 0, no is 1 , esc is 255 result=$? if [ $result -eq 1 ] ; then exit 1; elif [ $result -eq 255 ]; then exit 255; fi username;&#125;username() &#123; cat /dev/null &gt;/tmp/test.username dialog --title "Second screen" --backtitle "Test Program" --clear --inputbox \ "Please input your username (default: hello) " 16 51 "hello" 2&gt;/tmp/test.username result=$? if [ $result -eq 1 ] ; then yesno; elif [ $result -eq 255 ]; then exit 255; fi password;&#125;password() &#123; cat /dev/null &gt;/tmp/test.password dialog --insecure --title "Third screen" --backtitle "Test Program" --clear --passwordbox \ "Please input your password (default: 123456) " 16 51 "123456" 2&gt;/tmp/test.password result=$? if [ $result -eq 1 ] ; then username; elif [ $result -eq 255 ]; then exit 255; fi occupation;&#125;occupation() &#123; cat /dev/null &gt;/tmp/test.occupation dialog --title "Forth screen" --backtitle "Test Program" --clear --menu \ "Please choose your occupation: (default: IT)" 16 51 3 \ IT "The worst occupation" \ CEO "The best occupation" \ Teacher "Not the best or worst" 2&gt;/tmp/test.occupation result=$? if [ $result -eq 1 ] ; then password; elif [ $result -eq 255 ]; then exit 255; fi finish;&#125;finish() &#123; dialog --title "Fifth screen" --backtitle "Test Program" --clear --msgbox \ "Congratulations! The test program has finished!\n Username: $(cat /tmp/test.username)\n Password: $(cat /tmp/test.password)\n Occupation: $(cat /tmp/test.occupation)" 16 51 result=$? if [ $result -eq 1 ] ; then occupation elif [ $result -eq 255 ]; then exit 255; fi&#125;yesno;]]></content>
@@ -723,8 +735,8 @@
         <category>Shell</category>
       </categories>
       <tags>
-        <tag>Shell</tag>
         <tag>Bash</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
@@ -735,8 +747,8 @@
         <category>Shell</category>
       </categories>
       <tags>
-        <tag>Shell</tag>
         <tag>Bash</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
@@ -769,8 +781,8 @@
         <category>Shell</category>
       </categories>
       <tags>
-        <tag>Shell</tag>
         <tag>Bash</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
@@ -781,8 +793,8 @@
         <category>Shell</category>
       </categories>
       <tags>
-        <tag>Shell</tag>
         <tag>Bash</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
@@ -804,8 +816,8 @@
         <category>Shell</category>
       </categories>
       <tags>
-        <tag>Shell</tag>
         <tag>Bash</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
