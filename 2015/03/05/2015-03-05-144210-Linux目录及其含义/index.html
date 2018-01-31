@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux目录,FHS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content=". 当前目录，也可以用./表示； .. 上一级目录，也可以用../表示； ~  用户自己的宿主目录； / Linux文件系统树形结构的最顶端，称为Linux文件系统的root，它是Linux文件系统的入口。所有的目录、文件、设备都在/之下，它是Linux文件系统最顶层的唯一的目录; 一般建议在根目录下面只有目录，不直接">
+<meta name="keywords" content="Linux目录,FHS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux目录及其含义">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/03/05/2015-03-05-144210-Linux目录及其含义/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content=". 当前目录，也可以用./表示； .. 上一级目录，也可以用../表示； ~  用户自己的宿主目录； / Linux文件系统树形结构的最顶端，称为Linux文件系统的root，它是Linux文件系统的入口。所有的目录、文件、设备都在/之下，它是Linux文件系统最顶层的唯一的目录; 一般建议在根目录下面只有目录，不直接存放文件； 根目录是linux系统启动时系统第一个载入的分区，所以启动过程中用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-30T14:14:02.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux目录及其含义">
+<meta name="twitter:description" content=". 当前目录，也可以用./表示； .. 上一级目录，也可以用../表示； ~  用户自己的宿主目录； / Linux文件系统树形结构的最顶端，称为Linux文件系统的root，它是Linux文件系统的入口。所有的目录、文件、设备都在/之下，它是Linux文件系统最顶层的唯一的目录; 一般建议在根目录下面只有目录，不直接存放文件； 根目录是linux系统启动时系统第一个载入的分区，所以启动过程中用">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/03/05/2015-03-05-144210-Linux目录及其含义/"/>
+
+
+
+
+
+  <title>Linux目录及其含义 | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/03/05/2015-03-05-144210-Linux目录及其含义/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux目录及其含义</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-03-05T14:42:10+08:00">
+                2015-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux目录/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux目录</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  8,780
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  32
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>. 当前目录，也可以用./表示；</li>
+<li>.. 上一级目录，也可以用../表示；</li>
+<li>~  用户自己的宿主目录；</li>
+<li>/<ul>
+<li>Linux文件系统树形结构的最顶端，称为Linux文件系统的root，它是Linux文件系统的入口。所有的目录、文件、设备都在/之下，它是Linux文件系统最顶层的唯一的目录;</li>
+<li>一般建议在根目录下面只有目录，不直接存放文件；</li>
+<li>根目录是linux系统启动时系统第一个载入的分区，所以启动过程中用到的文件应该都放在这个分区中，其中/etc、/bin、/dev、/lib、/sbin这5个子目录都应该要与根目录连在一起，不可独立成为某个分区；</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>/bin：存放所有用户都可以使用的linux基本操作命令；(目录中多是可执行的二进制文件)</li>
+<li>/dev：设备文件目录，虚拟文件系统，主要存放所有系统中device的相关信息.设备文件分为2种类型:字符设备文件和块设备文件<pre><code>/dev/console：系统控制台，也就是直接和系统连接的监视器；
+/dev/hd：IDE设备文件；
+/dev/sd：sata、usb、scsi等设备文件；
+/dev/fd：软驱设备文件；
+/dev/tty：虚拟控制台设备文件；
+/dev/pty：提供远程虚拟控制台设备文件；
+/dev/null：数据&quot;黑洞&quot;，所有写入该设备的信息都将消失，如当想要将屏幕上的输出信息隐藏起来时，只要将输出信息输入到/dev/null中即可；
+</code></pre></li>
+<li>/home：默认存放用户的宿主目录(除了root用户)<pre><code>/home/~/.bashrc：提供bash环境中所需使用的别名；
+/home/~/.bash_profile：提供bash环境所需的变量；一般先执行.bashrc后，才会再执行.bash_profile；
+/home/~/.bash_history：用户历史命令文件，记录用户曾经输入过的所有命令；(默认为1000条，可以通过HISTSIZE变量更改)
+/home/~/.bash_logout：当用户注销的同时，系统会自动执行.bash_logout文件，如果管理员需要记录用户注销的一些额外记录、动作或其他信息，就可以利用这个机制去完成；
+</code></pre></li>
+<li>/lost+found：当系统在运行时，有时会无法避免宕机、断电或不正常重启动，在这样的情况下，当系统重新启动时，发现某些文件写入未完成或其他问题产生，一般会使用fsck进行文件修复，而这些被修复或救回的文件，就会被放在这个目录下，只要是一个文件系统，系统就会自动在该文件系统所在的目录下建立”lost+found”目录</li>
+<li>/misc：自动挂载服务目录，对应autofs服务；<br>/proc：虚拟文件系统，此目录是kernel加载后，在内存里面建立的一个虚拟目录，有专属的文件系统，主要提供系统一些实时的信息，此目录下不能建立和删除文件；(某些文件可以修改)<pre><code>/proc主要作用可以整理为：
+--整理系统内部的信息；
+--存放主机硬件信息；
+--调整系统执行时的参数；
+--检查及修改网络和主机的参数；
+--检查及调整系统的内存和性能；
+/proc下常用的信息文件有：
+/proc/cpuinfo：cpu的硬件信息，如类型、厂家、型号和性能等
+/proc/devices：记录所有在/dev目录中相关的设备文件分类方式
+/proc/filesystems：当前运行内核所配置的文件系统
+/proc/interrupts：可以查看每一个IRQ的编号对应到哪一个硬件设备
+/proc/loadavg：系统&quot;平均负载&quot;，3个数据指出系统当前的工作负载
+/proc/dma：当前正在使用的DMA通道 
+/proc/ioports：将目前系统上所有可看到的硬件对应到内存位置的分配表的详细信息呈现出来
+/proc/kcore：系统上可以检测到的物理内存，主机内存多大，这个文件就有多大
+/proc/kmsg：在系统尚未进入操作系统阶段，把加载kernel和initrd的信息先记录到该文件中，后续会将日志信息写入/var/log/message文件中
+/proc/meminfo：记录系统的内存信息
+/proc/modules：与lsmod命令查看到的模块信息完全一致
+/proc/mtrr：负责内存配置的机制
+/proc/iomem：主要用于储存配置后所有内存储存的明细信息
+/proc/partitions：这个文件可以实时呈现系统目前看到的分区
+/proc/数字目录：数字目录很多，它们代表所有目前正在系统中运行的所有程序
+/proc/bus：有关该主机上现有总线的所有信息，如输入设备、PCI接口、PCMCIA扩展卡及USB接口信息
+/proc/net目录：存放的都是一些网络相关的虚拟配置文件，都是ASCII文件，可以查看(与ifconfig、arp、netstat等有关)
+/proc/scsi：保存系统上所有的scsi设备信息(包括sata和usb设备的信息)
+/proc/sys目录：存放系统核心所使用的一些变量，根据不同性质的文件而存放在不同的子目录中，可以通过/etc/sysctl.conf文件设置和更改其默认值；变量时实时的变更，有很多设置很象是开关，设置后马上生效；
+/proc/tty：存放有关目前可用的正在使用的tty设备的信息
+/proc/self：存放到查看/proc的程序的进程目录的符号连接，当2个进程查看proc时，这将会是不同的连接；主要便于程序得到它自己的进程目录；
+/proc/stat：系统的不同状态信息；
+/proc/uptime：系统启动的时间长度；
+/proc/version：系统核心版本；
+</code></pre></li>
+<li>/sbin：系统管理相关的二进制文件存放在这个目录下，一些可执行文件普通用户只具备较小的权限；(多数管理命令默认只有管理员可以使用)<br>/srv：默认为空，主要用于存放一些软件的配置文件，某些软件可能会把配置文件默认存放在这个目录下，多数都是/etc目录下，此目录没有被具体的定义；</li>
+<li>/tftpboot：远程启动tftpserver的根目录，这个目录只有安装了tftp-server软件后才会产生；</li>
+<li>/usr：安装除操作系统本身外的一些应用程序或组件，一般可以认为linux系统上安装的应用程序默认都安装在此目录中；<pre><code>/usr/bin：一般用户有机会使用到的程序，或者该软件默认就是要让所有用户使用才会放在该目录中；
+/usr/sbin：一些系统有可能会用到的系统命令，与/sbin比起来，都是一些较次要的文件；
+/usr/etc：自行安装或非系统主要的配置文件目录；
+/usr/games：只要是电脑游戏相关的软件，就都安装到这个目录；
+/usr/include：存放的文件都是一些系统中用户所会使用到的C语言header文件，保存的都是&quot;.h&quot;的文件；
+/usr/kerberos：kerberos是一种安全机制，让用户可以直接使用支持kerberos机制系统上的部分资源；
+/usr/lib：存放一些函数库、执行文件及连接文件，特别的是，存放在这里面的文件都是不希望直接被用户或shell脚本所使用的文件，在/usr/lib中有非常多的子目录，每一个软件都有其各自所需的函数库；
+/usr/libexec：这个目录下的文件及文件夹应该都可以放置在/usr/lib下；
+/usr/local：linux系统中安装的共享软件程序最好的方式是安装在/usr/local下，按照linux标准目录结构，新建立的软件都应该放在/usr/local下；
+        /usr/local/bin：存放软件执行文件的目录；
+        /usr/local/sbin：同样存放软件执行文件的目录，但此目录专门针对系统所使用的文件；
+        /usr/local/lib：软件相关的函数库；
+        /usr/local/share：当文件性质不好归属时就会放在此，man手册就放在这个目录下；
+        /usr/local/src：所安装软件的源代码放置在此；
+/usr/share：此目录都是一些共享信息，最常被用到的就是/usr/share/man这个目录，/usr/share里的信息时跨平台的；
+/usr/share/doc：放置一些系统帮助文件的地方；
+/usr/share/man：manpage的文件存放目录，也是使用man查看手册页时查询的路径；
+/usr/src：主要储存内核源代码的文件；
+/usr/X11R6：存放一些X windows系统的相关文件；
+</code></pre></li>
+<li>/boot：存放开机启动加载程序的核心文件；(如kernel和grup)<pre><code>config-2.6.18-164.el5：系统kernel的配置文件，内核编译完成后保存的就是这个配置文件；
+lost+found：说明/boot是一个独立的ext3文件系统；
+vmlinuz-2.6.18-164.el5：系统使用kernel，非常重要；
+grub：多系统启动管理程序grub的目录，里面存放的都是grub在启动时所需要的画面、配置及各阶段的配置文件；其中grub.conf是grub的配置文件；
+symvers-2.6.18-164.el5.gz
+initrd-2.6.18-164.el5.img：此文件是linux系统启动时的模块供应主要来源，initrd的目的就是在kernel加载系统识别cpu和内存等核心信息之后，让系统进一步知道还有那些硬件是启动所必须使用的；
+System.map-2.6.18-164.el5：是系统kernel中的变量对应表；(也可以理解为是索引文件)
+</code></pre></li>
+<li>/etc：主机、系统或网络配置文件存放目录；<pre><code>简单的将/etc目录分为以下几类：
+--基本文件：所有直接放在/etc目录下的文件归类为基本文件；
+        aliases：用于设置邮件别名；
+        auto.*：代表的是一系列autofs服务所需要的配置文件，这个服务主要是让管理员可以事先定义出一些网络、本机或光驱等默认的路径；
+        auto.master：负责规划目录的分配与使用，目前默认提供三种自动挂载模式；
+        auto.misc：文件中的配置都以实体连接本机的磁盘驱动器为主；
+        auto.net：并不是一个配置文件，而是一个脚本文件，在使用上其实不须做任何调整；；
+        auto.smb：与auto.net一样，都是以个脚本文件；
+        bashrc：用户登录功能配置，全局配置，对所有用户生效，主要配置别名；
+        profile：与系统环境配置或初始化软件的相关配置，全局配置，对所有用户生效，主要配置变量；
+        DIR_COLORS：用于配置ls命令的颜色，主要针对tty登录的用户；
+        DIR_COLORS.xterm：用于配置ls命令的颜色，主要针对xterm登录的用户；
+        fstab：系统启动时自动挂载文件系统的配置文件；
+        inittab：启动时系统所需要的第一个配置文件；也即是init进程的配置文件；
+        issue：用户本机登录时，看到的欢迎信息；
+        issue.net：用户网络登录时，看到的欢迎信息；
+        ld.so.conf：包含ld.so.conf.d/*.conf配置,主要是ld.so.conf.d/*.conf目录的作用；
+        localtime：系统所使用的时区对应的配置文件,对应的时区文件都存在于/usr/share/zoneinfo/
+        motd：登录成功的用户显示的信息对应的配置文件；
+        mtab：可以当做是检查当前文件系统挂载情况的配置文件；与mount命令结果一致；
+        prelink.conf：定义哪些执行文件和函数库是需要预先连接的；
+        securetty：主要是login程序在使用的，只要是列在该文件中的接口，就表示是可以使用的接口，相反，若从列表中删除，则无法使用该接口；
+        shells：记录目前系统所拥有shell种类的路径，通过cssh命令使用；
+        sudoers：sudo命令对应的配置文件，用于配置权限的分配方式；
+        sysctl.conf：主要是帮助用户配置/proc/sys目录下所有文件的值，与sysctl命令对应；
+        syslogd.conf：是syslogd服务的配置文件
+        host.conf：主机名解析配置文件，主要说明解析的方式及顺序；
+        hosts：主机名解析配置文件，主要列出所有需要本地解析的主机名与IP地址的对应关系；
+        hosts.allow和hosts.deny：linux网络安全机制TCP Wrapper对应的配置文件；
+        nsswitch.conf：主要记录系统应如何查询主机名、密码、用户组、网络等，或是查询顺序的编排；
+        resolv.conf：记录DNS服务器地址，用于DNS域名解析；
+        services：定义了网络服务的默认端口号；
+        xinetd.conf：xinetd的主配置文件，目的是为xinetd.d下的所有子服务建立一个标准的规范使其可以遵循；
+        anacrontab：属于一种任务计划软件的配置文件，anacrontab软件和crond其实有点相辅相成，crond负责任务计划，而anacrontab则是负责以&quot;间隔多久&quot;为主要的目标；
+        at.deny：该文件属于拒绝列表，只要被记录在其中的用户，就无法使用at所提供的任务计划服务；
+        at.allow：与at.deny刚好相反；
+        crontab：crontab的主配置文件，crond默认会执行的文件可以参考此配置文件；
+        cron.deny：该文件属于拒绝列表，只要被记录在其中的用户，就无法使用crond所提供的任务计划服务；
+        cron.allow：与cron.deny刚好相反；
+        exports：是NFS服务的主配置文件，主要目的就是将本机的目录共享到网络上，供其他人使用；
+        group与gshadow：用户组配置文件，group主要保存用户组信息，gshadow主要保存群组密码；
+        login.defs：设置系统在建立账号时所参考的配置；
+        passwd：主要保存系统用户账号的信息；
+        shadow：linux系统通常包经过&quot;hash&quot;处理后的密码存储在这个文件中；
+        protocols：通信协议对应端口号的一个对照表，包含协议名称、协议号码、注释等；
+        wgetrc：wget程序对应的配置文件，其中有quota、mail header、重传文件的预设次数、firewall和proxy等相关设置；
+        init.d：RHEL中所有服务的默认启动脚本都存放在这里；这个是链接文件，链接到/etc/rc.d/init.d；
+        csh.cshrc和csh.login： 用户启动c shells执行的初始化配置文件；
+        printcap：linux系统中打印机设备对应的配置文件；
+--服务器目录：如samba、http、vsftpd等服务器配置相关目录；
+        cups：linux下的打印机服务器，目录下存放的是打印机服务的配置文件；
+        dnsmasq.d：dnsmasq是一种DNS的&quot;轻薄机种&quot;，转为区域或小型网络所设计，拥有比一般DNS更为方便简易的配置；
+        httpd：apache网页服务器的配置文件所在目录；
+        mail：Mail Server组件的主要配置目录，如sendmail；
+        ntp：网络时间服务器的配置目录，其主要配置文件为/etc/ntp.conf；
+        openldap：目录明显是LDAP的配置目录，软件名称为OpenLDAP；
+        postfix：postfix组件所提供的主要配置文件目录；
+        samba：文件共享服务samba的主要配置文件目录；
+        smrsh：这是sendmail为了限制用户可使用的命令设计的程序，将原本用户所使用的/bin/sh替换为/usr/sbin/smrsh；
+        snmp：简单网络管理软件的配置文件目录，存在snmpd.conf主配置文件；
+        squid：这是linux下的代理服务器squid的配置文件目录，主配置文件是squid.conf；
+        ssh：SSH服务的主要配置目录，主配置文件是sshd_config；
+        vsftpd：vsftpd服务器的主要配置目录，主配置文件是vsftpd.conf；
+        xinetd.d：xinetd是一个管理多个服务的daemon，这个目录下列出的服务都是由xinetd进程管理的，其主配置文件是/etc/xinetd.conf；
+--系统目录：如sysconfig、xen或网络配置等与系统运行相关的目录；
+        blkid：此目录所存放的其实是一个块设备ID的临时文件，主要是记录系统中所有区块设备的标签名称、硬件的唯一识别码、文件系统的格式等基本信息；
+        bluetooth：linux下使用蓝牙设备所需的配置文件；启动蓝牙检测的主要服务仍是/etc/rc.d/init.d/bluetooth，该程序使用的是hcid.conf配置文件；
+        cron.X：cron.X的目录都是给cron软件存放其需要任务计划的文件所使用的，按任务计划时间的长短及配置特性分为cron.d、cron.daily、cron.hourly、cron.monthly、cron.weekly五个主要目录；
+        dbus-1：D-BUS的主要配置目录，D-BUS也是一种IPC交流的方式；
+        default：这里是存放一些系统软件默认值的目录，存放某些软件执行时的基本参数；
+        firmware：这个目录所存放的东西是非常底层的信息，是CPU所需的microcode的实体文件；
+        foomatic：与打印机相关的配置目录，实现打印一对多的方式，在foomatic中，可以记录多条打印机数据，让用户只在使用前先行配置所有需要使用的打印机即可；
+        hal：全名Hardware Abstraction Layer，是linux一种管理硬件的机制，它会帮所有的应用程序或用户搜集所有PCI及USB等硬件信息，因此，用户可以很简单并实时地通过HAL的方式取得硬件的相关数据；
+        isdn：ISDN服务的主要配置目录，里面包含可拨号的用户、电话、联机方式等；
+        ld.so.conf.d：这个目录是ldconfig所使用的，更准确的说，它是由/etc/ld.so.conf文件所决定的；ldconfig命令的目的在于将系统中的一些函数库预先存放到内存中，让系统使用时可以比以往通过硬盘的读取速度来的更快，这样可以大幅提高系统性能，尤其当要重复读取时更明显；ldconfig要将哪些函数库丢到内存中，则须看/etc/ld.so.conf文件中所记录的信息；
+        logrotate.d：此目录对系统管理员来说，是十分重要的一个目录，因为目录中的文件，记录了如何定期备份系统所需要备份的系统或软件日志文件及备份方式，目录是由logrotate组件所提供的，而里面所有文件是由各软件各自产生的；其主要配置文件是/etc/logrotate.conf；                
+        logwatch：logrotate主要是实现如何备份日志文件，这个目录就是记载如何分析日志文件并告诉用户的软件logwatch的配置目录；
+        lsb-release.d：LSB是一个由很多人所执行的项目，其目的是将所有的Linux发行版定义为一些共同的标准；
+        lvm：这个目录是LVM的基本配置文件，但配置或操作一般都只需要通过LVM提供的命令，而不会用到这个目录，除非要使用到很高级的配置才会更改此文件；
+        makedev.d：MAKEDEV软件对应的配置文件目录，MAKEDEV主要用来产生设备文件，也就是说，在/dev目录下的文件都由这个命令产生的，此目录下的文件主要是针对设备文件的定义或属性，目录中存在的设备文件可以由MAKEDEV来创建，否则需要使用mknod命令了；
+        modprobe.d：是modprobe命令的住配置目录，一般系统启动默认要加载的模块放在/etc/modprobe.conf中；
+        netplug和netplug.d：这两个目录和网络接口的联机与否由直接关系，因为主要是控制联机时的接口操作；
+        opt：此目录原本是定义为存放所有额外安装软件的主机配置文件，但目前并没有被使用到，此目录为空；
+        pcmcia：这是PCMCIA的配置文件目录，PCMCIA是笔记本电脑不可或缺的接口，需要即插即用的方式，此接口使用较少；
+        pm：由pm-utils组件所提供的目录，pm-utils是一套电源管理的工具软件，其中/usr/lib/pm-utils也是主要目录之一；
+        ppp：ppp相关的配置文件都放在这个目录中；
+        profile.d：这个目录存放的是系统部分的软件配置，但会按不同的shell执行不同的文件，默认所使用的bash会直接执行该目录下所有扩展名为.sh的文件；
+        rc.d：主要用来定义在每一个执行阶段必须要执行哪些系统服务或程序，在目录中主要分为三个重要的部分：
+                --rc.sysinit：系统一开始启动时所遇到的第一个文件，此脚本文件记录服务启动之前所需准备的所有事情，包括启动时看到的欢迎画面；
+                --rcX.d：在rc.sysinit文件之后所要执行的，X是系统启动时的initdefault值，值为几则会转到那个目录下，并执行其中的所有文件，在此目录中，文件一律都由两个英文字母开始K和S，K代表kill，S代表Start；
+                --rc.local：系统初始化过程中最后一个执行的脚本文件，可以将需要开机启动的程序或脚本放置在这个脚本文件中，以实现自动运行的目的；
+        readahead.d：是readahead程序的主要配置目录，为了加速操作系统的使用速度，readahead_early和readahead_later这两个进程在系统加载时，直接将日常所需要的一些文件，全部先放到硬盘的高速缓存中；
+        redhat-lsb：都lsb-release.d目录都是由程序redhat-lsb所提供的；
+        rwtab.d：这个目录是一个在启动时会去参考的目录，主要的文件在/etc/rwtab；这是一个系统初期的备份机制；
+        sane.d：这是在系统下要使用扫描仪所需的配置目录，主要配置文件是sane.conf，sane为了方便用户在各式的扫描仪连接时都可以使用，因此，在这一目录中放置了很多种不同类型扫描仪的硬件信息，让系统在检测到扫描仪时可以直接使用；
+        setuptool.d：这个目录是&quot;setup&quot;系统配置工具的主要配置目录；
+        skel：用于初始化用户宿主目录的配置目录，当建立一个用户时，会把此目录下的所有文件复制一份到用户的宿主目录，作为用户的初始化配置；
+        sysconfig：非常重要的系统配置文件的存放目录，里面放置了大量系统启动及运行相关的配置文件；
+        sysconfig/network-scripts/ifcfg-eth0：网卡eth0对应的配置文件，设置内容包括设备名称、IP地址、广播地址、网关地址、网段、开机是否激活等参数
+        udev：udev程序本身是一套设备的管理机制，udev通过sysfs的文件系统，可以正确地掌握目前系统上存在的硬件设备，以及针对每一个硬件设备做出不同的判断与执行；
+        yum和yum.repos.d：这两个都是yum的配置目录，是一套在linux下可以自动帮助用户安装、更新、移除等的管理组件，可用来替代rpm包管理方式，主配置文件是/etc/yum.conf；yum是更新方式及外挂程序的配置目录，yum.repos.d是存放定期更新组件内容的信息；
+--安全性目录：如selinux或pam.d等管理系统安全性的目录；
+        audit：这个目录所代表的是一种和目录名称一致的audit安全机制，主要以服务的方式协助管理员持续监控各文件被存取的情况；目录下的audit.rules文件主要是定义一些必要的监控规则；
+        pam.d：此目录是Linux-PAM的所有配置文件，配合/lib/security目录中所有觉得函数库，提供Linux下的应用程序认证的机制；
+        pam_pkcs11：PAM机制中的一种登录模块，可以让用户通过smart card做登录的操作；
+        pki：PKI是一种公开密钥的管理方式，通过这样的管理模式，可以让所有网络传输有更多保障；
+        racoon：这个目录是由ipsec-tools组件所提供的，ipsec的主要目的是让系统实现VPN的网路技术，在racoon目录的主配置文件racoon.conf中，定义在ipsec操作中所需要的加密算法种类以及其他细节的配置；
+        security：与pam.d目录相辅相成，pam.d中的所有PAM的规则都要用到/lib/security下的PAM函数库，而/etc/security目录中，就是针对这些函数库，提供以配置文件的方式进行细节配置，对希望调整系统安全性部分增加了非常大的方便性；
+        selinux：selinux是一个很新的安全性方案，它是一种针对各种文件、目录、设备或daemon等在linux所需使用到的安全性机制，而且其安全性的数据时直接记录在文件系统中；
+        wpa_supplicant：这个目录被归类到安全性目录中，是因为其属于无线中安全认证的部分，存在wpa_supplicant.conf配置文件，用户可以在这个目录中加入已知可登陆的AP；
+--X Windows目录：如X11或gdm管理X windows启动或使用上的配置目录；
+        alternatives：linux下可辨识扩展名的&quot;文件类型&quot;选项，可以针对同一类型的文件，选出一个默认用户所要使用的程序去执行；/etc/alternatives目录下有所有目前已经定义的程序名称，都以软链接的方式存在，里面每一个文件其实都有定义好的默认执行程序，可以使用alternatives命令查看及修改配置；
+        fonts：这个目录就是fontconfig软件的最主要配置目录，其中/etc/fonts/fonts.conf就是对应的配置文件，/etc/fonts目录下的配置都是以XML的方式配置的；
+        gconf：这一目录是GConf2的组件所建立的，GConf的作用就是提供GNOME下的应用程序注册的机制，有些类似于windows下的regedit；
+        gdm：全名为GNOME Display Manger，也就是协助X Windows启动的管理软件，在GDM中的主配置文件是custom.conf，在X windows下可以利用gdmsetup命令对这个文件进行配置；
+        gnome-vfs-2.0：GNOME VFS机制，让GNOME的系统可以知道每一种文件格式要如何开启或浏览，而所有的配置都需要有相对应的函数库；
+        gtk-2.0：由gtk+组件提供的目录，主要是提供X Windows窗口的颜色、按钮或图案，包含软件选项的画面、选项的按钮、滚动轴的样式等；
+        kde：KDE Desktop Manager的主要配置目录；主配置文件是kdmrc；
+        NetworkManager：此目录的目的是让用户不需要做任何操作和配置，只要用户曾经登陆过无线AP，系统就可以记录下来，以后再次登陆时就可以方便的登陆;
+        pango：pango是一套协助GTK+将字体描绘出来的函数库，不论任何的字体或语言，都可以通过pango描绘出来；
+        rhgb：系统在进入X Windows之前，有一个前置配置的图形接口，这个接口就是rhgb，其主要目的是让系统启动变得漂亮；
+        scim：是Linux下目前很好用的输入法；
+        sound：GNOME下有许多的应用软件，很多都会有其特殊的声音，这个目录中存放所有声音的命令路径；
+        X11：X windows的核心配置目录；该目录下比较重要的文件有prefdm(判断X windows使用哪一个Display Manager)、主配置文件xorg.conf(定了X windows所需使用的键盘、鼠标、显卡等相关硬件设备，重点是关于显卡的配置)、xinit子目录(里面都是一些X windows资源相关的配置)
+        xdg：X windows上的菜单画面，就是从这里出来的，所有在X windows中使用的菜单文字及分类，都可以在这个目录下做配置，其下的子目录menu，可以通过配置里面的文件自定义应用程序、系统管理、外观等菜单内容                        
+--其他目录：针对单一特殊软件的配置或未能按以上分类方式则放在此目录中；
+        a2ps.cfg和a2ps-site.cfg：用于将一份文件格式转换为postscript的格式，在某些打印机或要将文件输出成一份标准格式的文件时，它会被用到；
+        alsa：主要任务在于提供linux声音及声音的功能，并试着让其性能达到最佳化；
+        ghostscript：在linux下要读取Adobe格式文件(如pdf)，最方便的方式就是使用ghostscript命令，这个目录主要用于设置在显示时使用哪种字体作为默认字体；
+        gre.d：GRE是Mozilla注册的一种机制，目录中的配置文件gre.conf会注明所使用的Mozilla软件的路径和版本；
+        iproute2：iproute2是一套非常强大的网络管理软件，iproute2提供的功能有很多种，此目录中存放一些网络的基本配置值；
+        java：这个目录是由jpackage-utils软件提供的，这个目录是这个软件的主要配置目录，除此之外还有maven、jvm、jvm-common都是由jpackage-utils软件产生的，jpackage是一个专门为了提供java程序与函数库所存在的软件；
+        mgetty+sendfax：主要用于使用linux架构一台fax server，可以使用mgetty.config来配置需要有关传真接收和发送的操作；
+        php.d：主要存放的各软件(如dbase、ldap、mysql等)与php相关的配置文件；
+        reader.conf.d：存放smart card配置文件的目录，由程序pcsc-lite提供，这个程序的主配置文件是/etc/reader.conf；
+        dumpdates：存放dump命令的执行日期，dump命令可以对ext2/ext3文件系统进行检查备份；
+</code></pre></li>
+<li>/lib：需要共享的函数库与kernel模块，系统kernel启动所使用的函数库，或者当执行一些在/bin和/sbin中的命令时使用的函数库；</li>
+<li>/media：移动存储设备默认挂载点；(如光盘)</li>
+<li>/mnt：临时挂载用的设备挂载点；(如磁盘分区，网络共享)</li>
+<li>/opt：额外所安装的应用程序目录,有些软件包我们可以将它安装在该目录中；(一般为空，某些应用软件安装需要这个目录)</li>
+<li>/root：管理员root的宿主目录</li>
+<li>/sys：虚拟文件系统，被建立在内存中，是在2.6版的kernel之后才被加入到正式的文件系统中，以分类的方式将系统的信息存放在这个目录中，以方便linux用户通过不同的分类找出系统相关的信息；</li>
+<li>/tmp：临时文件存放区域；(默认被设置了粘滞位)</li>
+<li>/var：动态文件或数据存放目录，默认日志文件都存放在这个目录下，一般建议把此目录单独划分一个分区；<pre><code>/var/account：是linux系统下的审核机制(psacct)对应的目录；
+/var/cache：该目录下的文件时所有程序所产生的缓存数据，也就是当应用程序启动时，会将数据留一份在这个目录中；
+/var/empty：默认是sshd程序用到的这个目录，当建立ssh连接，ssh服务器必须使用该目录下的sshd子目录；
+/var/ftp：ftp服务器软件一般默认会将匿名登陆的用户的宿主目录；
+/var/gdm：gdm所使用的目录，里面存放一些系统当前所占用的console记录及通过gdm执行的X windows记录，只有通过gdm窗口的日志才会存放在此；
+/var/lib：该目录下存放很多与应用程序名称同名的子目录，每个子目录下都是应用执行的状态信息；
+/var/lock：每个服务一开始都会在这个目录下产生一个该服务的空文件，主要是避免服务启动冲突；
+/var/log：常用目录，专门用来存放所有日志文件的目录，里面存放很多系统、软件、用户等相关的日志信息；里面有一些文件是比较常用的；
+        lastlog：记录用户最后一次登录的信息，使用lastlog命令读取；
+        message：记录系统的几乎所有信息，主要包括启动信息，syslogd服务记录的信息等；
+        wtmp：记录所有用户登陆及注销的信息，使用last命令读取；
+        secure：记录登录系统访问数据的文件，如ssh pop3 telnet ftp等都会记录在此文件中
+        /var/log/httpd/access_log：httpd访问日志
+        /var/log/httpd/error_log：httpd错误日志
+        btmp：记录失败的用户登录
+        utmp： 纪录当前登录的每个用户
+        xferlog：ftp会话日志
+        boot.log：记录开机或一些服务启动时所显示的启动和关闭信息
+        /var/log/maillog或/var/log/mail/*：记录邮件访问或往来的用户信息
+        cron： 记录crontab例行性服务的内容
+        dmesg：开机引导日志信息
+        sudolog：纪录使用sudo发出的命令
+        sulog： 纪录使用su命令的使用
+/var/named：bind软件实现的DNS服务器的区域数据文件都存放在这个目录下；
+/var/nis和/var/yp：都是NIS服务机制所使用的目录，nis主要记录所有网络中每一个client的连接信息；yp是linux的nis服务的日志文件存放的目录；
+/var/run：此目录中的大部分文件都记载目前系统正在执行程序的PID值，每一个文件都是以个独立的PID记录；此目录下存放一个特殊文件utmp，此文件记录目前谁在使用系统，必须使用utmpdump命令才能看到其中的内容；
+/var/spool：里面主要都是一些临时存放，随时会被用户所调用的数据；打印机、邮件、代理服务器等假脱机目录存放在该目录下；
+/var/tmp：专门为了一些应用程序在安装或执行时，需要在重启后使用的某些文件时，能将该文件暂时存放在这个目录中，完成后再行删除；
+/var/www：apache网页服务器的宿主目录；
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2015/03/05/2015-03-05-144210-Linux目录及其含义/" title="Linux目录及其含义">http://linuxgeeks.github.io/2015/03/05/2015-03-05-144210-Linux目录及其含义/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux目录/" rel="tag"><i class="fa fa-tag"></i> Linux目录</a>
+          
+            <a href="/tags/FHS/" rel="tag"><i class="fa fa-tag"></i> FHS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/01/2015-03-01-162610-Hello World/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/09/2015-03-09-135110-Linux获取命令帮助/" rel="prev" title="Linux获取命令帮助">
+                Linux获取命令帮助 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

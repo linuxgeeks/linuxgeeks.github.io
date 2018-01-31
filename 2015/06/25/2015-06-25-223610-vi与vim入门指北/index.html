@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vim,vi," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="第一部分 基础与高级的vi第一章 vi文本编辑器vi编辑器通常被简称为vi，而vi又是visual editor的简称  。它在Linux上的地位就像Edit程序在DOS上一样。它可以执行输出、删除、查找、替换、块操作等众多文本操作，而且用户可以根据自己的需要对其进行定制，这是其他编辑程序所没有的。 vi 编辑器并不是">
+<meta name="keywords" content="vim,vi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vi与vim入门指北">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/06/25/2015-06-25-223610-vi与vim入门指北/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content="第一部分 基础与高级的vi第一章 vi文本编辑器vi编辑器通常被简称为vi，而vi又是visual editor的简称  。它在Linux上的地位就像Edit程序在DOS上一样。它可以执行输出、删除、查找、替换、块操作等众多文本操作，而且用户可以根据自己的需要对其进行定制，这是其他编辑程序所没有的。 vi 编辑器并不是一个排版程序，它不像Word或WPS那样可以对字体、格式、段落等其他属性进行编排">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-1%E7%AE%80%E5%8D%95%E7%9A%84%E7%A7%BB%E5%8A%A8%E5%91%BD%E4%BB%A4.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-2.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-3.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-4.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-5.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-6.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-7.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-8.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-9.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-10.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-11.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-12.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-13.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-14.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-15.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-16.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-17.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-18.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-19.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-20.png">
+<meta property="og:updated_time" content="2018-01-30T14:14:02.501Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vi与vim入门指北">
+<meta name="twitter:description" content="第一部分 基础与高级的vi第一章 vi文本编辑器vi编辑器通常被简称为vi，而vi又是visual editor的简称  。它在Linux上的地位就像Edit程序在DOS上一样。它可以执行输出、删除、查找、替换、块操作等众多文本操作，而且用户可以根据自己的需要对其进行定制，这是其他编辑程序所没有的。 vi 编辑器并不是一个排版程序，它不像Word或WPS那样可以对字体、格式、段落等其他属性进行编排">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/vim-1%E7%AE%80%E5%8D%95%E7%9A%84%E7%A7%BB%E5%8A%A8%E5%91%BD%E4%BB%A4.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/06/25/2015-06-25-223610-vi与vim入门指北/"/>
+
+
+
+
+
+  <title>vi与vim入门指北 | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/06/25/2015-06-25-223610-vi与vim入门指北/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vi与vim入门指北</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-25T22:36:10+08:00">
+                2015-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vim/" itemprop="url" rel="index">
+                    <span itemprop="name">vim</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  22,152
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  80
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="第一部分-基础与高级的vi"><a href="#第一部分-基础与高级的vi" class="headerlink" title="第一部分 基础与高级的vi"></a>第一部分 基础与高级的vi</h2><h3 id="第一章-vi文本编辑器"><a href="#第一章-vi文本编辑器" class="headerlink" title="第一章 vi文本编辑器"></a>第一章 vi文本编辑器</h3><p>vi编辑器通常被简称为vi，而vi又是visual editor的简称  。它在Linux上的地位就像Edit程序在DOS上一样。它可以执行输出、删除、查找、替换、块操作等众多文本操作，而且用户可以根据自己的需要对其进行定制，这是其他编辑程序所没有的。</p>
+<p>vi 编辑器并不是一个排版程序，它不像Word或WPS那样可以对字体、格式、段落等其他属性进行编排，它只是一个文本编辑程序。没有菜单，只有命令，且命令繁多。vi有3种基本工作模式：命令行模式、文本输入模式和末行模式。</p>
+<h4 id="打开与关闭文件"><a href="#打开与关闭文件" class="headerlink" title="打开与关闭文件"></a>打开与关闭文件</h4><p>可以使用vi编辑任何文本。vi将要编辑的文件复制到缓冲区(内存中另外设置的暂存本地磁盘内容的部分)，显示缓冲区(虽然一次只能看到一个屏幕大小的部分)，并且让你增加、删除与修改文本。存储编辑的结果时，vi则把缓冲区的内容写回到磁盘中，替换同名的旧文件。需要注意的是，你永远是在缓冲区里的文本副本上操作，除非存储缓冲区，否则编辑结果不会影响原始的文件。存储编辑的结果也称为“写入缓冲区”或是更常见的“写入文件”。</p>
+<h5 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h5><p>vi是调用vi编辑器、编辑新旧文件所用的Unix命令。vi命令的语法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi [filename]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上述命令行中出现了中括号，表示括号中的filename是个可选项，可有可无，方括号本身不用输入。</li>
+<li>如果省略filename，vi会打开一个未命名的缓冲区。我们可在将缓冲区的内容写入文件时进行命名。</li>
+<li>尽量保持一个良好的习惯，现在命令行中给出文件名</li>
+</ul>
+<p>在目录中打开新文件时，应该在vi命令中加上新的文件名。例如要在当前目录打开一个名为practice的文件，应该输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi practice</span><br></pre></td></tr></table></figure>
+<p>因为这是个新文件，缓冲区是空的且屏幕的显示如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~</span><br><span class="line">~</span><br><span class="line">~</span><br><span class="line"><span class="string">"practice"</span> [New File]</span><br></pre></td></tr></table></figure>
+<p>最左边的波浪符（~）表示文件中没有文本，连空白行都没有；底下的提示符（也称为状态行）显示了文件的名称与当前的状态</p>
+<p>你也可以编辑任何目录中的现有文本文件，只要指定文件名即可。假设有个文件位于/home/john/letter。如果你已经在/home/john目录中，可以使用相对路径名称：<code>vi letter</code>即可把letter文件的内容显示到屏幕上；如果你位于其他目录下，则需要使用完整的路径名称：<code>vi /home/john/letter</code></p>
+<h5 id="打开文件时发生的问题"><a href="#打开文件时发生的问题" class="headerlink" title="打开文件时发生的问题"></a>打开文件时发生的问题</h5><ul>
+<li>调用vi时，出现[open mode]消息。<br>你的终端类型可能未正确识别。立刻输入<code>:q</code>离开这个编辑会话（editing session）。检查<code>$TERM</code>环境变量，它应该设置为你的终端名称，也可以查询你的系统管理器，已提供正确的终端类型设置。</li>
+<li>见到下列任何一种消息：<br>可能是终端类型没有定义，或是terminfo或termcap项中有错误。输入<code>:q</code>离开。检查<code>$TERM</code>环境变量，或要求系统管理为你的环境选择一个终端类型。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Visual needs addressable cursor or upline capability</span><br><span class="line">Bad termcap entry</span><br><span class="line">Termcap entry too long</span><br><span class="line">terminal: Unknown terminal <span class="built_in">type</span></span><br><span class="line">Block device required</span><br><span class="line">Not a typewriter</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当你认为文件已存在时，却出现[New file]消息<br>确认文件的大小写是否正确（Unix严格区分文件名的大小写）。如果正确，很可能位于错误的目录。输入<code>:q</code>离开。检查是否位于正确的目录（Unix提示符下使用pwd命令）。如果位于正确的目录中，则检查目录中的文件列表（使用ls），以确定是否有个名称只差一点点的文件。</li>
+<li>调用vi，却得到<code>:</code>提示符（表示你在ex行编辑模式中）<br>你可能在vi重绘屏幕前将其中断了。在ex提示符（:）下输入vi以进入vi。</li>
+<li>出现以下消息之一<br>“Read Only”表示你只能查看文件，而不能保存任何更改。你可能在查看模式（view mode，使用view或vi -R）中调用了vi，或者你对文件没有写入权限。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Read only]</span><br><span class="line">File is <span class="built_in">read</span> only</span><br><span class="line">Permission denied</span><br></pre></td></tr></table></figure>
+<ul>
+<li>出现以下消息之一<br>你要调用来编辑的文件不是常规的文件。输入<code>:q!</code>强制退出，再检查你要编辑的文件，可以使用file命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bad file number</span><br><span class="line">Block special file</span><br><span class="line">Character special file</span><br><span class="line">Directory</span><br><span class="line">Executable</span><br><span class="line">Non-ascii file</span><br><span class="line">file non-ASCII</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当你遇到上述困难而输入<code>:q</code>后，却出现以下消息<br>表示你更改了文件却未写入文件，而自己还不知道，输入<code>:q!</code>强制退出。你所做的改变将不会保存到文件中</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No write since last change (:quit! overrides).</span><br></pre></td></tr></table></figure>
+<ul>
+<li>打开文件时，提示以下信息<ul>
+<li>该文件可能正在被其他人编辑<ul>
+<li>找到编辑人员请他退出当前的vim操作</li>
+<li>或使用『O』使用只读模式查看文件内容</li>
+</ul>
+</li>
+<li>该文件可能在编辑过程中出现异常中断或退出<ul>
+<li>如果你之前的 vim 编辑操作尚未保存，此时应该按下『R』，亦即使用 (R)ecover， 此时 vim 会载入 .swp文件 的內容，让你自己来决定是否需要存储。不过那个swap文件并不会在vim编辑操作退出后自动删除，所以你离开vim后需要自行手动删除，否则每次打开这个文件都会出现这样得警告</li>
+<li>如果你确定这个.swap文档存储没有用的，那么你可以直接按下『Q』退出vi，手动删掉这个.swap文件，重新使用vi编辑即可</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">E325: ATTENTION</span><br><span class="line">Found a swap file by the name <span class="string">"/tmp/.a.swp"</span></span><br><span class="line">          owned by: root   dated: Wed May  3 14:11:29 2017</span><br><span class="line">         file name: /tmp/a</span><br><span class="line">          modified: no</span><br><span class="line">         user name: root   host name: CentOS-6.8</span><br><span class="line">        process ID: 104610 (still running)</span><br><span class="line">While opening file <span class="string">"/tmp/a"</span></span><br><span class="line">             dated: Wed Apr 26 18:47:13 2017</span><br><span class="line"></span><br><span class="line">(1) Another program may be editing the same file.  If this is the <span class="keyword">case</span>,</span><br><span class="line">    be careful not to end up with two different instances of the same</span><br><span class="line">    file when making changes.  Quit, or <span class="built_in">continue</span> with caution.</span><br><span class="line">(2) An edit session <span class="keyword">for</span> this file crashed.</span><br><span class="line">    If this is the <span class="keyword">case</span>, use <span class="string">":recover"</span> or <span class="string">"vim -r /tmp/a"</span></span><br><span class="line">    to recover the changes (see <span class="string">":help recovery"</span>).</span><br><span class="line">    If you did this already, delete the swap file <span class="string">"/tmp/.a.swp"</span></span><br><span class="line">    to avoid this message.</span><br><span class="line"></span><br><span class="line">Swap file <span class="string">"/tmp/.a.swp"</span> already exists!</span><br><span class="line">[O]pen Read-Only, (E)dit anyway, (R)ecover, (Q)uit, (A)bort:</span><br></pre></td></tr></table></figure>
+<h5 id="操作模式"><a href="#操作模式" class="headerlink" title="操作模式"></a>操作模式</h5><ul>
+<li>模式有两种：命令模式（command mode）和插入模式（insert mode）。一开始是命令模式，此时所有的的按键都是命令；而在插入模式中，你输入的东西都将称为文件的内容。</li>
+<li>有时你可能意外地进入插入模式；或是反过来，意外地离开插入模式。无论何种情况，输入的 内容可能影响文件，但不是你想要的结果</li>
+<li>按下<code>Esc</code>键或<code>Ctrl</code>+<code>[</code>则会强制vi进入命令模式。如果你已经处于命令模式，vi会在你按下<code>Esc</code>时发出”哔“声（因此命令模式有时被称为”哔哔模式“）</li>
+<li>一旦安全地进入了命令模式，即可手动修复意料之外的改变并继续编辑文本</li>
+</ul>
+<h5 id="保存与退出文件"><a href="#保存与退出文件" class="headerlink" title="保存与退出文件"></a>保存与退出文件</h5><ul>
+<li>你可以随时退出正在编辑的文件，保存编辑结果，并回到Unix命令行模式下。vi用于离开并保存编辑的命令是ZZ，请注意ZZ两个字母均为大写</li>
+<li>假设你创建了一个名为practice的文件用于练习vi，并输入了6行文本。想保存这个文件时，首先按下<code>Esc</code>以检查是否处于命令模式中，而后输入ZZ</li>
+<li>你也可以用ex命令保存编辑结果。输入<code>:w</code>是保存（写入）文件但不退出vi；若无编辑动作，可输入<code>:q</code>退出；输入<code>:wq</code>或<code>:x</code>，则是保存编辑结果并离开vi</li>
+<li><code>:wq</code>与<code>ZZ</code>相等，不论文件内容是否发生改变，退出时更新文件的(Modify、Change)时间属性；而<code>:x</code>则只在文件内容发生过改变，退出文件时才更新（Modify、Change）时间属性，否则不更新；二者均会更新（Access）时间属性。可使用<code>stat</code>命令进行验证</li>
+</ul>
+<h4 id="退出而不保存编辑结果"><a href="#退出而不保存编辑结果" class="headerlink" title="退出而不保存编辑结果"></a>退出而不保存编辑结果</h4><ul>
+<li><p>有两个ex命令可以帮你轻松地将文件恢复到原来的样子</p>
+<ul>
+<li>想要撤除所有的编辑结果，恢复到上一次保存文件时的状态，使用命令<code>:e!</code>然后回车</li>
+<li>取消所有的编辑结果，然后直接退出vi，使用命令<code>:q!</code></li>
+</ul>
+<p>这两个命令，所有上一次存档后仍在缓冲区的编辑动作都会消失。vi一般不会让你放弃编辑结果，在<code>:e</code>与<code>:q</code>命令后的感叹号可以使vi不理会这个禁令，即使缓冲区有所改变，仍然会执行这两个命令</p>
+</li>
+</ul>
+<h5 id="保存文件时发生的问题"><a href="#保存文件时发生的问题" class="headerlink" title="保存文件时发生的问题"></a>保存文件时发生的问题</h5><ul>
+<li>尝试写入文件，却出现以下消息<br>输入<code>:w!</code>以覆盖现有的文件，或者输入<code>:w newfile</code>将编辑的结果写入一个新文件。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File exists</span><br><span class="line">File file exists - use w!</span><br><span class="line">[Existing file]</span><br><span class="line">File is <span class="built_in">read</span> only</span><br></pre></td></tr></table></figure>
+<ul>
+<li>你想写入文件，却没有写入权限，并得到”Permission denied“消息<br>输入<code>:w newfile</code>将编辑的结果写入一个新文件。如果你拥有目录的写入权限，则可使用<code>mv</code>将原来的文件用新文件替换。如果你没有目录的写入权限，则输入<code>:w pathname/file</code>，将缓冲区写入某个你拥有写入权限的目录（如你的主目录或是/tmp）</li>
+<li>尝试写入文件，却得到文件系统已满的消息<ul>
+<li>输入<code>:!rm junkfile</code>来删除一些不需要的大文件，腾出一些空间（在!后开始ex命令便可以使用Unix命令）</li>
+<li>或者输入<code>:!df -h</code>看看其他文件系统有没有空间。如果有的话，则在其他文件系统中选择一个目录，用<code>:w pathname/file</code>写入你的文件</li>
+</ul>
+</li>
+<li>系统进入开放模式并且显示文件系统已满<ul>
+<li>vi用于临时文件的磁盘已满。输入<code>:!ls /tmp</code>查看有无可以移除的文件，以腾出一些空间。如果有的话，先创建一个临时的Unix shell，以便移除文件或发出其他Unix命令。</li>
+<li>你可以输入<code>:sh</code>或<code>:bash</code>，创建一个shell；按下<code>Ctrl</code>+<code>D</code>或输入<code>exit</code>，结束shell并退回vi</li>
+<li>在现在Unix系统上，当使用作业控制的shell时，你只需输入<code>Ctrl</code>+<code>Z</code>来暂停vi，即可回到Unix命令行模式，再输入fg即可回到vi。腾出空间后使用<code>:w!</code>写入文件</li>
+</ul>
+</li>
+</ul>
+<h3 id="第二章-简单的文本编辑"><a href="#第二章-简单的文本编辑" class="headerlink" title="第二章 简单的文本编辑"></a>第二章 简单的文本编辑</h3><h4 id="vi命令"><a href="#vi命令" class="headerlink" title="vi命令"></a>vi命令</h4><ul>
+<li><p>vi有两种模式：命令模式与插入模式。你刚进入vi时，是处于命令模式，编辑器正在等你输入命令。命令可以让你移动到文件的任何地方进行编辑，或者进入插入模式以增加新文本。命令也可以用来结束编辑（保存或忽略编辑结果），回到Unix提示符。</p>
+</li>
+<li><p>你可以将两种模式想象成两套不同的键盘。在插入模式中，键盘就像是打字机，而在命令模式中，每一个键都有新的意义或用于开始某些指令。</p>
+</li>
+<li><p>有好几种方法可以用于告诉vi你要进入插入模式，最常见的一种就是按下i。i不会显示在屏幕上，但是按下它以后，所有你输入的东西都会显示在屏幕上并且会进入缓冲区。光标会置于当前插入的点。如果要告诉vi你想停止插入文本，则按下<code>Esc</code>，光标将往回移动一个字符（因此会位于你输入的最后一个字符上）并回到vi的命令模式。</p>
+</li>
+<li><p>当你打开新文件时，vi会进入命令模式，并将第一个按键（i)当作插入命令|其后所有的按键都被视为文本，直到按下为止。如果需要在插入模式中修改错误，只要按退格键后将错误去掉即可。依照终端类型的不同，退格键可能会消除原来输入的文字， 也可能只是后退而已。无论如何，退格键经过的内容都将被删除。请注意，你不能用退格键到达进入插入模式的那一点之前。按ENTER则换行。</p>
+</li>
+<li><p>有时你会不知道是位于插入模式还是命令模式。当vi所做的事不合乎你的预期时，先按 <code>Esc</code> 一两次，査看你位于何种模式。如果听到“哗”声，表示位于命令模式。</p>
+</li>
+</ul>
+<h4 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h4><p>你在做编辑工作时，可能只有一小段时间是在插入模式下增加新文本，大部分的时间都是在编辑现有的文本。<br>vi移动光标的命令包括：</p>
+<ul>
+<li>上、下、左、右键一次一个字符（character)。</li>
+<li>前进或后退一个文本块（text block)——一次一个单词、句子或段落。</li>
+<li>在文件中一次一屏（screen)地前进后退。</li>
+</ul>
+<p>下图中下划线指示了光标现在的位置，圆圈表示各种vi命令会将光标移动到的地方<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-1%E7%AE%80%E5%8D%95%E7%9A%84%E7%A7%BB%E5%8A%A8%E5%91%BD%E4%BB%A4.png" alt=""></p>
+<h5 id="单一的移动"><a href="#单一的移动" class="headerlink" title="单一的移动"></a>单一的移动</h5><ul>
+<li>h、j、k、l，这4个位于键盘中心的键可以移动光标<ul>
+<li>h 向左一个字符</li>
+<li>j 向下一个字符</li>
+<li>k 向上一个字符</li>
+<li>l 向右一个字符</li>
+</ul>
+</li>
+<li>也可以使用 <code>←</code> <code>↑</code> <code>↓</code>  <code>→</code> 做上下移动，或用<code>ENTER</code>与 <code>BACKSPACE</code>键，但是这种方法比较少用。一开始，你也许会觉得用字母代替方向键来移动光标很奇怪，然而过一会，你便会发现这是vi最令人喜爱的一点——不需要让你的手指离开键盘的中心，就可以到处移动光标。</li>
+<li>在移动光标前，先单击<code>Esc</code>以确定处于命令模式。使用h、j、k、l移动光标。当你往一个方向移动到极限时，会听到蜂鸣声，而光标会停止移动。例如，当你位于一行的开头或是结尾时，就不能用h或l移动到上一行或是下一行，必须使用j或k 。 同样地，你不能将光标移到超过波浪符（〜）的地方，就是没有文本的行；也不能移到第一行文本之前。</li>
+</ul>
+<h5 id="数值参数"><a href="#数值参数" class="headerlink" title="数值参数"></a>数值参数</h5><p>你可以在移动命令的前面加上数字。命令4l把光标向右移4个字符，就像 按了4次l一样（llll)。这种可将命令重复多次的功能会给你更多的选择，并增强命令的功能。接下来，在接触 更多命令时，也应该牢记这一点。</p>
+<h5 id="在一行中移动"><a href="#在一行中移动" class="headerlink" title="在一行中移动"></a>在一行中移动</h5><p>保存了practice文件后，vi会显示一个消息，告诉你这个文件中有多少行。这里的行不一定与屏幕上可见的行（通常限制在80个字符）一样长，而是表示在换行符（newline) 间的任何文本(换行符会在你处于插入模式并按下ENTER键时被插入文件)。如果你输 入200个字符后才按下ENTER键，vi就把所有200个字符当成同一行（即使这200个字符 在屏幕上看起来是好几行）。</p>
+<p>vi可以设置与右边界的距离，以便自动插入换行符。这个选项是wrapmaigin (简写为wm),你可以将它设为10个字符，这个命令不会影响已经输入的行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:<span class="built_in">set</span> wm=10</span><br></pre></td></tr></table></figure>
+<p>如果你没有设置vi的wrapmargin (环绕）选项，则必须手动使用换行符来换行，让一行 的长度保持在可以接受的范围。</p>
+<blockquote>
+<p>有两个用于在一行中移动的命令是：</p>
+</blockquote>
+<p>0<br>移到一行的开头<br>$<br>移到一行的结尾</p>
+<p>下面的范例中，显示了行编号（使用number选项可在vi中显示行号，在命令模式中输 入：set nu即可设置这个选项。详细内容将于第七章中介绍）。<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-2.png" alt=""><br>其中逻辑上的行数（3）和屏幕上见到的行数（6）是不一样的。如果光标位于delete 的d上时，你输入了$，则光标会移到Mem后面的句点上，如果输入0，光标会回到第二行开头move的m上面。</p>
+<h5 id="按照文本块来移动"><a href="#按照文本块来移动" class="headerlink" title="按照文本块来移动"></a>按照文本块来移动</h5><ul>
+<li>你可以依照文本块来移动光标：单词、句子或是段落都可以。w命令使光标移动一个单 词，符号与标点也算是一个单词。以下呈现w的光标移动：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-3.png" alt=""></li>
+<li>你也可以不算符号与标点，只将光标移动到下一个单词，此时要用W命令（可以想象成“大的”或“大写的”Word)。<br>使用W做光标移动的结果如下：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-4.png" alt=""></li>
+<li>若想后退一个单词，应该使用b命令。大写的B则是倒退一个单词，但不把标点、符号视为单词。</li>
+<li>前面提过，移动命令可接受数值参数，因此不管是W或b命令，都可以用数值将其重复多次。2W把光标往前移动2个单词；5B会往回退5个单词，但不算标点、符号。</li>
+<li>若想移动到特定一行时，你可以使用G命令。只按G将移动到文件的结尾，1G则可到达文件的顶端，42G可移动到第42行。</li>
+</ul>
+<h4 id="简单的编辑"><a href="#简单的编辑" class="headerlink" title="简单的编辑"></a>简单的编辑</h4><p>当你在文件中输入文字时，很少一次就能尽善尽美，可能会有错字或者想修订词句|有时你的程序也会有错误。在输入文本之后，你应该可以对它们更改、删除、移动或复 制。图2-3显示了我们可能想做的文件编辑工作，并且用校对符号标示出来。<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-5.png" alt=""></p>
+<p>在vi中，只要几个简单的键，就可以做出这些动作：i表示插入，a表示添加，c表示更改，d表示删除。移动与复制文本，则需要用到两个命令。移动时先用d做删除，再用p 进行放置；复制时先用y做“拖曳”的动作，再用p进行放置。这些编辑动作将在后续章 节中一一解说。图2-4把图2-3中标示的校对动作显示为相应的vi命令。<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-6.png" alt=""></p>
+<h5 id="插入新文本"><a href="#插入新文本" class="headerlink" title="插入新文本"></a>插入新文本</h5><p>你已经见过用来在新文件中输入文本的插入命令。但你也会在编辑现有的文本时使用插入命令，以加入漏掉的字符、单词或句子。假设practice文件有下列句子：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-7.png" alt=""><br>光标的位置如上图所示。要在这个句子的开头插入“With a screen editor”，则需要如下的输入：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-8.png" alt=""></p>
+<h5 id="附加文本"><a href="#附加文本" class="headerlink" title="附加文本"></a>附加文本</h5><p><code>a</code>你可以在文件中任何地方用附加命令a来附加文本。a与i的用法几乎都相同，除了前者是在光标后面插入文本，而后者是在光标之前插入文本。你可能注意到，当按下i 进入插入模式后，光标不会移动，除非插入一些文本。然而，当你按下a进入插入模式 时，光标会往右移一个字符，你输入的文本将在原来的光标位置的后面出现。</p>
+<h5 id="更改文本"><a href="#更改文本" class="headerlink" title="更改文本"></a>更改文本</h5><p><code>c</code>需替换文件中的文字时，可以用更改命令c。为了告诉c有多少文本需要更改，可以把 C与光标移动命令一起使用。此时，将把光标移动命令视为命令c会影响的文本对象。例 如，c可以用来更改光标所在位置的文本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cw</span><br><span class="line">从光标到这个单词的结尾</span><br><span class="line">c2b</span><br><span class="line">从光标往前两个单词</span><br><span class="line">c$</span><br><span class="line">从光标到本行结尾</span><br><span class="line">c0</span><br><span class="line">从光标到此行的开头</span><br></pre></td></tr></table></figure>
+<p>在下达更改命令后，你可以将标示出的文本用任何数量的新文本替换，像全部空白、一个单词或是几百行文本都可以。c与i、a—样，在按下<code>Esc</code>键前，都会停留在插入模式。</p>
+<p>当这些更改只影响当前这一行时，vi将在被更改文本的结尾显示$,因此你可以看到这一 行的哪些部分将被影响（参阅以下的cw范例）。</p>
+<h6 id="单词"><a href="#单词" class="headerlink" title="单词"></a>单词</h6><p>要更改一个单词，可用c （更改）命令结合表示单词（word）的w命令。你可以将一个单词换成（cw）更长或更短的单词（或任何长度的文本）。cw可被想成“删除标示出的单词，再插入新的单词，直到按下<code>Esc</code>为止。</p>
+<p>假设文件practice中有如下文本行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">With an editor you can scroll the page,</span><br></pre></td></tr></table></figure>
+<p>如果想将an改为a screen，你只需要更改一个单词<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-9.png" alt=""></p>
+<p>cw也可以用于更改单词的一部分。例如，要将spelling改成spelled，可以将光标移到 i 上，输入cw，再输入ed，接着用<code>Esc</code>结束。</p>
+<h6 id="整行"><a href="#整行" class="headerlink" title="整行"></a>整行</h6><p><code>cc</code>如果要更改当前这一整行的内容，有一个特殊的更改命令：cc。cc会将一整行换成任何输入的文本，直到按下<code>Esc</code>为止。原本的光标位罝并不重要，cc会直接换掉整行文本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Vi命令的一般形式</span><br><span class="line"></span><br><span class="line">就当前提到的更改命令而言，你可能发现了如下模式：</span><br><span class="line">		&#123;<span class="built_in">command</span>) text object</span><br><span class="line"><span class="built_in">command</span>部分是更改命令c，text object (文本对象）则是光标移动命令。但c不是唯一需要文本对象的命令。d (删除）命令、y (拖曳）命令都适用这种形式。</span><br><span class="line"></span><br><span class="line">另外要记住的是，光标移动命令可使用数值参数，因此可将数值加在c、d、y等命令的文本对象上。例如d2w与2dw都是刪除两个单词的命令。记住这一点后，你会发现大部分的vi命令遵循如下模式：</span><br><span class="line">		&#123;<span class="built_in">command</span>)(number)text object</span><br><span class="line">或者相等的模式：</span><br><span class="line">		(number)(<span class="built_in">command</span>)text object</span><br><span class="line"></span><br><span class="line">它们的工作方式是这样的：number与<span class="built_in">command</span>为可选项。</span><br><span class="line">如果没有这两部分，只是单纯的光标移动命令；</span><br><span class="line">如果加上number，则出现移动多次的效果；</span><br><span class="line">结合commaw (c、d、y等等）与text object，则会得到编辑命令。</span><br></pre></td></tr></table></figure>
+<p>前者用在任何影响范围不到一整行文本的更改，而后者则用在影响一行文本以上的更改。</p>
+<p><code>C</code>可更改光标所在位置到此行结尾间的文本。它的功用和c加上特殊行末指示符$的效果一样（c$)。</p>
+<p>cc与C命令实际上是其他命令的简写，因此不符合Vi命令的一般形式。在讨论删除与拖曳命令时，会提到更多简写</p>
+<h6 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h6><p><code>r</code>另外一种更改的方法是r命令。r把一个字符替换成另一个，结束后，不需要按ESC回 到命令模式。假设下面这一行文本有一个拼错的地方：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pith a screen editor you can scroll the page,</span><br></pre></td></tr></table></figure></p>
+<p>只有一个字符P需要更改。在这里你不想使用cw，因为你不想重打整个单词。可用r命令来更改光标所在处的字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rW</span><br><span class="line">使用r命令加上要更改的字符W</span><br></pre></td></tr></table></figure>
+<h6 id="替换文本"><a href="#替换文本" class="headerlink" title="替换文本"></a>替换文本</h6><p><code>s</code>假设你只想更改几个字符，而不是一整个单词，使用替换命令（s）即可实现。其本身会替换一个字符，而在前面加上数值后，即可替换许多个字符。像更改命令（c）一 样，被替换的最后一个字符会用$标示出，以便査看有多少文本会被替换</p>
+<p><code>S</code>命令，就像其他的大写命令，可以更改一整行文本。它与C命令略有不同——C命令会更改从光标所在位置直到该行结尾间的文本，S命令则不管光标位于哪里，都会整行删除。然后vi把光标移到此行开头并进入插入模式。在S命令前面加上数值可以替换许多行。</p>
+<p>s与S都会让你进入插入模式，而当你结束新文本的输入时，按ESC。</p>
+<p><code>R</code>命令和对应的小写命令一样，用来替换文本。不同之处在于，按下R会进入覆盖模 式，你输入的字符将逐一覆盖屏幕上的字符，直到按下ESC为止。R命令最多只能覆盖 一整行：当桉下Enter时，vi会打开新行并进入插入模式。</p>
+<h5 id="更改大小写"><a href="#更改大小写" class="headerlink" title="更改大小写"></a>更改大小写</h5><p><code>~</code>更改字母的大小写是一种特殊的替换。波浪号（~）命令可将小写字母改成大写的， 或者将大写字母改成小写的。将光标移到你要更改的字母上并输入~，这个字母的大小写就会改变，而光标移到下一个字符。</p>
+<p>在旧版的vi中，你不能为~指定数值参数或文本对象，而新的版本已经接受数值参数了。</p>
+<p>如果你要一次改变一行以上的文本的大小写，则必须使用Unix命令（如tr)来过滤文本。</p>
+<h5 id="删除文本"><a href="#删除文本" class="headerlink" title="删除文本"></a>删除文本</h5><p><code>d</code>文件中文本的删除可使用d命令。就像更改命令，删除命令也需要文本对象（用于表示要处理的文本对象)。你可以删除单词（dw)、删除一行（dd与D)，或使用稍后学到的其他移动命令。</p>
+<p>删除文本时，先将光标移到删除开始的地方，再输入删除命令（d）及文本对象，例如 用w表示单词。</p>
+<h6 id="单词-1"><a href="#单词-1" class="headerlink" title="单词"></a>单词</h6><p><code>dw</code>假设某文件中有下列文本<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-10.png" alt=""></p>
+<p>光标的位置如上所示，你想要删除第一行中的一个are。 按键顺序结果<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-11.png" alt=""></p>
+<p>dw会删除光标所在位置的单词，请注意单词后的空白也会被删除。</p>
+<p>dw也可以用来删除单词的一部分。在下例中：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-12.png" alt=""><br>你想删除单词allowed后面的ed，<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-13.png" alt=""></p>
+<p><code>dw</code>总是会将此行中下一个单词前的空白删除，但是我们在上一个例子中并不希望如此。 若要留下单词间的空白，应该使用de，它只会删除到单词本身的结尾，dE删除的范围则是到包括标点在内的单词结尾。</p>
+<p>你也可以向前删除（db）或者删除到一行的结尾或开头（d$或d0）</p>
+<h6 id="整行-1"><a href="#整行-1" class="headerlink" title="整行"></a>整行</h6><p><code>dd</code>命令删除光标所在行的一整行内容，它并不会只删除部分行。像cc一样，dd是个形式特殊的命令。利用前面范例中的文本，并将光标放在第一行，如下所示：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-14.png" alt=""><br>你可以删除开头两行<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-15.png" alt=""></p>
+<p>D命令会删除从光标所在位置到本行结束间的文本（D是d$的简写）。例如，光标位于如下所示的位置：<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-16.png" alt=""><br>你可以从光标开始删除文本到本行结束:<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-17.png" alt=""></p>
+<h6 id="字符-1"><a href="#字符-1" class="headerlink" title="字符"></a>字符</h6><p><code>x</code>通常我们只想删除一个或两个字符。就像有替换单一字符的特殊更改命令r，当然也有特殊的删除命令x，它只会删除光标所在位置的字符。在下面这一行中：</p>
+<p><strong>z</strong>You can move text by deleting text and then</p>
+<p>你可以按下x以删除z。大写的X则删除光标前的字符。在这些命令前面加上数值可以删除多个字符。例如，5x会删除从光标所在之处开始往右的5个字符。</p>
+<h6 id="删除文本时发生的问题"><a href="#删除文本时发生的问题" class="headerlink" title="删除文本时发生的问题"></a>删除文本时发生的问题</h6><p>你误删了文本，想要补救。</p>
+<ul>
+<li><p>有好几种方法可以恢复被删除的文本。如果你刚刚删除一些东西，但马上就发觉 了，只要输入u就可以撤销上一个命令（如dd)。但这只适用于尚未下达其他命令的时候，因为u只会撤销最近一个命令。另一方面，U会恢复一整行成原来面貌，就是做任何改变之前的样子。连续多次输入u则会一步一步向以前撤销</p>
+</li>
+<li><p>你也可以使用p命令，恢复最近几次的删除动作，因为vi会将最近9次的删除动作保 存在9个编号的删除缓冲区中。举个例子，如果你知道要恢复的缓冲区是第三个， 则可以输入：<br>“3p<br>把第三个缓冲区“放到”光标所在的下一行上。</p>
+</li>
+</ul>
+<p>伹这只对删除的一整行才有用。被删除的单词或是一行的一部分都不会被保存到缓 冲区中。如果你要恢复一个单词或一整行的一部分，而且u命令没有用，请单独使用p命令。它会恢复所有你刚刚删除的内容。后续章节会谈到更多关于命令u与p的 内容。</p>
+<ul>
+<li>请注意，Vim支持“无限”恢复（infinite undo)，挽救失误因此简单多了。</li>
+</ul>
+<h5 id="移动文本"><a href="#移动文本" class="headerlink" title="移动文本"></a>移动文本</h5><p>在vi中，采用“删除后再置放文本”的方法使文本移动，就像使用“剪切与粘贴”一 样。每次移动一个文本块时，文本块会先被删除，再存储在特殊的缓冲区中：接着移动到另一个位罝，并被放置（put）命令（p）放在新的位置。虽然移动对一整行文本比单词有用， 伹还是可以移动任何的文本块。</p>
+<p><code>p</code>放置命令（p)会将缓冲区的文本放在光标后，大写的P命令则把文本放置在光标前。 如果你移动了一行以上的文本，p命令把移动的文本放在光标后的新一行（或很多行）；如果你移动的文本不到一行，p命令把移动的文本放在光标之后的同一行。</p>
+<p>假设practice文件中有下列文本:</p>
+<p>You can move text by deleting it and then,<br><strong>l</strong>ike a “cut and paste,”<br>placing the deleted text elsewhere in the file.<br>each time you delete a text block.</p>
+<p>你想将第二行的like a “cut and paste” 放到第三行之后，使用删除就可以做到:<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-18.png" alt=""></p>
+<p><strong>注意</strong>：一旦删除文本后，你必须在发出下一个更改或删除命令前恢复文本。如果你做了另一个会 影响缓冲区的编辑动作，删除的文本就会消失。你可以一直重复放置的动作，只要不做新 的编辑动作即可。</p>
+<h6 id="对调两个字母"><a href="#对调两个字母" class="headerlink" title="对调两个字母"></a>对调两个字母</h6><p>你可以用xp (删除一个字符，再放到光标后面）来对调两个字母。例如，在mvoe这个词 中，m的位置应该相反才对。要更正这个错误，将光标放在v上并按下x，接着按p。可用transpose的（对调）这个单词帮助记忆xp这个命令：x表示trans，而p表示pose</p>
+<h5 id="复制文本"><a href="#复制文本" class="headerlink" title="复制文本"></a>复制文本</h5><ul>
+<li><p>将一段文本复制下来再于別的地方使用，常常可以节省编辑（与按键）的时间。使用 两个命令——y （拖曳）与p （放置），就可以复制任何数量的文本，并放置到另一个地方。拖曳命令会将选中的文本放到特殊的缓冲区中，一直保留到下一个拖曳命令（或删除命令）发生为止。你可以用放置命令将这些文本放到文件的任何地方。</p>
+</li>
+<li><p>就像更改与删除命令一样，拖曳命令可与任何光标移动命令合并使用（如yw、y$、 4yy)。拖曳命令最常用在一行（或更多行）文本上，因为拖曳并放置一个单词通常比直接插入单词还要花时间。</p>
+</li>
+<li><p>快捷键yy用于拖曳一整行的文本，就像dd与cc一样。但是，另一个快捷键Y因为某些原因，它的操作方法并不像D与C，不会拖曳从光标所在位置到一行结尾的文本，而是拖曳 一整行，即Y与yy的行为完全一样。</p>
+</li>
+</ul>
+<p>假设practice文件中有以下文本:</p>
+<p><strong>W</strong>ith a screen editor you can<br>scroll the page.<br>move the cursor.<br>delete lines.</p>
+<p>你想要造出三个完整的句子，都以With a screen editor you can 作为幵头。此时不需要在文件中到处移动或重复地输入相同文段，而可以使用拖曳与放置命令。<br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-19.png" alt=""><br><img src="http://ohlli9uc9.bkt.clouddn.com/vim-20.png" alt=""></p>
+<p>拖曳与删除命令共享同一个缓冲区。每一个新的删除或拖曳动作都会覆盖缓冲区的内容。在后续内容将看到，放置命令最多可用9个拖曳或删除缓冲区中的内容。你也可以直接将拖曳与删除的内容放到26个已命名的缓冲区，以便处理多个文本块。</p>
+<h5 id="重复或撤销上一个命令"><a href="#重复或撤销上一个命令" class="headerlink" title="重复或撤销上一个命令"></a>重复或撤销上一个命令</h5><p>每一个编辑命令均存储到一个临时的缓冲区，直到发出下一个命令为止。例如在某个单词后插入the。用于插入的命令与插入的文本都会暂时被存储起来。</p>
+<h6 id="重复"><a href="#重复" class="headerlink" title="重复"></a>重复</h6><p>想要重复相同的编辑命令时，可以使用重复命令——句号（.），以节省时间。将光标移到欲重复前一编辑命令的地方，再输入一个句号。</p>
+<p>旧版本的vi在重复命令上有问题。例如，在设置了 wrapmargin 的情况下，这些版本可能在重复长文本的插入时发生困难。如果你使用的是这种版本的vi，迟早会发现这个问题的害处。此时你也没有办法补救，不过事先得到警告总是好的（新版似乎没有这个问 题）。有两个方法可以预防在长文本插入时可能发生的问题。你可以在重复插入命令之 前先写入文件（：w），以便在出问题时取回原来的文件，或把wrapmargin设置取消（：set wm=0）</p>
+<h6 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h6><p>前面提过，如果出了错误操作，可以撤销上一个命令。只要按下u即可，光标不需要在原来下命令时所在的位置。</p>
+<p>大写字母U会撤销所有对同一行的编辑动作，只要光标还在这一行即可。一旦你移到别的行，就不能使用U了。</p>
+<p>注意，你可以用u撤销上次“撤销”的动作。u也可以撤销U；而U会撤销所有在同一行中的更改，包括u在内。</p>
+<p><strong>注意：</strong>小秘诀：因为u可撤销自己，这样就产生一个在文件中移动的巧妙方式。如果你想回到上一 次暂停编辑的地方（称为A点），只要撤销即可。当你再撤销这次撤销动作时，仍会待在A 点，而不会跳到撤销文本的最末端。</p>
+<p>Vim让我们用“重做” （redo） —次撤销操作。结合无限次撤销，你将可在文件更改的历史记录中倒退或前进。</p>
+<h5 id="更多插入文本的方法"><a href="#更多插入文本的方法" class="headerlink" title="更多插入文本的方法"></a>更多插入文本的方法</h5><p>你可以用以下命令在光标之前输入文本：</p>
+<ul>
+<li>i 在光标前插入文本</li>
+<li>a 在光标后插入文本</li>
+<li>A 在一行的结尾处附加文本</li>
+<li>I 在一行的开头处插入文本</li>
+<li>O 在光标所在位置的下一行打开新行</li>
+<li>o 在光标所在位置的上一行打开新行</li>
+<li>s 删除光标所在位置的字符后再替换文本</li>
+<li>S 删除一整行后再替换文本</li>
+<li>R 用新的字符覆盖现有的字符</li>
+</ul>
+<p>上述所有命令都会让你进入插入模式。在插入文本后，记得按ESC回到命令模式</p>
+<ul>
+<li>A (附加）与i (插入）可以节省进入插入模式前将光标移到一行开头或结尾所花的时间 (A命令比$a省下一次按键。虽然一个按键可能不算什么、但是在你越来越熟悉编辑工作与不耐烦时，你会想省略更多按键）。</li>
+<li>o与〇 (打开）可以节省按下回车键的动作。你可以在一行的任何位置使用这些命令。</li>
+<li>s与S (代换）可以让你删除一个字符或一整行，并用任何数量的文本代换。s等效于c加上两冽SPACE键，而S与cc等效。s最方便的用处之一是将一个字符换成多个字符。</li>
+<li>R在你想更改文本但不知道确实数董时很有用。例如，你不用猜是用3cw或4CW,只要输入 R后再输入要替换的文本即可。</li>
+</ul>
+<h6 id="插入命令的数值参数"><a href="#插入命令的数值参数" class="headerlink" title="插入命令的数值参数"></a>插入命令的数值参数</h6><ul>
+<li><p>除了o与O，以上的插入命令（包括i与a)都接受数值参数。通过数值前缀你可以用i、I、a、A等命令插入一整行的下划线或其他字符。例如，输入<code>50i*Esc</code>会插入50个星 号；输入<code>25a*-Esc</code>则会插入50个字符（25对星号与连字符的组合），这样就不必重复 输入许多字符了</p>
+</li>
+<li><p>使用数值参数后，r会将许多字符替换成重复的单一字符。例如，在C或C++代码中，如 果要将 || 换成 &amp;&amp;，只要将光标放在第一个丨字符上，再输入2r&amp;。</p>
+</li>
+<li><p>你也可以在S前加入数值参数以替换许多行。不过，使用c加上光标移动命令更为快速， 并且更有灵活性。</p>
+</li>
+<li><p>有个适合使用数值参数加上s命令的例子：当你要更改单词中的几个字符时，输入r是不 适合的，输入cw又会变更太多文本，而数值参数加上s的作用通常与R—样。</p>
+</li>
+<li><p>当然还有其他的命令可以自然地组合起来。例如，ea可以用来将新的文本加到一个单词的后面。训练自己记得这些常用的命令组合，变成反射动作，对你将大有帮助。</p>
+</li>
+</ul>
+<h5 id="用J合并两行"><a href="#用J合并两行" class="headerlink" title="用J合并两行"></a>用J合并两行</h5><p>在编辑文件时，有时在最后会剩下一些短行，造成阅读困难。当你需要将两行合并成 一行时，可将光标移到第一行的任何地方，然后按J来合并两行。</p>
+<p>在J前使用数值参数可以将多个连续的行合并起来。使用命令3J可合并三行。</p>
+<h6 id="问题集"><a href="#问题集" class="headerlink" title="问题集"></a>问题集</h6><p>你输入命令时，文字出乎意料地在屏幕上到处乱跑，一切的运作都不如预期。<br>确定你输入了j,而不是输入了〕。</p>
+<p>你可能按了CAPSLOCK键却没有注意到。vi对大小写很敏感，也就是说，大写命 令（I、A、])与小写命令u、a、j)是不一样的，因此按下后输入的所有命令都会被当成大写命令。请按CAPSLOCK键回到小写状态，再按Esc确定你处干命令模式，然后可输入u以恢复上一行的改变，或者输入u以撤销上一个命 令。你可能需要做一些额外的工作，才能恢复刚才弄乱的部分。</p>
+<h5 id="基本vi命令的复习"><a href="#基本vi命令的复习" class="headerlink" title="基本vi命令的复习"></a>基本vi命令的复习</h5><h3 id="第三章-快速移动位置"><a href="#第三章-快速移动位置" class="headerlink" title="第三章 快速移动位置"></a>第三章 快速移动位置</h3><h4 id="根据屏幕来移动"><a href="#根据屏幕来移动" class="headerlink" title="根据屏幕来移动"></a>根据屏幕来移动</h4><p>当你在看书时，你会以页码确定在书中的“位置”，例如，你停下来的那一页或是索引 中的某个页码。在编辑文件时，可没有那么方便：有些文件只有几行，一眼就可以看完：但是许多文件却有几百（甚至几千）行！</p>
+<p>你可以将文件想象成有文字的长卷轴，而屏幕是一个窗子，（通常）可以显示其中24行 的文字。</p>
+<p>在插入模式中，如果输入了一整屏的文字并输入到屏幕最底行的结尾，这时按下<code>ENTER</code>， 则最上面一行就看不见了，同时会有一行空白行出现在屏幕的最下面，用来输入新的文 字。这称为滚动（scrolling)。</p>
+<p>在命令模式中，你可以往前或往后滚动，以便观察文件中的任何文字。而且，光标移动命令可加上数值参数，以便快速地在文件各处移动。</p>
+<p>以下是在文件中往前或往后滚动整屏或半屏的Vi命令:<br>Ctrl+f  往前（下）滚动一整屏(Scroll forward one screen)<br>Ctrl+b 往后（上）滚动一整屏(Scroll backward one screen)<br>Ctrl+d 往前（下）滚动半屏(Scroll forward half screen (down).)<br>Ctrl+u 往后（上）移动半屏(Scroll backward half screen (up).)</p>
+<p>还有两个命令分别可将屏幕往上滚动一行（Ctrl+e)或往下滚动一行(Ctrl+y）。然而，这两个命令不会将光标移到一行的开头。在执行命令后，光标会出现在上（下）一行中的同一个地方。</p>
+<h5 id="滚动一整屏"><a href="#滚动一整屏" class="headerlink" title="滚动一整屏"></a>滚动一整屏</h5><h5 id="用z重新调整屏幕位置"><a href="#用z重新调整屏幕位置" class="headerlink" title="用z重新调整屏幕位置"></a>用z重新调整屏幕位置</h5><p>如果要往上或往下滚动屏幕，但是又想让光标维持在原来的文本行，就可以用z命令<br>z <code>ENTER</code><br>将光标移到屏幕顶端并滚动屏幕<br>z.<br>将光标移到屏幕中心并滚动屏幕<br>z-<br>将光标移到屏幕底端并滚动屏幕</p>
+<p>使用z命令加上数值参数可重复多次移动，但其实没有意义（毕竟你只需要将光标移到 屏幕的顶端一次即可。重复相同的z命令并不会再做任何移动）。然而z可以接受行号作为数值参数，指定行将成为新的当前位置。例如，z<code>ENTER</code>是将当前行移到屏幕顶端, 但是200z<code>ENTER</code>则会把第200行移到屏幕顶端。</p>
+<h5 id="重画屏幕"><a href="#重画屏幕" class="headerlink" title="重画屏幕"></a>重画屏幕</h5><p><code>Ctrl</code>+<code>L</code> 有时当你正在编辑时，计箅机会显示一些消息在屏幕上，这些消息不是编辑缓冲区的一部分，但却会影响你的工作。当系统消息出现在屏幕上时，你需要重画屏幕。</p>
+<p>由于当你滚动屏幕时，就会重画一部分（或全部）的屏幕，因此你只需要上下滚动一 次，就可以消除那些多余的消息。当然你也可以输入<code>Ctrl</code>+<code>L</code> ，只重画而不滚动。</p>
+<h5 id="在屏幕中移动"><a href="#在屏幕中移动" class="headerlink" title="在屏幕中移动"></a>在屏幕中移动</h5><p>你可以保持当前屏幕，或保留文件当前的视图，而在屏幕范围中移动光标：<br>H<br>移到屏幕顶端的行。（Move to home—the top line on screen）<br>M<br>移到屏幕中央的行。（Move to middle line on screen）<br>L<br>移到屏幕底端的行。（Move to last line on screen.）<br>nH<br>移到屏幕顶端往下的第n行。（Move to n lines below top line）<br>nL<br>移到屏幕底端往上的第n行。（Move to n lines above last line）</p>
+<p>H可以将光标从屏幕的任何地方移到第一行，也就是该页第一个字符的位置（home) , M会将光标移到中间那一行；而L会移到最后一行。要将光标移到第一行下面一行，则使用 2H</p>
+<h5 id="根据行移动"><a href="#根据行移动" class="headerlink" title="根据行移动"></a>根据行移动</h5><p><code>Enter</code> 在当前屏幕中，也有以行为标准进行移动的命令。你已经知道j与k命令了，还可 以用々卩下命令：</p>
+<p>ENTER<br>移到下一行的第一个字符。<br>+<br>移动到下一行的第一个字符<br>-<br>移动到上一行的第一个字符</p>
+<p>上面三个命令会将光标往下或往上移一行，并置于该行第一个字符上，空格或tab （制表符）会被忽略。</p>
+<h6 id="在当前行移动"><a href="#在当前行移动" class="headerlink" title="在当前行移动"></a>在当前行移动</h6><p>不要忘了 h与l可将光标往左与往右移动，而0与$会将光标移到一行的开头与结尾。你也可以用如下命令：</p>
+<p>^<br>移到当前行的第一个非空格处。<br>n|<br>移到当前行的第n列。</p>
+<p>就像上面的行移动命令一样，^会移到当前行的第一个字符处，忽略任何空格与制表符。相对地，0则会把光标移到当前行的第一个位置处，即使是空格也—样。</p>
+<h4 id="根据文本块来移动"><a href="#根据文本块来移动" class="headerlink" title="根据文本块来移动"></a>根据文本块来移动</h4><p>另一个在Vi文件中移动的方式，则是以文本块为单位——单词、句子、段落或小节。<br>你已经知道如何以一个单词为单位往前或往后移动（w、W、b、B)。另外，你也可以用 下面的命令实现光标移动：</p>
+<p>e<br>移到单词的结尾。<br>E<br>移到单词的结尾（忽略标点符号）。<br>(<br>移到当前句子的开头。<br>)<br>移到下一个句子的开头。<br>{<br>移到当前这一段的开头。<br>}<br>移到下一段的开头。<br>[[<br>移到当前这一节的开头。<br>]]<br>移到下一节的开头。</p>
+<p>vi会寻找？、.、！这些标点符号，以辨认句子的结束。当这些标点符号后面有至少两个空格或是作为一行的最后一个非空格字符时，vi则将其定位为一个句子的结束。如果你在句号后面只留了一个空格或该句以引号结束，则vi不能辨认这个句子。</p>
+<h4 id="根据搜索模式的结果来移动"><a href="#根据搜索模式的结果来移动" class="headerlink" title="根据搜索模式的结果来移动"></a>根据搜索模式的结果来移动</h4><p><code>/</code>在大文件中移动时，最快速的方法之一乃是搜索一串文本，更正确地说，是搜索特定模式（pattern）的字符。有时搜索操作可以用来找寻拼错的单词或是代码中某个变量出现的所有地方。</p>
+<p>搜索命令是特殊字符/(斜线）。当你输入斜线时，其会出现在屏幕底端，接着再输入要搜索的特定模式，格为：/potterrn</p>
+<p>模式可以是一个完整的单词，或是一连串字符（称为“字符串”）。例如捜索单词red，搜索结果会找出整个单词red；但是也会找出occurred。如果你在模式前或模式后加上一个空格，则这个空格会被当成单词的一部分。模式输入完后，按<code>ENTER</code>结束命令 (与所有出现在底端的命令一样）。vi像所有其他的Unix编辑器一样，也有一套特别的模式匹配语言，可以让你寻找变动的文本模式：例如，任何以大写字母开头的单词，或是作为一行开头的单词The。</p>
+<p>我们会在第六章提到更强大的模式匹配语法。而现在，只要把模式当成一个单词或词组就可以了。</p>
+<p>vi会从光标所在位置开始往前搜索，如果需要则绕回文件的开头。光标会移到要捜索的模式第一次出现的地方。如果没有找到，状态行会出现“Pattern not found”的消息</p>
+<p>要往回搜索，则不是输入/，而是输入?：<br>? pattern<br>在这两种搜索命令中，如果需要的话，都会绕回文件的开头或结尾。</p>
+<h5 id="重复搜索"><a href="#重复搜索" class="headerlink" title="重复搜索"></a>重复搜索</h5><p>上一次所搜索的模式会留在你的编辑会话中。搜索过后，若要再次搜索上一个模式， 不用重复原来的按键顺序，你可以用一些命令来重复搜索：<br>n<br>往同一个方向重复捜索。<br>N<br>往相反的方向重复搜索。<br>/<code>ENTER</code><br>往前重复搜索。<br>?<code>ENTER</code><br>往后重复搜索。</p>
+<p>因为上一个模式仍然可用，你可以搜索一个模式后做些其他工作，接着再用n、N、/或? 来搜索同一个模式，而不用重新输入。搜索的方向会显示在屏幕底端（/是往前，？是往后）。（nvi不会ffi示n与N命令的搜索方向。Vim会把要搜索的文本也放在命令行里，让 我们能用上下键滚动査看搜索命令的历史记录。）</p>
+<p>有时你只想搜索在光标位置之前的单词，并不想让搜索绕回文件的开头。vi有一个选项 wrapscan，可以控制搜索是否要绕回开头。你可以取消这个功能：<br><code>:set nowrapscan</code><br>若设置了nowrapscan，而往前的搜索失败时，状态行会显示如下消息：<br><code>Address search hit BOTTOM without matching pattern</code><br>若设置了nowrapscan，而往后的搜索失败时，状态行显示的消息将以“TOP”取代 “BOTTOM”。</p>
+<h6 id="通过搜索修改文本"><a href="#通过搜索修改文本" class="headerlink" title="通过搜索修改文本"></a>通过搜索修改文本</h6><p>/与?搜索运算符可与更改文本的命令结合，例如与c和d结合。延续前例做过的改变：</p>
+<p>d?move<br>从光标位置开始向前删除到出现move的地方。</p>
+<p>请注意，此处的删除是以字符为基础，而不是删除整行。</p>
+<p>这一节只介绍了搜索模式最基本的命令。第六章会提到更多关于模式匹配的内容以及模式匹配在对文件做整体改变时的用途。</p>
+<h5 id="在当前行种搜索"><a href="#在当前行种搜索" class="headerlink" title="在当前行种搜索"></a>在当前行种搜索</h5><p>搜索命令也可用于一行内的捜索。fx命令会将光标移到下一个出现x字符的地方（其中x代表任何字符）。tx命令则将光标移到下一个出现的x字符的前一个字符，可以用分号继续搜索出现的x字符。</p>
+<p>下面列出了行内搜索命令，这些命令都不会把光标移到下一行。</p>
+<p>fx<br>搜索（将光标移到）本行中下一个出现x的地方，x代表任何字符。<br>Find (move cursor to) next occurrence of x in the line, where x stands for any<br>character.<br>Fx<br>搜索（将光标移到）本行中上一个出现x的地方<br>Find (move cursor to) previous occurrence of x in the line.<br>tx<br>搜索（将光标移到）本行中下一个出现x的地方的前一个字符,<br>Find (move cursor to) character before next occurrence of x in the line.<br>Tx<br>搜索（将光标移到）本行中上一个出现x的地方的后一个字符,<br>Find (move cursor to) character after previous occurrence of x in the line.<br>;<br>重复上一个搜索命令，方向相同。<br>Repeat previous find command in same direction.<br>,<br>重复上一个搜索命令，方向相反。<br>Repeat previous find command in opposite direction</p>
+<p>在这些命令前加上数值n，则会搜索字符第n次出现的地方。假设你在编辑practice文件的这一行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">**w**ith a screen editor you can scroll the</span><br><span class="line">按键顺序</span><br><span class="line">fo	With a screen edit**o**r you can scroll the</span><br><span class="line">搜索本行中第一个出现的o</span><br><span class="line">;	With a screen editor y**o**u can scroll the</span><br><span class="line">用;命令移到下一个出现0的地方（搜索下一个o）。</span><br></pre></td></tr></table></figure></p>
+<p>dfx会删除到下一个x字符为止的所有文本，包括x字符在内。这个命令在删除或拖曳一行的一部分时很有用。如果在文本中夹有符号或标点而难以计算单词数量时，你可能需要用dfx代替dw。t命令与f命令很像，不同之处在于它把光标放在要搜索的字符之前。例如，命令ct可用于更改一个句子的内容，而留下最后的句号。</p>
+<h4 id="根据行号来移动"><a href="#根据行号来移动" class="headerlink" title="根据行号来移动"></a>根据行号来移动</h4><p>文件中的每一行都会依序编号，可借由指定行编号来移动到文件各处。</p>
+<p>行号在辨认一大块文本的开始与结束时很有用。行号对程序员也很有用，因为编译器的错误消息会引用到行号。ex命令也会用到行号，我们将在下一章学习。</p>
+<p>如果要依照行号来移动位置，必须有指定行号的方式。使用：set nu选项（第七章会再提到），可以在屏幕上显示行号。在vi中，你也可以在屏幕底端显示现在光标位置的行号。</p>
+<p><code>CTRL</code>+<code>g</code>命令会在屏幕底端显示信息，包括当前的行号、文件的总行数以及当前位置占全文的百分比。以practice文件为例，可能显示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;practice&quot; line 3 of 6 --50%--</span><br></pre></td></tr></table></figure></p>
+<p>这个信息不管是在显示行号以用于命令，还是在你忘记位置时指示方向都很有用。</p>
+<h5 id="G（转至）命令"><a href="#G（转至）命令" class="headerlink" title="G（转至）命令"></a>G（转至）命令</h5><p>你可以用行号在文件中移动光标。G (转至）命令接受行号为数值参数，并直接移到指定行。例如，44G会将光标移到第44行的开头。没有指定行号的G则会移到文件的最后。</p>
+<p>输入两个反引号（``）会回到原来的位置（即上一次使用G命令时所在的位置），除非你在中间做了编辑操作。如果你做了编辑操作，然后用G以外的命令移动了光标，则  `` 会将光标移回到你上一次做编辑操作时的地方。如果你使用了搜索命令（/或？）， `` 则会带你回到上一次使用搜索命令的地方。一对引号（’’）与两个反引号的功用一样，不同之处在于，它把光标移到前次位置所在行的开头，而不是确实的位置上。</p>
+<h3 id="第四章-越过基础的藩篱"><a href="#第四章-越过基础的藩篱" class="headerlink" title="第四章 越过基础的藩篱"></a>第四章 越过基础的藩篱</h3><h4 id="更多的命令组合"><a href="#更多的命令组合" class="headerlink" title="更多的命令组合"></a>更多的命令组合</h4><table>
+<thead>
+<tr>
+<th>从光标位置到……</th>
+<th>更改</th>
+<th>删除</th>
+<th>复制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>屏幕顶端</td>
+<td>cH</td>
+<td>dH</td>
+<td>yH</td>
+</tr>
+<tr>
+<td>屏幕底端</td>
+<td>cL</td>
+<td>dL</td>
+<td>yL</td>
+</tr>
+<tr>
+<td>下一行</td>
+<td>c+</td>
+<td>d+</td>
+<td>y+</td>
+</tr>
+<tr>
+<td>本行的第五列(第五个字符)</td>
+<td>c5</td>
+<td>d5</td>
+<td>y5</td>
+</tr>
+<tr>
+<td>往下第二个句子</td>
+<td>2c)</td>
+<td>2d)</td>
+<td>2y)</td>
+</tr>
+<tr>
+<td>上一段</td>
+<td>c{</td>
+<td>d{</td>
+<td>y{</td>
+</tr>
+<tr>
+<td>pattern模式</td>
+<td>c/pattern</td>
+<td>d/pattern</td>
+<td>y/pattern</td>
+</tr>
+<tr>
+<td>下一个模式</td>
+<td>cn</td>
+<td>dn</td>
+<td>yn</td>
+</tr>
+<tr>
+<td>文件结尾</td>
+<td>cG</td>
+<td>dG</td>
+<td>yG</td>
+</tr>
+<tr>
+<td>第13行</td>
+<td>c13G</td>
+<td>d13G</td>
+<td>y13G</td>
+</tr>
+</tbody>
+</table>
+<p>请注意表中列出的组合都符合一般形式：<br>(number) {command) (text object)<br>其中number是可有可无的数值参数，而command是c、d或y，text object则是一个移动命<br>令。</p>
+<h4 id="打开vi的选项"><a href="#打开vi的选项" class="headerlink" title="打开vi的选项"></a>打开vi的选项</h4><p>到当前为止，你都是用以下的命令打开vi:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi file</span><br></pre></td></tr></table></figure></p>
+<h5 id="前进到特定的位置"><a href="#前进到特定的位置" class="headerlink" title="前进到特定的位置"></a>前进到特定的位置</h5><p>当你开始编辑现有文件时，可以先读入文件，再移动到某个模式（pattern）第一次出现的位置或移动到某一行。你也可以在命令行指定第一次移动的方式，例如依搜索结果或行号移动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vi +n file</span><br><span class="line"><span class="comment"># 打开file并定位到第n行</span></span><br><span class="line">vi + file</span><br><span class="line"><span class="comment"># 打开file并定位到最后一行</span></span><br><span class="line">vi +/pattern file</span><br><span class="line"><span class="comment"># 打开file并定位到第一个出现pattern的行</span></span><br></pre></td></tr></table></figure>
+<p>如果你的模式中包含空格，则需用单引号或双引号括起整个模式(注：这是shell的限制，不是vi的限制。)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+/<span class="string">"you make"</span></span><br></pre></td></tr></table></figure>
+<p>或者用反斜线将空格转义:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+/you\ make</span><br></pre></td></tr></table></figure></p>
+<p>另外，如果你要使用第六章中描述的一般模式匹配语法，可能必须用单引号或反斜线将 一个或多个特殊字符保护起来，以防止shell将其解释成其他意思。</p>
+<p>+/pattern在你编辑到一半却必须离开时很有用。你可以将当前位置用某个模式标记起 来，如ZZZ或HERE。当你回来时，只要记得/ZZZ或/HERE就可以了。</p>
+<p>注意：当你在vi中编辑时，一般都已打开wrapscan选项。如果你把环境自定义为wrapscan禁用时 (请参考第47页的“重复搜索”小节），可能不能使用这时如果你用这种方法打开文件，vi会将光标罝于文件最后一行，并显示“Address search hit BOTTOM without matching pattern.” （已经寻找至文件末尾，找不到匹配的模式。）。</p>
+<h5 id="只读模式"><a href="#只读模式" class="headerlink" title="只读模式"></a>只读模式</h5><p>有时候你想査看文件，但是又不想在无意间更动文件（例如读入一个很长的文件，用于练习vi的移动命令，或只是想在脚本文件中上下滚动）。此时可以用只读模式打开文件，这时仍可使用所有的vi移动命令，但是不能更改文件内容。</p>
+<p>要用只读模式显示文件，应输入以下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi -R file</span><br></pre></td></tr></table></figure></p>
+<p>或是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">view file</span><br></pre></td></tr></table></figure></p>
+<p>(view命令也像vi命令，可以使用任何跳到文件中特定地方的命令行选项（注3)。） 如果你决定要改变文件内容，可以在write命令（：w）后面加上感叹号，以覆盖掉只读 模式：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:w!</span><br></pre></td></tr></table></figure></p>
+<p>或是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:wq!</span><br></pre></td></tr></table></figure></p>
+<h5 id="恢复缓冲区"><a href="#恢复缓冲区" class="headerlink" title="恢复缓冲区"></a>恢复缓冲区</h5><p>在你编辑文件时，系统有时可能发生错误，通常，在你上一次存档后所做的更动都会消失。然而，有一个选项-r可以恢复系统死机时的编辑缓冲区。</p>
+<p>如果使用传统Unix系统与原始的vi,会于系统重新启动后第一次登录时收到一个邮件消 息，表示缓冲区已经保存起来。而且，如果你输入命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ex -r</span><br></pre></td></tr></table></figure></p>
+<p>或是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi -r</span><br></pre></td></tr></table></figure></p>
+<p>将得到系统保存下来的所有文件列表。</p>
+<p>用-r选项加上文件名可以恢复编辑缓冲区。例如，要恢复系统死机时practice文件的编辑缓冲区，可输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi -r practice</span><br></pre></td></tr></table></figure></p>
+<p>此时最好立刻恢复原来的文件，以免你在无意中又对文件做了编辑，结果你必须在保存的缓冲区内容与新做编辑的文件间解决新旧版本的问题。</p>
+<p>使用<code>:pre</code>命令，你可以强制系统即使没有死机也保存缓冲区。如果你编辑了某个文件， 后来发现因为没有写入权限而不能保存时，这就很有用了（你可以将这些内容写入另一 个文件或是另一个你可以写入的目录中。参阅第一章中的“保存文件时发生的问题”一 节）</p>
+<h4 id="善加利用缓冲区"><a href="#善加利用缓冲区" class="headerlink" title="善加利用缓冲区"></a>善加利用缓冲区</h4><p>你已经知道，编辑时的最后一次删除（d或x）或拖曳（y）的内容会保存到缓冲区中（内存中的一块）。你可以访问这些缓冲区并使用放置命令（p或P）将这些保存的文本放回文件中。</p>
+<p>vi会将最后9次的删除操作保存在编号的缓冲区中，你可以访问其中任何一个，以恢复任何一次（或所有）的删除操作（然而小规模的删除，如一行中的一部分，并不会保存到编号的缓冲区中。这些删除只能在刚做操作后立刻用p或P命令恢复）。</p>
+<p>vi也可以让你将拖曳（复制）的文本放在依字母标识的缓冲区中。拖曳的文本可以被保存到26个缓冲区（a-z）中，并且可在编辑会话的任何时候，使用放置命令来恢复这些文本。</p>
+<h5 id="恢复删除"><a href="#恢复删除" class="headerlink" title="恢复删除"></a>恢复删除</h5><p>一次删除大块文本很方便也很好用，但如果不小心删除了53行重要的数据该怎么办呢？ 有一个办法可以恢复你的前9次删除，因为它们都保存在编号的缓冲区中。最后一次删除的内容存在缓冲区1，倒数第二次的则存在缓冲区2……<br>要恢复删除操作，先输入”（双引号），接着指定缓冲区编号，再使用放置命令。以恢复倒数第二次的删除（位于缓冲区2)为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“2p</span><br></pre></td></tr></table></figure></p>
+<p>缓冲区2包含的删除的内容将出现在光标之后。</p>
+<p>如果不确定哪一个缓冲区包含了要恢复的文本，你也不用一直重复输入<code>&quot;np</code>。如果在恢复（p）—次后利用重复命令<code>.</code>做恢复，缓冲区的编号便会自动增加，再加上用u撤销 恢复，即可用下例搜索编号的缓冲区：<br><code>”1pu.u.u</code>依此类推</p>
+<p>上例可逐一把每个缓冲区的内容放置到文件中。每一次输入u时，恢复的文本会被移除。输入点号（.）时，则把下一个缓冲区的内容恢复到文件中。不断输入u与.，直到找到所需的文本为止。</p>
+<h5 id="将文本拖曳到命名缓冲区中"><a href="#将文本拖曳到命名缓冲区中" class="headerlink" title="将文本拖曳到命名缓冲区中"></a>将文本拖曳到命名缓冲区中</h5><p>稍早我们学习到，在做任何编辑前，必须先放置（P或P）未命名缓冲区的内容，不然缓冲区的内容就会被覆盖掉。你可以用y与d搭配26个专门给复制与移动文本使用的命名缓 冲区（a〜z)。如果你使用命令缓冲区存放被拖曳的文本，便可以在任何时间取回其中的内容。</p>
+<p>要将文本拖曳到命名缓冲区，需在拖曳命令前加上双引号（”）以及缓冲区名称（以字符表示）。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"dyy	将当前行拖曳到缓冲区d中</span></span><br><span class="line"><span class="string">"</span>a7yy	将后续7行拖曳到缓冲区a中</span><br></pre></td></tr></table></figure></p>
+<p>拖曳的内容放至命名缓冲区，移动光标到新的位置后，使用p或P可将文本取回：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"dP	将缓冲区^的内容放置在光标前</span></span><br><span class="line"><span class="string">"</span>dp	将缓冲区a的内容放置在光标后</span><br></pre></td></tr></table></figure></p>
+<p>要将缓冲区文本的一部分取出来，在当前是做不到的，只能选择全部取回或完全不取回。</p>
+<p>在下一章中，你会学到如何编辑多个文件。当你知道如何不离开vi也可在文件间切换时，便可以使用命名缓冲区在文件间传送部分文本了。使用其他vi同类品的多窗口编辑功能时，非命名缓冲区也可用于在文件间传送数据。<br>你也可以将删除的文本保存到命名缓冲区中，方法是一样的：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“a5dd	将删除的S行保存到缓冲区备中</span><br></pre></td></tr></table></figure></p>
+<p>如果你用大写字母指定缓冲区名称，则拖曳或删除的文本会被附加到当前缓冲区中。因此可以选择性地做移动与复制。例如：</p>
+<p>“zd)<br>删除从光标处开始到所在句子的结尾处的内容，并将内容保存到缓冲区Z中。<br>2)<br>往前移两个句子。<br>“Zy)<br>将下一个句子添加到缓冲区z中。你可以继续在某个命名缓冲区中添加更多的文 本，但请注意：如果你一时忘记，在拖曳或删除文本到缓冲区时没有用大写字母指 定缓冲区名称，则会把缓冲区的内容覆盖掉，前面已有的文本都会消失。</p>
+<h4 id="对一处做标记"><a href="#对一处做标记" class="headerlink" title="对一处做标记"></a>对一处做标记</h4><p>在一个vi会话中，你可以在某处做一个看不见的“书签”，然后在别处编辑，完成后再回到“书签”位置。可在命令模式中输入：<br>mx<br>将当前位置标记成x （x可以是任何字符）。<br>‘x<br>（单引号）将光标移到标记x所在行的第一个字符。<br> `x<br>(反引号）将光标移到x标记的字符。<br>``<br>(两个反引号）在移动位置之后，回到上一个标记或上下文的确切位置。<br>‘’<br>(两个单引号）回到上一个标记或上下文所在行的开头。<br>注意：标记只有在当前vi会话中有用，并不会存储在文件中。</p>
+<h4 id="其他高级编辑技巧"><a href="#其他高级编辑技巧" class="headerlink" title="其他高级编辑技巧"></a>其他高级编辑技巧</h4><p>你可以用vi执行其他高级编辑操作，但是要先学一些ex编辑器的用法，这在下一章会提<br>到。</p>
+<h3 id="第五章-ex编辑器概述"><a href="#第五章-ex编辑器概述" class="headerlink" title="第五章 ex编辑器概述"></a>第五章 ex编辑器概述</h3><p>这是一本vi的工具书，为什么我们要用一整章来介绍另一个编辑器ex呢？其实ex并不算是另一个编辑器。vi其实是更通用、更底层的ex行编辑器的“可视模式”，有些ex命令在vi中很有用，可以节省许多编辑的时间。这些命令甚至大部分可在不离开vi的情况下使用。</p>
+<p>你已经知道如何将文件想象成一连串有编号的行。ex可以给你机动性更髙、能力更强的编辑命令。利用ex，你可以轻松在文件间移动，并用各种方法传送文本。你可以快速地编辑超过一整屏幕的文本块。使用全局替换，你可以对整个文件中的某个模式做替换操作。</p>
+<h4 id="ex命令"><a href="#ex命令" class="headerlink" title="ex命令"></a>ex命令</h4><p>我们早已不再用打印终端来编辑文件了，但是有些ex行编辑器的命令仍然可以在复杂的可视化编辑器上使用，因为它们是创建在ex之上。虽然用vi来做大部分的编辑都比较简单，但是ex以行为导向，在对文件做大规模的改变时就成了优点。<br><strong>注意</strong>：在本章中所用到的命令，大部分都以文件名为参数。虽然在文件名中加入空格字符是合法 的，但是我们非常不推荐这种行为：e)(会严重混淆，而你在尝试让ex接受这种文件名时， 会碰上很多麻烦。在分隔文件名中的成分时，最好使用下划线、横线或句号，这样会比较 方便使用。</p>
+<p>在你开始背ex命令（或者根本就跳过）之前，我们先掲开一些行编辑器的神秘面纱，看看ex如何工作，这样可以稍微了解很难懂的命令语法。</p>
+<p>先打开一个你熟悉的文件，用于尝试ex命令。就像你可以用vi编辑器打开文件一样，你也可以用ex行编辑器来打幵文件。打开ex时，会见到一些消息，它列出了文件的总行数以及命令提示符（：）。例如:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ex practice</span><br><span class="line"><span class="string">"practice"</span> 6 lines, 320 characters</span><br><span class="line">:</span><br></pre></td></tr></table></figure></p>
+<p>你不会看到文件中的任何一行，除非下达显示一行或多行的ex命令。</p>
+<p>ex命令中包含了行地址（可以只是一个行号）以及命令，以换行符结束(按ENTER即可）。一个最基本的命令是p，代表打印（到屏幕上）。因此，假设你在提示符下输入1p，会见到文件的第一行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:1p</span><br><span class="line">With a screen editor you can</span><br><span class="line">:</span><br></pre></td></tr></table></figure></p>
+<p>事实上，你可以省略p，因为行号本身与显示出此行的命令是相同的。要显示出多行文 本，可以指定一个范围的行号（例如，1,3——两个数值之间用逗号分隔，中间有没有空格都无妨）。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:1,3</span><br><span class="line">With a screen editor you can</span><br><span class="line">scroll the page, move the cursor,</span><br><span class="line">delete lines, insert characters， and more,</span><br></pre></td></tr></table></figure></p>
+<p>没有行号的命令会被当作只对当前这一行起作用。以替换命令（s）为例，其将一个单词替换成另一个，可以这样输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:1</span><br><span class="line">With a screen editor you can </span><br><span class="line">:s/screen/line/</span><br><span class="line">With a line editor you can</span><br></pre></td></tr></table></figure></p>
+<p>请注意，更动的行会在命令执行后重新显示出。你也可以换个方法做相同的事:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:ls/screen/line/</span><br><span class="line">With a line editor you can</span><br></pre></td></tr></table></figure></p>
+<p>即使你是从vi中调用ex命令，而不是直接使用ex,花一点时间了解ex也是很值得的。你 会感觉到为什么需要告诉编辑器该操作哪一行（或多行）以及该执行哪一个命令。</p>
+<p>在你对practice文件试过一些ex命令后，应该用vi打开同一个文件，这样就可以在比较熟悉的可视模式中査看文件。:vi命令可以让你从ex进入vi。</p>
+<p>想在vi中使用ex命令，你必须输入特定字符：（冒号）。输入命令后，按ENTER来执行。因为在ex编辑器中你只要在冒号提示符后输入行号，就可以跳到那一行。所以，想在vi中移到某文件的第6行，请输入：<br>:6<br>然后按下ENTER</p>
+<h5 id="问题集-1"><a href="#问题集-1" class="headerlink" title="问题集"></a>问题集</h5><p>•    在vi中编辑文件时，有时会意外进入ex编辑器。<br>在vi的命令模式中输入Q时会调用ex。若是意外进入ex编辑器时，输入命令vi即可回到vi编辑器。</p>
+<h4 id="用ex编辑"><a href="#用ex编辑" class="headerlink" title="用ex编辑"></a>用ex编辑</h4><p>许多负责常见编辑操作的ex命令在vi中都有更简单的相应命令。删除一个单词或一行时，当然使用dw或dd，而不用ex的delete命令。然而，当你要更改许多行时，会发现ex 命令更有用。你可以用一个命令更改一大块文本。</p>
+<p>常用的ex命令与其缩写整理如下。但请记住，在vi中输入ex命令时，命令前必须加上冒号。你可以用完整的命令名称或缩写，以好记为原则。</p>
+<table>
+<thead>
+<tr>
+<th>Full name</th>
+<th>Abbreviation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>delete</td>
+<td>d</td>
+<td>删除行</td>
+</tr>
+<tr>
+<td>move</td>
+<td>m</td>
+<td>移动行</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>co</td>
+<td>复制行</td>
+</tr>
+<tr>
+<td></td>
+<td>t</td>
+<td>复制行（与co同义)</td>
+</tr>
+</tbody>
+</table>
+<p>如果你觉得用空格来分隔ex命令的多个部分会比较容易读，确实可以这么做。例如在行地址（line address）、模式与命令间使用空格分隔。然而，你不能在模式中使用空格区隔，也不能以空格作为替换命令的结尾。</p>
+<h5 id="行地址"><a href="#行地址" class="headerlink" title="行地址"></a>行地址</h5><p>每一个ex编辑命令都需要知道要编辑的行号。而对ex的move与copy命令来说，还必须提供文本移动或复制的目的地。</p>
+<p>指定行地址的方法有下面几种：<br>•    指定明确的行号<br>•    用符号来指定相对于当前位置的行号<br>•    标识某些行的搜索模式作为地址<br>我们来看一些例子。</p>
+<h5 id="定义行范围"><a href="#定义行范围" class="headerlink" title="定义行范围"></a>定义行范围</h5><p>你可以用行号来淸楚地定义某一行或某段行的范围。明确指定行号的地址称为绝对行地址。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">:3,18d</span><br><span class="line">删除第3行到第18行。</span><br><span class="line">:160,224m23</span><br><span class="line">将第160行到第224行移到第23行之后（类似vi中的delete与put)。</span><br><span class="line">:23,29co100</span><br><span class="line">将第23行到第29行复制到第100行之后（类似vi中的yank与put)。</span><br></pre></td></tr></table></figure></p>
+<p>为了简化使用行号的编辑操作，你可以将所有的行号显示在屏幕左边。可使用下面的命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:<span class="built_in">set</span> number 或简写为：</span><br><span class="line">:<span class="built_in">set</span> nu</span><br></pre></td></tr></table></figure></p>
+<p>这时会显示行号，文件practice将显示如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1	With a screen editor</span><br><span class="line">2	you can scroll the page,</span><br><span class="line">3	move the cursor, delete lines,</span><br><span class="line">4	insert characters and more</span><br></pre></td></tr></table></figure></p>
+<p>当你写入文件时，行号并不会写入文件，打印时也不会打印出来。行号只有在结束vi 话或者禁用set选项时才会消失，禁用set选项的命令如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:<span class="built_in">set</span> nonumber</span><br><span class="line">或是</span><br><span class="line">:<span class="built_in">set</span> nonu</span><br></pre></td></tr></table></figure></p>
+<p>要暂时显示某些行的编号时，可以使用#符号，例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:1,10<span class="comment">#</span></span><br><span class="line">显示第1行到第10行的行号。</span><br></pre></td></tr></table></figure></p>
+<p>如第三章所述，你可以使用<code>Ctrl</code>+<code>G</code>命令显示当前行的编号。因此，欲确认一段文本开头与结尾的行号时，可以通过将光标移动到文本块的开头，键入<code>Ctrl</code>+<code>G</code>，再将光标移 动到块结尾并键入<code>Ctrl</code>+<code>G</code>而得知。<br>另一个分辨行号的方法是ex的=命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">:=</span><br><span class="line">列出文件的总行数。</span><br><span class="line">:.=</span><br><span class="line">列出当前所在行的行号。</span><br><span class="line">:/pattern/=</span><br><span class="line">列出ptmern第一次出现时的行号。</span><br></pre></td></tr></table></figure></p>
+<h5 id="行寻址符号"><a href="#行寻址符号" class="headerlink" title="行寻址符号"></a>行寻址符号</h5><p>你也可以用符号表示行地址。点号（•）表示当前这一行；$表示文件的最后一行。％表示文件中的每一行，与1,$组合的意义相同。这些符号可与绝对行地址合并使用。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">:.,<span class="variable">$d</span></span><br><span class="line">删除当前这一行到文件结尾间的文本。</span><br><span class="line">:20,.m$</span><br><span class="line">将第20行到当前这一行间的文本移到文件结尾。</span><br><span class="line">:%d</span><br><span class="line">删除文件中所有的行。</span><br><span class="line">:%t$</span><br><span class="line">将所有的行复制到文件结尾（做连续的复制）。</span><br></pre></td></tr></table></figure></p>
+<p>除了绝对行地址之外，你还可以指定相对于当前这一行的地址。+与-的操作类似于算数 操作。放在数值前面时，其表示加上或减去后面的数值。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">:.,.+20d</span><br><span class="line">删除当前这一行到20行之后的行之间的文本。</span><br><span class="line">:226,<span class="variable">$m</span>.-2</span><br><span class="line">将第226行到文件结尾间的行移到当前这一行的两行之前。</span><br><span class="line">:.,+20<span class="comment">#</span></span><br><span class="line">显示当前这一行及向下20行之间的行号。</span><br></pre></td></tr></table></figure></p>
+<p>事实上，在使用+或-时并不需要输入点号（.），因为当前行会被假定为开始的位置。</p>
+<p>如果后面没有接着数值，+与-分别等于+1与-1 (注2)。同样地，++与–分别可将范围增加一行，以此类推。+与-也可以用在搜索模式中，这在下一节会提到。</p>
+<p><strong>注</strong>: 在相对地址中，你不可将+或-与它们后面的数值分开。例如，<code>+10</code>表示“后面10行”；但<code>+  10</code>則表示“后面11行” （1 + 10行），这可能不是你要的结果。</p>
+<p>数字0表示文件的开头（想象中的第0行）。0与1-相同，都可以让你将多行文本移动或复制到文件的开头，也就是第一行文本之前。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:-,+t0</span><br><span class="line">:-,+t1-</span><br><span class="line">复制3行（光标上面一行到光标下面一行）并放置到文件的幵头。</span><br></pre></td></tr></table></figure></p>
+<h5 id="搜索模式"><a href="#搜索模式" class="headerlink" title="搜索模式"></a>搜索模式</h5><p>另一个可以指定行地址的方法是使用搜索模式。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">:/pattern/d</span><br><span class="line">删除下一个包含pattern的行。</span><br><span class="line">:/pattern/+d</span><br><span class="line">删除下一个包含的行的下一行（你也可以用+1替代+)。</span><br><span class="line">:/patternl1,/pattern2/d</span><br><span class="line">从第一个包含pattern1的行删除到第一个包含pattern的行。</span><br><span class="line">:.,/pattern/m23</span><br><span class="line">将当前这一行（•）到第一个包含pattern的行之间的文本移到第23行之后。</span><br></pre></td></tr></table></figure></p>
+<h5 id="重新定义当前这一行的位置"><a href="#重新定义当前这一行的位置" class="headerlink" title="重新定义当前这一行的位置"></a>重新定义当前这一行的位置</h5><p>有时候在命令中使用相对行位置会产生意料之外的结果。举例来说，假设光标位于第1 行，而你想要显示出第100行与它下面的5行，如果输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:100,+5 p</span><br></pre></td></tr></table></figure></p>
+<p>会得到错误消息，表示“第一个地址超过了第二个地址”。这是因为第二个地址是相对 于当前光标位置的（第1行），因此命令实际上是表示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:100,6 p</span><br></pre></td></tr></table></figure></p>
+<p>这时你需要让命令以为第100行是“当前行”，即使实际上光标是位于第1行。</p>
+<p>ex提供了一个方法：当你用分号代替逗号时，第一个行地址会被当成光标当前的地址。 例如，这个命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:100:+5 p</span><br></pre></td></tr></table></figure></p>
+<p>即可显示出你所要的结果，此时的+5是相对于第100行计算的。分号对搜索模式的绝对地址很有用。例如，要显示出包含指定模式的下一行及后续10行，可以输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:/pattern/;+10 p</span><br></pre></td></tr></table></figure></p>
+<h5 id="全局搜索"><a href="#全局搜索" class="headerlink" title="全局搜索"></a>全局搜索</h5><p>你已经知道如何在vi中使用/(斜线）来搜索文件中的文本模式。ex还有个全局命令g, 可以让你搜索模式并显示所有包含这个模式的行。命令<code>:g!</code>的功能则与<code>:g</code>正好相反，它 (或是意义相同的<code>:v</code>)用于搜索所有不包含指定模式的行。<br>你可以将全局命令用在文件中所有的行，或者用行地址将全局捜索限制在一定范围的行 中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">:g/pattern</span><br><span class="line">寻找（移到）文件中最后一次出pattern的地方。</span><br><span class="line">:g/pattern/p</span><br><span class="line">寻找并显示文件中所有包含的行。</span><br><span class="line">:g!/pattern/nu</span><br><span class="line">寻找并显示文件中所有不包含的行，也显示所有找到的行号。</span><br><span class="line">:60,124g/pattern/p</span><br><span class="line">寻找并显示第60行与第124行之间包含pattern的行。</span><br></pre></td></tr></table></figure></p>
+<p>如你所料，g也可以用于全局替换，我们会在第六章中介绍。</p>
+<h5 id="合并ex命令"><a href="#合并ex命令" class="headerlink" title="合并ex命令"></a>合并ex命令</h5><p>想输入新的ex命令，并不是每次都必须输入冒号。在ex中，竖线（丨）可以分隔命令，让 你在同一个ex提示符号下合并多个命令（就像在Unix shell提示符下，用分号分隔多个命 令一样）。当你使用|时，请记住你所指定的行地址。如果某个命令影响了文件中各行 的顺序，下一个命令将在新的行地址上运作。例如：<br>:l,3d | s/thier/their/<br>删除第1行到第3行（现在位于文件的开头），接着在当前行做替换（即原来的第4<br>行）。    .<br>：1,5 m 10 | g/pattern/nu<br>将第1行到第5行移到第10行之后，接着显示所有包含的行（包括行号）。<br>请注意空格的使用，这能让命令更容易理解。<br>保存与离开文件<br>你已经学过vi命令中的ZZ,它用于离开vi并写入（保存）文件。但是你常常想用ex命令 离开文件，因为这些命令会给你更多的控制权。我们前面曾经提过其中的一些，现在让 我们开始正式介绍：<br>将缓冲区中的内容写入（保存）文件中，但不离开。你可以（也应该）在编辑会话 里常常使用:w，以保护你的文件免遭系统问题或严重编辑错误的损害。<br>:q<br>离开编辑器（并回到Unix提示符下）。<br>:wq<br>写入文件同时离开编辑器。这是无条件写入，即使文件没有被修改也一样。<br>:x<br>写入文件同时离开编辑器。只有文件被修改过时才会写入（注3)。<br>vi会保护现有文件以及缓冲区中的编辑工作。例如想把缓冲区中的内容写入现有文件， vi会发出警告。同样地，如果你用vi来打开文件并进行编辑，然后想结束vi,但不保存 编辑结果，vi也会产生错误消息：<br>注3:    :wq与：x的差异在编辑源代码并使用make时很重要。make根据文件修改的次数而执行动作。<br>ex编辑器概述| 69</p>
+<p>No write since last change.<br>(自上一次改变之后没有写入。）<br>这些鳘告消息可以预防许多会造成损失的错误。但有时你会想要强制执行命令，此时在 命令后面加上感叹号（！）可忽略繁告：<br>:w!<br>:ql<br>:w!搭配vi -R或view,则可写入以只读模式打开的文件（假设你拥有文件的写入权 限）。<br>是基本的编辑命令，可以离开编辑器而不影响原来的文件。即不管做了怎样的改 变，均舍弃缓冲区中的内容。<br>更改缓冲区名称<br>你可以用：w将整个缓冲区（你正在编辑的文件副本）以新的文件名保存。<br>假设你有一个600行的practice文件。你打开文件后做了许多编辑操作，然后想要离开 编辑器，但又要同时保存原来的practice文件与编辑后结果，作为比较之用。若将编辑 缓冲区中的内容存为名为practice, new的文件，可以用以下命令：<br>:w practice.new<br>则原来的文件practice的内容不会改变（只要你之前没有用过:w)。这时就可以输入:q 离开编辑器。<br>保存一部分的文件<br>有时你会想将一部分编辑中的文件保存为新文件。例如，你可能已经输入了格式化代码 与文本，但想将这些给其他文件使用。<br>合并使用ex的行寻址命令与写入命令w可以保存一部分文件。以正在编辑practice文件并 想将其中的一部分保存成名为的文件为例，可以输入：<br>：23〇,$w ne^file<br>将第230行到文件结尾保存成名为newfile的文件。<br>:.,600w newfile<br>将光标所在的行到第600行保存成名为newfile的文件。<br>70 I第五章</p>
+<p>附加内容到己保存的文件<br>你可以用Unix的重定向与附加运算符（&gt;&gt;)加上w命令，将缓冲区中的一部分或所有内 容附加到现有文件之后。例如输入：<br>:l,10w neufile 再输入：<br>：34〇,$w »newfile ^<br>则会包含第1一10行以及第340行到缓冲区结尾间的两段内容。<br>将一个文件复制到另一个文件<br>有时会想把已经输入完毕的文本与数据复制到当前正在编辑的文件里。在vi中你可以用 ex命令来读入另一个文件中的内容：<br>:read filename<br>或简写为：<br>:r filename<br>这个命令把的内容插入到光标所在位罝的下一行。如果你要指定插入位置为其 他行；只需在read或r命令前输入行号（或是行地址）即可。<br>假设你在编辑practice文件并想读入一个位于其他目录下的文件，例如/home/tim中的 data文件。则先将光标移到欲插入位置的上一行，再输入：<br>:r /home/tim/data<br>/h ome/t im/d at a的内容会被读入到pra ct i c中，并从光标所在位置的下一行幵始显示<br>出。<br>要读入同一个文件，但从185行之后插入，则需要输入：<br>:l85r /home/tim/data 还有其他方法可以读入文件：<br>$r /home/tim/data<br>将读入的文件放在当前文件的结尾。<br>ex编辑器概述I 71</p>
+<p>:0r /home/tim/data<br>将读入的文件放在当前文件的开头。<br>:/pattern/r /home/tim/data<br>将读入的文件放在第一个出现的行之后。<br>编辑多个文件<br>ex命令可以让你在多个文件之间切换，其好处是速度较快。如果你与其他用户共享系 统，若每次编辑文件时都要先离开再进入vi，势必很花时间。留在同一个’编辑会话并 在文件之间切换，不但速度较快，还可以保存你所定义的简写与命令序列（参阅第七 章），并且可以保留拖曳缓冲区中的内容，以便在多个文件间复制文本。<br>用vi同时打开多个文件<br>当你第一次打开Vi时，可以给出多个文件名，接着用ex命令在文件间切换。例如：<br>$ vi filel file2<br>即可先编辑filei,然后使用ex命令:w写入（存储）filei，此时会调用下一个文件 (file2)。<br>假设你要编辑两个文件，practice与note。<br>按键顺序<br>vi practice note<br>结果<br>0ith a screen editor you can scroll<br>the page, move the cursor, delete lines,<br>insert characters, and more, while seeing<br>打开practice与note这两个文件。第一个文件practice会出现在屏幕<br>上，可以进行编辑。<br>「practice” 6 lines&gt; 328 characters<br>用ex的w命令来保存编辑过的practice文件。按【ENTERL<br>[leaFMr^<br>Henshaw:<br>Thank you for the prompt …<br>用ex的n命令调用下一个文件note,再按函斤开始编緝。<br>“note” 23 lines, 1343 characters<br>将第二个文件note保存，并离开这个编辑会话。<br>72    |第五章</p>
+<p>使用参数列表<br>ex并不是只能用：n移动到下一个文件。：ai:gs参数（简写为:ar)可列出命令行上的文件 列表，当前编辑中的文件名称以方括号括起。<br>按键顺序    结果<br>vi practice note<br>:args<br>3ith a screen editor you can scroll<br>the page, move the cursor, delete lines,<br>insert characters, and more, while seeing<br>打开practice与note两个文件。其中第一个文件practice会显示在屏<br>幕上。<br>[practice] note<br>vi将参数列表显示在状态行中。以方括号括起当前编辑中的文件的名称。<br>:rewind (:rew)命令会将当前文件复位成命令行上的第一个文件。elvis与Vim提供了 对应的命令:last，用于移动其成命令行上的最后一个。<br>调用新文件<br>你不需要在编辑会话刚开始时就调用多个文件，而可以在任何时候用：e命令切换到另一 个文件。如果你要在vi中编辑另一个文件，首先必须保存当前文件（:w),再下命令：<br>:e filename<br>假设你正在编辑文件practice,又想编辑文件letter，则要首先回到practice:<br>按键顺序    结果<br>:w    “practice” 6 lines, 238 characters<br>用w来保存practice，再按lENT品。practice被保存，但仍会显示在屏 幕上。现在你可以切换到另一个文件了，因为你的编辑结果已经保存。<br>:e letter    Hletter” 23 lines, 1344 characters<br>用e命令调用letter文件，再按下丨EN涵，开始编辑。<br>vi会同时“记住”两个文件名，作为当前的与候补的文件名，它们可以用符号％ (代表当 前的文件名）与#(代表侯补的文件名）来表示。#对:6特别有用，因为它可以在两个文 件间方便地切换。在上一个例子中，你可以输入命令:e #回到第一个文件practice。你 也可以用：r #将practice文件的内容读到当前的文件中。<br>ex编辑器概述I 73</p>
+<p>在当前的文件尚未存储前，Vi不会让你用：e或:n来切换文件，除非你特别在命令之后加 上感叹号。<br>例如在编辑过letter之后，你想放弃编辑结果并回到practice文件，可以输入:el #。<br>下面的命令也很有用。它会放弃你的编辑结果，并恢复当前文件的上个已保存版本的内 容：<br>相对于#符号，％主要用于写出当前缓冲区中的内容到另一个新文件中。例如，前面的 “更改缓冲区名称” 一节中，我们展示了如何保存practice文件的第二个版本：<br>:w practice.new<br>因为%表示当前的文件名，因此命令也可以写成：<br>:w %.new<br>在vi中切换文件<br>j由于切换文件是个常用功能，因此你不需要进入ex命令模式。使用vi的    A A<br>获（答制键Ctrl加上A符号）即可切换文件。这个命令的功能与:e #—样。就像:e命令<br>一样，如果当前缓冲区的内容还没保存，vi不会让你切换到其他的文件。<br>在文件之间做编辑<br>当你为拖曳缓冲区命名（名称为一个字母）时，就有了把文本从一个文件移到另外一 个的简便方法。使用命令将新的文件载入vi的缓冲区时，并不会清除命名缓冲区中的 内容。因此，可先在一个文件中拖曳或删除文本（如果需要的话，可存入多个命名缓冲 区），再用：e调用新的文件，然后把命名缓冲区的内容放置到新文件中，这样就可以在 文件之间传送文本了。<br>下面的例子说明了如何将文本从一个文件传送到另一个文件。 按键顺序 结果<br>” f4yy<br>With a gcreen editor you can scroll<br>the page, move the cursor, delete lines,<br>insert characters, and more, while seeing<br>the results of the edits as you make them<br>将4行文本拖曳到缓冲区f中。<br>74 I第五章</p>
+<p>按键顺序<br>:w<br>:e letter</p>
+<p>结果（续)</p>
+<p>用进入letter文件。将光标移到要放置复制文本的地方。<br>Dear Mr.<br>Henshaw:<br>I thought that you would<br>be interested to know that:<br>iJith a screen editor you can scroll<br>the page, move the cursor, delete lines,<br>insert characters, and more, while seeing<br>the results of the edits as you make them<br>Yours truly,<br>从命名缓冲区f中取出文本并放置到光标处。<br>另一种将文本从一个文件移到另一个文件的方法是用ex命令：ya (拖动）与：pu (放 置）。这些命令分别与vi的y、p命令的运作方式相同，但是需与ex的行寻址功能和命名 缓冲区一起使用。<br>例如：<br>:l60,224ya a<br>将第160行到第224行之间的文本拖曳（复制）到缓冲区a中。接着你可以用：e进入要放 贾这些文本的文件，将光标移到要放置文本的行，再输人：<br>:pu a<br>将缓冲区a的内容放置到当前所在行的下一行。</p>
+<h3 id="第六章-全局替换"><a href="#第六章-全局替换" class="headerlink" title="第六章 全局替换"></a>第六章 全局替换</h3><h3 id="第七章-高级编辑方法"><a href="#第七章-高级编辑方法" class="headerlink" title="第七章 高级编辑方法"></a>第七章 高级编辑方法</h3><h3 id="第八章-vi同类品的功能总览"><a href="#第八章-vi同类品的功能总览" class="headerlink" title="第八章 vi同类品的功能总览"></a>第八章 vi同类品的功能总览</h3><h2 id="第二部分-Vim"><a href="#第二部分-Vim" class="headerlink" title="第二部分 Vim"></a>第二部分 Vim</h2><h3 id="第九章-Vim-概述"><a href="#第九章-Vim-概述" class="headerlink" title="第九章 Vim 概述"></a>第九章 Vim 概述</h3><h3 id="第十章-Vim对Vi的主要改进"><a href="#第十章-Vim对Vi的主要改进" class="headerlink" title="第十章 Vim对Vi的主要改进"></a>第十章 Vim对Vi的主要改进</h3><h3 id="第十一章-Vim的多窗口功能"><a href="#第十一章-Vim的多窗口功能" class="headerlink" title="第十一章 Vim的多窗口功能"></a>第十一章 Vim的多窗口功能</h3><h3 id="第十二章-Vim-脚本"><a href="#第十二章-Vim-脚本" class="headerlink" title="第十二章 Vim 脚本"></a>第十二章 Vim 脚本</h3><h3 id="第十三章-图形化Vim-gvim"><a href="#第十三章-图形化Vim-gvim" class="headerlink" title="第十三章 图形化Vim(gvim)"></a>第十三章 图形化Vim(gvim)</h3><h3 id="第十四章-程序员专用的Vim强化功能"><a href="#第十四章-程序员专用的Vim强化功能" class="headerlink" title="第十四章 程序员专用的Vim强化功能"></a>第十四章 程序员专用的Vim强化功能</h3><h3 id="第十五章-其他好用的Vim功能"><a href="#第十五章-其他好用的Vim功能" class="headerlink" title="第十五章 其他好用的Vim功能"></a>第十五章 其他好用的Vim功能</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2015/06/25/2015-06-25-223610-vi与vim入门指北/" title="vi与vim入门指北">http://linuxgeeks.github.io/2015/06/25/2015-06-25-223610-vi与vim入门指北/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vim/" rel="tag"><i class="fa fa-tag"></i> vim</a>
+          
+            <a href="/tags/vi/" rel="tag"><i class="fa fa-tag"></i> vi</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/16/2015-06-15-244110-软件包的管理/" rel="next" title="软件包的管理">
+                <i class="fa fa-chevron-left"></i> 软件包的管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/06/30/2015-06-30-111410-shell编程基础知识/" rel="prev" title="shell编程基础知识">
+                shell编程基础知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-基础与高级的vi"><span class="nav-number">1.</span> <span class="nav-text">第一部分 基础与高级的vi</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一章-vi文本编辑器"><span class="nav-number">1.1.</span> <span class="nav-text">第一章 vi文本编辑器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#打开与关闭文件"><span class="nav-number">1.1.1.</span> <span class="nav-text">打开与关闭文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#打开文件"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">打开文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#打开文件时发生的问题"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">打开文件时发生的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#操作模式"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">操作模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#保存与退出文件"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">保存与退出文件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#退出而不保存编辑结果"><span class="nav-number">1.1.2.</span> <span class="nav-text">退出而不保存编辑结果</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#保存文件时发生的问题"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">保存文件时发生的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二章-简单的文本编辑"><span class="nav-number">1.2.</span> <span class="nav-text">第二章 简单的文本编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vi命令"><span class="nav-number">1.2.1.</span> <span class="nav-text">vi命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移动光标"><span class="nav-number">1.2.2.</span> <span class="nav-text">移动光标</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单一的移动"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">单一的移动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数值参数"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">数值参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在一行中移动"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">在一行中移动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#按照文本块来移动"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">按照文本块来移动</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单的编辑"><span class="nav-number">1.2.3.</span> <span class="nav-text">简单的编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#插入新文本"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">插入新文本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#附加文本"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">附加文本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更改文本"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">更改文本</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#单词"><span class="nav-number">1.2.3.3.1.</span> <span class="nav-text">单词</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#整行"><span class="nav-number">1.2.3.3.2.</span> <span class="nav-text">整行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#字符"><span class="nav-number">1.2.3.3.3.</span> <span class="nav-text">字符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#替换文本"><span class="nav-number">1.2.3.3.4.</span> <span class="nav-text">替换文本</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更改大小写"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">更改大小写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除文本"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">删除文本</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#单词-1"><span class="nav-number">1.2.3.5.1.</span> <span class="nav-text">单词</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#整行-1"><span class="nav-number">1.2.3.5.2.</span> <span class="nav-text">整行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#字符-1"><span class="nav-number">1.2.3.5.3.</span> <span class="nav-text">字符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除文本时发生的问题"><span class="nav-number">1.2.3.5.4.</span> <span class="nav-text">删除文本时发生的问题</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#移动文本"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">移动文本</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#对调两个字母"><span class="nav-number">1.2.3.6.1.</span> <span class="nav-text">对调两个字母</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#复制文本"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">复制文本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重复或撤销上一个命令"><span class="nav-number">1.2.3.8.</span> <span class="nav-text">重复或撤销上一个命令</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#重复"><span class="nav-number">1.2.3.8.1.</span> <span class="nav-text">重复</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#撤销"><span class="nav-number">1.2.3.8.2.</span> <span class="nav-text">撤销</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更多插入文本的方法"><span class="nav-number">1.2.3.9.</span> <span class="nav-text">更多插入文本的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#插入命令的数值参数"><span class="nav-number">1.2.3.9.1.</span> <span class="nav-text">插入命令的数值参数</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用J合并两行"><span class="nav-number">1.2.3.10.</span> <span class="nav-text">用J合并两行</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#问题集"><span class="nav-number">1.2.3.10.1.</span> <span class="nav-text">问题集</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基本vi命令的复习"><span class="nav-number">1.2.3.11.</span> <span class="nav-text">基本vi命令的复习</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三章-快速移动位置"><span class="nav-number">1.3.</span> <span class="nav-text">第三章 快速移动位置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#根据屏幕来移动"><span class="nav-number">1.3.1.</span> <span class="nav-text">根据屏幕来移动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#滚动一整屏"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">滚动一整屏</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用z重新调整屏幕位置"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">用z重新调整屏幕位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重画屏幕"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">重画屏幕</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在屏幕中移动"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">在屏幕中移动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#根据行移动"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">根据行移动</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#在当前行移动"><span class="nav-number">1.3.1.5.1.</span> <span class="nav-text">在当前行移动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据文本块来移动"><span class="nav-number">1.3.2.</span> <span class="nav-text">根据文本块来移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据搜索模式的结果来移动"><span class="nav-number">1.3.3.</span> <span class="nav-text">根据搜索模式的结果来移动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#重复搜索"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">重复搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#通过搜索修改文本"><span class="nav-number">1.3.3.1.1.</span> <span class="nav-text">通过搜索修改文本</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在当前行种搜索"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">在当前行种搜索</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据行号来移动"><span class="nav-number">1.3.4.</span> <span class="nav-text">根据行号来移动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#G（转至）命令"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">G（转至）命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四章-越过基础的藩篱"><span class="nav-number">1.4.</span> <span class="nav-text">第四章 越过基础的藩篱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更多的命令组合"><span class="nav-number">1.4.1.</span> <span class="nav-text">更多的命令组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打开vi的选项"><span class="nav-number">1.4.2.</span> <span class="nav-text">打开vi的选项</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#前进到特定的位置"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">前进到特定的位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#只读模式"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">只读模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复缓冲区"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">恢复缓冲区</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#善加利用缓冲区"><span class="nav-number">1.4.3.</span> <span class="nav-text">善加利用缓冲区</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复删除"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">恢复删除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将文本拖曳到命名缓冲区中"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">将文本拖曳到命名缓冲区中</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对一处做标记"><span class="nav-number">1.4.4.</span> <span class="nav-text">对一处做标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他高级编辑技巧"><span class="nav-number">1.4.5.</span> <span class="nav-text">其他高级编辑技巧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第五章-ex编辑器概述"><span class="nav-number">1.5.</span> <span class="nav-text">第五章 ex编辑器概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ex命令"><span class="nav-number">1.5.1.</span> <span class="nav-text">ex命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#问题集-1"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">问题集</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用ex编辑"><span class="nav-number">1.5.2.</span> <span class="nav-text">用ex编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#行地址"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">行地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#定义行范围"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">定义行范围</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#行寻址符号"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">行寻址符号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#搜索模式"><span class="nav-number">1.5.2.4.</span> <span class="nav-text">搜索模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重新定义当前这一行的位置"><span class="nav-number">1.5.2.5.</span> <span class="nav-text">重新定义当前这一行的位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#全局搜索"><span class="nav-number">1.5.2.6.</span> <span class="nav-text">全局搜索</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#合并ex命令"><span class="nav-number">1.5.2.7.</span> <span class="nav-text">合并ex命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第六章-全局替换"><span class="nav-number">1.6.</span> <span class="nav-text">第六章 全局替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第七章-高级编辑方法"><span class="nav-number">1.7.</span> <span class="nav-text">第七章 高级编辑方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第八章-vi同类品的功能总览"><span class="nav-number">1.8.</span> <span class="nav-text">第八章 vi同类品的功能总览</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部分-Vim"><span class="nav-number">2.</span> <span class="nav-text">第二部分 Vim</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第九章-Vim-概述"><span class="nav-number">2.1.</span> <span class="nav-text">第九章 Vim 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十章-Vim对Vi的主要改进"><span class="nav-number">2.2.</span> <span class="nav-text">第十章 Vim对Vi的主要改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十一章-Vim的多窗口功能"><span class="nav-number">2.3.</span> <span class="nav-text">第十一章 Vim的多窗口功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十二章-Vim-脚本"><span class="nav-number">2.4.</span> <span class="nav-text">第十二章 Vim 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十三章-图形化Vim-gvim"><span class="nav-number">2.5.</span> <span class="nav-text">第十三章 图形化Vim(gvim)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十四章-程序员专用的Vim强化功能"><span class="nav-number">2.6.</span> <span class="nav-text">第十四章 程序员专用的Vim强化功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第十五章-其他好用的Vim功能"><span class="nav-number">2.7.</span> <span class="nav-text">第十五章 其他好用的Vim功能</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shell," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="命令历史 history history n    列出最近执行过的n条命令  -c    清除所有历史命令、 -w    将缓冲区命令写入历史命令文件~/.bash_history   ! !n    执行历史命令中第n条命令 !-n   执行历史命令中倒数第n条命令 !!     执行上一条命令 !string  ">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash特性">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/07/02/2015-07-02-174310-bash特性/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content="命令历史 history history n    列出最近执行过的n条命令  -c    清除所有历史命令、 -w    将缓冲区命令写入历史命令文件~/.bash_history   ! !n    执行历史命令中第n条命令 !-n   执行历史命令中倒数第n条命令 !!     执行上一条命令 !string    执行命令历史中最近一个以指定字符串(string)开头的命令 !$">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/pipe.png">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/Filedescriptor.png">
+<meta property="og:updated_time" content="2018-01-30T14:14:02.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bash特性">
+<meta name="twitter:description" content="命令历史 history history n    列出最近执行过的n条命令  -c    清除所有历史命令、 -w    将缓冲区命令写入历史命令文件~/.bash_history   ! !n    执行历史命令中第n条命令 !-n   执行历史命令中倒数第n条命令 !!     执行上一条命令 !string    执行命令历史中最近一个以指定字符串(string)开头的命令 !$">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/pipe.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/07/02/2015-07-02-174310-bash特性/"/>
+
+
+
+
+
+  <title>bash特性 | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/07/02/2015-07-02-174310-bash特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">bash特性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-02T17:43:10+08:00">
+                2015-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell基础/" itemprop="url" rel="index">
+                    <span itemprop="name">shell基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,592
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="命令历史"><a href="#命令历史" class="headerlink" title="命令历史"></a>命令历史</h1><ul>
+<li>history<ul>
+<li><code>history n</code>    列出最近执行过的n条命令 </li>
+<li>-c    清除所有历史命令、</li>
+<li>-w    将缓冲区命令写入历史命令文件<code>~/.bash_history</code></li>
+</ul>
+</li>
+<li><code>!</code><ul>
+<li>!n    执行历史命令中第n条命令</li>
+<li>!-n   执行历史命令中倒数第n条命令</li>
+<li>!!     执行上一条命令</li>
+<li>!string    执行命令历史中最近一个以指定字符串(string)开头的命令</li>
+<li>!$     引用上一条命令的最后一个参数</li>
+</ul>
+</li>
+<li><code>↑</code> 或 <code>Ctrl</code> + <code>p</code><ul>
+<li>引用上一条命令</li>
+</ul>
+</li>
+<li><p><code>↓</code> 或 <code>Ctrl</code> + <code>n</code></p>
+<ul>
+<li>引用下一条命令</li>
+</ul>
+</li>
+<li><p><code>Esc</code> + <code>.</code></p>
+<ul>
+<li>引用上一条命令的最后一个参数</li>
+<li>重复执行 <code>Esc</code> + <code>.</code> 则会倒序切换历史命令的最后一个参数</li>
+</ul>
+</li>
+<li><p><code>!cmd:3</code>  </p>
+<ul>
+<li>引用上一条命令的第三个参数</li>
+</ul>
+</li>
+<li><p><code>Ctrl</code> + <code>r</code></p>
+<ul>
+<li>按下 <code>Ctrl</code> + <code>r</code> ，然后输入关键字搜索历史命令，按 <code>Enter</code> 执行命令</li>
+</ul>
+</li>
+</ul>
+<h1 id="命令行补全"><a href="#命令行补全" class="headerlink" title="命令行补全"></a>命令行补全</h1><ul>
+<li>搜索PATH环境变量所指定的每个路径下以我们给出的字符串开头的可执行文件</li>
+<li>如果符合的文件多于一个，按两次 <code>Tab</code>，可以给出以给出字符开头的可执行文件的列表；否则将直接补全命令；</li>
+</ul>
+<h1 id="路径补全"><a href="#路径补全" class="headerlink" title="路径补全"></a>路径补全</h1><p>搜索我们给出的起始路径下的每个文件名，并试图补全</p>
+<h1 id="命令别名"><a href="#命令别名" class="headerlink" title="命令别名"></a>命令别名</h1><ul>
+<li>定义别名</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> CMDALIAS=<span class="string">'COMMAND [options] [arguments]'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>撤销别名</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">unalias</span> CMDALIAS</span><br></pre></td></tr></table></figure>
+<ul>
+<li>不使用别名，而使用原命令本身</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\COMMAND</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在shell中定义的别名仅在当前shell生命周期中有效，作用域仅为当前shell进程；</li>
+<li>配置 <code>~/.bashrc</code> 下次登录及以后登录后永久生效</li>
+</ul>
+<h1 id="命令替换"><a href="#命令替换" class="headerlink" title="命令替换"></a>命令替换</h1><ul>
+<li>命令替换，即把某个子命令替换为其执行结果的过程</li>
+<li>某些命令中若出现命令替换符，kernel会首先执行子命令，然后在执行外部命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="built_in">command</span>) 或 `<span class="built_in">command</span>`</span><br></pre></td></tr></table></figure>
+<h1 id="命令行编辑"><a href="#命令行编辑" class="headerlink" title="命令行编辑"></a>命令行编辑</h1><ul>
+<li><code>Ctrl</code> + <code>a</code>    光标跳转到命令行行首</li>
+<li><code>Ctrl</code> + <code>e</code>    光标跳转到命令行行尾</li>
+<li><code>Ctrl</code> + <code>l</code>    清屏，等同于 <code>clear</code> 命令</li>
+<li><code>Ctrl</code> + <code>u</code>    剪切光标至命令行行首的内容</li>
+<li><code>Ctrl</code> + <code>k</code>    剪切光标至命令行行尾的内容</li>
+<li><code>Ctrl</code> + <code>w</code>   剪切光标之前一个单词</li>
+<li><code>Ctrl</code> + <code>y</code>    复制剪切的内容</li>
+<li><code>Ctrl</code> + <code>b</code>    向左移动光标，等同于 <code>←</code></li>
+<li><code>Ctrl</code> + <code>f</code>    向右移动光标，等同于 <code>→</code></li>
+<li><code>Ctrl</code> + <code>j</code>     相当于回车键，回车执行命令</li>
+<li><code>Ctrl</code> + <code>x</code> + <code>x</code> 光标在命令行中最后两次出现的位置间互相切换</li>
+<li><code>Esc</code> + <code>b</code>    移动到当前单词的词首处，等同于xterm终端下的<code>Ctrl</code>+<code>←</code></li>
+<li><code>Esc</code> + <code>f</code>    移动到当前单词的词尾处，等同于xterm终端下的<code>Ctrl</code>+<code>→</code></li>
+<li><code>Esc</code> + <code>t</code>    交换光标前的最后两个单词</li>
+<li><code>Esc</code> + <code>u</code>   将当前单词转换为大写</li>
+<li><code>Esc</code> + <code>l</code>   将当前单词转换为小写</li>
+<li><code>Esc</code> + <code>c</code>   将当前字母转换为大写</li>
+</ul>
+<h1 id="命令行展开"><a href="#命令行展开" class="headerlink" title="命令行展开"></a>命令行展开</h1><p>命令行中花括号内的内容类似因式分解展开</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> aa&#123;1,2,3&#125;X&#123;a,b&#125;  </span><br><span class="line">aa1Xa aa1Xb aa2Xa aa2Xb aa3Xa aa3Xb</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/sysctl.conf&#123;,.bak&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="通配（globbing）"><a href="#通配（globbing）" class="headerlink" title="通配（globbing）"></a>通配（globbing）</h1><p>获取帮助 <code>man 7 glob</code></p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>任意长度的任意字符</td>
+</tr>
+<tr>
+<td>？</td>
+<td>任意单个字符</td>
+</tr>
+<tr>
+<td>~</td>
+<td>当前用户的家目录</td>
+</tr>
+<tr>
+<td>~user1</td>
+<td>用户user1的家目录</td>
+</tr>
+<tr>
+<td>~-</td>
+<td>上一个工作目录</td>
+</tr>
+<tr>
+<td>~+</td>
+<td>当前工作目录</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>列表中的任意单个字符</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>列表中的所有字符以外的字符</td>
+</tr>
+<tr>
+<td>[0-9]</td>
+<td>任意单个数字</td>
+</tr>
+<tr>
+<td>[a-z]</td>
+<td>小写字母</td>
+</tr>
+<tr>
+<td>[A-Z]</td>
+<td>大写字母</td>
+</tr>
+<tr>
+<td>[0-9a-Z]</td>
+<td>大小写字母及数字</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>任意小写字母</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>任意大写字母</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>任意大小写字母</td>
+</tr>
+<tr>
+<td>[:alnum:]</td>
+<td>任意数字或字母</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>空格</td>
+</tr>
+<tr>
+<td>[:punct:]</td>
+<td>标点符号</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>任意单个数字，同 [0-9]</td>
+</tr>
+</tbody>
+</table>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>管道操作符是：”|”，仅能处理经由前面一个指令传出的正确输出信息，即 standard output 的信息，对于 stdandard error 信息没有直接处理能力。而后传递给下一个命令，作为下一个命令的标准的输入 standard input</p>
+<p><img src="http://ohlli9uc9.bkt.clouddn.com/pipe.png" alt=""></p>
+<p>command1的正确输出作为command2的输入，然后comand2的正确输出作为comand3的输入 ，comand3的输出直接显示在屏幕。</p>
+<ul>
+<li><p>注意：<br>1、管道只处理前一个命令的正确输出，不处理错误输出。<br>2、管道右边命令，必须能够接收标准输入流命令才行。</p>
+</li>
+<li><p>管道和重定向的区别</p>
+<ul>
+<li>左边的命令应该有标准输出 | 右边的命令应该接受标准输入</li>
+<li>左边的命令应该有标准输出 &gt; 右边只能是文件</li>
+<li>左边的命令需要接受标准输入 &lt; 右边需要能产生标准输出进程或文件</li>
+<li>管道两边必须是shell命令<br>- </li>
+<li>管道触发两个子进程执行”|”两边的程序；而重定向是在一个进程内执行</li>
+</ul>
+</li>
+</ul>
+<h1 id="I-O重定向"><a href="#I-O重定向" class="headerlink" title="I/O重定向"></a>I/O重定向</h1><h2 id="标准输入-stdin"><a href="#标准输入-stdin" class="headerlink" title="标准输入(stdin)"></a>标准输入(stdin)</h2><p>输入至程序的数据（通常是文件）。</p>
+<ul>
+<li>程序要求以读(read)操作来传输数据。并非所有程序都要求输入。如dir或ls程序运行时不用任何输入。</li>
+<li>除非重导向，输入是预期由键盘获取的。</li>
+<li>标准输入的文件描述符为 0 （零）</li>
+</ul>
+<h2 id="标准输出-stdout"><a href="#标准输出-stdout" class="headerlink" title="标准输出(stdout)"></a>标准输出(stdout)</h2><p>程序写输出数据的流。</p>
+<ul>
+<li>程序要求数据传输使用写的运算。并非所有程序都要求输出。如mv或ren程序在成功完成时是沉默的。</li>
+<li>除非重导向，输出为终端。</li>
+<li>标准输出的文件描述符为 1 。</li>
+</ul>
+<h2 id="标准错误输出-stderr"><a href="#标准错误输出-stderr" class="headerlink" title="标准错误输出(stderr)"></a>标准错误输出(stderr)</h2><p>标准错误输出是另一输出流，用于输出错误消息或诊断。它独立于标准输出，且可以分别被重导。</p>
+<ul>
+<li>常见的输出目的地则为启始这个程序的终端，即使其标准输出被重导亦如此。例如：一个管道中的程序的输出被重导到下一个程序，但错误消息仍然直接流当前终端机。</li>
+<li>把标准输出和标准错误输出导到相同的目的地，如文字终端，是可以（且正常）的。消息会以如同程序写入的顺序来出现，除非使用了缓冲。（例如，一个常见状况是，当标准错误流未使用缓冲，但标准输出流使用了缓冲；在这种情况下，如果标准输出的缓冲器还没满的话，较迟写到标准错误的文字可能会较早出现在终端。</li>
+<li>标准错误输出的文件描述子为 2</li>
+</ul>
+<h2 id="文件描述符-file-descriptor"><a href="#文件描述符-file-descriptor" class="headerlink" title="文件描述符(file descriptor)"></a>文件描述符(file descriptor)</h2><p>可以理解为linux跟踪打开文件，而分配的一个数字，这个数字有点类似c语言操作文件时候的句柄，通过句柄就可以实现文件的读写操作。</p>
+<ul>
+<li>用户可以自定义文件描述符范围是：3-num，这个最大数字跟用户的 <code>ulimit -n</code> 定义数字有关系，不能超过最大值。</li>
+<li>系统启动后，默认打开3个文件描述符，分别是：标准输入standard input 0，标准输出standard output 1，标准错误输出：standard error output 2。</li>
+<li>打开文件后新增文件绑定描述符可以依次增加。</li>
+<li>一条shell命令执行，都会继承父进程的文件描述符。因此所有运行的shell命令，都会有默认3个文件描述符。</li>
+<li>命令执行前，先会准备好所有输入输出，默认分别绑定（stdin，stdout，stderr)，如果这个时候出现错误，命令将终止，不会执行。</li>
+<li>对于任何一条linux 命令执行，它会是这样一个过程：</li>
+</ul>
+<p><img src="http://ohlli9uc9.bkt.clouddn.com/Filedescriptor.png" alt=""></p>
+<h1 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h1><h2 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h2><ul>
+<li>I/O重定向通常与 FD 有关，shell的FD通常为10个，即 0～9；</li>
+<li>常用的3个FD：0（stdin）、1（stdout）、2（stderr）；</li>
+<li>用 &lt; 来改变读进的数据信道(stdin)，使之从指定的档案读进；</li>
+<li>用 &gt; 来改变送出的数据信道(stdout, stderr)，使之输出到指定的档案；</li>
+<li>0 是 &lt; 的默认值，因此 &lt; 与 0&lt;是一样的；同理，&gt; 与 1&gt; 是一样的；</li>
+<li>在IO重定向中，stdout 与 stderr 的管道会先准备好，才会从 stdin 读进资料；</li>
+<li>管道”|“ (pipe line)：上一个命令的 stdout 接到下一个命令的 stdin；</li>
+<li>tee 命令是在不影响原本 I/O 的情况下，将 stdout 复制一份到档案去；</li>
+<li>bash（ksh）执行命令的过程：分析命令－变量求值－命令替代（``和$( )）－重定向－通配符展开－确定路径－执行命令；</li>
+<li>( ) 将 command group 置于 sub-shell 去执行，也称 nested sub-shell，它有一点非常重要的特性是：继承父shell的标准输入、标准输出、标准错误和任何其他打开的文件描述符。</li>
+<li>exec 命令：常用来替代当前 shell 并重新启动一个 shell，换句话说，并没有启动子 shell。使用这一命令时任何现有环境都将会被清除。exec 在对文件描述符进行操作的时候，也只有在这时，exec 不会覆盖你当前的 shell 环境。</li>
+</ul>
+<h2 id="I-O编辑"><a href="#I-O编辑" class="headerlink" title="I/O编辑"></a>I/O编辑</h2><ul>
+<li>cmd &gt;   file把 stdout 重定向到 file 文件中</li>
+<li>cmd 1&gt;  file 把 stdout 重定向到 file 文件中</li>
+<li>cmd 2&gt;  file 把 stderr 重定向到 file 文件中</li>
+<li>cmd &gt;&gt;  file 把 stdout 重定向到 file 文件中(追加)</li>
+<li>cmd 2&gt;&gt; file 把 stderr 重定向到 file 文件中(追加)</li>
+<li>cmd &gt;   file 2&gt;&amp;1 把 stdout 和 stderr 一起重定向到 file 文件中</li>
+<li>cmd &gt;&gt;  file 2&gt;&amp;1 把 stdout 和 stderr 一起重定向到 file 文件中(追加)</li>
+<li>cmd &lt;   file &gt;file2 cmd 命令以 file 文件作为 stdin，以 file2 文件作为 stdout</li>
+<li>cat &lt;&gt;  file 以读写的方式打开 file</li>
+<li>cmd &lt;   file cmd 命令以 file 文件作为 stdin</li>
+<li>cmd &lt;&lt;       delimiter Here document，从 stdin 中读入，直至遇到 delimiter 分界符</li>
+<li>cmd &lt;&lt;-      Here-document，从 stdin 中读入，并且抑制 stdin 开头的制表符（\t）</li>
+<li>cmd &lt;&lt;&lt; “string|$(cmd)” Here-word，从字符中读入</li>
+</ul>
+<h2 id="进阶I-O"><a href="#进阶I-O" class="headerlink" title="进阶I/O"></a>进阶I/O</h2><ul>
+<li>>&amp;n     使用系统调用 dup2复制文件描述符 n 并把结果用作标准输出</li>
+<li>&lt;&amp;n     标准输入复制自文件描述符 n</li>
+<li>&lt;&amp;-     关闭标准输入（键盘）</li>
+<li>>&amp;-     关闭标准输出</li>
+<li>n&lt;&amp;-    表示将 n 号输入关闭</li>
+<li>n&gt;&amp;-    表示将 n 号输出关闭</li>
+<li>exec 1&gt;outfilename 打开文件 outfilename作为 stdout</li>
+<li>exec 2&gt;errfilename 打开文件 errfilename作为 stderr</li>
+<li>exec 0&lt;&amp;-  关闭 FD0</li>
+<li>exec 1&gt;&amp;-  关闭 FD1</li>
+<li>exec 5&gt;&amp;-  关闭 FD5</li>
+</ul>
+<h1 id="支持变量使用"><a href="#支持变量使用" class="headerlink" title="支持变量使用"></a>支持变量使用</h1><p>变量本质上存储数据的一个或多个计算机内存地址</p>
+<h1 id="支持编程"><a href="#支持编程" class="headerlink" title="支持编程"></a>支持编程</h1><p>shell 编程</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2015/07/02/2015-07-02-174310-bash特性/" title="bash特性">http://linuxgeeks.github.io/2015/07/02/2015-07-02-174310-bash特性/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/01/2015-07-01-102110-shell简介/" rel="next" title="shell简介">
+                <i class="fa fa-chevron-left"></i> shell简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/03/2015-07-03-190522-shell的变量和分类/" rel="prev" title="shell的变量和分类">
+                shell的变量和分类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#命令历史"><span class="nav-number">1.</span> <span class="nav-text">命令历史</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行补全"><span class="nav-number">2.</span> <span class="nav-text">命令行补全</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#路径补全"><span class="nav-number">3.</span> <span class="nav-text">路径补全</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令别名"><span class="nav-number">4.</span> <span class="nav-text">命令别名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令替换"><span class="nav-number">5.</span> <span class="nav-text">命令替换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行编辑"><span class="nav-number">6.</span> <span class="nav-text">命令行编辑</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行展开"><span class="nav-number">7.</span> <span class="nav-text">命令行展开</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通配（globbing）"><span class="nav-number">8.</span> <span class="nav-text">通配（globbing）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#管道"><span class="nav-number">9.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I-O重定向"><span class="nav-number">10.</span> <span class="nav-text">I/O重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标准输入-stdin"><span class="nav-number">10.1.</span> <span class="nav-text">标准输入(stdin)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准输出-stdout"><span class="nav-number">10.2.</span> <span class="nav-text">标准输出(stdout)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准错误输出-stderr"><span class="nav-number">10.3.</span> <span class="nav-text">标准错误输出(stderr)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件描述符-file-descriptor"><span class="nav-number">10.4.</span> <span class="nav-text">文件描述符(file descriptor)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重定向"><span class="nav-number">11.</span> <span class="nav-text">重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本知识"><span class="nav-number">11.1.</span> <span class="nav-text">基本知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O编辑"><span class="nav-number">11.2.</span> <span class="nav-text">I/O编辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶I-O"><span class="nav-number">11.3.</span> <span class="nav-text">进阶I/O</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持变量使用"><span class="nav-number">12.</span> <span class="nav-text">支持变量使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持编程"><span class="nav-number">13.</span> <span class="nav-text">支持编程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

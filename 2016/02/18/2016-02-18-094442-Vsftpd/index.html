@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="文件共享,vsftpd," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="FTP FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Internet上的控制文件的双向传输。基于不同的操作系统有不同的FTP应用程序，而所有这些应用程序都遵守同一种协议以传输文件。 在FTP的使用当中，用户经常遇到两个概念：”下载”（Download）和”上传”（Upload）">
+<meta name="keywords" content="文件共享,vsftpd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vsftpd">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/02/18/2016-02-18-094442-Vsftpd/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content="FTP FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Internet上的控制文件的双向传输。基于不同的操作系统有不同的FTP应用程序，而所有这些应用程序都遵守同一种协议以传输文件。 在FTP的使用当中，用户经常遇到两个概念：”下载”（Download）和”上传”（Upload）。”下载”文件就是从远程主机拷贝文件至自己的计算机上；”上传”文件就是将文件从自">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/ftp.jpg">
+<meta property="og:updated_time" content="2018-01-30T14:14:02.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vsftpd">
+<meta name="twitter:description" content="FTP FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Internet上的控制文件的双向传输。基于不同的操作系统有不同的FTP应用程序，而所有这些应用程序都遵守同一种协议以传输文件。 在FTP的使用当中，用户经常遇到两个概念：”下载”（Download）和”上传”（Upload）。”下载”文件就是从远程主机拷贝文件至自己的计算机上；”上传”文件就是将文件从自">
+<meta name="twitter:image" content="http://ohlli9uc9.bkt.clouddn.com/ftp.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/02/18/2016-02-18-094442-Vsftpd/"/>
+
+
+
+
+
+  <title>Vsftpd | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/02/18/2016-02-18-094442-Vsftpd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vsftpd</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-18T09:44:42+08:00">
+                2016-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Services/" itemprop="url" rel="index">
+                    <span itemprop="name">Services</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,508
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h3><ul>
+<li>FTP 是File Transfer Protocol（文件传输协议）的英文简称，用于Internet上的控制文件的双向传输。基于不同的操作系统有不同的FTP应用程序，而所有这些应用程序都遵守同一种协议以传输文件。</li>
+<li>在FTP的使用当中，用户经常遇到两个概念：”下载”（Download）和”上传”（Upload）。”下载”文件就是从远程主机拷贝文件至自己的计算机上；”上传”文件就是将文件从自己的计算机中拷贝至远程主机上。</li>
+</ul>
+<h3 id="两种连接"><a href="#两种连接" class="headerlink" title="两种连接"></a>两种连接</h3><blockquote>
+<p>FTP会话时包含了两个连接，一个叫控制连接，一个叫数据数据连接。</p>
+</blockquote>
+<h4 id="控制连接"><a href="#控制连接" class="headerlink" title="控制连接"></a>控制连接</h4><ul>
+<li>和FTP服务器进行沟通的连接。连接FTP、发送FTP指令都是通过控制通道来完成的。在收到断开连接命令前，始终保持连接。</li>
+</ul>
+<h4 id="数据连接"><a href="#数据连接" class="headerlink" title="数据连接"></a>数据连接</h4><ul>
+<li>和FTP服务器进行文件传输或者列表的连接。数据传输时建立，传输结束时终止。<br>FTP协议中，控制连接均由客户端发起，而数据连接有两种工作方式：PORT方式和PASV方式</li>
+</ul>
+<blockquote>
+<p>主动模式（PORT模式）</p>
+</blockquote>
+<p><img src="http://ohlli9uc9.bkt.clouddn.com/ftp.jpg" alt=""></p>
+<p>FTP Client 首先和 FTP Server的 TCP 21 端口建立控制连接，通过这个连接发送命令，客户端需要接收数据时在这个控制连接上发送 PORT 命令。 PORT 命令包含了客户端用什么端口(一个大于1024的端口)接收数据。在传送数据的时候，服务器端通过自己的 TCP 20 端口主动连接客户端并发送数据。 FTP server 必须和 clien t建立一个新的连接用来传送数据。</p>
+<blockquote>
+<p>被动模式（PASV模式）</p>
+</blockquote>
+<p>在建立控制连接的时候和 PORT 模式类似，当客户端通过这个连接发送 PASV 命令的时候，FTP server 打开一个位于1024和5000之间的随机端口并且通知客户端在这个端口上传送数据的请求，然后 FTP server 将通过这个端口进行数据的传送，这个时候FTP server不再需要建立一个新的和客户端之间的连接传送数据。</p>
+<p>如果从C/S模型这个角度来说，PORT对于服务器来说是OUTBOUND，而PASV模式对于服务器是INBOUND，这一点请特别注意，尤其是在使用防火墙的企业里，这一点非常关键，如果设置错了，那么客户将无法连接。</p>
+<h3 id="文件说明"><a href="#文件说明" class="headerlink" title="文件说明"></a>文件说明</h3><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>文件作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/etc/vsftpd/vsftpd.conf</td>
+<td>主配置文件</td>
+</tr>
+<tr>
+<td>/usr/sbin/vsftpd</td>
+<td>Vsftpd的主程序</td>
+</tr>
+<tr>
+<td>/etc/rc.d/init.d/vsftpd</td>
+<td>启动脚本</td>
+</tr>
+<tr>
+<td>/etc/pam.d/vsftpd</td>
+<td>PAM认证文件（此文件中file=/etc/vsftpd/ftpusers字段，指明阻止访问的用户来自/etc/vsftpd/ftpusers文件中的用户）</td>
+</tr>
+<tr>
+<td>/etc/vsftpd/ftpusers</td>
+<td>禁止使用vsftpd的用户列表文件。记录不允许访问FTP服务器的用户名单，管理员可以把一些对系统安全有威胁的用户账号记录在此文件中，以免用户从FTP登录后获得大于上传下载操作的权利，而对系统造成损坏。</td>
+</tr>
+<tr>
+<td>/etc/vsftpd/user_list</td>
+<td>禁止或允许使用vsftpd的用户列表文件。这个文件中指定的用户缺省情况（即在/etc/vsftpd/vsftpd.conf中设置userlist_deny=YES）下不能访问FTP服务器，在设置了userlist_deny=NO时,仅允许user_list中指定的用户访问FTP服务器。</td>
+</tr>
+<tr>
+<td>/var/ftp</td>
+<td>匿名用户主目录；本地用户主目录为：/home/用户主目录，即登录后进入自己家目录</td>
+</tr>
+<tr>
+<td>/var/ftp/pub</td>
+<td>匿名用户的下载目录，此目录需赋权根chmod 1777 pub（1为特殊权限，使上载后无法删除）</td>
+</tr>
+<tr>
+<td>/etc/logrotate.d/vsftpd.log</td>
+<td>Vsftpd的日志文件，可在主配置文件进行修改</td>
+</tr>
+</tbody>
+</table>
+<h3 id="用户类型"><a href="#用户类型" class="headerlink" title="用户类型"></a>用户类型</h3><ul>
+<li><p>匿名用户<br>在FTP服务器上没有账号，用户名为anonymous或ftp，/var/ftp作为ftp访问的根目录</p>
+</li>
+<li><p>本地用户<br>在FTP服务器上拥有帐号，可以登录到服务器上。该账号既可以作为登录帐号使用，也可以作为ftp帐号使用。其家目录目录作为其ftp访问的根目录。</p>
+</li>
+<li><p>虚拟用户（Guest用户）<br>在FTP服务器上拥有帐号，但该账号只能作为ftp帐号使用，不能访问除家目录之外的内容。</p>
+</li>
+</ul>
+<h3 id="参数配置"><a href="#参数配置" class="headerlink" title="参数配置"></a>参数配置</h3><p>vsftpd的配置文件中以#开始注释，配置参数要顶格写，等号前后没有空格</p>
+<h5 id="登录欢迎信息Login-Banners"><a href="#登录欢迎信息Login-Banners" class="headerlink" title="登录欢迎信息Login Banners"></a>登录欢迎信息Login Banners</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否激活目录欢迎信息功能</span></span><br><span class="line"><span class="comment"># 如果两个指令都做了配置，那么banner_file将覆盖ftpd_banner</span></span><br><span class="line">ftpd_banner=Welcome to blah FTP service.</span><br><span class="line"><span class="comment">#banner_file=/etc/vsftpd/banner</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认情况下，欢迎信息是通过该目录下的.message文件获得的</span></span><br><span class="line"><span class="comment"># 此文件保存自定义的欢迎信息，由用户自己建立</span></span><br><span class="line"><span class="comment">#dirmessage_enable=YES</span></span><br></pre></td></tr></table></figure>
+<h5 id="禁锢用户在其家目录"><a href="#禁锢用户在其家目录" class="headerlink" title="禁锢用户在其家目录"></a>禁锢用户在其家目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对于ftp访问ftp服务器时应该对其chroot</span></span><br><span class="line">chroot_local_user=YES</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户登录FTP服务器后是否具有访问自己目录以外的其他文件的权限</span></span><br><span class="line"><span class="comment"># 设置为YES时，用户被锁定在自己的home目录中，vsftpd将在下面chroot_list_file选项值的位置寻找chroot_list文件</span></span><br><span class="line"><span class="comment"># 必须与下面的设置项配合</span></span><br><span class="line"><span class="comment">#chroot_list_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 被列入此文件的用户，在登录后将不能切换到自己目录以外的其他目录</span></span><br><span class="line"><span class="comment"># 从而有利于FTP服务器的安全管理和隐私保护。此文件需自己建立</span></span><br><span class="line"><span class="comment">#chroot_list_file=/etc/vsftpd/chroot_list</span></span><br></pre></td></tr></table></figure>
+<h5 id="匿名用户配置"><a href="#匿名用户配置" class="headerlink" title="匿名用户配置"></a>匿名用户配置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否允许匿名登录FTP服务器，默认设置为YES允许</span></span><br><span class="line"><span class="comment"># 用户可使用用户名ftp或anonymous进行ftp登录，口令为用户的E-mail地址。</span></span><br><span class="line"><span class="comment"># 如不允许匿名访问则设置为NO</span></span><br><span class="line">anonymous_enable=YES</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许匿名用户有写权限</span></span><br><span class="line"><span class="comment">#anon_upload_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许匿名用户有删除权限</span></span><br><span class="line"><span class="comment">#anon_other_write_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许匿名用户创建文件夹权限</span></span><br><span class="line"><span class="comment">#anon_mkdir_write_enable=YES</span></span><br></pre></td></tr></table></figure>
+<h5 id="连接限制"><a href="#连接限制" class="headerlink" title="连接限制"></a>连接限制</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置数据传输中空闲超时时间</span></span><br><span class="line"><span class="comment"># 即当数据传输结束后，用户连接FTP服务器的时间不应超过600秒。可以根据实际情况对该值进行修改</span></span><br><span class="line"><span class="comment">#idle_session_timeout=600</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置数据连接超时时间，即数据传输的超时时间</span></span><br><span class="line"><span class="comment">#data_connection_timeout=120</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最大并发连接数</span></span><br><span class="line">max_clients=100</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每IP可同时发起并发请求</span></span><br><span class="line">max_per_ip=5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绑定监听的IP地址 </span></span><br><span class="line"><span class="comment">#listen_address=192.168.0.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绑定监听的端口</span></span><br><span class="line"><span class="comment">#listen_port=21</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Make sure PORT transfer connections originate from port 20 (ftp-data).</span></span><br><span class="line"><span class="comment"># 是否设定FTP服务器将启用FTP数据端口的连接请求</span></span><br><span class="line"><span class="comment"># ftp-data数据传输，21为连接控制端口</span></span><br><span class="line">connect_from_port_20=YES</span><br></pre></td></tr></table></figure>
+<h5 id="传输速率"><a href="#传输速率" class="headerlink" title="传输速率"></a>传输速率</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 匿名用户的传输速率（包括上传和下载），单位为bytes/second，0为不限制</span></span><br><span class="line">anon_max_rate=51200</span><br><span class="line"><span class="comment"># 本地用户传输速率，单位为“字节/秒”</span></span><br><span class="line">local_max_rate=51200</span><br></pre></td></tr></table></figure>
+<h5 id="上传文件的umask"><a href="#上传文件的umask" class="headerlink" title="上传文件的umask"></a>上传文件的umask</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 上传后文件的权限掩码，本地用户默认掩码为077</span></span><br><span class="line"><span class="comment"># 匿名用户上传文件的umask</span></span><br><span class="line">anno_umask=022</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以设置本地用户的文件掩码为缺省022</span></span><br><span class="line">local_umask=077</span><br></pre></td></tr></table></figure>
+<h5 id="修改匿名用户上传文件的属主和属主"><a href="#修改匿名用户上传文件的属主和属主" class="headerlink" title="修改匿名用户上传文件的属主和属主"></a>修改匿名用户上传文件的属主和属主</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果未指定属主数组，则默认为`ftp`</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设定是否允许改变上传文件的属主，与下面一个设定项配合使用</span></span><br><span class="line"><span class="comment"># 注意，不推荐使用root用户上传文件</span></span><br><span class="line"><span class="comment">#chown_uploads=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置想要改变的上传文件的属主，如果需要，则输入一个系统用户名</span></span><br><span class="line"><span class="comment"># 可以把上传的文件都改成root属主。</span></span><br><span class="line"><span class="comment">#chown_username=user1</span></span><br></pre></td></tr></table></figure>
+<h5 id="黑白名单"><a href="#黑白名单" class="headerlink" title="黑白名单"></a>黑白名单</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ftpusers中用户禁止访问（登录时可以看到密码输入提示，但仍无法访问）</span></span><br><span class="line"><span class="comment"># 若此项设为YES，则user_list文件中的用户允许登录FTP服务器</span></span><br><span class="line"><span class="comment"># 而如果同时设置了userlist_deny=YES，则user_list文件中的用户将不允许登录FTP服务器，甚至连输入密码提示信息都没有</span></span><br><span class="line"><span class="comment">#userlist_enable=YES/NO</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置是否阻止user_list文件中的用户登录FTP服务器，默认为YES</span></span><br><span class="line"><span class="comment">#userlist_deny=YES/NO</span></span><br></pre></td></tr></table></figure>
+<p>user_list配置文件有两种用法</p>
+<ul>
+<li>黑名单<br>  userlist_enable=YES<br>  userlist_deny=YES<br>  user_list中的用户都拒绝</li>
+<li>白名单<br>  userlist_enable=YES<br>  userlist_deny=NO<br>  user_list中的用户都不拒绝，允许</li>
+</ul>
+<p>以下是两个选项的具体表现形式和两种搭配使用方式的效果：</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userlist_enable=YES</td>
+<td>ftpusers中用户允许访问 user_list中用户允许访问</td>
+</tr>
+<tr>
+<td>userlist_enable=NO</td>
+<td>ftpusers中用户禁止访问 user_list中用户允许访问</td>
+</tr>
+<tr>
+<td>userlist_deny=YES</td>
+<td>ftpusers中用户禁止访问（登录时可以看到密码输入提示，但仍无法访问） user_list 中用户禁止访问</td>
+</tr>
+<tr>
+<td>userlist_deny=NO</td>
+<td>ftpusers中用户禁止访问 user_list中用户允许访问</td>
+</tr>
+<tr>
+<td>userlist_enable=YES 并且userlist_deny=YES</td>
+<td>ftpusers中用户禁止访问 user_list中用户禁止访问（登录时不会出现密码提示，直接被服务器拒绝）</td>
+</tr>
+<tr>
+<td>userlist_enable=YES 并且 userlist_deny=NO</td>
+<td>ftpusers中用户禁止访问 user_list中用户允许访问</td>
+</tr>
+</tbody>
+</table>
+<h5 id="被动模式设置"><a href="#被动模式设置" class="headerlink" title="被动模式设置"></a>被动模式设置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否开户被动模式</span></span><br><span class="line"> pasv_enable=yes</span><br><span class="line">  </span><br><span class="line"> <span class="comment"># 被动模式最小端口</span></span><br><span class="line"> pasv_min_port=5000</span><br><span class="line">  </span><br><span class="line"> <span class="comment"># 被动模式最大端口</span></span><br><span class="line"> pasv_max_port=6000</span><br></pre></td></tr></table></figure>
+<h5 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h5><p>参考链接：<a href="http://os.51cto.com/art/201008/221842.htm" target="_blank" rel="noopener">http://os.51cto.com/art/201008/221842.htm</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否允许本地用户(即linux系统中的用户帐号)登录FTP服务器，默认设置为YES允许</span></span><br><span class="line"><span class="comment"># 本地用户登录后会进入用户主目录，而匿名用户登录后进入匿名用户的下载目录/var/ftp/pub</span></span><br><span class="line"><span class="comment"># 若只允许匿名用户访问，前面加上#注释掉即可阻止本地用户访问FTP服务器</span></span><br><span class="line"><span class="comment"># 主要是为虚拟宿主用户，如果该项目设定为NO那么所有虚拟用户将无法访问。</span></span><br><span class="line"><span class="comment">#local_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许用户对FTP服务器文件具有写权限，默认设置为YES允许</span></span><br><span class="line"><span class="comment">#write_enable=YES </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许匿名用户上传文件，须修改全局的write_enable=YES。默认为YES</span></span><br><span class="line"><span class="comment">#anon_upload_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许匿名用户创建新文件夹</span></span><br><span class="line"><span class="comment">#anon_mkdir_write_enable=YES </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否让系统自动维护上传和下载的日志文件</span></span><br><span class="line"><span class="comment"># 默认情况该日志文件为/var/log/vsftpd.log,也可以通过下面的xferlog_file选项对其进行设定</span></span><br><span class="line"><span class="comment"># 默认值为NO</span></span><br><span class="line">xferlog_enable=YES</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设定系统维护记录FTP服务器上传和下载情况的日志文件</span></span><br><span class="line"><span class="comment"># /var/log/vsftpd.log是默认的，也可以另设其它</span></span><br><span class="line"><span class="comment"># 该文件默认不存在。必须要手动touch出来</span></span><br><span class="line"><span class="comment">#xferlog_file=/var/log/vsftpd.log</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否以标准xferlog的格式书写传输日志文件</span></span><br><span class="line"><span class="comment"># 默认为/var/log/xferlog，也可以通过xferlog_file选项对其进行设定</span></span><br><span class="line"><span class="comment"># 默认值为NO</span></span><br><span class="line"><span class="comment">#xferlog_std_format=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否将原本输出到/var/log/vsftpd.log中的日志，输出到系统日志</span></span><br><span class="line"><span class="comment">#syslog_enable</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行vsftpd需要的非特权系统用户，缺省是nobody</span></span><br><span class="line"><span class="comment">#nopriv_user=ftpsecure</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否识别异步ABOR请求。</span></span><br><span class="line"><span class="comment"># 如果FTP client会下达“async ABOR”这个指令时，这个设定才需要启用</span></span><br><span class="line"><span class="comment"># 而一般此设定并不安全，所以通常将其取消</span></span><br><span class="line"><span class="comment">#async_abor_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否以ASCII方式传输数据。默认情况下，服务器会忽略ASCII方式的请求。</span></span><br><span class="line"><span class="comment"># 启用此选项将允许服务器以ASCII方式传输数据</span></span><br><span class="line"><span class="comment"># 不过，这样可能会导致由"SIZE /big/file"方式引起的DoS攻击</span></span><br><span class="line"><span class="comment">#ascii_upload_enable=YES</span></span><br><span class="line"><span class="comment">#ascii_download_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 黑名单设置。如果很讨厌某些email address，就可以使用此设定来取消他的登录权限</span></span><br><span class="line"><span class="comment"># 可以将某些特殊的email address抵挡住。</span></span><br><span class="line"><span class="comment">#deny_email_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当上面的deny_email_enable=YES时，可以利用这个设定项来规定哪些邮件地址不可登录vsftpd服务器</span></span><br><span class="line"><span class="comment"># 此文件需用户自己创建，一行一个email address即可</span></span><br><span class="line"><span class="comment">#banned_email_file=/etc/vsftpd/banned_emails</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许递归查询。默认为关闭，以防止远程用户造成过量的I/O</span></span><br><span class="line"><span class="comment">#ls_recurse_enable=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否允许监听。</span></span><br><span class="line"><span class="comment"># 如果设置为YES，则vsftpd将以独立模式运行，由vsftpd自己监听和处理IPv4端口的连接请求</span></span><br><span class="line">listen=YES</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设定是否支持IPV6。如要同时监听IPv4和IPv6端口，</span></span><br><span class="line"><span class="comment"># 则必须运行两套vsftpd，采用两套配置文件</span></span><br><span class="line"><span class="comment"># 同时确保其中有一个监听选项是被注释掉的</span></span><br><span class="line"><span class="comment">#listen_ipv6=YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置PAM外挂模块提供的认证服务所使用的配置文件名，即/etc/pam.d/vsftpd文件</span></span><br><span class="line"><span class="comment"># 此文件中file=/etc/vsftpd/ftpusers字段，说明了PAM模块能抵挡的帐号内容来自文件/etc/vsftpd/ftpusers中</span></span><br><span class="line"><span class="comment">#pam_service_name=vsftpd</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止用户登陆FTP后使用"ls -R"的命令。该命令会对服务器性能造成巨大开销。如果该项被允许，那么挡多用户同时使用该命令时将会对该服务器造成威胁。</span></span><br><span class="line">ls_recurse_enable=NO</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否使用tcp_wrappers作为主机访问控制方式。</span></span><br><span class="line"><span class="comment"># tcp_wrappers可以实现linux系统中网络服务的基于主机地址的访问控制</span></span><br><span class="line"><span class="comment"># 在/etc目录中的hosts.allow和hosts.deny两个文件用于设置tcp_wrappers的访问控制</span></span><br><span class="line"><span class="comment"># 前者设置允许访问记录，后者设置拒绝访问记录。</span></span><br><span class="line"><span class="comment"># 如想限制某些主机对FTP服务器192.168.57.2的匿名访问，编缉/etc/hosts.allow文件，如在下面增加两行命令：</span></span><br><span class="line"><span class="comment"># vsftpd:192.168.57.1:DENY 和vsftpd:192.168.57.9:DENY</span></span><br><span class="line"><span class="comment"># 表明限制IP为192.168.57.1/192.168.57.9主机访问IP为192.168.57.2的FTP服务器</span></span><br><span class="line"><span class="comment"># 此时FTP服务器虽可以PING通，但无法连接</span></span><br><span class="line">tcp_wrappers=YES</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2016/02/18/2016-02-18-094442-Vsftpd/" title="Vsftpd">http://linuxgeeks.github.io/2016/02/18/2016-02-18-094442-Vsftpd/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/文件共享/" rel="tag"><i class="fa fa-tag"></i> 文件共享</a>
+          
+            <a href="/tags/vsftpd/" rel="tag"><i class="fa fa-tag"></i> vsftpd</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/17/2016-02-17-094119-基础邮件服务器（Postfix+Dovecot）/" rel="next" title="基础邮件服务器（Postfix+Dovecot）">
+                <i class="fa fa-chevron-left"></i> 基础邮件服务器（Postfix+Dovecot）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/19/2016-02-19-151954-Samba/" rel="prev" title="Samba">
+                Samba <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#FTP"><span class="nav-number">1.</span> <span class="nav-text">FTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种连接"><span class="nav-number">2.</span> <span class="nav-text">两种连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#控制连接"><span class="nav-number">2.1.</span> <span class="nav-text">控制连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据连接"><span class="nav-number">2.2.</span> <span class="nav-text">数据连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件说明"><span class="nav-number">3.</span> <span class="nav-text">文件说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户类型"><span class="nav-number">4.</span> <span class="nav-text">用户类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数配置"><span class="nav-number">5.</span> <span class="nav-text">参数配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#登录欢迎信息Login-Banners"><span class="nav-number">5.0.1.</span> <span class="nav-text">登录欢迎信息Login Banners</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#禁锢用户在其家目录"><span class="nav-number">5.0.2.</span> <span class="nav-text">禁锢用户在其家目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#匿名用户配置"><span class="nav-number">5.0.3.</span> <span class="nav-text">匿名用户配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#连接限制"><span class="nav-number">5.0.4.</span> <span class="nav-text">连接限制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#传输速率"><span class="nav-number">5.0.5.</span> <span class="nav-text">传输速率</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#上传文件的umask"><span class="nav-number">5.0.6.</span> <span class="nav-text">上传文件的umask</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改匿名用户上传文件的属主和属主"><span class="nav-number">5.0.7.</span> <span class="nav-text">修改匿名用户上传文件的属主和属主</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#黑白名单"><span class="nav-number">5.0.8.</span> <span class="nav-text">黑白名单</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#被动模式设置"><span class="nav-number">5.0.9.</span> <span class="nav-text">被动模式设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他配置"><span class="nav-number">5.0.10.</span> <span class="nav-text">其他配置</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
