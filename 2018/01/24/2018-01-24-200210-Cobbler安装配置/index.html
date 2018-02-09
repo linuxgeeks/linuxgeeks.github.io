@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="系统安装,无人值守,Cobbler," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="实验环境 虚拟机版本：VMware® Workstation 14 Pro Cobbler服务器上需要搭建DHCP服务器为新安装的操作系统分配IP地址，但在同一局域网多个DHCP服务会有冲突，因此虚拟机采用NAT模式 避免出现依赖关系上的错误，使用全新的操作系统，这里使用的是 CentOS 7.4.1708   Cob">
+<meta name="keywords" content="系统安装,无人值守,Cobbler">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cobbler安装配置">
+<meta property="og:url" content="http://linuxgeeks.github.io/2018/01/24/2018-01-24-200210-Cobbler安装配置/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content="实验环境 虚拟机版本：VMware® Workstation 14 Pro Cobbler服务器上需要搭建DHCP服务器为新安装的操作系统分配IP地址，但在同一局域网多个DHCP服务会有冲突，因此虚拟机采用NAT模式 避免出现依赖关系上的错误，使用全新的操作系统，这里使用的是 CentOS 7.4.1708   Cobbler的IP地址为 192.168.127.10  系统基础环境 yum源的配">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-08T03:14:16.436Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cobbler安装配置">
+<meta name="twitter:description" content="实验环境 虚拟机版本：VMware® Workstation 14 Pro Cobbler服务器上需要搭建DHCP服务器为新安装的操作系统分配IP地址，但在同一局域网多个DHCP服务会有冲突，因此虚拟机采用NAT模式 避免出现依赖关系上的错误，使用全新的操作系统，这里使用的是 CentOS 7.4.1708   Cobbler的IP地址为 192.168.127.10  系统基础环境 yum源的配">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2018/01/24/2018-01-24-200210-Cobbler安装配置/"/>
+
+
+
+
+
+  <title>Cobbler安装配置 | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2018/01/24/2018-01-24-200210-Cobbler安装配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Cobbler安装配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T20:02:10+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统安装/" itemprop="url" rel="index">
+                    <span itemprop="name">系统安装</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,344
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h1><ul>
+<li>虚拟机版本：VMware® Workstation 14 Pro</li>
+<li>Cobbler服务器上需要搭建DHCP服务器为新安装的操作系统分配IP地址，但在同一局域网多个DHCP服务会有冲突，因此虚拟机采用NAT模式</li>
+<li>避免出现依赖关系上的错误，使用全新的操作系统，这里使用的是 CentOS 7.4.1708</li>
+</ul>
+<ul>
+<li>Cobbler的IP地址为 <code>192.168.127.10</code></li>
+</ul>
+<h1 id="系统基础环境"><a href="#系统基础环境" class="headerlink" title="系统基础环境"></a>系统基础环境</h1><ul>
+<li>yum源的配置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cobbler的安装需要依赖epel源</span></span><br><span class="line">curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用域名查看Cobbler的信息，可以看到Repo字段对应的源是epel</span></span><br><span class="line">yum info cobbler</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>系统环境配置</p>
+<p>使用如下配置脚本进行系统基础环境的配置</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install vim</span></span><br><span class="line">yum -y install vim-enhanced</span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable IPv6 </span></span><br><span class="line">networkFile=<span class="string">"/etc/sysconfig/network"</span></span><br><span class="line">confList=(NETWORKING_IPV6=no NOZEROCONF=yes)</span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> <span class="variable">$&#123;confList[@]&#125;</span>;<span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> egrep -qs <span class="string">"<span class="variable">$&#123;var%%=*&#125;</span>="</span> <span class="variable">$&#123;networkFile&#125;</span>;<span class="keyword">then</span></span><br><span class="line">    sed -ri <span class="string">"s#(<span class="variable">$&#123;var%%=*&#125;</span>=).*#\1<span class="variable">$&#123;var##*=&#125;</span>#"</span> <span class="variable">$&#123;networkFile&#125;</span></span><br><span class="line">  <span class="keyword">else</span> </span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;var&#125;</span>"</span> &gt;&gt; <span class="variable">$&#123;networkFile&#125;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">sed -ri <span class="string">'/(net.ipv6.conf.all.disable_ipv6|net.ipv6.conf.default.disable_ipv6) *= */d'</span> /etc/sysctl.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'net.ipv6.conf.all.disable_ipv6 = 1'</span> &gt;&gt; /etc/sysctl.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'net.ipv6.conf.default.disable_ipv6 = 1'</span> &gt;&gt; /etc/sysctl.conf  </span><br><span class="line">sysctl -p</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set language</span></span><br><span class="line">langfile=<span class="string">'/etc/locale.conf'</span></span><br><span class="line"><span class="built_in">export</span> LANG=<span class="string">"en_US.UTF-8"</span>;</span><br><span class="line">sed -ri <span class="string">'/LANG/s/=.*/="en_US.UTF-8"/'</span> <span class="variable">$&#123;langfile&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Turn off selinux</span></span><br><span class="line">setenforce 0</span><br><span class="line">fileList=(/etc/sysconfig/selinux /etc/selinux/config)</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> <span class="variable">$&#123;fileList[@]&#125;</span>;<span class="keyword">do</span></span><br><span class="line">  sed -ri <span class="string">'s/(^SELINUX=).*/\1disabled/'</span> <span class="variable">$&#123;f&#125;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable the DNS function of sshd</span></span><br><span class="line">egrep -q <span class="string">'^UseDNS no'</span> /etc/ssh/sshd_config || \</span><br><span class="line">sed -ri <span class="string">'/#UseDNS /aUseDNS no'</span> /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># Turn off some services</span></span><br><span class="line">/usr/bin/systemctl stop firewalld.service;</span><br><span class="line">/usr/bin/systemctl <span class="built_in">disable</span> firewalld.service;</span><br><span class="line">/usr/bin/systemctl is-enabled firewalld.service;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add firewall policy</span></span><br><span class="line">IPT=<span class="string">'/sbin/iptables'</span></span><br><span class="line"><span class="comment"># ---------------------------------------</span></span><br><span class="line"><span class="keyword">for</span> chain <span class="keyword">in</span> INPUT OUTPUT FORWARD;<span class="keyword">do</span></span><br><span class="line">  <span class="variable">$&#123;IPT&#125;</span> -t filter -P <span class="variable">$&#123;chain&#125;</span>  ACCEPT &amp;&gt;/dev/null</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">unset</span> chain</span><br><span class="line"><span class="comment"># ---------------------------------------</span></span><br><span class="line"><span class="keyword">for</span> chain <span class="keyword">in</span> PREROUTING POSTROUTING OUTPUT;<span class="keyword">do</span></span><br><span class="line">  <span class="variable">$&#123;IPT&#125;</span> -t nat -P <span class="variable">$&#123;chain&#125;</span> ACCEPT &amp;&gt;/dev/null</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">unset</span> chain</span><br><span class="line"><span class="comment"># ---------------------------------------</span></span><br><span class="line"><span class="keyword">for</span> chain <span class="keyword">in</span> PREROUTING INPUT FORWARD OUTPUT POSTROUTING;<span class="keyword">do</span></span><br><span class="line">  <span class="variable">$&#123;IPT&#125;</span> -t mangle -P <span class="variable">$&#123;chain&#125;</span> ACCEPT &amp;&gt;/dev/null</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">unset</span> chain</span><br><span class="line"><span class="comment"># ---------------------------------------</span></span><br><span class="line"><span class="keyword">for</span> table <span class="keyword">in</span> filter nat mangle;<span class="keyword">do</span></span><br><span class="line">  <span class="variable">$&#123;IPT&#125;</span> -F -t <span class="variable">$&#123;table&#125;</span>   &amp;&gt;/dev/null</span><br><span class="line">  <span class="variable">$&#123;IPT&#125;</span> -X -t <span class="variable">$&#123;table&#125;</span>   &amp;&gt;/dev/null</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h1 id="Cobbler的安装和文件说明"><a href="#Cobbler的安装和文件说明" class="headerlink" title="Cobbler的安装和文件说明"></a>Cobbler的安装和文件说明</h1><ul>
+<li>使用epel源的yum安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install cobbler cobbler-web pykickstart httpd dhcp tftp-server</span><br></pre></td></tr></table></figure>
+<ul>
+<li>包说明</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cobbler            <span class="comment"># cobbler程序包</span></span><br><span class="line">cobbler-web        <span class="comment"># cobbler的web端程序包</span></span><br><span class="line">pykickstart        <span class="comment"># 用于cobbler检查kickstart语法错误</span></span><br><span class="line">httpd              <span class="comment"># Apache的web服务</span></span><br><span class="line">dhcp               <span class="comment"># dhcp服务程序包，也可以使用dnsmasq配置成DHCP服务器</span></span><br><span class="line">tftp-server        <span class="comment"># tftp服务</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装文件说明</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@cobbler ~]<span class="comment"># rpm -ql cobbler  # 查看安装的文件，下面列出部分。</span></span><br><span class="line">/etc/cobbler                  <span class="comment"># 配置文件目录</span></span><br><span class="line">/etc/cobbler/settings         <span class="comment"># cobbler主配置文件，yaml格式，cobbler是python写的程序。</span></span><br><span class="line">/etc/cobbler/dhcp.template    <span class="comment"># dhcp服务的配置模板</span></span><br><span class="line">/etc/cobbler/tftpd.template   <span class="comment"># tftp服务的配置模板</span></span><br><span class="line">/etc/cobbler/rsync.template   <span class="comment"># rsync服务的配置模板</span></span><br><span class="line">/etc/cobbler/iso              <span class="comment"># iso模板配置文件目录</span></span><br><span class="line">/etc/cobbler/pxe              <span class="comment"># pxe模板文件目录</span></span><br><span class="line">/etc/cobbler/power            <span class="comment"># 电源的配置文件目录</span></span><br><span class="line">/etc/cobbler/users.conf       <span class="comment"># web服务授权配置文件</span></span><br><span class="line">/etc/cobbler/users.digest     <span class="comment"># web访问的用户名密码配置文件</span></span><br><span class="line">/etc/cobbler/dnsmasq.template <span class="comment"># DNS服务的配置模板</span></span><br><span class="line">/etc/cobbler/modules.conf     <span class="comment"># cobbler模块配置文件</span></span><br><span class="line">/var/lib/cobbler              <span class="comment"># cobbler数据目录</span></span><br><span class="line">/var/lib/cobbler/config       <span class="comment"># 配置文件</span></span><br><span class="line">/var/lib/cobbler/kickstarts   <span class="comment"># 默认存放kickstart文件</span></span><br><span class="line">/var/lib/cobbler/loaders      <span class="comment"># 存放的各种引导程序</span></span><br><span class="line">/var/www/cobbler              <span class="comment"># 系统安装镜像目录</span></span><br><span class="line">/var/www/cobbler/ks_mirror    <span class="comment"># 导入的系统镜像列表</span></span><br><span class="line">/var/www/cobbler/images       <span class="comment"># 导入的系统镜像启动文件</span></span><br><span class="line">/var/www/cobbler/repo_mirror  <span class="comment"># yum源存储目录</span></span><br><span class="line">/var/<span class="built_in">log</span>/cobbler              <span class="comment"># 日志目录</span></span><br><span class="line">/var/<span class="built_in">log</span>/cobbler/install.log  <span class="comment"># 客户端系统安装日志</span></span><br><span class="line">/var/<span class="built_in">log</span>/cobbler/cobbler.log  <span class="comment"># cobbler日志</span></span><br></pre></td></tr></table></figure>
+<h1 id="Cobbler的依赖关系"><a href="#Cobbler的依赖关系" class="headerlink" title="Cobbler的依赖关系"></a>Cobbler的依赖关系</h1><ul>
+<li>Cobbler的运行依赖于dhcp、tftp、rsync及dns服务<ul>
+<li>dhcp可由dhcpd（isc）提供，也可由dnsmasq提供；</li>
+<li>tftp可由tftp-server程序包提供，也可由cobbler功能提供；</li>
+<li>rsync有rsync程序包提供，dns可由bind提供，也可由dnsmasq提供；</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Cobbler可自行管理这些服务中的部分甚至是全部，但需要配置文件<code>/etc/cobbler/settings</code>中的<code>manange_dhcp</code>、<code>manager_tftpd</code>、<code>manager_rsync</code>、<code>manager_dns</code>分别来进行定义</li>
+<li>由于各种服务都有着不同的实现方式，如若需要进行自定义，需要通过修改<code>/etc/cobbler/modules.conf</code>配置文件中各服务的模块参数的值来实现。</li>
+</ul>
+<h1 id="Cobbler相关服务配置"><a href="#Cobbler相关服务配置" class="headerlink" title="Cobbler相关服务配置"></a>Cobbler相关服务配置</h1><ul>
+<li>httpd服务状态检查</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务并检查状态</span></span><br><span class="line">systemctl start httpd</span><br><span class="line">systemctl status httpd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入开机启动服务列表</span></span><br><span class="line">systemctl <span class="built_in">enable</span> httpd</span><br><span class="line">systemctl is-enabled httpd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置DHCP<br>修改cobbler的dhcp模版文件<code>/etc/cobbler/dhcp.template</code>，此模板会覆盖dhcp本身的配置文件。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">subnet 192.168.127.0 netmask 255.255.255.0 &#123;</span><br><span class="line">     option routers             192.168.127.2;</span><br><span class="line">     option domain-name-servers 192.168.127.2;</span><br><span class="line">     option subnet-mask         255.255.255.0;</span><br><span class="line">     range dynamic-bootp        192.168.127.130 192.168.127.230;</span><br><span class="line">     default-lease-time         21600;</span><br><span class="line">     max-lease-time             43200;</span><br><span class="line">     next-server                <span class="variable">$next_server</span>;</span><br><span class="line">     class <span class="string">"pxeclients"</span> &#123;</span><br><span class="line">          match <span class="keyword">if</span> substring (option vendor-class-identifier, 0, 9) = <span class="string">"PXEClient"</span>;</span><br><span class="line">          <span class="keyword">if</span> option pxe-system-type = 00:02 &#123;</span><br><span class="line">                  filename <span class="string">"ia64/elilo.efi"</span>;</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> option pxe-system-type = 00:06 &#123;</span><br><span class="line">                  filename <span class="string">"grub/grub-x86.efi"</span>;</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> option pxe-system-type = 00:07 &#123;</span><br><span class="line">                  filename <span class="string">"grub/grub-x86_64.efi"</span>;</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> option pxe-system-type = 00:09 &#123;</span><br><span class="line">                  filename <span class="string">"grub/grub-x86_64.efi"</span>;</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  filename <span class="string">"pxelinux.0"</span>;</span><br><span class="line">          &#125;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务并检查状态</span></span><br><span class="line">systemctl start dhcpd</span><br><span class="line">systemctl status dhcpd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入开机启动服务列表</span></span><br><span class="line">systemctl <span class="built_in">enable</span> dhcpd</span><br><span class="line">systemctl is-enabled dhcpd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>cobblerd服务状态检查</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务并检查状态</span></span><br><span class="line">systemctl start cobblerd</span><br><span class="line">systemctl status cobblerd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入开机启动服务列表</span></span><br><span class="line">systemctl <span class="built_in">enable</span> cobblerd</span><br><span class="line">systemctl is-enabled cobblerd</span><br></pre></td></tr></table></figure>
+<h1 id="Cobbler配置检查"><a href="#Cobbler配置检查" class="headerlink" title="Cobbler配置检查"></a>Cobbler配置检查</h1><ul>
+<li>使用Cobbler的检查工具检查配置存在的问题并依次解决</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@Cobbler ~]<span class="comment"># cobbler check</span></span><br><span class="line">The following are potential configuration items that you may want to fix:</span><br><span class="line"></span><br><span class="line">1 : The <span class="string">'server'</span> field <span class="keyword">in</span> /etc/cobbler/settings must be <span class="built_in">set</span> to something other than localhost, or kickstarting features will not work.  This should be a resolvable hostname or IP <span class="keyword">for</span> the boot server as reachable by all machines that will use it.</span><br><span class="line">2 : For PXE to be functional, the <span class="string">'next_server'</span> field <span class="keyword">in</span> /etc/cobbler/settings must be <span class="built_in">set</span> to something other than 127.0.0.1, and should match the IP of the boot server on the PXE network.</span><br><span class="line">3 : change <span class="string">'disable'</span> to <span class="string">'no'</span> <span class="keyword">in</span> /etc/xinetd.d/tftp</span><br><span class="line">4 : Some network boot-loaders are missing from /var/lib/cobbler/loaders, you may run <span class="string">'cobbler get-loaders'</span> to download them, or, <span class="keyword">if</span> you only want to handle x86/x86_64 netbooting, you may ensure that you have installed a *recent* version of the syslinux package installed and can ignore this message entirely.  Files <span class="keyword">in</span> this directory, should you want to support all architectures, should include pxelinux.0, menu.c32, elilo.efi, and yaboot. The <span class="string">'cobbler get-loaders'</span> <span class="built_in">command</span> is the easiest way to resolve these requirements.</span><br><span class="line">5 : <span class="built_in">enable</span> and start rsyncd.service with systemctl</span><br><span class="line">6 : debmirror package is not installed, it will be required to manage debian deployments and repositories</span><br><span class="line">7 : The default password used by the sample templates <span class="keyword">for</span> newly installed machines (default_password_crypted <span class="keyword">in</span> /etc/cobbler/settings) is still <span class="built_in">set</span> to <span class="string">'cobbler'</span> and should be changed, try: <span class="string">"openssl passwd -1 -salt 'random-phrase-here' 'your-password-here'"</span> to generate new one</span><br><span class="line">8 : fencing tools were not found, and are required to use the (optional) power management features. install cman or fence-agents to use them</span><br><span class="line"></span><br><span class="line">Restart cobblerd and <span class="keyword">then</span> run <span class="string">'cobbler sync'</span> to apply changes.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改<code>/etc/cobbler/settings</code>文件中的<code>server</code>参数的值为提供cobbler服务的主机相应的IP地址或主机名，如<code>server: 192.168.127.10</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/cobbler/settings&#123;,.bak&#125;</span><br><span class="line">sed -ri <span class="string">'s#^server: 127.0.0.1#server: 192.168.127.10#'</span> /etc/cobbler/settings</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改<code>/etc/cobbler/settings</code>文件中的<code>next_server</code>参数的值为提供PXE服务的主机相应的IP地址，如<code>next_server: 192.168.127.10</code>。server，pxe服务器的IP由于这里使用的是同一台机器，所以填Cobbler服务器的IP即可</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'s#^next_server: 127.0.0.1#next_server: 192.168.127.10#'</span> /etc/cobbler/settings</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改<code>/etc/xinetd</code>.d/tftp<code>`文件中的disable参数修改为</code>disable = no`</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/xinetd.d/tftp&#123;,.bak&#125;</span><br><span class="line">sed -ri <span class="string">'/disable(\t| )*=/s#yes#no#g'</span> /etc/xinetd.d/tftp</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> tftp.socket</span><br><span class="line">systemctl start  tftp.socket</span><br><span class="line">chmod +x /etc/rc.d/rc.local </span><br><span class="line"><span class="built_in">echo</span>  systemctl <span class="built_in">enable</span> tftp.socket &gt;&gt; /etc/rc.d/rc.local</span><br><span class="line"><span class="built_in">echo</span>  systemctl start tftp.socket  &gt;&gt; /etc/rc.d/rc.local</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> tftp.service</span><br><span class="line">systemctl start  tftp.service</span><br></pre></td></tr></table></figure>
+<ul>
+<li>根据提示执行 <code>cobbler get-lders</code>命令，最后提示<code>*** TASK COMPLETE ***</code>表示成功</li>
+</ul>
+<ul>
+<li>启动rsyncd服务</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> rsyncd.service</span><br><span class="line">systemctl start  rsyncd.service</span><br><span class="line">systemctl status rsyncd.service</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装debmirror</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install debmirror</span><br><span class="line">sed -ri <span class="string">'/^(@dists=|@arches).*/s/^/#/g'</span> /etc/debmirror.conf</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生成自定义密码密码来取代默认的密码，为了更安全，建议使用复杂度较高的密码</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl passwd -1 -salt litingjie 123456</span><br><span class="line"><span class="variable">$1</span><span class="variable">$litingji</span><span class="variable">$qUWL9htxlLybWLhSuyL8g</span>/</span><br><span class="line">sed -ri <span class="string">'s#^(default_password_crypted:).*#\1 "$1$litingji$qUWL9htxlLybWLhSuyL8g/"#'</span> /etc/cobbler/settings</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装cman fence-agents</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install cman fence-agents</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用cobbler管理DHCP</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'s#^(manage_dhcp:).*#\1 1#g'</span> /etc/cobbler/settings</span><br></pre></td></tr></table></figure>
+<ul>
+<li>防止循环装系统，适用于服务器第一启动项是PXE启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/^pxe_just_once:.*/s#0#1#g'</span> /etc/cobbler/settings</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重启服务，再次检查</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart cobblerd.service</span><br><span class="line">[root@Cobbler ~]<span class="comment"># cobbler check</span></span><br><span class="line">No configuration problems found.  All systems go.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>同步cobbler的配置，可以看到同步做了哪些操作</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cobbler sync</span><br></pre></td></tr></table></figure>
+<ul>
+<li>为了保证所有服务在开机之后都运行起来直接可以投入使用，需要加入系统服务开机自启</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> dhcpd rsyncd tftp httpd cobblerd ;<span class="keyword">do</span> systemctl start <span class="variable">$&#123;s&#125;</span>;systemctl <span class="built_in">enable</span> <span class="variable">$&#123;s&#125;</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h1 id="Cobbler的命令行管理"><a href="#Cobbler的命令行管理" class="headerlink" title="Cobbler的命令行管理"></a>Cobbler的命令行管理</h1><ul>
+<li>获取usage</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cobbler</span><br><span class="line">cobbler --<span class="built_in">help</span></span><br><span class="line">cobbler distro --<span class="built_in">help</span></span><br><span class="line">cobbler profile --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>选项说明</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cobbler check    核对当前设置是否有问题</span><br><span class="line">cobbler list     列出所有的cobbler元素cobbler </span><br><span class="line">report           列出元素的详细信息</span><br><span class="line">cobbler sync     同步配置到数据目录,更改配置最好都要执行下</span><br><span class="line">cobbler reposync 同步yum仓库</span><br><span class="line">cobbler distro   查看导入的发行版系统信息</span><br><span class="line">cobbler system   查看添加的系统信息cobbler </span><br><span class="line">profile          查看配置信息</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2018/01/24/2018-01-24-200210-Cobbler安装配置/" title="Cobbler安装配置">http://linuxgeeks.github.io/2018/01/24/2018-01-24-200210-Cobbler安装配置/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/系统安装/" rel="tag"><i class="fa fa-tag"></i> 系统安装</a>
+          
+            <a href="/tags/无人值守/" rel="tag"><i class="fa fa-tag"></i> 无人值守</a>
+          
+            <a href="/tags/Cobbler/" rel="tag"><i class="fa fa-tag"></i> Cobbler</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/23/2018-01-23-205210-Cobbler简介/" rel="next" title="Cobbler简介">
+                <i class="fa fa-chevron-left"></i> Cobbler简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/24/2018-01-24-204910-Cobbler实现CentOS-6.9的批量安装/" rel="prev" title="Cobbler实现CentOS-6.9的批量安装">
+                Cobbler实现CentOS-6.9的批量安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">108</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实验环境"><span class="nav-number">1.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统基础环境"><span class="nav-number">2.</span> <span class="nav-text">系统基础环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cobbler的安装和文件说明"><span class="nav-number">3.</span> <span class="nav-text">Cobbler的安装和文件说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cobbler的依赖关系"><span class="nav-number">4.</span> <span class="nav-text">Cobbler的依赖关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cobbler相关服务配置"><span class="nav-number">5.</span> <span class="nav-text">Cobbler相关服务配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cobbler配置检查"><span class="nav-number">6.</span> <span class="nav-text">Cobbler配置检查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cobbler的命令行管理"><span class="nav-number">7.</span> <span class="nav-text">Cobbler的命令行管理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

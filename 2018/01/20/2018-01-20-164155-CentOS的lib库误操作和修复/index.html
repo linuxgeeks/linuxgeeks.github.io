@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="CentOS系统中，lib目录下的库对系统的正常运行起着非常关键的作用。一旦误操作将导致系统瘫痪。 /lib64被重命名故障表现由于操作失误，把/usr/lib64重命名成了/usr/lib64.bak，结果发现，在运行所有外置命令的时候报错： 1234567891011# mv命令无法使用-bash: /bin/mv: /lib64/ld-linux-x86-64.so.2: bad ELF i">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-30T14:14:05.572Z">
+<meta property="og:updated_time" content="2018-02-09T02:01:04.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS的lib库误操作和修复">
 <meta name="twitter:description" content="CentOS系统中，lib目录下的库对系统的正常运行起着非常关键的作用。一旦误操作将导致系统瘫痪。 /lib64被重命名故障表现由于操作失误，把/usr/lib64重命名成了/usr/lib64.bak，结果发现，在运行所有外置命令的时候报错： 1234567891011# mv命令无法使用-bash: /bin/mv: /lib64/ld-linux-x86-64.so.2: bad ELF i">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  569
+                  627
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>
@@ -454,6 +454,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/lib64/ld-linux-x86-64.so.2 --library-path /lib64.bak /bin/cp /lib64.bak /lib64 -afr</span><br></pre></td></tr></table></figure>
 <h2 id="误删除-lib64-ld-linux-x86-64-so-2"><a href="#误删除-lib64-ld-linux-x86-64-so-2" class="headerlink" title="误删除/lib64/ld-linux-x86-64.so.2"></a>误删除/lib64/ld-linux-x86-64.so.2</h2><p>解决方法同上，删除的是软连接文件，链接回来即可</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/lib64/ld-2.17.so  --library-path /lib64/ld-2.17.so /bin/ln -sv /lib64/ld-2.17.so /lib64/ld-linux-x86-64.so.2</span><br></pre></td></tr></table></figure>
+<h2 id="lib64被误删"><a href="#lib64被误删" class="headerlink" title="/lib64被误删"></a>/lib64被误删</h2><p>这个是致命的故障，趁没有关闭ssh连接，赶紧使用内置命令while read把重要的配置文件输出到屏幕复制粘贴出来吧，然后尝试光盘修复</p>
+
       
     </div>
     
@@ -661,7 +663,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">108</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -672,7 +674,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -683,7 +685,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -801,7 +803,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#lib64被重命名"><span class="nav-number">1.</span> <span class="nav-text">/lib64被重命名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#故障表现"><span class="nav-number">1.1.</span> <span class="nav-text">故障表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方法"><span class="nav-number">1.2.</span> <span class="nav-text">修复方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一"><span class="nav-number">1.2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法三"><span class="nav-number">1.2.3.</span> <span class="nav-text">方法三</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#误删除-lib64-ld-linux-x86-64-so-2"><span class="nav-number">2.</span> <span class="nav-text">误删除/lib64/ld-linux-x86-64.so.2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#lib64被重命名"><span class="nav-number">1.</span> <span class="nav-text">/lib64被重命名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#故障表现"><span class="nav-number">1.1.</span> <span class="nav-text">故障表现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方法"><span class="nav-number">1.2.</span> <span class="nav-text">修复方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一"><span class="nav-number">1.2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法三"><span class="nav-number">1.2.3.</span> <span class="nav-text">方法三</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#误删除-lib64-ld-linux-x86-64-so-2"><span class="nav-number">2.</span> <span class="nav-text">误删除/lib64/ld-linux-x86-64.so.2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lib64被误删"><span class="nav-number">3.</span> <span class="nav-text">/lib64被误删</span></a></li></ol></div>
             
 
           </div>
@@ -904,9 +906,6 @@
 
 
 
-  
-  
-
 
 
 
@@ -933,12 +932,6 @@
 
   
   <script type="text/javascript" src="true"></script>
-
-  
-  <script type="text/javascript" src="/lib/three/three.min.js"></script>
-
-  
-  <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
 
 
   
