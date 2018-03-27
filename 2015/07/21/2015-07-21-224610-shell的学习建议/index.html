@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="在做Linux系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell脚本严格意义上讲，并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写shell脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的代码风格根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果习惯了是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-31T07:05:28.486Z">
+<meta property="og:updated_time" content="2018-02-26T13:21:26.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的学习建议">
 <meta name="twitter:description" content="在做Linux系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell脚本严格意义上讲，并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写shell脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的代码风格根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果习惯了是">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,448
+                  3,462
                 </span>
               
 
@@ -618,6 +618,7 @@
 <li>使用文件前要判断文件是否存在，否则做好异常处理</li>
 <li>不要处理 ls 后的数据 (比如<code>ls -l | awk &#39;{ print $8}&#39;</code>)，ls 的结果非常不确定，并且和平台有关</li>
 <li>读取文件时不要使用 <code>for loop</code> 而要使用 <code>while read</code></li>
+<li>写脚本一定先测试再到生产环境</li>
 </ul>
 
       

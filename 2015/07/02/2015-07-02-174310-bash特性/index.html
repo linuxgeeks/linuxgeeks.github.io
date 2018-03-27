@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/pipe.png">
 <meta property="og:image" content="http://ohlli9uc9.bkt.clouddn.com/Filedescriptor.png">
-<meta property="og:updated_time" content="2018-01-30T14:14:02.508Z">
+<meta property="og:updated_time" content="2018-03-08T10:21:12.704Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bash特性">
 <meta name="twitter:description" content="命令历史 history history n    列出最近执行过的n条命令  -c    清除所有历史命令、 -w    将缓冲区命令写入历史命令文件~/.bash_history   ! !n    执行历史命令中第n条命令 !-n   执行历史命令中倒数第n条命令 !!     执行上一条命令 !string    执行命令历史中最近一个以指定字符串(string)开头的命令 !$">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,592
+                  2,706
                 </span>
               
 
@@ -479,13 +479,20 @@
 <li>按下 <code>Ctrl</code> + <code>r</code> ，然后输入关键字搜索历史命令，按 <code>Enter</code> 执行命令</li>
 </ul>
 </li>
+<li><p><code>^helo^hello^</code></p>
+<ul>
+<li>将上一条命令中的 <code>helo</code> 修改为 <code>hello</code> 并执行，用于命令输错之后的快速纠正  </li>
+</ul>
+</li>
 </ul>
 <h1 id="命令行补全"><a href="#命令行补全" class="headerlink" title="命令行补全"></a>命令行补全</h1><ul>
 <li>搜索PATH环境变量所指定的每个路径下以我们给出的字符串开头的可执行文件</li>
 <li>如果符合的文件多于一个，按两次 <code>Tab</code>，可以给出以给出字符开头的可执行文件的列表；否则将直接补全命令；</li>
 </ul>
 <h1 id="路径补全"><a href="#路径补全" class="headerlink" title="路径补全"></a>路径补全</h1><p>搜索我们给出的起始路径下的每个文件名，并试图补全</p>
-<h1 id="命令别名"><a href="#命令别名" class="headerlink" title="命令别名"></a>命令别名</h1><ul>
+<h1 id="命令别名"><a href="#命令别名" class="headerlink" title="命令别名"></a>命令别名</h1><p>在shell中定义的别名仅在当前shell生命周期中有效，作用域仅为当前shell进程；</p>
+<p>配置 <code>~/.bashrc</code> 后，在下次登录及以后登录后永久生效</p>
+<ul>
 <li>定义别名</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> CMDALIAS=<span class="string">'COMMAND [options] [arguments]'</span></span><br></pre></td></tr></table></figure>
@@ -496,11 +503,7 @@
 <ul>
 <li>不使用别名，而使用原命令本身</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\COMMAND</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在shell中定义的别名仅在当前shell生命周期中有效，作用域仅为当前shell进程；</li>
-<li>配置 <code>~/.bashrc</code> 下次登录及以后登录后永久生效</li>
-</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义df命令的别名，显示结果中单位以M或者G这种更具可读性的方式显示</span></span><br><span class="line">`<span class="built_in">alias</span>  df=<span class="string">'df -hTP | column -t'</span> `</span><br><span class="line">df</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下几种方式均可跳过使用别名</span></span><br><span class="line"></span><br><span class="line">\df</span><br><span class="line"></span><br><span class="line"><span class="string">'df'</span></span><br><span class="line"></span><br><span class="line"><span class="string">"df"</span></span><br><span class="line"></span><br><span class="line">/bin/df</span><br><span class="line"></span><br><span class="line"><span class="built_in">command</span> df</span><br><span class="line"><span class="comment"># 使用shell内置命令 command</span></span><br></pre></td></tr></table></figure>
 <h1 id="命令替换"><a href="#命令替换" class="headerlink" title="命令替换"></a>命令替换</h1><ul>
 <li>命令替换，即把某个子命令替换为其执行结果的过程</li>
 <li>某些命令中若出现命令替换符，kernel会首先执行子命令，然后在执行外部命令</li>
