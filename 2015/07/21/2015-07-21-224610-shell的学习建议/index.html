@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="在做Linux系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell脚本严格意义上讲，并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写shell脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的代码风格根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果习惯了是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-26T13:21:26.880Z">
+<meta property="og:updated_time" content="2018-03-28T01:31:37.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的学习建议">
 <meta name="twitter:description" content="在做Linux系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell脚本严格意义上讲，并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写shell脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的代码风格根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果习惯了是">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,462
+                  3,463
                 </span>
               
 
@@ -539,7 +539,7 @@
 <ul>
 <li>示例</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd | grep root   </span><br><span class="line">grep root /etc/passw</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd | grep root   </span><br><span class="line">grep root /etc/passwd</span><br></pre></td></tr></table></figure>
 <ul>
 <li>其实代码简短在还能某种程度上能保证效率的提升，比如下面的例子：</li>
 </ul>
@@ -608,7 +608,7 @@
 <ul>
 <li>简单的<code>if</code>尽量使用 <code>&amp;&amp; ||</code>，写成单行。比如</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[x&gt; 2]] &amp;&amp; <span class="built_in">echo</span> x</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ x -gt 2]] &amp;&amp; <span class="built_in">echo</span> x</span><br></pre></td></tr></table></figure>
 <ul>
 <li>当 export 变量时，尽量加上子脚本的 namespace，保证变量不冲突</li>
 <li>会使用 trap 捕获信号，并在接受到终止信号时执行一些收尾工作</li>
