@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称 123# -*- coding: utf-8 -*-name = &quot;litingjie&quot; 以上代码声明了一个变量，变量名为 name，变量name的值为：litingjie　 变量的命名规则  变量名只能是 字母、数字或下划线的任意组合，变量名是大小写敏感的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-18T15:33:19.842Z">
+<meta property="og:updated_time" content="2018-04-22T04:21:28.612Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的标识符与关键字">
 <meta name="twitter:description" content="在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称 123# -*- coding: utf-8 -*-name = &quot;litingjie&quot; 以上代码声明了一个变量，变量名为 name，变量name的值为：litingjie　 变量的命名规则  变量名只能是 字母、数字或下划线的任意组合，变量名是大小写敏感的">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  363
+                  617
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
@@ -439,7 +439,7 @@
         <p>在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">name = <span class="string">"litingjie"</span></span><br></pre></td></tr></table></figure>
 <p>以上代码声明了一个变量，变量名为 <code>name</code>，变量<code>name</code>的值为：<code>litingjie</code>　</p>
-<p>变量的命名规则</p>
+<p><strong>变量的命名规则</strong></p>
 <ul>
 <li><p>变量名只能是 字母、数字或下划线的任意组合，变量名是大小写敏感的</p>
 </li>
@@ -458,7 +458,25 @@
 </ul>
 </li>
 </ul>
-
+<p><strong>变量的赋值</strong></p>
+<ul>
+<li>在Python 中，变量赋值不需要声明类型</li>
+<li>每个变量在内存中创建，都包括变量的标识，名称和数据</li>
+<li>每个变量在使用前都必须赋值，变量赋值以后该变量才会被创建</li>
+<li>等号 <code>=</code> 用来给变量赋值</li>
+<li>等号 <code>=</code> 运算符左边是一个变量名，右边是存储在变量中的值</li>
+</ul>
+<p>示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">counter = <span class="number">12345678</span>  <span class="comment"># 赋值整型变量</span></span><br><span class="line">miles = <span class="number">12345678.0</span>  <span class="comment"># 浮点型</span></span><br><span class="line">name = <span class="string">"Litingjie"</span>  <span class="comment"># 字符串</span></span><br><span class="line"> </span><br><span class="line">print(counter)</span><br><span class="line">print(miles)</span><br><span class="line">print(name)</span><br></pre></td></tr></table></figure>
+<p><strong>多个变量赋值</strong></p>
+<ul>
+<li>Python允许同时为多个变量赋值。例如</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = b = c = <span class="number">1</span></span><br><span class="line"><span class="comment"># 创建一个整型对象，值为1，三个变量被分配到相同的内存空间上</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Python也可以为多个对象指定多个变量。例如</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a, b, c = <span class="number">1</span>, <span class="number">2</span>, <span class="string">"Litingjie"</span></span><br><span class="line"><span class="comment"># 两个整型对象 1 和 2 的分配给变量 a 和 b，字符串对象 "Litingjie" 分配给变量 c</span></span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -544,6 +562,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/05/2018-03-05-164610-Python的基本数据类型-整型和浮点型/" rel="prev" title="Python的基本数据类型-整型和浮点型">
+                Python的基本数据类型-整型和浮点型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -653,7 +675,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">116</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
