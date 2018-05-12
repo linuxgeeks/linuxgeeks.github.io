@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="DNS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老李的杂货铺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言通常情况下，在Linux中可以用来配置 DNS 地址的文件有两个：  网卡配置文件 /etc/sysconfig/network-scripts/ifcfg-eth* 解析配置文件 /etc/resolv.conf，文件中的注释行可以采用 # 或者 ; 开头  /etc/resolv.conf 这个文件用来在 Li">
+<meta name="keywords" content="DNS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS中resolv.conf的配置实验">
+<meta property="og:url" content="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/index.html">
+<meta property="og:site_name" content="老李的杂货铺">
+<meta property="og:description" content="前言通常情况下，在Linux中可以用来配置 DNS 地址的文件有两个：  网卡配置文件 /etc/sysconfig/network-scripts/ifcfg-eth* 解析配置文件 /etc/resolv.conf，文件中的注释行可以采用 # 或者 ; 开头  /etc/resolv.conf 这个文件用来在 Linux 上配置本机的 DNS ，本文列出了一些对该文件中 DNS 配置的疑问、实">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/a.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/b.png">
+<meta property="og:updated_time" content="2018-05-12T18:24:27.029Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS中resolv.conf的配置实验">
+<meta name="twitter:description" content="前言通常情况下，在Linux中可以用来配置 DNS 地址的文件有两个：  网卡配置文件 /etc/sysconfig/network-scripts/ifcfg-eth* 解析配置文件 /etc/resolv.conf，文件中的注释行可以采用 # 或者 ; 开头  /etc/resolv.conf 这个文件用来在 Linux 上配置本机的 DNS ，本文列出了一些对该文件中 DNS 配置的疑问、实">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/a.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/"/>
+
+
+
+
+
+  <title>CentOS中resolv.conf的配置实验 | 老李的杂货铺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老李的杂货铺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李廷杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老李的杂货铺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS中resolv.conf的配置实验</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T08:37:10+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DNS/" itemprop="url" rel="index">
+                    <span itemprop="name">DNS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  12,991
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  70
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>通常情况下，在Linux中可以用来配置 DNS 地址的文件有两个：</p>
+<ul>
+<li>网卡配置文件 <code>/etc/sysconfig/network-scripts/ifcfg-eth*</code></li>
+<li>解析配置文件 <code>/etc/resolv.conf</code>，文件中的注释行可以采用 <code>#</code> 或者 <code>;</code> 开头</li>
+</ul>
+<p><code>/etc/resolv.conf</code> 这个文件用来在 Linux 上配置本机的 DNS ，本文列出了一些对该文件中 DNS 配置的疑问、实验及验证</p>
+<h1 id="文件的配置参数及作用"><a href="#文件的配置参数及作用" class="headerlink" title="文件的配置参数及作用"></a>文件的配置参数及作用</h1><p>通过查看 <a href="http://man7.org/linux/man-pages/man5/resolv.conf.5.html" target="_blank" rel="noopener">手册页</a>，会看到有很多相关的参数，这里只讨论对我们来说可能有用的几个</p>
+<h2 id="nameserver"><a href="#nameserver" class="headerlink" title="nameserver"></a>nameserver</h2><p>这个参数会指定系统使用的 DNS 的 IP 地址，在生产环境中，经常会看到 <code>/etc/resolv.conf</code> 中配置了一个或多个 <code>nameserver</code> ，这里我们配置多个 <code>nameserver</code> 来进行实验</p>
+<p>我们先在文件中配置几个公共 DNS 地址，删除其他的选项或参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 123.45.67.8</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 1.2.4.8</span><br><span class="line">nameserver 180.76.76.76</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure>
+<p>那么配置了多个 <code>nameserver</code> 后，系统使用这些DNS的顺序是怎样的呢？我们来使用 <code>dig</code> 命令来解析几个不同的域名，并使用 <code>tcpdump</code> 命令进行抓包分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +short +tries=1 www.redhat.com www.centos.org www.kernel.org</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">20:51:38.162534 IP 192.168.127.154.58459 &gt; 8.8.8.8.53: 27136+ [1au] A? www.redhat.com. (43)</span><br><span class="line">20:51:38.165500 IP 8.8.8.8.53 &gt; 192.168.127.154.58459: 27136 4/0/0 CNAME ds-www.redhat.com.edgekey.net., CNAME ds-www.redhat.com.edgekey.net.globalredir.akadns.net., CNAME e3396.ca2.s.tl88.net., A 210.192.117.211 (185)</span><br><span class="line">20:51:38.166018 IP 192.168.127.154.58937 &gt; 8.8.8.8.53: 37326+ [1au] A? www.centos.org. (43)</span><br><span class="line">20:51:38.449824 IP 8.8.8.8.53 &gt; 192.168.127.154.58937: 37326 1/3/4 A 85.12.30.226 (161)</span><br><span class="line">20:51:38.450397 IP 192.168.127.154.47932 &gt; 8.8.8.8.53: 5121+ [1au] A? www.kernel.org. (43)</span><br><span class="line">20:51:38.546600 IP 8.8.8.8.53 &gt; 192.168.127.154.47932: 5121 3/6/1 CNAME git.kernel.org., CNAME hkg.git.kernel.org., A 147.75.42.139 (237)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# for x in www.&#123;baidu,qq,taobao,amazon&#125;.com ; do dig +short +tries=1 $&#123;x&#125; ; done</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">20:54:35.061088 IP 192.168.127.154.54374 &gt; 8.8.8.8.53: 11030+ [1au] A? www.baidu.com. (42)</span><br><span class="line">20:54:35.062881 IP 8.8.8.8.53 &gt; 192.168.127.154.54374: 11030$ 3/0/0 CNAME www.a.shifen.com., A 220.181.112.244, A 220.181.111.188 (93)</span><br><span class="line">20:54:35.071402 IP 192.168.127.154.57419 &gt; 8.8.8.8.53: 31566+ [1au] A? www.qq.com. (39)</span><br><span class="line">20:54:35.073641 IP 8.8.8.8.53 &gt; 192.168.127.154.57419: 31566$ 1/0/0 A 123.151.148.111 (44)</span><br><span class="line">20:54:35.081402 IP 192.168.127.154.37311 &gt; 8.8.8.8.53: 3036+ [1au] A? www.taobao.com. (43)</span><br><span class="line">20:54:35.083099 IP 8.8.8.8.53 &gt; 192.168.127.154.37311: 3036$ 2/0/0 CNAME www.taobao.com.danuoyi.tbcache.com., A 124.238.232.220 (96)</span><br><span class="line">20:54:35.090256 IP 192.168.127.154.34286 &gt; 8.8.8.8.53: 18338+ [1au] A? www.amazon.com. (43)</span><br><span class="line">20:54:35.427330 IP 8.8.8.8.53 &gt; 192.168.127.154.34286: 18338 3/4/1 CNAME www.cdn.amazon.com., CNAME d3ag4hukkh62yn.cloudfront.net., A 13.33.230.194 (258)</span><br></pre></td></tr></table></figure>
+<p>上述列出了两次解析的示范，通过多次解析实验之后我们得到如下结论：</p>
+<ul>
+<li>配置了多个 <code>nameserver</code> 后，系统使用这些 DNS 的顺序并未进行轮询、随机、或者均衡调度</li>
+<li>系统总是使用第一个 <code>nameserver</code> 对应的地址来进行 DNS 的查询</li>
+</ul>
+<p>如果将第一个 <code>nameserver</code> 对应的地址改成不可用，系统会怎样选择呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 123.45.67.8</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 1.2.4.8</span><br><span class="line">nameserver 180.76.76.76</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +short +tries=1 www.redhat.com www.centos.org www.kernel.org</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">21:09:32.043033 IP 124.160.121.68.48453 &gt; 123.45.67.8.53: 3179+ [1au] A? www.redhat.com. (43)</span><br><span class="line">21:09:33.042929 IP 124.160.121.68.37014 &gt; 8.8.8.8.53: 3179+ [1au] A? www.redhat.com. (43)</span><br><span class="line">21:09:33.327958 IP 8.8.8.8.53 &gt; 124.160.121.68.37014: 3179 4/0/1 CNAME ds-www.redhat.com.edgekey.net., CNAME ds-www.redhat.com.edgekey.net.globalredir.akadns.net., CNAME e3396.ca2.s.tl88.net., A 122.224.45.211 (196)</span><br><span class="line">21:09:33.328311 IP 124.160.121.68.54898 &gt; 123.45.67.8.53: 13619+ [1au] A? www.centos.org. (43)</span><br><span class="line">21:09:34.328397 IP 124.160.121.68.43004 &gt; 8.8.8.8.53: 13619+ [1au] A? www.centos.org. (43)</span><br><span class="line">21:09:34.563133 IP 8.8.8.8.53 &gt; 124.160.121.68.43004: 13619 1/0/1 A 85.12.30.226 (59)</span><br><span class="line">21:09:34.563347 IP 124.160.121.68.33925 &gt; 123.45.67.8.53: 13240+ [1au] A? www.kernel.org. (43)</span><br><span class="line">21:09:35.563401 IP 124.160.121.68.36621 &gt; 8.8.8.8.53: 13240+ [1au] A? www.kernel.org. (43)</span><br><span class="line">21:09:35.624542 IP 8.8.8.8.53 &gt; 124.160.121.68.36621: 13240 3/0/1 CNAME git.kernel.org., CNAME hkg.git.kernel.org., A 147.75.42.139 (95)</span><br></pre></td></tr></table></figure>
+<p>通过多次解析实验之后我们得到如下结论：</p>
+<ul>
+<li>多个域名的解析均是从第一个 <code>nameserver</code> 对用的地址进行查询</li>
+<li>系统会按照 <code>nameserver</code> 设定的顺序从上往下进行顺序尝试，当无法获取结果后将尝试使用下一个</li>
+<li>系统不会记录任何一个 <code>nameserver</code> 的工作状态</li>
+</ul>
+<p>那么如果有 N 个 <code>nameserver</code> 不可用时， 系统会怎样选择呢？是不是读取文件，从上往下无限制的向下请求解析呢？</p>
+<p>现在添加 5 个不可用的 <code>nameserver</code> 在文件中进行解析测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 123.45.67.8</span><br><span class="line">nameserver 123.45.67.9</span><br><span class="line">nameserver 123.45.67.10</span><br><span class="line">nameserver 123.45.67.11</span><br><span class="line">nameserver 123.45.67.12</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 1.2.4.8</span><br><span class="line">nameserver 180.76.76.76</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +short +tries=1  www.redhat.com www.centos.org www.kernel.org </span><br><span class="line">;; connection timed out; no servers could be reached</span><br><span class="line">;; connection timed out; no servers could be reached</span><br><span class="line">;; connection timed out; no servers could be reached</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">21:25:18.162523 IP 124.160.121.68.35636 &gt; 123.45.67.8.53: 34369+ [1au] A? www.redhat.com. (43)</span><br><span class="line">21:25:19.162528 IP 124.160.121.68.35529 &gt; 123.45.67.9.53: 34369+ [1au] A? www.redhat.com. (43)</span><br><span class="line">21:25:20.162618 IP 124.160.121.68.44291 &gt; 123.45.67.10.53: 34369+ [1au] A? www.redhat.com. (43)</span><br><span class="line">21:25:25.162806 IP 124.160.121.68.57363 &gt; 123.45.67.8.53: 36309+ [1au] A? www.centos.org. (43)</span><br><span class="line">21:25:26.162892 IP 124.160.121.68.37002 &gt; 123.45.67.9.53: 36309+ [1au] A? www.centos.org. (43)</span><br><span class="line">21:25:27.162974 IP 124.160.121.68.56470 &gt; 123.45.67.10.53: 36309+ [1au] A? www.centos.org. (43)</span><br><span class="line">21:25:32.163160 IP 124.160.121.68.52253 &gt; 123.45.67.8.53: 59858+ [1au] A? www.kernel.org. (43)</span><br><span class="line">21:25:33.163201 IP 124.160.121.68.36526 &gt; 123.45.67.9.53: 59858+ [1au] A? www.kernel.org. (43)</span><br><span class="line">21:25:34.163285 IP 124.160.121.68.42950 &gt; 123.45.67.10.53: 59858+ [1au] A? www.kernel.org. (43)</span><br></pre></td></tr></table></figure>
+<p>从上面的结果可以看到，<code>dig</code> 在请求解析每个域名时，都会向前三个 <code>nameserver</code> 请求<br>再使用 <code>curl</code> 来测试一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 123.45.67.3</span><br><span class="line">nameserver 123.45.67.4</span><br><span class="line">nameserver 123.45.67.5</span><br><span class="line">nameserver 123.45.67.6</span><br><span class="line">nameserver 123.45.67.7</span><br><span class="line">nameserver 123.45.67.8</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# curl -I www.baidu.com</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Length: 277</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Date: Sat, 12 May 2018 11:44:10 GMT</span><br><span class="line">Etag: &quot;575e1f5c-115&quot;</span><br><span class="line">Last-Modified: Mon, 13 Jun 2016 02:50:04 GMT</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Server: bfe/1.0.8.18</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth1   udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">19:43:37.708473 IP 124.160.121.68.52347 &gt; 123.45.67.1.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:43:42.709785 IP 124.160.121.68.44730 &gt; 123.45.67.2.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:43:47.397695 IP 124.160.121.68.52848 &gt; 123.45.67.3.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:43:50.531180 IP 124.160.121.68.32775 &gt; 123.45.67.4.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:43:54.282260 IP 124.160.121.68.34249 &gt; 123.45.67.5.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:43:57.415747 IP 124.160.121.68.45492 &gt; 123.45.67.6.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:44:02.417119 IP 124.160.121.68.53927 &gt; 123.45.67.7.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:44:05.862921 IP 124.160.121.68.48605 &gt; 123.45.67.8.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:44:09.933530 IP 124.160.121.68.55600 &gt; 8.8.8.8.53: 57511+ A? www.baidu.com. (31)</span><br><span class="line">19:44:10.038720 IP 8.8.8.8.53 &gt; 124.160.121.68.55600: 57511 3/0/0 CNAME www.a.shifen.com., A 61.135.169.121, A 61.135.169.125 (90)</span><br></pre></td></tr></table></figure>
+<p>配置了多个 <code>nameserver</code> 后，通过多次解析实验之后我们得到如下结论：</p>
+<ul>
+<li>对于 <code>dig</code> 和 <code>ping</code> 来说生效的只有前三个，即前三个 <code>nameserver</code> 都不可用时，不会再向剩余的 <code>nameserver</code>请求解析</li>
+<li>对于 <code>curl</code> 来说应该是所有都生效，依次从上向下轮询，直到找到能响应为止</li>
+</ul>
+<h2 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">domain &lt;Local domain name&gt;</span><br></pre></td></tr></table></figure>
+<p>这个参数用于系统在进行 DNS 查询时，如果请求的域名无法正常解析时自动补充 <code>domain</code> 的参数值，</p>
+<p>当请求解析的内容中含有域时，即无论系统请求哪一个主机名时，系统默认都会先加上根域 <code>.</code>，但是如果不包含域，则会将 <code>domain</code> 中设定的域填充进去。这是官方文档中的一段描述：</p>
+<p>&gt;</p>
+<blockquote>
+<p>the domain part is taken to be everything after the first ‘.’.<br>Finally, if the hostname does not contain a domain part,<br>the root domain is assumed.</p>
+</blockquote>
+<h3 id="请求解析的内容不包含有域时"><a href="#请求解析的内容不包含有域时" class="headerlink" title="请求解析的内容不包含有域时"></a>请求解析的内容不包含有域时</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">domain baidu.com</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试一</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# ping -c 1 www</span><br><span class="line">PING www.a.shifen.com (61.135.169.121) 56(84) bytes of data.</span><br><span class="line">64 bytes from 61.135.169.121 (61.135.169.121): icmp_seq=1 ttl=54 time=28.3 ms</span><br><span class="line"></span><br><span class="line">--- www.a.shifen.com ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min/avg/max/mdev = 28.390/28.390/28.390/0.000 ms</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">15:34:53.581383 IP 124.160.121.68.42899 &gt; 8.8.8.8.53: 62551+ A? www.baidu.com. (31)</span><br><span class="line">15:34:53.711318 IP 8.8.8.8.53 &gt; 124.160.121.68.42899: 62551 3/0/0 CNAME www.a.shifen.com., A 61.135.169.121, A 61.135.169.125 (90)</span><br><span class="line">15:34:53.740080 IP 124.160.121.68.45679 &gt; 8.8.8.8.53: 35362+ PTR? 121.169.135.61.in-addr.arpa. (45)</span><br><span class="line">15:34:53.790788 IP 8.8.8.8.53 &gt; 124.160.121.68.45679: 35362 NXDomain 0/1/0 (97)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试二</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# ping -c 1 baidu</span><br><span class="line">ping: baidu: Name or service not known</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">15:40:46.521311 IP 124.160.121.68.54008 &gt; 8.8.8.8.53: 51825+ A? baidu.baidu.com. (33)</span><br><span class="line">15:40:46.619891 IP 8.8.8.8.53 &gt; 124.160.121.68.54008: 51825 NXDomain 0/1/0 (76)</span><br><span class="line">15:40:46.619961 IP 124.160.121.68.37288 &gt; 8.8.8.8.53: 59104+ A? baidu. (23)</span><br><span class="line">15:40:46.668562 IP 8.8.8.8.53 &gt; 124.160.121.68.37288: 59104 0/1/0 (93)</span><br></pre></td></tr></table></figure>
+<p>测试后可以发现：</p>
+<ul>
+<li>请求解析的内容不包含域的情况下，不管请求的内容是不是合法的，系统都直接填充 <code>domain</code> 参数</li>
+</ul>
+<h3 id="请求解析的内容包含有域时"><a href="#请求解析的内容包含有域时" class="headerlink" title="请求解析的内容包含有域时"></a>请求解析的内容包含有域时</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">domain .org</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<ul>
+<li>请求解析的内容包含有域，且该域有对应的A记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# ping -c1 baidu.com</span><br><span class="line">PING baidu.com (123.125.115.110) 56(84) bytes of data.</span><br><span class="line">64 bytes from 123.125.115.110 (123.125.115.110): icmp_seq=1 ttl=54 time=33.6 ms</span><br><span class="line"></span><br><span class="line">--- baidu.com ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min/avg/max/mdev = 33.654/33.654/33.654/0.000 ms</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">15:52:51.006971 IP 124.160.121.68.35960 &gt; 8.8.8.8.53: 29630+ A? baidu.com. (27)</span><br><span class="line">15:52:51.054703 IP 8.8.8.8.53 &gt; 124.160.121.68.35960: 29630 2/0/0 A 123.125.115.110, A 220.181.57.216 (59)</span><br><span class="line">15:52:51.088759 IP 124.160.121.68.52785 &gt; 8.8.8.8.53: 12744+ PTR? 110.115.125.123.in-addr.arpa. (46)</span><br><span class="line">15:52:51.134573 IP 8.8.8.8.53 &gt; 124.160.121.68.52785: 12744 NXDomain 0/1/0 (100)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>请求解析的内容包含有域，但该域不合法或者没有对应的A记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# ping -c1 baidu123.com</span><br><span class="line">ping: baidu123.com: Name or service not known</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">15:56:01.274770 IP 124.160.121.68.60947 &gt; 8.8.8.8.53: 32132+ A? baidu123.com. (30)</span><br><span class="line">15:56:01.666132 IP 8.8.8.8.53 &gt; 124.160.121.68.60947: 32132 0/1/0 (96)</span><br></pre></td></tr></table></figure>
+<p>测试后可以发现：</p>
+<ul>
+<li>请求解析的内容包含域的情况下，不管请求的内容是不是合法的，系统都会先直接解析而不是直接填充 <code>domain</code> 参数</li>
+</ul>
+<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search &lt;Search list for host-name lookup&gt;</span><br></pre></td></tr></table></figure>
+<p>指定一组域名（用空格分割），当你仅写出主机名时，就开始依次进行这些域名的匹配，如果第一个域名没有匹配到，那么用第二个进行匹配，以此类推，直到匹配完所有列出的域名，给出最终的结果。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">search redhat.com centos.org baidu.com kernel.org</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# ping -c 1 -W 1 -q pan</span><br><span class="line">PING yiyun.n.shifen.com (111.206.37.70) 56(84) bytes of data.</span><br><span class="line"></span><br><span class="line">--- yiyun.n.shifen.com ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min/avg/max/mdev = 26.970/26.970/26.970/0.000 ms</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">21:54:13.539662 IP 124.160.121.68.41382 &gt; 8.8.8.8.53: 51406+ A? pan.redhat.com. (32)</span><br><span class="line">21:54:13.641746 IP 8.8.8.8.53 &gt; 124.160.121.68.41382: 51406 0/1/0 (76)</span><br><span class="line">21:54:13.641866 IP 124.160.121.68.43018 &gt; 8.8.8.8.53: 15888+ A? pan.centos.org. (32)</span><br><span class="line">21:54:13.876920 IP 8.8.8.8.53 &gt; 124.160.121.68.43018: 15888 NXDomain 0/1/0 (83)</span><br><span class="line">21:54:13.876974 IP 124.160.121.68.39758 &gt; 8.8.8.8.53: 2584+ A? pan.baidu.com. (31)</span><br><span class="line">21:54:13.979307 IP 8.8.8.8.53 &gt; 124.160.121.68.39758: 2584 3/0/0 CNAME yiyun.n.shifen.com., A 111.206.37.70, A 153.37.235.66 (92)</span><br><span class="line">21:54:14.006705 IP 124.160.121.68.54116 &gt; 8.8.8.8.53: 20521+ PTR? 70.37.206.111.in-addr.arpa. (44)</span><br><span class="line">21:54:14.055034 IP 8.8.8.8.53 &gt; 124.160.121.68.54116: 20521 NXDomain 0/1/0 (98)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# ping -c 1 -W 1 -q x1y2z3</span><br><span class="line">ping: x1y2z3: Name or service not known</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">21:57:47.079874 IP 124.160.121.68.59551 &gt; 8.8.8.8.53: 14646+ A? x1y2z3.redhat.com. (35)</span><br><span class="line">21:57:47.388342 IP 8.8.8.8.53 &gt; 124.160.121.68.59551: 14646 0/1/0 (79)</span><br><span class="line">21:57:47.388416 IP 124.160.121.68.40022 &gt; 8.8.8.8.53: 10171+ A? x1y2z3.centos.org. (35)</span><br><span class="line">21:57:47.702240 IP 8.8.8.8.53 &gt; 124.160.121.68.40022: 10171 NXDomain 0/1/0 (86)</span><br><span class="line">21:57:47.702297 IP 124.160.121.68.56305 &gt; 8.8.8.8.53: 15347+ A? x1y2z3.baidu.com. (34)</span><br><span class="line">21:57:47.804776 IP 8.8.8.8.53 &gt; 124.160.121.68.56305: 15347 NXDomain 0/1/0 (77)</span><br><span class="line">21:57:47.804841 IP 124.160.121.68.52432 &gt; 8.8.8.8.53: 1360+ A? x1y2z3. (24)</span><br><span class="line">21:57:47.857440 IP 8.8.8.8.53 &gt; 124.160.121.68.52432: 1360 NXDomain 0/1/0 (99)</span><br></pre></td></tr></table></figure>
+<h2 id="options"><a href="#options" class="headerlink" title="options"></a>options</h2><p>用来设定一些选项，实现不同的功能</p>
+<h3 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h3><p>可选选项，系统一次 DNS 解析 timeout 的时间值，单位为秒。系统默认值为 5，最大可以设定的值是 30</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeout:n</span><br></pre></td></tr></table></figure>
+<p>下面对于 timeout 的实验我们都在 <code>/etc/resolv.conf</code> 中配置无效的 DNS</p>
+<p>在查看了 <code>dig</code> 命令的帮助手册之后发现它也有个 timeout 参数 <code>+time=T</code>，在不指定该参数的情况下默认为5秒，那么我们<strong>不在</strong> <code>resolv.conf</code> 中配置 <code>timeout</code> 来进行测试看一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 123.45.67.3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +tries=5 +time=2 +short www.baidu.com </span><br><span class="line">;; connection timed out; no servers could be reached</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53 </span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line"></span><br><span class="line">17:00:22.378172 IP 124.160.121.68.39149 &gt; 123.45.67.1.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:23.378136 IP 124.160.121.68.37930 &gt; 123.45.67.2.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:24.378219 IP 124.160.121.68.58526 &gt; 123.45.67.3.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">17:00:26.378269 IP 124.160.121.68.39149 &gt; 123.45.67.1.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:27.378355 IP 124.160.121.68.37930 &gt; 123.45.67.2.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:28.378442 IP 124.160.121.68.58526 &gt; 123.45.67.3.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">17:00:30.378527 IP 124.160.121.68.39149 &gt; 123.45.67.1.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:31.378614 IP 124.160.121.68.37930 &gt; 123.45.67.2.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:32.378703 IP 124.160.121.68.58526 &gt; 123.45.67.3.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">17:00:34.378786 IP 124.160.121.68.39149 &gt; 123.45.67.1.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:35.378870 IP 124.160.121.68.37930 &gt; 123.45.67.2.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:36.378958 IP 124.160.121.68.58526 &gt; 123.45.67.3.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">17:00:38.379040 IP 124.160.121.68.39149 &gt; 123.45.67.1.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:39.379122 IP 124.160.121.68.37930 &gt; 123.45.67.2.53: 18650+ [1au] A? www.baidu.com. (42)</span><br><span class="line">17:00:40.379210 IP 124.160.121.68.58526 &gt; 123.45.67.3.53: 18650+ [1au] A? www.baidu.com. (42)</span><br></pre></td></tr></table></figure>
+<p>为了便于区分，上述内容人工填充了空行。从上面可以看到</p>
+<ul>
+<li><code>dig</code> 向文件中的三个 <code>nameserver</code> 分别请求解析，向每个 <code>nameserver</code> 请求解析的时间间隔为 1 秒而不是 2 秒</li>
+<li><code>dig</code> 在五次对文件中的 <code>nameserver</code> 轮询，每次轮询之间的时间间隔为 2 秒</li>
+</ul>
+<p>如果我们在 <code>/etc/resolv.conf</code> 中配置了 <code>timeout</code>，到底是以 <code>dig</code> 的为准还是以 <code>/etc/resolv.conf</code> 中的为准？</p>
+<ul>
+<li>当 <code>dig</code> 的 timeout 大于 <code>resolv.conf</code> 中的timeout时</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options timeout:3</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 123.45.67.3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +tries=5 +timeout=4 +short www.baidu.com  </span><br><span class="line">;; connection timed out; no servers could be reached</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53 </span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">16:06:44.330997 IP 124.160.121.68.60827 &gt; 123.45.67.1.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:06:45.331000 IP 124.160.121.68.45589 &gt; 123.45.67.2.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:06:46.331082 IP 124.160.121.68.43181 &gt; 123.45.67.3.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:06:49.331133 IP 124.160.121.68.60827 &gt; 123.45.67.1.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:06:50.331220 IP 124.160.121.68.45589 &gt; 123.45.67.2.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:06:51.331312 IP 124.160.121.68.43181 &gt; 123.45.67.3.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:06:54.331403 IP 124.160.121.68.60827 &gt; 123.45.67.1.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:06:55.331488 IP 124.160.121.68.45589 &gt; 123.45.67.2.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:06:56.331571 IP 124.160.121.68.43181 &gt; 123.45.67.3.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:06:59.331658 IP 124.160.121.68.60827 &gt; 123.45.67.1.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:07:00.331747 IP 124.160.121.68.45589 &gt; 123.45.67.2.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:07:01.331837 IP 124.160.121.68.43181 &gt; 123.45.67.3.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:07:04.331913 IP 124.160.121.68.60827 &gt; 123.45.67.1.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:07:05.332004 IP 124.160.121.68.45589 &gt; 123.45.67.2.53: 12194+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:07:06.332093 IP 124.160.121.68.43181 &gt; 123.45.67.3.53: 12194+ [1au] A? www.baidu.com. (42)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +tries=5 +short www.baidu.com </span><br><span class="line">;; connection timed out; no servers could be reached</span><br><span class="line"># dig 没有指定timeout参数则使用默认值5秒</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53 </span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line"></span><br><span class="line">16:25:06.558406 IP 124.160.121.68.54373 &gt; 123.45.67.1.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:07.558450 IP 124.160.121.68.46082 &gt; 123.45.67.2.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:08.558486 IP 124.160.121.68.47769 &gt; 123.45.67.3.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:25:11.558564 IP 124.160.121.68.54373 &gt; 123.45.67.1.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:12.558629 IP 124.160.121.68.46082 &gt; 123.45.67.2.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:13.558724 IP 124.160.121.68.47769 &gt; 123.45.67.3.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:25:16.558808 IP 124.160.121.68.54373 &gt; 123.45.67.1.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:17.558894 IP 124.160.121.68.46082 &gt; 123.45.67.2.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:18.558976 IP 124.160.121.68.47769 &gt; 123.45.67.3.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:25:21.559058 IP 124.160.121.68.54373 &gt; 123.45.67.1.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:22.559147 IP 124.160.121.68.46082 &gt; 123.45.67.2.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:23.559230 IP 124.160.121.68.47769 &gt; 123.45.67.3.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:25:26.559320 IP 124.160.121.68.54373 &gt; 123.45.67.1.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:27.559404 IP 124.160.121.68.46082 &gt; 123.45.67.2.53: 51295+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:25:28.559488 IP 124.160.121.68.47769 &gt; 123.45.67.3.53: 51295+ [1au] A? www.baidu.com. (42)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 <code>dig</code> 的 timeout 小于 <code>resolv.conf</code> 中的 timeou t时</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options timeout:10</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 123.45.67.3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +tries=3 +time=2 +short www.baidu.com </span><br><span class="line">;; connection timed out; no servers could be reached</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53 </span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line"></span><br><span class="line">16:31:54.273506 IP 124.160.121.68.49564 &gt; 123.45.67.1.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:31:55.273448 IP 124.160.121.68.58295 &gt; 123.45.67.2.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:31:56.273534 IP 124.160.121.68.43357 &gt; 123.45.67.3.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:32:06.273581 IP 124.160.121.68.49564 &gt; 123.45.67.1.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:32:07.273668 IP 124.160.121.68.58295 &gt; 123.45.67.2.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:32:08.273755 IP 124.160.121.68.43357 &gt; 123.45.67.3.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line"></span><br><span class="line">16:32:18.273872 IP 124.160.121.68.49564 &gt; 123.45.67.1.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:32:19.273953 IP 124.160.121.68.58295 &gt; 123.45.67.2.53: 31368+ [1au] A? www.baidu.com. (42)</span><br><span class="line">16:32:20.274030 IP 124.160.121.68.43357 &gt; 123.45.67.3.53: 31368+ [1au] A? www.baidu.com. (42)</span><br></pre></td></tr></table></figure>
+<p>多次测试后发现：</p>
+<ul>
+<li>对于 <code>dig</code> 来说，自身的 timeout 和  <code>/etc/resolv.conf</code> 二者的 timeout 都指的是每次轮询完文件<code>nameserver</code>的超时时间，而不是每个 <code>nameserver</code> 的超时时间</li>
+<li>而对于 <code>ping</code> 来说，自身的 timeout 指的是每个包的超时时间，<code>/etc/resolv.conf</code> 的 timeout 指的是每个 <code>nameserver</code> 的超时时间，不是每次轮询的时间</li>
+<li>只要 <code>/etc/resolv.conf</code> 配置了 timeout 就直接忽略 <code>dig</code> 的 timeout ，以 <code>/etc/resolv.conf</code> 中配置的为准；否则就以 <code>dig</code> 设定的（为设定则使用默认值）为准</li>
+</ul>
+<h3 id="attempts"><a href="#attempts" class="headerlink" title="attempts"></a>attempts</h3><p>可选选项，系统尝试解析的次数，如果未设定则默认值是 2。系统允许最大值是 5，即当系统请求解析失败多少次之后，才会给系统或者程序返回解析失败的结果。对于 <code>dig</code> 命令来说如果是一个小数，则可能会提示语法错误，如果是0则不会进行解析。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">attempts:n</span><br></pre></td></tr></table></figure>
+<p>因为 <code>dig</code> 命令也有个尝试次数的参数 <code>+tries=T</code>，默认是请求三次。不管 <code>/etc/resolv.conf</code> 有没有配置 <code>attempts</code>，在使用 <code>dig</code> 的时候都会以 <code>dig</code> 的为准，实验便知。这里我们要对 <code>/etc/resolv.conf</code> 文件中的配置做实验，就使用 <code>ping</code> 来测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options timeout:3</span><br><span class="line">options attempts:2</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 123.45.67.3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# time ping -c 3  www.baidu.com </span><br><span class="line">ping: www.baidu.com: Name or service not known</span><br><span class="line"></span><br><span class="line">real    0m36.040s</span><br><span class="line">user    0m0.000s</span><br><span class="line">sys     0m0.004s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth1   udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line"></span><br><span class="line">17:57:48.821495 IP 124.160.121.68.37237 &gt; 123.45.67.1.53: 62997+ A? www.baidu.com. (31)</span><br><span class="line">17:57:51.824546 IP 124.160.121.68.42482 &gt; 123.45.67.2.53: 62997+ A? www.baidu.com. (31)</span><br><span class="line">17:57:53.826591 IP 124.160.121.68.48320 &gt; 123.45.67.3.53: 62997+ A? www.baidu.com. (31)</span><br><span class="line">17:57:57.830621 IP 124.160.121.68.37237 &gt; 123.45.67.1.53: 62997+ A? www.baidu.com. (31)</span><br><span class="line">17:58:00.833656 IP 124.160.121.68.42482 &gt; 123.45.67.2.53: 62997+ A? www.baidu.com. (31)</span><br><span class="line">17:58:02.835688 IP 124.160.121.68.48320 &gt; 123.45.67.3.53: 62997+ A? www.baidu.com. (31)</span><br><span class="line"></span><br><span class="line">17:58:06.839767 IP 124.160.121.68.54390 &gt; 123.45.67.1.53: 47323+ A? www.baidu.com. (31)</span><br><span class="line">17:58:09.842821 IP 124.160.121.68.60543 &gt; 123.45.67.2.53: 47323+ A? www.baidu.com. (31)</span><br><span class="line">17:58:11.844871 IP 124.160.121.68.51676 &gt; 123.45.67.3.53: 47323+ A? www.baidu.com. (31)</span><br><span class="line">17:58:15.848917 IP 124.160.121.68.54390 &gt; 123.45.67.1.53: 47323+ A? www.baidu.com. (31)</span><br><span class="line">17:58:18.851953 IP 124.160.121.68.60543 &gt; 123.45.67.2.53: 47323+ A? www.baidu.com. (31)</span><br><span class="line">17:58:20.853984 IP 124.160.121.68.51676 &gt; 123.45.67.3.53: 47323+ A? www.baidu.com. (31)</span><br></pre></td></tr></table></figure>
+<p>上面的抓包结果看上去有些费解。我们先算一下时间，我们已知 <code>/etc/resolv.conf</code> 中的 <code>timeout</code> 对于 <code>ping</code> 来说指的是每个 <code>nameserver</code> 的超时时间，我们设置了3个无效的 DNS ，超时时间为 3 ，因此尝试（轮询）一次的时间为 <code>3 x 3 =9</code> , 两次尝试应该是 18 s 才对，为什么看到的却是36呢？这是因为 <code>ping</code> 在进行一次解析的时候会做两个不同的记录的询问请求，一个是 A 记录，另一个是 PTR 记录。当然 PTR 记录是得到 A 记录之后再做的，如果没有得到 A 记录就会再请求一次A记录。我们不妨设置两个DNS，第一个无效，第二个设为有效的来看看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options timeout:3</span><br><span class="line">options attempts:2</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# time ping -c 3  www.baidu.com</span><br><span class="line">PING www.a.shifen.com (61.135.169.125) 56(84) bytes of data.</span><br><span class="line">64 bytes from 61.135.169.125 (61.135.169.125): icmp_seq=1 ttl=54 time=28.4 ms</span><br><span class="line">64 bytes from 61.135.169.125 (61.135.169.125): icmp_seq=2 ttl=54 time=28.3 ms</span><br><span class="line">64 bytes from 61.135.169.125 (61.135.169.125): icmp_seq=3 ttl=54 time=28.3 ms</span><br><span class="line"></span><br><span class="line">--- www.a.shifen.com ping statistics ---</span><br><span class="line">3 packets transmitted, 3 received, 0% packet loss, time 4084ms</span><br><span class="line">rtt min/avg/max/mdev = 28.356/28.378/28.405/0.195 ms</span><br><span class="line"></span><br><span class="line">real    0m7.215s</span><br><span class="line">user    0m0.002s</span><br><span class="line">sys     0m0.004s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0   icmp or udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">18:11:43.480899 IP 124.160.121.68.60040 &gt; 123.45.67.1.53: 29894+ A? www.baidu.com. (31)</span><br><span class="line">18:11:46.483955 IP 124.160.121.68.57979 &gt; 8.8.8.8.53: 29894+ A? www.baidu.com. (31)</span><br><span class="line">18:11:46.579031 IP 8.8.8.8.53 &gt; 124.160.121.68.57979: 29894 3/0/0 CNAME www.a.shifen.com., A 61.135.169.125, A 61.135.169.121 (90)</span><br><span class="line">18:11:46.579360 IP 124.160.121.68 &gt; 61.135.169.125: ICMP echo request, id 14864, seq 1, length 64</span><br><span class="line">18:11:46.607733 IP 61.135.169.125 &gt; 124.160.121.68: ICMP echo reply, id 14864, seq 1, length 64</span><br><span class="line">18:11:46.607865 IP 124.160.121.68.36510 &gt; 123.45.67.1.53: 16127+ PTR? 125.169.135.61.in-addr.arpa. (45)</span><br><span class="line">18:11:49.610912 IP 124.160.121.68.53473 &gt; 8.8.8.8.53: 16127+ PTR? 125.169.135.61.in-addr.arpa. (45)</span><br><span class="line">18:11:49.660012 IP 8.8.8.8.53 &gt; 124.160.121.68.53473: 16127 NXDomain 0/1/0 (97)</span><br><span class="line">18:11:49.662472 IP 124.160.121.68 &gt; 61.135.169.125: ICMP echo request, id 14864, seq 2, length 64</span><br><span class="line">18:11:49.690812 IP 61.135.169.125 &gt; 124.160.121.68: ICMP echo reply, id 14864, seq 2, length 64</span><br><span class="line">18:11:50.663851 IP 124.160.121.68 &gt; 61.135.169.125: ICMP echo request, id 14864, seq 3, length 64</span><br><span class="line">18:11:50.692213 IP 61.135.169.125 &gt; 124.160.121.68: ICMP echo reply, id 14864, seq 3, length 64</span><br></pre></td></tr></table></figure>
+<p>分析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">18:11:43.480899 IP 124.160.121.68.60040 &gt; 123.45.67.1.53: 29894+ A? www.baidu.com. (31)</span><br></pre></td></tr></table></figure>
+<p>向第一个 <code>DNS</code> 开始第一次尝试，做第一件事：询问 A 记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">18:11:46.483955 IP 124.160.121.68.57979 &gt; 8.8.8.8.53: 29894+ A? www.baidu.com. (31)</span><br></pre></td></tr></table></figure>
+<p>第一个 <code>DNS</code> 无效，在等待超时时间 <code>options timeout:3</code> 也就是 3 秒之后，向第二个DNS 第一次尝试，做第一件事：询问 A 记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">18:11:46.579031 IP 8.8.8.8.53 &gt; 124.160.121.68.57979: 29894 3/0/0 CNAME www.a.shifen.com., A 61.135.169.125, A 61.135.169.121 (90)</span><br><span class="line">18:11:46.579360 IP 124.160.121.68 &gt; 61.135.169.125: ICMP echo request, id 14864, seq 1, length 64</span><br><span class="line">18:11:46.607733 IP 61.135.169.125 &gt; 124.160.121.68: ICMP echo reply, id 14864, seq 1, length 64</span><br></pre></td></tr></table></figure>
+<p>第二个 <code>DNS</code> 有效，并返回了 A 记录 ，立刻发送了一个 ICMP 包并且得到了响应</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">18:11:46.607865 IP 124.160.121.68.36510 &gt; 123.45.67.1.53: 16127+ PTR? 125.169.135.61.in-addr.arpa. (45)</span><br></pre></td></tr></table></figure>
+<p>得到百度的响应之后并没有继续发送剩余的 ICMP 报文，而是又向第一个 DNS 请求了 PTR 记录的解析，注意这里并不是进行了第二次尝试，而是在做第一次尝试中的第二件事情：询问 PTR 记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">18:11:49.610912 IP 124.160.121.68.53473 &gt; 8.8.8.8.53: 16127+ PTR? 125.169.135.61.in-addr.arpa. (45)</span><br><span class="line">18:11:49.660012 IP 8.8.8.8.53 &gt; 124.160.121.68.53473: 16127 NXDomain 0/1/0 (97)</span><br></pre></td></tr></table></figure>
+<p>第一个 <code>DNS</code> 无效，在等待超时时间 <code>options timeout:3</code> 也就是 3 秒之后，向第二个DNS 请求做第一次尝试中的第二件事情：询问 PTR 记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">18:11:49.662472 IP 124.160.121.68 &gt; 61.135.169.125: ICMP echo request, id 14864, seq 2, length 64</span><br><span class="line">18:11:49.690812 IP 61.135.169.125 &gt; 124.160.121.68: ICMP echo reply, id 14864, seq 2, length 64</span><br><span class="line">18:11:50.663851 IP 124.160.121.68 &gt; 61.135.169.125: ICMP echo request, id 14864, seq 3, length 64</span><br><span class="line">18:11:50.692213 IP 61.135.169.125 &gt; 124.160.121.68: ICMP echo reply, id 14864, seq 3, length 64</span><br></pre></td></tr></table></figure>
+<p>发送剩余的两个 ICMP 报文</p>
+<p>我们再算一下时间：</p>
+<p>两个 DNS ，每个 DNS 都进行了一次尝试，做了两个不同的事情（询问A记录，再询问 PTR 记录），第一个 DNS 尝试一次的过程中超时两次时间是 6 秒，第二个 DNS 未超时，总共加起来是 7 秒左右</p>
+<p>那么有没有可能是 PTR 记录是 ping 进行了第二次错误解析尝试呢（一次错误等待时长为3s，所以attemps设置为2，等待时长是 3s * 2 = 6s，正好与 time ping 的执行结果相吻合）</p>
+<p>为了更有说服力，我们把尝试次数改为一次，前两个 DNS 设置为无效，第三个DNS有效，再做一次实验</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options timeout:3</span><br><span class="line">options attempts:1</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<p>我们假设 PTR 记录是 ping 进行了第二次错误解析尝试，而文件 <code>/etc/resolv.conf</code> 中我们只允许尝试一次，那么根据假设，等待的时间应该是 第一个 DNS 超时时间 <code>3s</code> 加上 第二个 DNS 超时时间 <code>3s</code>，总共为 <code>6s</code>，是不是这样呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# time ping -c 1 www.baidu.com</span><br><span class="line">PING www.a.shifen.com (61.135.169.121) 56(84) bytes of data.</span><br><span class="line">64 bytes from 61.135.169.121 (61.135.169.121): icmp_seq=1 ttl=54 time=27.9 ms</span><br><span class="line"></span><br><span class="line">--- www.a.shifen.com ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min/avg/max/mdev = 27.960/27.960/27.960/0.000 ms</span><br><span class="line"></span><br><span class="line">real    0m10.189s</span><br><span class="line">user    0m0.004s</span><br><span class="line">sys     0m0.002s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0   icmp or udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">18:50:27.858495 IP 124.160.121.68.56337 &gt; 123.45.67.1.53: 51295+ A? www.baidu.com. (31)</span><br><span class="line">18:50:30.861543 IP 124.160.121.68.35679 &gt; 123.45.67.2.53: 51295+ A? www.baidu.com. (31)</span><br><span class="line">18:50:32.863588 IP 124.160.121.68.48112 &gt; 8.8.8.8.53: 51295+ A? www.baidu.com. (31)</span><br><span class="line">18:50:32.962175 IP 8.8.8.8.53 &gt; 124.160.121.68.48112: 51295 3/0/0 CNAME www.a.shifen.com., A 61.135.169.121, A 61.135.169.125 (90)</span><br><span class="line">18:50:32.962437 IP 124.160.121.68 &gt; 61.135.169.121: ICMP echo request, id 15252, seq 1, length 64</span><br><span class="line">18:50:32.990376 IP 61.135.169.121 &gt; 124.160.121.68: ICMP echo reply, id 15252, seq 1, length 64</span><br><span class="line">18:50:32.990478 IP 124.160.121.68.42683 &gt; 123.45.67.1.53: 23619+ PTR? 121.169.135.61.in-addr.arpa. (45)</span><br><span class="line">18:50:35.993528 IP 124.160.121.68.34443 &gt; 123.45.67.2.53: 23619+ PTR? 121.169.135.61.in-addr.arpa. (45)</span><br><span class="line">18:50:37.995573 IP 124.160.121.68.48473 &gt; 8.8.8.8.53: 23619+ PTR? 121.169.135.61.in-addr.arpa. (45)</span><br><span class="line">18:50:38.042414 IP 8.8.8.8.53 &gt; 124.160.121.68.48473: 23619 NXDomain 0/1/0 (97)</span><br></pre></td></tr></table></figure>
+<p>从上述结果可以看到，<code>ping</code> 再做一次尝试的过程中存在了两种不同记录的查询，A 记录和 PTR 记录，因此 <code>PTR 记录是 ping 进行了第二次错误解析尝试</code> 的假设不成立。因此对于 <code>ping</code> 来说一次尝试的超时时间应该是 <code>（PTR的超时时间 + A 记录的超时时间） *  无法解析的nameserver的个数</code> 即 <code>6 x 2 =12</code></p>
+<p>如果是下面的配置，使用 ping 的话超时时间就应该是 一次尝试：<code>6 x 3 =18</code>，两次尝试 <code>36s</code>，第一个实验中令人费解的时间此时已经有了来路</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options timeout:3</span><br><span class="line">options attempts:2</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 123.45.67.3</span><br></pre></td></tr></table></figure>
+<h3 id="rotate"><a href="#rotate" class="headerlink" title="rotate"></a>rotate</h3><p>为了避免 DNS 查询每次都从第一个 <code>nameserver</code> 开始，来均衡各个 <code>nameserver</code> 的压力。如果第一个 <code>nameserver</code> 失效时，使用这个选项就可以提高解析的效率。另外可以优先使用可用的 DNS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options rotate</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options rotate</span><br><span class="line">nameserver 123.45.67.1</span><br><span class="line">nameserver 123.45.67.2</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# time ping www.baidu.com -c 5 -q</span><br><span class="line">PING www.a.shifen.com (61.135.169.121) 56(84) bytes of data.</span><br><span class="line"></span><br><span class="line">--- www.a.shifen.com ping statistics ---</span><br><span class="line">5 packets transmitted, 5 received, 0% packet loss, time 4000ms</span><br><span class="line">rtt min/avg/max/mdev = 27.947/28.093/28.183/0.169 ms</span><br><span class="line"></span><br><span class="line">real    0m9.137s</span><br><span class="line">user    0m0.001s</span><br><span class="line">sys     0m0.004s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0   udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth1, link-type EN10MB (Ethernet), capture size 65535 bytes</span><br><span class="line">20:23:05.883477 IP 124.160.121.68.51976 &gt; 123.45.67.2.53: 29551+ A? www.baidu.com. (31)</span><br><span class="line">20:23:10.888528 IP 124.160.121.68.39697 &gt; 8.8.8.8.53: 29551+ A? www.baidu.com. (31)</span><br><span class="line">20:23:10.988607 IP 8.8.8.8.53 &gt; 124.160.121.68.39697: 29551 3/0/0 CNAME www.a.shifen.com., A 61.135.169.121, A 61.135.169.125 (90)</span><br><span class="line">20:23:11.017108 IP 124.160.121.68.55712 &gt; 8.8.8.8.53: 48423+ PTR? 121.169.135.61.in-addr.arpa. (45)</span><br><span class="line">20:23:11.067780 IP 8.8.8.8.53 &gt; 124.160.121.68.55712: 48423 NXDomain 0/1/0 (97)</span><br></pre></td></tr></table></figure>
+<h3 id="single-request-reopen"><a href="#single-request-reopen" class="headerlink" title="single-request-reopen"></a>single-request-reopen</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options single-request-reopen</span><br></pre></td></tr></table></figure>
+<p>自从 CentOS6 之后，准确的说是 glibc &gt;= 2.9 之后，Linux 系统 DNS 解析器（resolver）会使用相同的 socket 去请求 A(for IPv4) &amp; AAAA(for IPv6) 记录解析。比如在存在防火墙等机制的网络环境中，同样源目的 ip，同样源目的 port，同样的第4层协议的连接，会被防火墙看成是同一个会话，因此会存在返回包被丢弃现象，过程如下：</p>
+<p><img src="/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/a.png" alt=""></p>
+<p>默认的 DNS 解析过程是这样的：</p>
+<ul>
+<li>主机从一个随机的源端口（图中为 12345 ），请求 DNS 的 A 记录</li>
+<li>主机从同一个源端口，请求 DNS 的 AAAA 记录</li>
+<li>主机先收到 DNS 返回的 AAAA 记录（也可能先收到 A 记录）</li>
+<li>防火墙（可能是其他硬件设备，官方给出的描述是： Some hardware ）认为本次交互通信已经完成，关闭连接</li>
+<li>剩下的 DNS 服务器返回的 A 记录响应包被防火墙丢弃</li>
+</ul>
+<p>如果我们启用参数 <code>single-request-reopen</code> （默认未启用），一旦出现同一个 socket 发送的两次请求处理，解析端发送第一次请求后会关闭 socket，并在发送第二次请求前打开新的 socket 对 DNS server 端进行发送解析请求</p>
+<p><img src="/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/b.png" alt=""></p>
+<p>生产环境中发现在阿里云的主机上可能会出现上述问题，因此如果主机使用了 IPv6 建议启用该参数。</p>
+<h3 id="edns0"><a href="#edns0" class="headerlink" title="edns0"></a>edns0</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">options edns0</span><br></pre></td></tr></table></figure>
+<p>修改原来的 DNS 协议，让其可以传输超过512字节的报文限制，但是必须客户端和服务端同时支持 edns0 才能使用该协议。glibc 2.6 及以上可以支持</p>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig @8.8.8.8 www.baidu.com</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.9.4-RedHat-9.9.4-50.el7_3.1 &lt;&lt;&gt;&gt; @8.8.8.8 www.baidu.com</span><br><span class="line">; (1 server found)</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 28203</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 512</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;www.baidu.com.                 IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">www.baidu.com.          1049    IN      CNAME   www.a.shifen.com.</span><br><span class="line">www.a.shifen.com.       299     IN      A       61.135.169.121</span><br><span class="line">www.a.shifen.com.       299     IN      A       61.135.169.125</span><br><span class="line"></span><br><span class="line">;; Query time: 95 msec</span><br><span class="line">;; SERVER: 8.8.8.8#53(8.8.8.8)</span><br><span class="line">;; WHEN: Sat May 12 20:46:23 CST 2018</span><br><span class="line">;; MSG SIZE  rcvd: 101</span><br></pre></td></tr></table></figure>
+<h1 id="总结和建议"><a href="#总结和建议" class="headerlink" title="总结和建议"></a>总结和建议</h1><p>文件 <code>/etc/resolv.conf</code> 中参数的有效性，准确的说应该视系统命令或应用程序而定的</p>
+<p>例如：</p>
+<ul>
+<li>对于 <code>ping</code> 和 <code>dig</code> 来说他们会最多轮询三个 <code>nameserver</code> ，但是 <code>curl</code> 则是轮询所有的 <code>nameserver</code></li>
+<li>当 <code>attempts</code> 为小数时， <code>nslookup</code> 和 <code>dig</code> 会提示该文件语法错误</li>
+<li>当 <code>attmepts</code> 为 0 时，对于 <code>ping</code> 来说则不会进行 DNS 解析请求，但对于 <code>dig</code> 和 <code>nslookup</code> 来说依然发送 DNS 解析请求</li>
+</ul>
+<p>建议：</p>
+<ul>
+<li>为了避免单个 DNS 不可用时导致解析瘫痪，最好配置两个或多个 <code>nameserver</code></li>
+<li>适当调整 <code>timeout</code> 和 <code>attempts</code> 提高解析效率</li>
+</ul>
+<p>配置示例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">options timeout:1</span><br><span class="line">options attempts:2</span><br><span class="line">options rotate</span><br><span class="line">options single-request-reopen</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 1.1.1.1</span><br></pre></td></tr></table></figure>
+<h1 id="什么会修改-etc-resolv-conf"><a href="#什么会修改-etc-resolv-conf" class="headerlink" title="什么会修改 /etc/resolv.conf"></a>什么会修改 <code>/etc/resolv.conf</code></h1><p>在维护的主机数量较多的时候，系统中 DNS 的配置我们应该做到统一化，随意修改或更新会造成管理混乱。因此我们可以统一只靠人为干预的方式来修改 <code>/etc/resolv.conf</code> ，并将其他可能会更新该文件的服务或配置禁用掉。因此我们需要找到可能会更新 <code>/etc/resolv.conf</code> 的来源：</p>
+<ul>
+<li>用户：这个不必多说了，有权限的用户可以配置该文件</li>
+<li>服务或程序</li>
+</ul>
+<h2 id="网卡配置文件中的-DNS"><a href="#网卡配置文件中的-DNS" class="headerlink" title="网卡配置文件中的 DNS"></a>网卡配置文件中的 DNS</h2><h3 id="网卡配置参考文档"><a href="#网卡配置参考文档" class="headerlink" title="网卡配置参考文档"></a>网卡配置参考文档</h3><p>在 Redhat 官方文档中可以找到相关说明</p>
+<ul>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/deployment_guide/s1-networkscripts-interfaces" target="_blank" rel="noopener">RHEL5</a> &amp; <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/s1-networkscripts-interfaces" target="_blank" rel="noopener">RHEL6</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DNS&#123;1,2&#125;=address</span><br></pre></td></tr></table></figure>
+<p> where address is a name server address to be placed in /etc/resolv.conf provided that the PEERDNS directive is not set to no.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PEERDNS=&lt;answer&gt;</span><br></pre></td></tr></table></figure>
+<p>where <code>&lt;answer&gt;</code> is one of the following:</p>
+<ul>
+<li><code>yes</code> — Modify <code>/etc/resolv.conf</code> if the DNS directive is set. If using <code>DHCP</code>, then yes is the default.</li>
+<li><code>no</code> — Do not modify <code>/etc/resolv.conf</code>.</li>
+</ul>
+<ul>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-editing_network_configuration_files" target="_blank" rel="noopener">RHEL7</a></li>
+</ul>
+<p>To configure an interface to use particular DNS servers, add the following lines to the ifcfg file:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PEERDNS=no</span><br><span class="line">DNS1=ip-address</span><br><span class="line">DNS2=ip-address</span><br></pre></td></tr></table></figure>
+<p>where ip-address is the address of a DNS server. This will cause the network service to update <code>/etc/resolv.conf</code> with the specified DNS servers specified. Only one DNS server address is necessary, the other is optional.</p>
+<p>By default, <strong>NetworkManager</strong> calls the <code>DHCP</code> client, <strong>dhclient</strong>, when a profile has been set to obtain addresses automatically by setting <code>BOOTPROTO</code> to <code>dhcp</code> in an interface configuration file. If <code>DHCP</code> is required, an instance of <strong>dhclient</strong> is started for every Internet protocol, IPv4 and IPv6, on an interface. If <strong>NetworkManager</strong> is not running, or is not managing an interface, then the legacy network service will call instances of <strong>dhclient</strong> as required.</p>
+<blockquote>
+<p><strong>Important</strong></p>
+<p>In order to apply the configuration, you need to enter the nmcli c reload command.</p>
+</blockquote>
+<p> <code>PEERDNS=yes</code> ：如果网卡配置文件中设置了 DNS 就会修改 <code>/etc/resolv.conf</code>。在网卡配置文件中如果启动方式配置了 <code>DHCP</code> 之后，<code>PEERDNS</code> 默认为 <code>yes</code></p>
+<h3 id="DHCP方式"><a href="#DHCP方式" class="headerlink" title="DHCP方式"></a>DHCP方式</h3><h4 id="单独配置-PEERDNS"><a href="#单独配置-PEERDNS" class="headerlink" title="单独配置 PEERDNS"></a>单独配置 PEERDNS</h4><p> <code>PEERDNS=yes</code> ：如果网卡配置文件中设置了 DNS 就会修改 <code>/etc/resolv.conf</code>。在网卡配置文件中如果启动方式配置了 <code>DHCP</code> 之后，<code>PEERDNS</code> 默认为 <code>yes</code></p>
+<p> 我们先人为给系统配置公共的DNS，并且网卡配置自动获取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/4)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">search localdomain</span><br><span class="line">nameserver 192.168.127.2</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<p>启动方式配置了 <code>DHCP</code> 之后我们知道 <code>PEERDNS</code> 默认为 <code>yes</code>，当重启了网卡之后，发现<code>/etc/resolv.conf</code> 确实被修改了，我们再加一条配置：<code>PEERDNS=no</code> 来看看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0                                 </span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/3)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<p>此时发现虽然配置了 <code>PEERDNS=no</code> ，当重启了网卡之后<code>/etc/resolv.conf</code> 还是被修改了，但是少了一个 DNS 并且两次实验后文件中都会有个注释：<code># Generated by NetworkManager</code>，查看进程后发现系统运行了一个服务 <code>NetworkManager</code> 为了排除其因素我们将此服务停止再次测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop NetworkManager</span><br></pre></td></tr></table></figure>
+<p>先不配置 <code>PEERDNS</code> 选项，即默认<code>PEERDNS=yes</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# systemctl stop NetworkManager</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Determining IP information for eth0... done.</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">; generated by /usr/sbin/dhclient-script</span><br><span class="line">search localdomain</span><br><span class="line">nameserver 192.168.127.2</span><br></pre></td></tr></table></figure>
+<p>配置 <code>PEERDNS</code> 选项，即<code>PEERDNS=no</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Determining IP information for eth0... done.</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<p>结论：</p>
+<ul>
+<li>在 <code>PEERDNS=yes</code> 的情况下，会生成一个 <code>nameserver 192.168.127.2</code> 的配置，会更改 <code>/etc/resolv.conf</code></li>
+<li>在 <code>PEERDNS=no</code> 的情况下，不会生成一个 <code>nameserver 192.168.127.2</code> 的配置，不会更改 <code>/etc/resolv.conf</code></li>
+</ul>
+<p>那么在 <code>PEERDNS=yes</code> 的情况下生成的 <code>nameserver 192.168.127.2</code> 到底是哪的呢？在查看了 DHCP 服务器的配置后发现获得的这个地址是 DHCP 服务器分配给客户端的 DNS 地址</p>
+<h4 id="PEERDNS-amp-DNS-1-2-address"><a href="#PEERDNS-amp-DNS-1-2-address" class="headerlink" title="PEERDNS &amp; DNS{1,2}=address"></a>PEERDNS &amp; DNS{1,2}=address</h4><p>为了排除掉 <code>NetworkManager</code>  的因素我们将此服务停止</p>
+<ul>
+<li><code>PEERDNS=yes</code> &amp; <code>DNS{1,2}=address</code> </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">PEERDNS=&quot;yes&quot;</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Determining IP information for eth0... done.</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">; generated by /usr/sbin/dhclient-script</span><br><span class="line">search localdomain</span><br><span class="line">nameserver 219.141.136.10</span><br><span class="line">nameserver 219.141.140.10</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>PEERDNS=no</code> &amp; <code>DNS{1,2}=address</code> </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0          </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0                                  </span><br><span class="line">Determining IP information for eth0... done.</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h3 id="静态指定方式"><a href="#静态指定方式" class="headerlink" title="静态指定方式"></a>静态指定方式</h3><h4 id="单独配置-PEERDNS-1"><a href="#单独配置-PEERDNS-1" class="headerlink" title="单独配置 PEERDNS"></a>单独配置 PEERDNS</h4><ul>
+<li><code>PEERDNS=yes</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;yes&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>PEERDNS=no</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h4 id="PEERDNS-amp-DNS-1-2-address-1"><a href="#PEERDNS-amp-DNS-1-2-address-1" class="headerlink" title="PEERDNS &amp; DNS{1,2}=address"></a>PEERDNS &amp; DNS{1,2}=address</h4><ul>
+<li><code>PEERDNS=yes</code> &amp; <code>DNS{1,2}=address</code> </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;yes&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 219.141.136.10</span><br><span class="line">nameserver 219.141.140.10</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>PEERDNS=no</code> &amp; <code>DNS{1,2}=address</code> </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line"></span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>BOOTPROTO=&quot;dhcp&quot;</code>的情况：</p>
+<ul>
+<li><code>PEERDNS=yes</code><ul>
+<li>网卡配置文件中配置了 <code>DNS{1,2}=address</code> ，直接将 <code>address</code> 更新到  <code>/etc/resolv.conf</code>，不会去从DHCP服务器获取 DNS，如果没有配置 <code>DNS{1,2}=address</code> 就会尝试从 DHCP 服务器获得 DNS 并更新到 <code>/etc/resolv.conf</code></li>
+</ul>
+</li>
+<li><code>PEERDNS=no</code> <ul>
+<li>无论网卡配置文件中是否配置 <code>DNS{1,2}=address</code>，都不会更改 <code>/etc/resolv.conf</code>，也不会去从DHCP服务器获取 DNS</li>
+</ul>
+</li>
+</ul>
+<p><code>BOOTPROTO=&quot;static&quot;</code>的情况：</p>
+<ul>
+<li><p><code>PEERDNS=yes</code></p>
+<ul>
+<li>网卡配置文件中配置了 <code>DNS{1,2}=address</code> ，直接将 <code>address</code> 更新到  <code>/etc/resolv.conf</code>，不会去从DHCP服务器获取 DNS，如果没有配置 <code>DNS{1,2}=address</code> 则不更改  <code>/etc/resolv.conf</code></li>
+</ul>
+</li>
+<li><p><code>PEERDNS=no</code> </p>
+<ul>
+<li>无论网卡配置文件中是否配置 <code>DNS{1,2}=address</code>，都不会更改 <code>/etc/resolv.conf</code>，也不会去从DHCP服务器获取 DNS</li>
+</ul>
+</li>
+</ul>
+<h2 id="NetworkManager-中的-DNS"><a href="#NetworkManager-中的-DNS" class="headerlink" title="NetworkManager 中的 DNS"></a>NetworkManager 中的 DNS</h2><p>NetworkManager 是用于便携式计算机和其他可移动计算机的理想解决方案。提供了完善而直观的用户界面，可使用户轻松地切换其网络环境。也就是说 NetworkManager 更适用于桌面环境的 PC 电脑，服务器上一般都是命令行界面，我们完全可以不需要使用 NetworkManager ，而且 NetworkManager 服务和 network 服务有可能会起冲突，因此我们可以将此服务禁掉。</p>
+<p>我们先假设由于某种依赖关系的原因必须启用 <code>NetworkManager</code> 服务，测试看看它是否会更改系统的 DNS 。</p>
+<p>为了排除其他因素，我们在网卡配置文件中删除 <code>DNS{1,2}=address</code> 相关的配置，并添加 <code>PEERDNS=no</code> </p>
+<p>启用 NetworkManager 服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start NetworkManager</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>BOOTPROTO=&quot;dhcp&quot;</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/10)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>BOOTPROTO=&quot;static&quot;</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/3)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>BOOTPROTO=&quot;dhcp&quot;</code> + <code>DNS{1,2}=address</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;dhcp&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/11)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">nameserver 219.141.136.10</span><br><span class="line">nameserver 219.141.140.10</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>BOOTPROTO=&quot;static&quot;</code> + <code>DNS{1,2}=address</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/12)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">nameserver 219.141.136.10</span><br><span class="line">nameserver 219.141.140.10</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<p>通过测试发现，默认情况下 <code>NetworkManager</code> 服务运行起来，如果改了网络配置就会更新系统的 <code>/etc/resolv.conf</code>，如果我们的目的只是修改一下IP地址，重启完网卡后却更新了系统的 DNS ，这显然不符合我们的预期。那么有没有什么办法可以避免这种问题发生呢？</p>
+<p>查看了 <code>NetworkManager</code> 的服务配置文件 <code>/etc/NetworkManager/NetworkManager.conf</code>之后，给出了 <code>See &quot;man 5 NetworkManager.conf&quot; for details.</code>的提示，通过查看 man 手册发现了与 DNS 相关的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dns</span><br><span class="line">	Set the DNS (resolv.conf) processing mode. If the key is unspecified, default is used, unless /etc/resolv.conf is a symlink to /run/systemd/resolve/resolv.conf, /lib/systemd/resolv.conf or /usr/lib/systemd/resolv.conf. In that case, systemd-resolved is chosen automatically.</span><br><span class="line"></span><br><span class="line">	default: NetworkManager will update /etc/resolv.conf to reflect the nameservers provided by currently active connections.</span><br><span class="line">	</span><br><span class="line">	none: NetworkManager will not modify resolv.conf. This implies rc-manager unmanaged</span><br></pre></td></tr></table></figure>
+<p>那么我们将处理模式改为 <code>none</code> 并重启 <code>NetworkManager</code> 服务再次进行测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/NetworkManager/NetworkManager.conf</span><br><span class="line"># Configuration file for NetworkManager.</span><br><span class="line">#</span><br><span class="line"># See &quot;man 5 NetworkManager.conf&quot; for details.</span><br><span class="line">#</span><br><span class="line"># The directory /etc/NetworkManager/conf.d/ can contain additional configuration</span><br><span class="line"># snippets. Those snippets override the settings from this main file.</span><br><span class="line">#</span><br><span class="line"># The files within conf.d/ directory are read in asciibetical order.</span><br><span class="line">#</span><br><span class="line"># If two files define the same key, the one that is read afterwards will overwrite</span><br><span class="line"># the previous one.</span><br><span class="line"></span><br><span class="line">[main]</span><br><span class="line">plugins=ifcfg-rh</span><br><span class="line">dns=none</span><br><span class="line"></span><br><span class="line">[logging]</span><br><span class="line">#level=DEBUG</span><br><span class="line">#domains=ALL</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options rotate</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span><br><span class="line">DEVICE=&quot;eth0&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">PEERDNS=&quot;no&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">DNS1=&quot;219.141.136.10&quot;</span><br><span class="line">DNS2=&quot;219.141.140.10&quot;</span><br><span class="line">IPADDR=192.168.127.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.127.2</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# systemctl restart NetworkManager     </span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf            </span><br><span class="line"># Generated by NetworkManager</span><br><span class="line">nameserver 219.141.136.10</span><br><span class="line">nameserver 219.141.140.10</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure>
+<p>修改了模式之后重启服务仍然会修改系统 DNS，是配置的参数没生效吗？我们将系统的DNS改回去再试一次</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf          </span><br><span class="line">options rotate</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# systemctl restart NetworkManager       </span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf            </span><br><span class="line">options rotate</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# ifdown eth0;ifup eth0</span><br><span class="line">Device &apos;eth0&apos; successfully disconnected.</span><br><span class="line">Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/3)</span><br><span class="line"></span><br><span class="line">[root@bogon ~]# cat /etc/resolv.conf</span><br><span class="line">options rotate</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+<p>这说明配置的参数可以阻止 <code>NetworkManager</code> 服务修改 <code>/etc/resolv.conf</code></p>
+<h1 id="DNS配置优化"><a href="#DNS配置优化" class="headerlink" title="DNS配置优化"></a>DNS配置优化</h1><p>为了避免其他来源覆盖本机的 <code>/etc/resoolv.conf</code>，可以从以下几处来进行优化：</p>
+<ul>
+<li>网卡配置文件中删除 <code>DNS{1,2}=address</code> 相关的配置，并添加 <code>PEERDNS=no</code> </li>
+<li>网卡配置文件中添加 <code>NM_CONTROLLED=no</code> 来避免 <code>network.service</code> 和 <code>NetworkManager.service</code> 冲突</li>
+<li>修改 <code>NetworkManager</code> 的处理模式，在 <code>/etc/NetworkManager/NetworkManager.conf</code> 中添加 <code>dns=none</code></li>
+<li>如果没有必要的话，则停止 <code>NetworkManager.service</code> ，并禁止开机自启动</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李廷杰 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李廷杰 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    李廷杰
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/" title="CentOS中resolv.conf的配置实验">http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DNS/" rel="tag"><i class="fa fa-tag"></i> DNS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/16/2018-01-16-161310-利用Dnsmasq搭建本地自有DNS服务器/" rel="next" title="利用Dnsmasq搭建本地自有DNS服务器">
+                <i class="fa fa-chevron-left"></i> 利用Dnsmasq搭建本地自有DNS服务器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/19/2018-01-19-214844-curl-7-57-0源码包编译安装和移植/" rel="prev" title="curl-7.57.0源码包编译安装和移植">
+                curl-7.57.0源码包编译安装和移植 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="李廷杰" />
+            
+              <p class="site-author-name" itemprop="name">李廷杰</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">118</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件的配置参数及作用"><span class="nav-number">2.</span> <span class="nav-text">文件的配置参数及作用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nameserver"><span class="nav-number">2.1.</span> <span class="nav-text">nameserver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#domain"><span class="nav-number">2.2.</span> <span class="nav-text">domain</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求解析的内容不包含有域时"><span class="nav-number">2.2.1.</span> <span class="nav-text">请求解析的内容不包含有域时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求解析的内容包含有域时"><span class="nav-number">2.2.2.</span> <span class="nav-text">请求解析的内容包含有域时</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#search"><span class="nav-number">2.3.</span> <span class="nav-text">search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#options"><span class="nav-number">2.4.</span> <span class="nav-text">options</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#timeout"><span class="nav-number">2.4.1.</span> <span class="nav-text">timeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attempts"><span class="nav-number">2.4.2.</span> <span class="nav-text">attempts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rotate"><span class="nav-number">2.4.3.</span> <span class="nav-text">rotate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#single-request-reopen"><span class="nav-number">2.4.4.</span> <span class="nav-text">single-request-reopen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#edns0"><span class="nav-number">2.4.5.</span> <span class="nav-text">edns0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结和建议"><span class="nav-number">3.</span> <span class="nav-text">总结和建议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么会修改-etc-resolv-conf"><span class="nav-number">4.</span> <span class="nav-text">什么会修改 /etc/resolv.conf</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网卡配置文件中的-DNS"><span class="nav-number">4.1.</span> <span class="nav-text">网卡配置文件中的 DNS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网卡配置参考文档"><span class="nav-number">4.1.1.</span> <span class="nav-text">网卡配置参考文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP方式"><span class="nav-number">4.1.2.</span> <span class="nav-text">DHCP方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单独配置-PEERDNS"><span class="nav-number">4.1.2.1.</span> <span class="nav-text">单独配置 PEERDNS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PEERDNS-amp-DNS-1-2-address"><span class="nav-number">4.1.2.2.</span> <span class="nav-text">PEERDNS & DNS{1,2}=address</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态指定方式"><span class="nav-number">4.1.3.</span> <span class="nav-text">静态指定方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单独配置-PEERDNS-1"><span class="nav-number">4.1.3.1.</span> <span class="nav-text">单独配置 PEERDNS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PEERDNS-amp-DNS-1-2-address-1"><span class="nav-number">4.1.3.2.</span> <span class="nav-text">PEERDNS & DNS{1,2}=address</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NetworkManager-中的-DNS"><span class="nav-number">4.2.</span> <span class="nav-text">NetworkManager 中的 DNS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DNS配置优化"><span class="nav-number">5.</span> <span class="nav-text">DNS配置优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
