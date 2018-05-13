@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/a.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/01/17/2018-01-17-083710-CentOS中resolv.conf的配置实验/b.png">
-<meta property="og:updated_time" content="2018-05-12T18:24:27.029Z">
+<meta property="og:updated_time" content="2018-05-13T04:05:13.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS中resolv.conf的配置实验">
 <meta name="twitter:description" content="前言通常情况下，在Linux中可以用来配置 DNS 地址的文件有两个：  网卡配置文件 /etc/sysconfig/network-scripts/ifcfg-eth* 解析配置文件 /etc/resolv.conf，文件中的注释行可以采用 # 或者 ; 开头  /etc/resolv.conf 这个文件用来在 Linux 上配置本机的 DNS ，本文列出了一些对该文件中 DNS 配置的疑问、实">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  12,991
+                  12,985
                 </span>
               
 
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  70
+                  69
                 </span>
               
             </div>
@@ -448,7 +448,7 @@
 <h1 id="文件的配置参数及作用"><a href="#文件的配置参数及作用" class="headerlink" title="文件的配置参数及作用"></a>文件的配置参数及作用</h1><p>通过查看 <a href="http://man7.org/linux/man-pages/man5/resolv.conf.5.html" target="_blank" rel="noopener">手册页</a>，会看到有很多相关的参数，这里只讨论对我们来说可能有用的几个</p>
 <h2 id="nameserver"><a href="#nameserver" class="headerlink" title="nameserver"></a>nameserver</h2><p>这个参数会指定系统使用的 DNS 的 IP 地址，在生产环境中，经常会看到 <code>/etc/resolv.conf</code> 中配置了一个或多个 <code>nameserver</code> ，这里我们配置多个 <code>nameserver</code> 来进行实验</p>
 <p>我们先在文件中配置几个公共 DNS 地址，删除其他的选项或参数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 123.45.67.8</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 1.2.4.8</span><br><span class="line">nameserver 180.76.76.76</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# cat /etc/resolv.conf </span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 9.9.9.9</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 1.2.4.8</span><br><span class="line">nameserver 180.76.76.76</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure>
 <p>那么配置了多个 <code>nameserver</code> 后，系统使用这些DNS的顺序是怎样的呢？我们来使用 <code>dig</code> 命令来解析几个不同的域名，并使用 <code>tcpdump</code> 命令进行抓包分析</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# dig +short +tries=1 www.redhat.com www.centos.org www.kernel.org</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]# tcpdump -nn -i eth0 udp port 53</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">20:51:38.162534 IP 192.168.127.154.58459 &gt; 8.8.8.8.53: 27136+ [1au] A? www.redhat.com. (43)</span><br><span class="line">20:51:38.165500 IP 8.8.8.8.53 &gt; 192.168.127.154.58459: 27136 4/0/0 CNAME ds-www.redhat.com.edgekey.net., CNAME ds-www.redhat.com.edgekey.net.globalredir.akadns.net., CNAME e3396.ca2.s.tl88.net., A 210.192.117.211 (185)</span><br><span class="line">20:51:38.166018 IP 192.168.127.154.58937 &gt; 8.8.8.8.53: 37326+ [1au] A? www.centos.org. (43)</span><br><span class="line">20:51:38.449824 IP 8.8.8.8.53 &gt; 192.168.127.154.58937: 37326 1/3/4 A 85.12.30.226 (161)</span><br><span class="line">20:51:38.450397 IP 192.168.127.154.47932 &gt; 8.8.8.8.53: 5121+ [1au] A? www.kernel.org. (43)</span><br><span class="line">20:51:38.546600 IP 8.8.8.8.53 &gt; 192.168.127.154.47932: 5121 3/6/1 CNAME git.kernel.org., CNAME hkg.git.kernel.org., A 147.75.42.139 (237)</span><br></pre></td></tr></table></figure>
@@ -486,7 +486,6 @@
 <h2 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">domain &lt;Local domain name&gt;</span><br></pre></td></tr></table></figure>
 <p>这个参数用于系统在进行 DNS 查询时，如果请求的域名无法正常解析时自动补充 <code>domain</code> 的参数值，</p>
 <p>当请求解析的内容中含有域时，即无论系统请求哪一个主机名时，系统默认都会先加上根域 <code>.</code>，但是如果不包含域，则会将 <code>domain</code> 中设定的域填充进去。这是官方文档中的一段描述：</p>
-<p>&gt;</p>
 <blockquote>
 <p>the domain part is taken to be everything after the first ‘.’.<br>Finally, if the hostname does not contain a domain part,<br>the root domain is assumed.</p>
 </blockquote>
