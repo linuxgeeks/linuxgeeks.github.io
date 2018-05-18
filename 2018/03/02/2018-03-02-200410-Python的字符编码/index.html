@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/02/2018-03-02-200410-Python的字符编码/code1.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/02/2018-03-02-200410-Python的字符编码/code2.png">
-<meta property="og:updated_time" content="2018-04-21T11:45:18.713Z">
+<meta property="og:updated_time" content="2018-05-16T03:38:16.531Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的字符编码">
 <meta name="twitter:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们">
@@ -402,7 +402,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,193
+                  4,180
                 </span>
               
 
@@ -955,7 +955,6 @@
 <p>有的中文Windows的缺省内码还是GBK，可以通过GB18030升级包升级到GB18030。不过GB18030相对GBK增加的字符，普通人是很难用到的，通常我们还是用GBK指代中文Windows内码。</p>
 <h2 id="unicode"><a href="#unicode" class="headerlink" title="unicode"></a>unicode</h2><p>全世界有上百种语言，日本把日文编到Shift_JIS里，韩国把韩文编到Euc-kr里，各国有各国的标准，就会不可避免地出现冲突，结果就是，在多语言混合的文本中，显示出来会有乱码。比如如果中国的软件出口到美国，在美国人的电脑上就会显示乱码，因为他们没有gbk编码。</p>
 <p>因此，Unicode（统一码、万国码、单一码）应运而生。Unicode把所有语言都统一到一套编码里，这样就不会再有乱码问题了。规定虽有的字符和符号统一最少由 16 位(2Bytes)代表一个字符，2**16-1=65535，可代表6万多个字符，因而兼容万国语言。</p>
-<p><strong>注</strong>：此处说的的是最少2个字节，可能更多</p>
 <h2 id="utf-8"><a href="#utf-8" class="headerlink" title="utf-8"></a>utf-8</h2><p>但对于通篇都是英文的文本来说，本来用一个字节就可以表示的内容，用unicode这种编码方式无疑是多了一倍的存储空间。本着节约的精神，于是产生了UTF-8，对英文字符只用1Bytes表示，对中文字符用3Bytes。如果你要传输的文本包含大量英文字符，用UTF-8编码就能节省空间：</p>
 <table>
 <thead>
@@ -1049,12 +1048,6 @@
 </ul>
 <p>当python解释器执行到产生字符串的代码时（例如s=u’林’），会申请新的内存地址，然后将’林’以unicode的格式存放到新的内存空间中，所以s只能encode，不能decode.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s=<span class="string">u'好'</span></span><br><span class="line"><span class="keyword">print</span> repr(s) <span class="comment">#u'\u597d'</span></span><br><span class="line"><span class="keyword">print</span> type(s) <span class="comment">#&lt;type 'unicode'&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># s.decode('utf-8') #报错，s为unicode，所以只能encode</span></span><br><span class="line">s.encode(<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>当数据要打印到终端时，要注意一些问题.</strong></p>
-<ul>
-<li>当程序执行时，比如: <code>x=&#39;好&#39;;print(x)</code> ，这一步是将x指向的那块新的内存空间（非代码所在的内存空间）中的内存，打印到终端，而终端仍然是运行于内存中的，所以这打印可以理解为从内存打印到内存，即内存-&gt;内存，unicode-&gt;unicode，对于unicode格式的数据来说，无论怎么打印，都不会乱码。</li>
-<li>python3中的字符串与python2中的u’字符串’，都是unicode，所以无论如何打印都不会乱码。</li>
-<li>在windows终端（终端编码为gbk，文件编码为utf-8，乱码产生）</li>
-</ul>
 <h3 id="Python3"><a href="#Python3" class="headerlink" title="Python3"></a>Python3</h3><p>在python3中也有两种字符串类型str和bytes</p>
 <ul>
 <li>python3中，str类型在内存中默认以unicode编码保存到新的内存空间中</li>
@@ -1064,6 +1057,12 @@
 <li>bytes类型</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line">s=<span class="string">'好'</span> <span class="comment">#当程序执行时，无需加u,默认以unicode形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#s可以直接encode成任意编码格式</span></span><br><span class="line">s1=s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">s2=s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s)) <span class="comment">#&lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">print(s)  <span class="comment">#好</span></span><br><span class="line">print(s1) <span class="comment">#b'\xe6\x9e\x97' 在python3中，是什么就打印什么</span></span><br><span class="line">print(s2) <span class="comment">#b'\xc1\xd6' 同上</span></span><br><span class="line"></span><br><span class="line">print(type(s)) <span class="comment">#&lt;class 'str'&gt;</span></span><br><span class="line">print(type(s1)) <span class="comment">#&lt;class 'bytes'&gt;</span></span><br><span class="line">print(type(s2)) <span class="comment">#&lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p><strong>当数据要打印到终端时，要注意一些问题.</strong></p>
+<ul>
+<li>当程序执行时，比如: <code>x=&#39;好&#39;;print(x)</code> ，这一步是将x指向的那块新的内存空间（非代码所在的内存空间）中的内存，打印到终端，而终端仍然是运行于内存中的，所以这打印可以理解为从内存打印到内存，即内存-&gt;内存，unicode -&gt; unicode，对于unicode格式的数据来说，无论怎么打印，都不会乱码。</li>
+<li>python3中的字符串与python2中的u’字符串’，都是unicode，所以无论如何打印都不会乱码。</li>
+<li>在windows终端（终端编码为gbk，文件编码为utf-8，乱码产生）</li>
+</ul>
 <h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><ul>
 <li>在ASCII中一个中文字符占用几个字节？答：ASCII无法表示中文字符</li>
 <li>python2的默认文件编码是ascii</li>
@@ -1279,7 +1278,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">118</span>
+                  <span class="site-state-item-count">119</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1423,7 +1422,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二进制与数字"><span class="nav-number">1.</span> <span class="nav-text">二进制与数字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASCII码"><span class="nav-number">2.</span> <span class="nav-text">ASCII码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符编码的发展史"><span class="nav-number">3.</span> <span class="nav-text">字符编码的发展史</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于中文"><span class="nav-number">3.1.</span> <span class="nav-text">关于中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode"><span class="nav-number">3.2.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utf-8"><span class="nav-number">3.3.</span> <span class="nav-text">utf-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码的使用"><span class="nav-number">4.</span> <span class="nav-text">编码的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python的编码"><span class="nav-number">5.</span> <span class="nav-text">python的编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#存取过程"><span class="nav-number">5.1.</span> <span class="nav-text">存取过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存中的执行"><span class="nav-number">5.2.</span> <span class="nav-text">内存中的执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python2与python3编码区别"><span class="nav-number">5.3.</span> <span class="nav-text">Python2与python3编码区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python2"><span class="nav-number">5.3.1.</span> <span class="nav-text">Python2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3"><span class="nav-number">5.3.2.</span> <span class="nav-text">Python3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结-1"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二进制与数字"><span class="nav-number">1.</span> <span class="nav-text">二进制与数字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASCII码"><span class="nav-number">2.</span> <span class="nav-text">ASCII码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符编码的发展史"><span class="nav-number">3.</span> <span class="nav-text">字符编码的发展史</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于中文"><span class="nav-number">3.1.</span> <span class="nav-text">关于中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode"><span class="nav-number">3.2.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utf-8"><span class="nav-number">3.3.</span> <span class="nav-text">utf-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码的使用"><span class="nav-number">4.</span> <span class="nav-text">编码的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python的编码"><span class="nav-number">5.</span> <span class="nav-text">python的编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#存取过程"><span class="nav-number">5.1.</span> <span class="nav-text">存取过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存中的执行"><span class="nav-number">5.2.</span> <span class="nav-text">内存中的执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python2与python3编码区别"><span class="nav-number">5.3.</span> <span class="nav-text">Python2与python3编码区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python2"><span class="nav-number">5.3.1.</span> <span class="nav-text">Python2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3"><span class="nav-number">5.3.2.</span> <span class="nav-text">Python3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意事项"><span class="nav-number">6.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结-1"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
