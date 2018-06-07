@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="实验环境 虚拟机版本：VMware® Workstation 14 Pro Cobbler服务器上需要搭建DHCP服务器为新安装的操作系统分配IP地址，但在同一局域网多个DHCP服务会有冲突，因此虚拟机采用NAT模式 避免出现依赖关系上的错误，使用全新的操作系统，这里使用的是 CentOS 7.4.1708   Cobbler的IP地址为 192.168.127.10  系统基础环境 yum源的配">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-08T03:14:16.436Z">
+<meta property="og:updated_time" content="2018-05-25T03:43:17.390Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cobbler安装配置">
 <meta name="twitter:description" content="实验环境 虚拟机版本：VMware® Workstation 14 Pro Cobbler服务器上需要搭建DHCP服务器为新安装的操作系统分配IP地址，但在同一局域网多个DHCP服务会有冲突，因此虚拟机采用NAT模式 避免出现依赖关系上的错误，使用全新的操作系统，这里使用的是 CentOS 7.4.1708   Cobbler的IP地址为 192.168.127.10  系统基础环境 yum源的配">
@@ -504,7 +504,7 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'s#^next_server: 127.0.0.1#next_server: 192.168.127.10#'</span> /etc/cobbler/settings</span><br></pre></td></tr></table></figure>
 <ul>
-<li>修改<code>/etc/xinetd</code>.d/tftp<code>`文件中的disable参数修改为</code>disable = no`</li>
+<li>修改<code>/etc/xinetd.d/tftp</code>文件中的disable参数修改为 <code>disable = no</code></li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cp /etc/xinetd.d/tftp&#123;,.bak&#125;</span><br><span class="line">sed -ri <span class="string">'/disable(\t| )*=/s#yes#no#g'</span> /etc/xinetd.d/tftp</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> tftp.socket</span><br><span class="line">systemctl start  tftp.socket</span><br><span class="line">chmod +x /etc/rc.d/rc.local </span><br><span class="line"><span class="built_in">echo</span>  systemctl <span class="built_in">enable</span> tftp.socket &gt;&gt; /etc/rc.d/rc.local</span><br><span class="line"><span class="built_in">echo</span>  systemctl start tftp.socket  &gt;&gt; /etc/rc.d/rc.local</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> tftp.service</span><br><span class="line">systemctl start  tftp.service</span><br></pre></td></tr></table></figure>
 <ul>
@@ -537,7 +537,7 @@
 <ul>
 <li>重启服务，再次检查</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart cobblerd.service</span><br><span class="line">[root@Cobbler ~]<span class="comment"># cobbler check</span></span><br><span class="line">No configuration problems found.  All systems go.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart cobblerd.service</span><br><span class="line">[root@Cobbler ~]# cobbler check</span><br><span class="line">No configuration problems found.  All systems go.</span><br></pre></td></tr></table></figure>
 <ul>
 <li>同步cobbler的配置，可以看到同步做了哪些操作</li>
 </ul>
@@ -766,7 +766,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">119</span>
+                  <span class="site-state-item-count">120</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
