@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/05/2018-03-05-201910-Python的组合数据类型-字符串/2-2.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/05/2018-03-05-201910-Python的组合数据类型-字符串/2-3.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/05/2018-03-05-201910-Python的组合数据类型-字符串/2-4.png">
-<meta property="og:updated_time" content="2018-04-24T05:45:07.819Z">
+<meta property="og:updated_time" content="2018-06-12T12:26:15.161Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的组合数据类型-字符串">
 <meta name="twitter:description" content="字符串Python字符串不可以被更改，它们是不可变的 。因此，赋值给字符串索引的位置会导致错误。字符串是使用固定不变的 str 数据类型表示的，其中存放 Unicode 字符序列。 str 数据类型可以作为函数进行调用，用于创建字符串对象：  参数为空时返回一个空字符串 参数为非字符串类型时返回该参数的字符串形式 参数为字符串时返回该字符串的拷贝  str() 函数也可以用作一个转换函数，此时要求">
@@ -403,7 +403,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,800
+                  5,871
                 </span>
               
 
@@ -419,7 +419,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  25
+                  26
                 </span>
               
             </div>
@@ -458,6 +458,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">phone2 = re.compile(<span class="string">r"^((?:[()\d+[]])?\s*\d+(?:-\d+)?)$"</span>)</span><br></pre></td></tr></table></figure>
 <p>再比如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'C:\some\name'</span>)    <span class="comment"># 这里的\n意味着换行</span></span><br><span class="line">print(<span class="string">r'C:\some\name'</span>)   <span class="comment"># 在引号前使用r来引导，则\n就按照字面意义理解</span></span><br></pre></td></tr></table></figure>
+<p>如果变量中有特殊字符串，但不希望被引用，则可以使用 <code>repr()</code> 方法使用字符串原意(方便机器阅读，而不是方便人阅读)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>line = <span class="string">'Hello Tom ! \n Hi'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(line)</span><br><span class="line">Hello Tom !</span><br><span class="line"> Hi</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(repr(line))</span><br><span class="line"><span class="string">'Hello Tom ! \n Hi'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><ul>
 <li>字符串可以由 <code>+</code> 操作符连接(粘到一起)，可以由 <code>*</code> 表示重复</li>
 </ul>
@@ -875,7 +877,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

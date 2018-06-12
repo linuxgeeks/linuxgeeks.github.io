@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="标识符(变量)在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称 123# -*- coding: utf-8 -*-name = &quot;litingjie&quot; 以上代码声明了一个变量，变量名为 name，并使用赋值操作">
+<meta name="description" content="标识符(变量)Variables are used to store information to be referenced and manipulated in a computer program. They also provide a way of labeling data with a descripti">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python的标识符与关键字">
 <meta property="og:url" content="http://linuxgeeks.github.io/2018/03/04/2018-03-04-081210-Python的标识符与关键字/index.html">
 <meta property="og:site_name" content="老李的杂货铺">
-<meta property="og:description" content="标识符(变量)在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称 123# -*- coding: utf-8 -*-name = &quot;litingjie&quot; 以上代码声明了一个变量，变量名为 name，并使用赋值操作符 = 为变量name 赋了一个值为 litingjie　 变量的命名规则 变量名是对大小写敏感的">
+<meta property="og:description" content="标识符(变量)Variables are used to store information to be referenced and manipulated in a computer program. They also provide a way of labeling data with a descriptive name, so our programs can be understo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T06:02:02.429Z">
+<meta property="og:updated_time" content="2018-06-12T08:27:12.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的标识符与关键字">
-<meta name="twitter:description" content="标识符(变量)在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称 123# -*- coding: utf-8 -*-name = &quot;litingjie&quot; 以上代码声明了一个变量，变量名为 name，并使用赋值操作符 = 为变量name 赋了一个值为 litingjie　 变量的命名规则 变量名是对大小写敏感的">
+<meta name="twitter:description" content="标识符(变量)Variables are used to store information to be referenced and manipulated in a computer program. They also provide a way of labeling data with a descriptive name, so our programs can be understo">
 
 
 
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  724
+                  944
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  4
                 </span>
               
             </div>
@@ -436,13 +436,15 @@
       
 
       
-        <h1 id="标识符-变量"><a href="#标识符-变量" class="headerlink" title="标识符(变量)"></a>标识符(变量)</h1><p>在Python中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名，或者仅仅是简单的名称</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">name = <span class="string">"litingjie"</span></span><br></pre></td></tr></table></figure>
-<p>以上代码声明了一个变量，变量名为 <code>name</code>，并使用赋值操作符 <code>=</code> 为变量<code>name</code> 赋了一个值为 <code>litingjie</code>　</p>
+        <h1 id="标识符-变量"><a href="#标识符-变量" class="headerlink" title="标识符(变量)"></a>标识符(变量)</h1><p><strong>Variables</strong> are used to store information to be referenced and manipulated in a computer program. They also provide a way of labeling data with a descriptive name, so our programs can be understood more clearly by the reader and ourselves. It is helpful to think of variables as containers that hold information. Their sole purpose is to label and store data in memory. This data can then be used throughout your program.</p>
+<p> 变量就是用来存储一些信息，供程序以后调用或者操作修改。变量为标记数据提供了一种描述性的名字，以便我们的程序可以被程序的阅读者很清晰的理解。把变量作为一个存储信息的容器会更容易理解变量。它的主要是目的是笔记和存储在内存中的数据，这个数据就可以在你的整个程序中使用</p>
+<p> 简单地说，变量就像是一个容器，它的作用是存储数据，以便之后调用。为变量指定值的过程叫做赋值，在 Python 中进行赋值操作时，实际上是对内存中存放数据的对象进行引用。为对象引用赋予的名称称为标识符，也叫变量名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">name = <span class="string">"Jerry"</span></span><br></pre></td></tr></table></figure>
+<p>以上代码声明了一个变量，变量名为 <code>name</code>，并使用赋值操作符 <code>=</code> 为变量<code>name</code> 赋了一个值为 <code>Jerry</code>　</p>
 <h1 id="变量的命名规则"><a href="#变量的命名规则" class="headerlink" title="变量的命名规则"></a>变量的命名规则</h1><ul>
-<li>变量名是对大小写敏感的</li>
-<li>变量名只能是 字母、数字 或 下划线 的任意组合，</li>
-<li>变量名的第一个字符不能是数字</li>
+<li>变量名区分大小写</li>
+<li>变量名只能是 字母、数字 或 下划线 的任意组合</li>
+<li>变量名不能以数字开头</li>
 <li>变量名不能与 Python 的关键字同名，以下是 Python 关键字的获取方法</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> keyword</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keyword.kwlist</span><br><span class="line">[<span class="string">'False'</span>, <span class="string">'None'</span>, <span class="string">'True'</span>, <span class="string">'and'</span>, <span class="string">'as'</span>, <span class="string">'assert'</span>, <span class="string">'break'</span>, <span class="string">'class'</span>, <span class="string">'continue'</span>, <span class="string">'def'</span>, <span class="string">'del'</span>, <span class="string">'elif'</span>, <span class="string">'else'</span>, <span class="string">'except'</span>, <span class="string">'finally'</span>, <span class="string">'for'</span>, <span class="string">'from'</span>, <span class="string">'global'</span>, <span class="string">'if'</span>, <span class="string">'import'</span>, <span class="string">'in'</span>, <span class="string">'is'</span>, <span class="string">'lambda'</span>, <span class="string">'nonlocal'</span>, <span class="string">'not'</span>, <span class="string">'or'</span>, <span class="string">'pass'</span>, <span class="string">'raise'</span>, <span class="string">'return'</span>, <span class="string">'try'</span>, <span class="string">'while'</span>, <span class="string">'with'</span>, <span class="string">'yield'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
@@ -458,7 +460,7 @@
 <h1 id="变量的赋值"><a href="#变量的赋值" class="headerlink" title="变量的赋值"></a>变量的赋值</h1><ul>
 <li>使用等号 <code>=</code> 作为赋值操作符来给变量进行赋值</li>
 <li>等号 <code>=</code> 左边是一个变量名，右边是存储在变量中的值</li>
-<li>Python是动态类型的语言，在 Python 中，变量赋值不需要声明数据的类型</li>
+<li>Python是动态类型的语言，在 Python 中变量赋值不需要声明数据的类型</li>
 <li>每个变量在内存中创建，都包括变量的标识，名称和数据</li>
 <li>每个变量在使用前都必须先进行赋值，变量赋值以后该变量才会被创建</li>
 </ul>
@@ -471,7 +473,7 @@
 <ul>
 <li>Python也可以为多个对象指定多个变量。例如</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a, b, c = <span class="number">1</span>, <span class="number">2</span>, <span class="string">"Litingjie"</span></span><br><span class="line"><span class="comment"># 两个整型对象 1 和 2 的分配给变量 a 和 b，字符串对象 "Litingjie" 分配给变量 c</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a, b, c = <span class="number">1</span>, <span class="number">2</span>, <span class="string">"Jerry"</span></span><br><span class="line"><span class="comment"># 两个整型对象 1 和 2 的分配给变量 a 和 b，字符串对象 "Jerry" 分配给变量 c</span></span><br></pre></td></tr></table></figure>
 <h1 id="获取数据的类型"><a href="#获取数据的类型" class="headerlink" title="获取数据的类型"></a>获取数据的类型</h1><p>在 Python 中有很多 <a href="https://docs.python.org/3/library/functions.html" target="_blank" rel="noopener">内置函数</a>，可以使用 <code>type()</code> 函数可以很容易地获取某个对象的数据类型</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(<span class="string">'abc123'</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(<span class="string">'123'</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(<span class="number">123</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">int</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>])</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">list</span>'&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -561,8 +563,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/05/2018-03-05-164610-Python的基本数据类型-整型和浮点型/" rel="prev" title="Python的基本数据类型-整型和浮点型">
-                Python的基本数据类型-整型和浮点型 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/04/2018-03-04-161610-Python的运算符/" rel="prev" title="Python的运算符">
+                Python的运算符 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -682,7 +684,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">120</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
