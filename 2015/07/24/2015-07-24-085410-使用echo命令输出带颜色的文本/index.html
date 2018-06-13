@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="老李的杂货铺">
 <meta property="og:description" content="Bash tips: Colors and formatting (ANSI/VT100 Control sequences)  说明echo命令改变样式，以输出不同颜色的文本，必须有 -e 选项(开启echo中的转义)。格式如下：  12echo -e &quot;\033[字背景颜色；文字颜色m 字符串\033[0m&quot; echo -e &quot;\033[1;36;41m Something here \033">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-31T04:58:59.062Z">
+<meta property="og:updated_time" content="2018-06-13T07:22:10.550Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="echo输出带颜色的文本">
 <meta name="twitter:description" content="Bash tips: Colors and formatting (ANSI/VT100 Control sequences)  说明echo命令改变样式，以输出不同颜色的文本，必须有 -e 选项(开启echo中的转义)。格式如下：  12echo -e &quot;\033[字背景颜色；文字颜色m 字符串\033[0m&quot; echo -e &quot;\033[1;36;41m Something here \033">
@@ -463,7 +463,7 @@
 <h2 id="控制选项说明"><a href="#控制选项说明" class="headerlink" title="控制选项说明"></a>控制选项说明</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">\033[0m <span class="comment"># 关闭所有属性 </span></span><br><span class="line">\033[1m <span class="comment"># 设置高亮度 </span></span><br><span class="line">\033[4m <span class="comment"># 下划线 </span></span><br><span class="line">\033[5m <span class="comment"># 闪烁 </span></span><br><span class="line">\033[7m <span class="comment"># 反显 </span></span><br><span class="line">\033[8m <span class="comment"># 消隐 </span></span><br><span class="line">\033[30m — \33[37m <span class="comment"># 设置前景色 </span></span><br><span class="line">\033[40m — \33[47m <span class="comment"># 设置背景色 </span></span><br><span class="line">\033[60A  <span class="comment"># 光标上移60行 </span></span><br><span class="line">\033[60B  <span class="comment"># 光标下移60行 </span></span><br><span class="line">\033[60C  <span class="comment"># 光标右移60行 </span></span><br><span class="line">\033[60G  <span class="comment"># 光标右移60行</span></span><br><span class="line">\033[60D  <span class="comment"># 光标左移60行 </span></span><br><span class="line">\033[y;xH <span class="comment"># 设置光标位置 </span></span><br><span class="line">\033[2J   <span class="comment"># 清屏 </span></span><br><span class="line">\033[K    <span class="comment"># 清除从光标到行尾的内容 </span></span><br><span class="line">\033[s    <span class="comment"># 保存光标位置 </span></span><br><span class="line">\033[u    <span class="comment"># 恢复光标位置 </span></span><br><span class="line">\033[?25l <span class="comment"># 隐藏光标 </span></span><br><span class="line">\033[?25h <span class="comment"># 显示光标</span></span><br></pre></td></tr></table></figure>
 <h1 id="额外说明"><a href="#额外说明" class="headerlink" title="额外说明"></a>额外说明</h1><ul>
 <li>前景颜色各数字是对应背景颜色减去10</li>
-<li>结束非常规字符序列的”m”要紧跟前面的数字，不能有空格</li>
+<li>结束非常规字符序列的 <code>m</code> 要紧跟前面的数字，不能有空格</li>
 <li>命令也可以写成<code>echo -e &quot;^[[44;37;5m ME \033[0m COOL&quot;</code>，其中的”^[“需要先按Ctrl-V,然后再按<code>ESC</code>生成</li>
 </ul>
 <h1 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h1><ul>
@@ -682,7 +682,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -693,7 +693,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

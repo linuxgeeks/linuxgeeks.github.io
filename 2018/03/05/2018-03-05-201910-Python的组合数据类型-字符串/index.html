@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/05/2018-03-05-201910-Python的组合数据类型-字符串/2-2.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/05/2018-03-05-201910-Python的组合数据类型-字符串/2-3.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/03/05/2018-03-05-201910-Python的组合数据类型-字符串/2-4.png">
-<meta property="og:updated_time" content="2018-06-12T12:26:15.161Z">
+<meta property="og:updated_time" content="2018-06-13T03:39:39.543Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的组合数据类型-字符串">
 <meta name="twitter:description" content="字符串Python字符串不可以被更改，它们是不可变的 。因此，赋值给字符串索引的位置会导致错误。字符串是使用固定不变的 str 数据类型表示的，其中存放 Unicode 字符序列。 str 数据类型可以作为函数进行调用，用于创建字符串对象：  参数为空时返回一个空字符串 参数为非字符串类型时返回该参数的字符串形式 参数为字符串时返回该字符串的拷贝  str() 函数也可以用作一个转换函数，此时要求">
@@ -598,7 +598,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s=<span class="string">"You're so You're so... sexy sexy sexy I need your love"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.count(<span class="string">'sexy'</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.count(<span class="string">'so'</span>,<span class="number">0</span>,<span class="number">15</span>)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.count(<span class="string">'so'</span>,<span class="number">0</span>,<span class="number">20</span>)</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
 <h2 id="匹配开头和结尾"><a href="#匹配开头和结尾" class="headerlink" title="匹配开头和结尾"></a>匹配开头和结尾</h2><ul>
 <li><code>s.startswith(x,start,end)</code>：如果 s (或 s 的 <code>start:end</code> 分片)以字符串 <code>x</code> (或以元组 <code>x</code> 中的任意字符串)开始，就返回 <code>True</code> ，否则返回 <code>False</code></li>
-<li><code>s.endwith(x,start,end)</code>：如果 s (或 s 的 <code>start:end</code> 分片)以字符串 <code>x</code> (或以元组 <code>x</code> 中的任意字符串)结尾，就返回 <code>True</code> ，否则返回 <code>False</code></li>
+<li><code>s.endswith(x,start,end)</code>：如果 s (或 s 的 <code>start:end</code> 分片)以字符串 <code>x</code> (或以元组 <code>x</code> 中的任意字符串)结尾，就返回 <code>True</code> ，否则返回 <code>False</code></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s=<span class="string">'jerry and tom'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.startswith(<span class="string">'jerry'</span>)</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.endswith(<span class="string">'jerry'</span>)</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.endswith(<span class="string">'tom'</span>)</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
 <h2 id="分隔"><a href="#分隔" class="headerlink" title="分隔"></a>分隔</h2><ul>
@@ -756,8 +756,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/06/2018-03-06-084510-Python的组合数据类型-列表/" rel="prev" title="Python的组合数据类型-列表">
-                Python的组合数据类型-列表 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/05/2018-03-05-204910-Python的字符串练习-获取tag间的内容/" rel="prev" title="Python的字符串练习-获取tag间的内容">
+                Python的字符串练习-获取tag间的内容 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -877,7 +877,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -888,7 +888,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
