@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="集合Python提供了两种内置的集合类型：可变的 set 类型，固定的 frozenset 类型  可变集合(set)：可添加和删除元素，非可哈希的，不能用作字典的键，也不能做其他集合的元素 不可变集合(frozenset)：与上面恰恰相反  只有可哈希运算的对象可以添加到集合中，所有内置固定数据类型（比如 float、frozenset、int、str、tuple)都是可哈希运算的，都可以添加到">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-13T11:18:26.092Z">
+<meta property="og:updated_time" content="2018-06-17T08:05:31.358Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的组合数据类型-集合">
 <meta name="twitter:description" content="集合Python提供了两种内置的集合类型：可变的 set 类型，固定的 frozenset 类型  可变集合(set)：可添加和删除元素，非可哈希的，不能用作字典的键，也不能做其他集合的元素 不可变集合(frozenset)：与上面恰恰相反  只有可哈希运算的对象可以添加到集合中，所有内置固定数据类型（比如 float、frozenset、int、str、tuple)都是可哈希运算的，都可以添加到">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  872
+                  902
                 </span>
               
 
@@ -456,7 +456,7 @@
 <h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>由于集合本身是无序的，所以不能为集合创建索引或切片操作，只能循环遍历或使用 <code>in</code>、<code>not in</code> 来访问或判断集合元素</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = set([<span class="string">'Tom'</span>,<span class="string">'Jerry'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'Tom'</span> <span class="keyword">in</span> s1)</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> s1:</span><br><span class="line"><span class="meta">... </span>    print(i)</span><br><span class="line">...</span><br><span class="line">Tom</span><br><span class="line">Jerry</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>可使用以下内建方法来更新：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s.add()</span><br><span class="line">s.update()</span><br><span class="line">s.remove()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s.add()</span><br><span class="line"><span class="comment"># 将传入的参数当成一个整体放进集合</span></span><br><span class="line">s.update()</span><br><span class="line"><span class="comment"># 将传入的参数拆散放进集合</span></span><br><span class="line">s.remove()</span><br></pre></td></tr></table></figure>
 <p>需要注意的是只有可变集合才能更新：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = set(<span class="string">'Tom and Jerry'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1.add(<span class="string">' Dog '</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(s1)</span><br><span class="line">&#123;<span class="string">'a'</span>, <span class="string">'d'</span>, <span class="string">'m'</span>, <span class="string">'r'</span>, <span class="string">'o'</span>, <span class="string">'J'</span>, <span class="string">' Dog '</span>, <span class="string">'y'</span>, <span class="string">' '</span>, <span class="string">'T'</span>, <span class="string">'e'</span>, <span class="string">'n'</span>&#125;</span><br><span class="line"> &gt;&gt;&gt; s1.remove(<span class="string">' Dog '</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1.remove(<span class="string">'r'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(s1)</span><br><span class="line">&#123;<span class="string">'a'</span>, <span class="string">'d'</span>, <span class="string">'m'</span>, <span class="string">'o'</span>, <span class="string">'J'</span>, <span class="string">'y'</span>, <span class="string">' '</span>, <span class="string">'T'</span>, <span class="string">'e'</span>, <span class="string">'n'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1.update(<span class="string">'Pig'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(s1)</span><br><span class="line">&#123;<span class="string">'a'</span>, <span class="string">'d'</span>, <span class="string">'m'</span>, <span class="string">'o'</span>, <span class="string">'J'</span>, <span class="string">'g'</span>, <span class="string">'y'</span>, <span class="string">' '</span>, <span class="string">'T'</span>, <span class="string">'i'</span>, <span class="string">'e'</span>, <span class="string">'n'</span>, <span class="string">'P'</span>&#125;</span><br></pre></td></tr></table></figure>
 <p>del：删除集合本身</p>
@@ -693,7 +693,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-count">133</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
