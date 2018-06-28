@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="函数及特性 定义：函数是指将一组语句的集合通过一个名字(函数名)封装起来，要想执行这个函数，只需调用其函数名即可  特性：  减少重复代码，提高应用的模块性和代码的重复利用率，用来实现单一，或相关联功能 可扩展性：方便修改，更容易扩展代码的功能 保持代码的一致性，修改函数功能之后所有调用函数的地方都会随之修改    函数的定义和调用 格式：Python 定义函数使用 def 关键字，一般格式如下：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-26T09:22:54.566Z">
+<meta property="og:updated_time" content="2018-06-27T10:25:04.026Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的函数">
 <meta name="twitter:description" content="函数及特性 定义：函数是指将一组语句的集合通过一个名字(函数名)封装起来，要想执行这个函数，只需调用其函数名即可  特性：  减少重复代码，提高应用的模块性和代码的重复利用率，用来实现单一，或相关联功能 可扩展性：方便修改，更容易扩展代码的功能 保持代码的一致性，修改函数功能之后所有调用函数的地方都会随之修改    函数的定义和调用 格式：Python 定义函数使用 def 关键字，一般格式如下：">
@@ -523,7 +523,7 @@
 <h2 id="作用域产生"><a href="#作用域产生" class="headerlink" title="作用域产生"></a>作用域产生</h2><p>在 Python 中只有模块（<code>module</code>），类（<code>class</code>）以及函数（<code>def</code>、<code>lambda</code>）才会引入新的作用域，其它的代码块（如 <code>if</code>、<code>try</code>、<code>for</code> 等）是不会引入新的作用域的，如下代码中 <code>if</code> 并没有引入一个新的作用域，<code>x</code> 仍处在当前作用域中，后面代码可以使用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">2</span>&gt;<span class="number">1</span>:</span><br><span class="line">    x = <span class="number">1</span></span><br><span class="line">print(x)  <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
 <p>但是函数 <code>def</code>、<code>class</code>、<code>lambda</code> 会引入新的作用域</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">2</span></span><br><span class="line">print(x) <span class="comment"># NameError: name 'x2' is not defined</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    x = <span class="number">2</span></span><br><span class="line">print(x) <span class="comment"># NameError: name 'x' is not defined</span></span><br></pre></td></tr></table></figure>
 <h2 id="变量的修改"><a href="#变量的修改" class="headerlink" title="变量的修改"></a>变量的修改</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">6</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></span><br><span class="line">    print(x)</span><br><span class="line">    x=<span class="number">5</span></span><br><span class="line">f2()</span><br><span class="line"><span class="comment"># local variable 'x' referenced before assignment.</span></span><br></pre></td></tr></table></figure>
 <p>上述代码出现错误的原因在于 <code>print(x)</code> 时，解释器会先在局部作用区域找到变量 <code>x</code> 。这是因为在进行函数调用（ <code>f2()</code> ）之前，其前面的代码包括函数都会先加载到内存，因此执行到 <code>print(x)</code> 会先在局部区域找到 <code>x=5</code> ，但 <code>x</code> 的使用出现在 <code>x</code> 的声明前了，所以报错</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#x=6</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></span><br><span class="line">    print(x)</span><br><span class="line">    <span class="comment">#x=5</span></span><br><span class="line">f2()</span><br><span class="line"><span class="comment"># name 'x' is not defined</span></span><br></pre></td></tr></table></figure>
@@ -981,7 +981,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">133</span>
+                  <span class="site-state-item-count">135</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -992,7 +992,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1003,7 +1003,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1104,6 +1104,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
                   </li>
                 
               </ul>
