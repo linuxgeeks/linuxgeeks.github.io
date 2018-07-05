@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="列表列表是有序的序列而且是可变对象，它包含了0个或多个对象引用。因为可变，我们可以对列表中的元素进行删除或替换操作，还可以插入、替换或删除列表中的分片。 list 数据类型可以作为函数进行调用， list()——不指定参数将返回一个空列表；带一个 list 类型的参数将返回该参数的浅拷贝：对任意其他参数 list() 将尝试把给定的对象转换为 list 类型。该函数只能接受一个参数。列表也可以不使">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-13T07:51:44.839Z">
+<meta property="og:updated_time" content="2018-06-30T05:44:49.919Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的组合数据类型-列表">
 <meta name="twitter:description" content="列表列表是有序的序列而且是可变对象，它包含了0个或多个对象引用。因为可变，我们可以对列表中的元素进行删除或替换操作，还可以插入、替换或删除列表中的分片。 list 数据类型可以作为函数进行调用， list()——不指定参数将返回一个空列表；带一个 list 类型的参数将返回该参数的浅拷贝：对任意其他参数 list() 将尝试把给定的对象转换为 list 类型。该函数只能接受一个参数。列表也可以不使">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,358
+                  1,337
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  9
+                  5
                 </span>
               
             </div>
@@ -576,35 +576,6 @@
 <p>应用于某些对象引用（引用的是非组合类型的数据项）时，del语句的作用是取消该对象引用到数据项的绑定，并删除对象引用，例如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = <span class="number">8143</span> <span class="comment"># object ref.'x' created; int of value 8143 created</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line"><span class="number">8143</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> x</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">NameError: name <span class="string">'x'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
 <p>对象引用被删除后，如果该对象引用所引用的数据项没有被其他对象引用进行引用，那么该数据项将进入垃圾收集流程。在垃圾收集是否自动进行不能确定时，如果需要进行清理，就必须自己手动进行处理。对垃圾收集的不确定性，Python 提供了两种方案，一种是使用 <code>try ... finally</code> 语句块，确保垃圾收集得以进行；另一种是使用 <code>with</code> 语句</p>
-<h1 id="列表内涵"><a href="#列表内涵" class="headerlink" title="列表内涵"></a>列表内涵</h1><p>小列表通常可以使用列表字面值直接创建，但长一些的列表通常则需要使用程序进行创建。对一系列整数，我们可以使用 <code>list(range(n))</code> 创建，或者如果只需要一个整数迭代子，使用 <code>range()</code> 就足以完成任务，但对更复杂一些的列表，使用 <code>for...in</code> 循环创建是一种更常见的做法。比如假定需要生成给定时间范围内的闰年列表，可以使用如下的语句：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line">leaps =[]</span><br><span class="line"><span class="keyword">for</span> year <span class="keyword">in</span> range (<span class="number">900</span>, <span class="number">1940</span>):</span><br><span class="line">    <span class="keyword">if</span> (year % <span class="number">4</span> == <span class="number">0</span> <span class="keyword">and</span> year % <span class="number">100</span> != <span class="number">0</span>) <span class="keyword">or</span> (year % <span class="number">400</span> == <span class="number">0</span>):</span><br><span class="line">        leaps.append(year)</span><br><span class="line"></span><br><span class="line">print(leaps)</span><br></pre></td></tr></table></figure>
-<p>在为内置的 <code>range()</code> 函数指定两个整数参数 <code>n</code> 与 <code>m</code> 时，该函数返回的迭代子iterator 将生成整数<code>n,n+l,...,m-1</code></p>
-<p>列表内涵是一个表达式也是一个循环，该循环有一个可选的、包含在 <code>[]</code> 中的条件，作用是为列表生成数据项，并且可以使用条件过滤掉不需要的数据项。列表内涵最简单的形式如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[item <span class="keyword">for</span> item <span class="keyword">in</span> iterable]</span><br></pre></td></tr></table></figure>
-<p>上面的语句将返回一个列表，其中包含iterable中的每个数据项，在语义上与 list(iterable)是一致的。示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>alist=[x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">11</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>alist</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
-<p>有两个特点使得列表内涵具有更强大的功能，一个是可以使用表达式，另一个是可以附加条件——由此带来如下两种实现列表内涵的常见语法格式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[expression <span class="keyword">for</span> item <span class="keyword">in</span> iterable]</span><br><span class="line">[expression <span class="keyword">for</span> item <span class="keyword">in</span> iterable <span class="keyword">if</span> condition]</span><br><span class="line"><span class="comment"># 第二种语法格式实际上等价于：</span></span><br><span class="line">temp = []</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> iterable:</span><br><span class="line">    <span class="keyword">if</span> condition:</span><br><span class="line">        temp.append(expression)</span><br></pre></td></tr></table></figure>
-<p>通常在上面的语法中，<code>expression</code> 要么是数据项本身，要么与数据项相关。当然列表内涵不需要 <code>for...in</code> 循环中使用的temp变量</p>
-<p>现在我们可以使用列表内涵编写代码，以便生成列表 <code>leaps</code> 。分三个阶段开发这段代码。</p>
-<ul>
-<li>首先，生成一个列表，其中包含给定时间范围内的所有年份</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">leaps = [y <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">900</span>, <span class="number">1940</span>)]</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">leaps = list(range(<span class="number">1900</span>，<span class="number">1940</span>))</span><br></pre></td></tr></table></figure>
-<ul>
-<li>接下来，为该语句添加一个简单的条件，以便每隔4年获取一次</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">leaps = [y <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">900</span>, <span class="number">1940</span>) <span class="keyword">if</span> y % <span class="number">4</span> == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>最后，给出完整的代码：</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">leaps = [y <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">900</span>, <span class="number">1940</span>) <span class="keyword">if</span> (y % <span class="number">4</span> == <span class="number">0</span> <span class="keyword">and</span> y % <span class="number">100</span> != <span class="number">0</span>) <span class="keyword">or</span> (y % <span class="number">400</span> == <span class="number">0</span>)]</span><br></pre></td></tr></table></figure>
-<p>由于列表内涵会生成列表，也就是 iterable ，同时用于列表内涵的语法需要使用 iterable，因此对列表内涵进行嵌套也是可以的。这与嵌套的 <code>for...in</code> 循环是等价的。比如，对给定的性别、尺寸、颜色集需要生成所有可能的服装标号，但排除肥胖女士的标号，因为时装工业会忽视这一类女性。使用嵌套的 <code>for...in</code> 循环可以完成这一任务:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">codes = []</span><br><span class="line"><span class="keyword">for</span> sex <span class="keyword">in</span> <span class="string">"MF"</span>:    <span class="comment"># Male, Female</span></span><br><span class="line">    <span class="keyword">for</span> size <span class="keyword">in</span> <span class="string">"SMLX"</span>: <span class="comment"># Small, Medium, Large, extra large</span></span><br><span class="line">        <span class="keyword">if</span> sex == <span class="string">"F"</span> <span class="keyword">and</span> size == <span class="string">"X"</span>: </span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">for</span> color <span class="keyword">in</span> <span class="string">"BGW"</span>: <span class="comment"># Black, Gray, White</span></span><br><span class="line">            codes.append(sex + size + color)</span><br></pre></td></tr></table></figure>
-<p>使用列表内涵，只需要两行代码就可以实现相同的功能：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">codes = [sex + size + color <span class="keyword">for</span> sex <span class="keyword">in</span> <span class="string">"MF"</span> <span class="keyword">for</span> size <span class="keyword">in</span> <span class="string">"SMLX"</span> <span class="keyword">for</span> color <span class="keyword">in</span> <span class="string">"BGW"</span> </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> (size == <span class="string">"F"</span> <span class="keyword">and</span> size == <span class="string">"X"</span>)]</span><br></pre></td></tr></table></figure>
-<p>这里列表中的每个数据项都是使用表达式 <code>sex + size + color</code> 生成的。并且跳过无效的 <code>sex/size</code> 组合是在最内部的循环中实现的，而嵌套的 <code>for...in</code>循环版本中，跳过无效的组合是在中间循环中实现的。任何列表内涵都可以使用一个或多个 <code>for...in</code> 循环重写</p>
-<p>如果生成的列表非常大，那么根据需要去生成每个数据项会比一次生成整个列表更高效。这可以通过使用生成器实现，而不使用列表内涵。</p>
 
       
     </div>
@@ -813,7 +784,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">139</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -961,7 +932,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#列表"><span class="nav-number">1.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表操作符"><span class="nav-number">2.</span> <span class="nav-text">列表操作符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表分片"><span class="nav-number">3.</span> <span class="nav-text">列表分片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用函数"><span class="nav-number">4.</span> <span class="nav-text">常用函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表常用的方法"><span class="nav-number">5.</span> <span class="nav-text">列表常用的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拆分操作符进行赋值"><span class="nav-number">6.</span> <span class="nav-text">拆分操作符进行赋值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#del语句"><span class="nav-number">7.</span> <span class="nav-text">del语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表内涵"><span class="nav-number">8.</span> <span class="nav-text">列表内涵</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#列表"><span class="nav-number">1.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表操作符"><span class="nav-number">2.</span> <span class="nav-text">列表操作符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表分片"><span class="nav-number">3.</span> <span class="nav-text">列表分片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用函数"><span class="nav-number">4.</span> <span class="nav-text">常用函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表常用的方法"><span class="nav-number">5.</span> <span class="nav-text">列表常用的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拆分操作符进行赋值"><span class="nav-number">6.</span> <span class="nav-text">拆分操作符进行赋值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#del语句"><span class="nav-number">7.</span> <span class="nav-text">del语句</span></a></li></ol></div>
             
 
           </div>
