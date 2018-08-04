@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="Cobbler基本配置做好之后便可以创建多个distro(发行版)来安装不同版本系统了  挂载CentOS 6.9镜像  12mount -r /dev/cdrom /mnt/ls /mnt/  创建ks(ksckstart)文件  1cp /var/lib/cobbler/kickstarts/sample_end.ks /var/lib/cobbler/kickstarts/CentOS-6.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-13T07:51:44.773Z">
+<meta property="og:updated_time" content="2018-07-12T14:20:28.707Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cobbler实现CentOS-6.9的批量安装">
 <meta name="twitter:description" content="Cobbler基本配置做好之后便可以创建多个distro(发行版)来安装不同版本系统了  挂载CentOS 6.9镜像  12mount -r /dev/cdrom /mnt/ls /mnt/  创建ks(ksckstart)文件  1cp /var/lib/cobbler/kickstarts/sample_end.ks /var/lib/cobbler/kickstarts/CentOS-6.">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  744
+                  771
                 </span>
               
 
@@ -461,7 +461,7 @@
 <li>编辑<code>/var/lib/tftpboot/pxelinux.cfg/default</code><ul>
 <li>将local对应的LABEL和下面的区段注释掉</li>
 <li>修改<code>TIMEOUT</code>为 10，即1秒</li>
-<li>修改<code>ONTIMEOUT</code>为对应的Label <code>CentOS-6.9-x86_64</code></li>
+<li>修改<code>ONTIMEOUT</code>为对应的Label <code>CentOS-6.9-x86_64</code> ，不建议修改此配置，一旦修改了此项将会有可能导致循环装系统</li>
 <li>重启服务<code>systemctl restart cobblerd</code>，需要注意的是，如果此时执行了<code>cobbler sync</code>就会重新生成defatul文件，之前的配置将被覆盖</li>
 </ul>
 </li>
@@ -672,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

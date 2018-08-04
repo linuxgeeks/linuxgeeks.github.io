@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="使用帮助print() 函数是 Python 的内置方法，用于将指定的值打印到屏幕输出，或文件流。它的参数如下： 123456789101112&amp;gt;&amp;gt;&amp;gt; help(print)Help on built-in function print in module builtins:print(...)    print(value, ..., sep=&apos; &apos;, end=&apos;\n&apos;, fi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T05:50:27.564Z">
+<meta property="og:updated_time" content="2018-07-07T03:40:26.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的print方法">
 <meta name="twitter:description" content="使用帮助print() 函数是 Python 的内置方法，用于将指定的值打印到屏幕输出，或文件流。它的参数如下： 123456789101112&amp;gt;&amp;gt;&amp;gt; help(print)Help on built-in function print in module builtins:print(...)    print(value, ..., sep=&apos; &apos;, end=&apos;\n&apos;, fi">
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,666
+                  1,737
                 </span>
               
 
@@ -415,7 +415,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7
+                  8
                 </span>
               
             </div>
@@ -460,6 +460,8 @@
 <p>默认情况下 <code>print()</code> 将内容输出到 <code>sys.stdout</code> ，即标准输出（屏幕）文件，比较下面两种的参数实现进度条的效果</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认情况，flush=False，当所有sleep完成之后才会写到屏幕输出文件</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    print(<span class="string">'*'</span>,end=<span class="string">''</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 人为干预，flush=True，每次输出都会写到屏幕输出文件</span></span><br><span class="line"><span class="keyword">import</span> sys,time</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    print(<span class="string">'*'</span>,end=<span class="string">''</span>,flush=<span class="keyword">True</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
+<p>另一种实现效果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">101</span>,<span class="number">2</span>):</span><br><span class="line">     time.sleep(<span class="number">0.3</span>)</span><br><span class="line">     char_num = i//<span class="number">2</span>      <span class="comment">#打印多少个'*'</span></span><br><span class="line">     per_str = <span class="string">'\r%s%% : %s'</span> %(i,<span class="string">'*'</span>*char_num)</span><br><span class="line">     print(per_str,end=<span class="string">''</span>, flush=<span class="keyword">True</span>)</span><br><span class="line">print(<span class="string">''</span>)</span><br><span class="line"><span class="comment"># \r 可以把光标移动到行首但不换行，覆盖之前行的内容</span></span><br></pre></td></tr></table></figure>
 <h1 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h1><p>Python 中的 <code>print</code> 继承了 C 中的 <code>printf</code>，例如</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'%s x %s = %s'</span> %(<span class="number">5</span>,<span class="number">6</span>,<span class="number">5</span>*<span class="number">6</span>))</span><br><span class="line"><span class="number">5</span> x <span class="number">6</span> = <span class="number">30</span></span><br></pre></td></tr></table></figure>
 <ul>
@@ -799,7 +801,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

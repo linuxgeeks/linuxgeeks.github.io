@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/01/25/2018-01-25-162610-Cobbler实现web端控制/02events.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/01/25/2018-01-25-162610-Cobbler实现web端控制/03createks.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2018/01/25/2018-01-25-162610-Cobbler实现web端控制/04editks.png">
-<meta property="og:updated_time" content="2018-06-13T07:51:44.773Z">
+<meta property="og:updated_time" content="2018-07-13T09:52:30.967Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cobbler实现web端控制">
 <meta name="twitter:description" content="在进行web端使用时，我们保持默认直接访问web页面即可，账号密码默认均为cobbler，而且CentOS7中cobbler只支持https访问；浏览器访问https://192.168.127.10/cobbler_web/ web端实现系统安装配置 挂载CentOS6.8镜像  12mount -r /dev/cdrom /mnt/ls /mnt/  导入镜像   导入过程使用rsync进行">
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  688
+                  711
                 </span>
               
 
@@ -468,6 +468,11 @@
 <li>编写文件<br>参照本站的6.9系统ks文件</li>
 </ul>
 <p><img src="/2018/01/25/2018-01-25-162610-Cobbler实现web端控制/04editks.png" alt=""></p>
+<ul>
+<li><p>选择对应的ks</p>
+<p>依次点击 <code>Profiles</code> =&gt; <code>profile名字</code> =&gt; <code>Kickstart</code> 选择对应的ks文件</p>
+</li>
+</ul>
 <ul>
 <li>其他选项：如果是要安装 CentOS7 及以上的系统，不想使用原有的网卡名称而是想统一成 <code>eth*</code> 格式，需要修改内核参数</li>
 </ul>
@@ -717,7 +722,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
