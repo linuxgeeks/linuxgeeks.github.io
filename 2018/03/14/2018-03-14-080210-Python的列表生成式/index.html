@@ -87,12 +87,12 @@
 <meta property="og:title" content="Python的列表生成式">
 <meta property="og:url" content="http://linuxgeeks.github.io/2018/03/14/2018-03-14-080210-Python的列表生成式/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="在 Python 中小列表通常可以使用列表字面值直接创建，但长一些的列表通常则需要使用程序进行创建。对一系列整数我们可以使用  list(range(n))  创建，或者如果只需要一个整数迭代子则使用 range() 就足以完成任务，但对更复杂一些的列表，使用 for...in 循环创建是一种更常见的做法。比如生成 Linux 系统 DNS 地址的列表，可以使用如下语句： 123456789101">
+<meta property="og:description" content="在 Python 中小列表通常可以使用列表字面值直接创建，但长一些的列表通常则需要使用程序进行创建。对一系列整数我们可以使用  list(range(n))  创建，或者如果只需要一个整数迭代子则使用 range() 就足以完成任务，但对更复杂一些的列表，使用 for...in 循环创建是一种更常见的做法。比如生成 Linux 系统 DNS 地址的列表，可以使用如下语句： 12345678910#">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-30T11:23:42.132Z">
+<meta property="og:updated_time" content="2018-08-12T10:50:40.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的列表生成式">
-<meta name="twitter:description" content="在 Python 中小列表通常可以使用列表字面值直接创建，但长一些的列表通常则需要使用程序进行创建。对一系列整数我们可以使用  list(range(n))  创建，或者如果只需要一个整数迭代子则使用 range() 就足以完成任务，但对更复杂一些的列表，使用 for...in 循环创建是一种更常见的做法。比如生成 Linux 系统 DNS 地址的列表，可以使用如下语句： 123456789101">
+<meta name="twitter:description" content="在 Python 中小列表通常可以使用列表字面值直接创建，但长一些的列表通常则需要使用程序进行创建。对一系列整数我们可以使用  list(range(n))  创建，或者如果只需要一个整数迭代子则使用 range() 就足以完成任务，但对更复杂一些的列表，使用 for...in 循环创建是一种更常见的做法。比如生成 Linux 系统 DNS 地址的列表，可以使用如下语句： 12345678910#">
 
 
 
@@ -399,7 +399,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,167
+                  1,163
                 </span>
               
 
@@ -437,7 +437,7 @@
 
       
         <p>在 Python 中小列表通常可以使用列表字面值直接创建，但长一些的列表通常则需要使用程序进行创建。对一系列整数我们可以使用  <code>list(range(n))</code>  创建，或者如果只需要一个整数迭代子则使用 <code>range()</code> 就足以完成任务，但对更复杂一些的列表，使用 <code>for...in</code> 循环创建是一种更常见的做法。比如生成 Linux 系统 DNS 地址的列表，可以使用如下语句：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dns_ip</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''获取系统默认的 DNS 地址'''</span></span><br><span class="line">    dns_list = []</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'/etc/resolv.conf'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="keyword">if</span> line.startswith(<span class="string">'nameserver '</span>):</span><br><span class="line">                dns_list.append(line.strip().split()[<span class="number">1</span>])</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> dns_list</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dns_ip</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''获取系统默认的 DNS 地址'''</span></span><br><span class="line">    dns_list = []</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'/etc/resolv.conf'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            <span class="keyword">if</span> line.startswith(<span class="string">'nameserver '</span>):</span><br><span class="line">                dns_list.append(line.strip().split()[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> dns_list</span><br></pre></td></tr></table></figure>
 <p>再比如生成给定时间范围内的闰年列表，可以使用如下的语句：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line">leaps =[]</span><br><span class="line"><span class="keyword">for</span> year <span class="keyword">in</span> range (<span class="number">1900</span>, <span class="number">1940</span>):</span><br><span class="line">    <span class="keyword">if</span> (year % <span class="number">4</span> == <span class="number">0</span> <span class="keyword">and</span> year % <span class="number">100</span> != <span class="number">0</span>) <span class="keyword">or</span> (year % <span class="number">400</span> == <span class="number">0</span>):</span><br><span class="line">        leaps.append(year)</span><br><span class="line"></span><br><span class="line">print(leaps)</span><br></pre></td></tr></table></figure>
 <p>在为内置的 <code>range()</code> 函数指定两个整数参数 <code>n</code> 与 <code>m</code> 时，该函数返回的迭代子 iterator 将生成整数<code>n,n+l,...,m-1</code></p>
@@ -670,7 +670,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">140</span>
+                  <span class="site-state-item-count">144</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
