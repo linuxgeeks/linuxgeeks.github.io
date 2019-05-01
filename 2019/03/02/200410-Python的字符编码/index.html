@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python3," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种">
+<meta name="keywords" content="Python3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的字符编码">
+<meta property="og:url" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/code1.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/code2.png">
+<meta property="og:updated_time" content="2019-03-27T14:20:53.646Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的字符编码">
+<meta name="twitter:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/code1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/"/>
+
+
+
+
+
+  <title>Python的字符编码 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的字符编码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:04:10+08:00">
+                2019-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,198
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="二进制与数字"><a href="#二进制与数字" class="headerlink" title="二进制与数字"></a>二进制与数字</h1><p>通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。</p>
+<p>但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们该怎样向盟军传递信息呢？显然，我们用一根烟代表一个敌人没有办法在短时间内表示十万。于是我们可以使用这种方法：点燃第一根则代表敌人规模是1-100，点燃第二根则代表敌人规模是101-1000，以此类推</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1-100	  101-1000 		1001-5000</span><br><span class="line">第一根		第二根   		第三根</span><br><span class="line"><span class="comment"># 如果我们需要精确的传递敌人的个数，这种方法就不可行了</span></span><br></pre></td></tr></table></figure>
+<p>烟只有两种状态，那么如何才能表示精确的数字呢？一根烟可以表示两个状态，两根烟便可以表示四个状态。那么我们就可以约定，第一根烟代表1，第二根代表2，第三根代表4…..</p>
+<ul>
+<li>来了一个敌人</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">0 1   <span class="comment"># 代表的敌人：0+1=1</span></span><br><span class="line">-----------------------------------</span><br><span class="line">0 1   <span class="comment"># 第一根亮，第二根灭</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>来了两个敌人</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">2 0   <span class="comment"># 代表的敌人：2+0=2</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 0   <span class="comment"># 第一根灭，第二根亮</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>来了三个敌人</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">2 1   <span class="comment"># 代表的敌人：2+1=3</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 1   <span class="comment"># 第一根亮，第二根亮</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>来了四个敌人</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">4 0 0   <span class="comment"># 代表的敌人：4+0=4</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 0 0   <span class="comment"># 第三根亮，第二根第一根都灭</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>来了五个敌人</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">4 0 1   <span class="comment"># 代表的敌人：4+1=5</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 0 1   <span class="comment"># 第三根亮，第二根灭，第一根亮</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>借位<ul>
+<li>利用前三位我们可以表示的数字有1、2、3、4、5、6、7，最多能表示7</li>
+<li>如果想要表示8，我们可以借一位，用这个位加上前面的三个位最大表示8</li>
+<li>每一个位最大能表示的数都是前面的位所能表示的最大数的和加1，并且依次是2的0次幂、1次幂、…..</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">16  8   4   2   1   </span><br><span class="line">1   1   1   1   1</span><br><span class="line">-----------------------------------</span><br><span class="line">16 = 8 + 4 + 2 + 1 +1</span><br><span class="line">8 = 4 + 2 + 1 +1</span><br></pre></td></tr></table></figure>
+<p>利用这种表示方法，我们就可以根据使用0和1的不同序列来表示不同的数字。</p>
+<p>计算机必须在通电情况下工作，它在物理层面上只能表示两种状态：低电压和高电压，或者我们可以简单的理解为电路的通电和不通电。通电用1表示，不同电则用0表示。</p>
+<p>在拆开的硬盘盘片上我们看不到所谓的 0 和 1 ，但是如果使用足够大的放大镜能看到磁盘的表面有着无数的凹凸不平的元件，凹下去的代表0，凸出的代表1，这就是计算机用来表现二进制的方式。计算机中的所有数据，不论是文字、图片、视频、还是音频文件，本质上最终都是按照类似 <code>01010101</code> 的二进制存储的。</p>
+<h1 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h1><p>通过二进制的1和0的不同序列边可以表示我们平常说的十进制数字了，但是每个国家都有各自的语言，相比在计算机上去读很难读懂的不同序列的0101二进制，我们更愿意在计算机上使用人类自己的语言。</p>
+<p>计算机诞生在美国，为了让计算机表示不同的英文字母、数字和特殊符号，美国人便在计算机上使用了字符编码。字符编码是如何让二进制来表示字母的呢？字符编码规定了哪些数字表示哪些字母，只要计算机用二进制能表示出这些数字，便可以通过编码来表示字母了。最早的编码便是ASCII码对照表，全称是American Standard Code for Information Interchange , 美国信息交换标准代码。</p>
+<p>ASCII 码使用指定的 7 位或 8 位二进制数组合来表示128 或 256 种可能的字符，但是最早的时候只用了 7 位二进制，已经完全能够来表示所有的大写和小写字母，数字0 到9、标点符号， 以及在美式英语中使用的特殊控制字符。</p>
+<p>后来为了将拉丁文也编码进了ASCII表，将最高位也占用了，这就是扩展ASCII码。</p>
+<table>
+<thead>
+<tr>
+<th>二进制</th>
+<th>ASCII值</th>
+<th>控制字符</th>
+<th>二进制</th>
+<th>ASCII值</th>
+<th>控制字符</th>
+<th>二进制</th>
+<th>ASCII值</th>
+<th>控制字符</th>
+<th>二进制</th>
+<th>ASCII值</th>
+<th>控制字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00000000</td>
+<td>0</td>
+<td>NUT</td>
+<td>00100000</td>
+<td>32</td>
+<td>(space)</td>
+<td>01000000</td>
+<td>64</td>
+<td>@</td>
+<td>01100000</td>
+<td>96</td>
+<td>、</td>
+</tr>
+<tr>
+<td>00000001</td>
+<td>1</td>
+<td>SOH</td>
+<td>00100001</td>
+<td>33</td>
+<td>!</td>
+<td>01000001</td>
+<td>65</td>
+<td>A</td>
+<td>01100001</td>
+<td>97</td>
+<td>a</td>
+</tr>
+<tr>
+<td>00000010</td>
+<td>2</td>
+<td>STX</td>
+<td>00100010</td>
+<td>34</td>
+<td>“</td>
+<td>01000010</td>
+<td>66</td>
+<td>B</td>
+<td>01100010</td>
+<td>98</td>
+<td>b</td>
+</tr>
+<tr>
+<td>00000011</td>
+<td>3</td>
+<td>ETX</td>
+<td>00100011</td>
+<td>35</td>
+<td>#</td>
+<td>01000011</td>
+<td>67</td>
+<td>C</td>
+<td>01100011</td>
+<td>99</td>
+<td>c</td>
+</tr>
+<tr>
+<td>00000100</td>
+<td>4</td>
+<td>EOT</td>
+<td>00100100</td>
+<td>36</td>
+<td>$</td>
+<td>01000100</td>
+<td>68</td>
+<td>D</td>
+<td>01100100</td>
+<td>100</td>
+<td>d</td>
+</tr>
+<tr>
+<td>00000101</td>
+<td>5</td>
+<td>ENQ</td>
+<td>00100101</td>
+<td>37</td>
+<td>%</td>
+<td>01000101</td>
+<td>69</td>
+<td>E</td>
+<td>01100101</td>
+<td>101</td>
+<td>e</td>
+</tr>
+<tr>
+<td>00000110</td>
+<td>6</td>
+<td>ACK</td>
+<td>00100110</td>
+<td>38</td>
+<td>&amp;</td>
+<td>01000110</td>
+<td>70</td>
+<td>F</td>
+<td>01100110</td>
+<td>102</td>
+<td>f</td>
+</tr>
+<tr>
+<td>00000111</td>
+<td>7</td>
+<td>BEL</td>
+<td>00100111</td>
+<td>39</td>
+<td>,</td>
+<td>01000111</td>
+<td>71</td>
+<td>G</td>
+<td>01100111</td>
+<td>103</td>
+<td>g</td>
+</tr>
+<tr>
+<td>00001000</td>
+<td>8</td>
+<td>BS</td>
+<td>00101000</td>
+<td>40</td>
+<td>(</td>
+<td>01001000</td>
+<td>72</td>
+<td>H</td>
+<td>01101000</td>
+<td>104</td>
+<td>h</td>
+</tr>
+<tr>
+<td>00001001</td>
+<td>9</td>
+<td>HT</td>
+<td>00101001</td>
+<td>41</td>
+<td>)</td>
+<td>01001001</td>
+<td>73</td>
+<td>I</td>
+<td>01101001</td>
+<td>105</td>
+<td>i</td>
+</tr>
+<tr>
+<td>00001010</td>
+<td>10</td>
+<td>LF</td>
+<td>00101010</td>
+<td>42</td>
+<td>*</td>
+<td>01001010</td>
+<td>74</td>
+<td>J</td>
+<td>01101010</td>
+<td>106</td>
+<td>j</td>
+</tr>
+<tr>
+<td>00001011</td>
+<td>11</td>
+<td>VT</td>
+<td>00101011</td>
+<td>43</td>
+<td>+</td>
+<td>01001011</td>
+<td>75</td>
+<td>K</td>
+<td>01101011</td>
+<td>107</td>
+<td>k</td>
+</tr>
+<tr>
+<td>00001100</td>
+<td>12</td>
+<td>FF</td>
+<td>00101100</td>
+<td>44</td>
+<td>,</td>
+<td>01001100</td>
+<td>76</td>
+<td>L</td>
+<td>01101100</td>
+<td>108</td>
+<td>l</td>
+</tr>
+<tr>
+<td>00001101</td>
+<td>13</td>
+<td>CR</td>
+<td>00101101</td>
+<td>45</td>
+<td>-</td>
+<td>01001101</td>
+<td>77</td>
+<td>M</td>
+<td>01101101</td>
+<td>109</td>
+<td>m</td>
+</tr>
+<tr>
+<td>00001110</td>
+<td>14</td>
+<td>SO</td>
+<td>00101110</td>
+<td>46</td>
+<td>.</td>
+<td>01001110</td>
+<td>78</td>
+<td>N</td>
+<td>01101110</td>
+<td>110</td>
+<td>n</td>
+</tr>
+<tr>
+<td>00001111</td>
+<td>15</td>
+<td>SI</td>
+<td>00101111</td>
+<td>47</td>
+<td>/</td>
+<td>01001111</td>
+<td>79</td>
+<td>O</td>
+<td>01101111</td>
+<td>111</td>
+<td>o</td>
+</tr>
+<tr>
+<td>00010000</td>
+<td>16</td>
+<td>DLE</td>
+<td>00110000</td>
+<td>48</td>
+<td>0</td>
+<td>01010000</td>
+<td>80</td>
+<td>P</td>
+<td>01110000</td>
+<td>112</td>
+<td>p</td>
+</tr>
+<tr>
+<td>00010001</td>
+<td>17</td>
+<td>DCI</td>
+<td>00110001</td>
+<td>49</td>
+<td>1</td>
+<td>01010001</td>
+<td>81</td>
+<td>Q</td>
+<td>01110001</td>
+<td>113</td>
+<td>q</td>
+</tr>
+<tr>
+<td>00010010</td>
+<td>18</td>
+<td>DC2</td>
+<td>00110010</td>
+<td>50</td>
+<td>2</td>
+<td>01010010</td>
+<td>82</td>
+<td>R</td>
+<td>01110010</td>
+<td>114</td>
+<td>r</td>
+</tr>
+<tr>
+<td>00010011</td>
+<td>19</td>
+<td>DC3</td>
+<td>00110011</td>
+<td>51</td>
+<td>3</td>
+<td>01010011</td>
+<td>83</td>
+<td>S</td>
+<td>01110011</td>
+<td>115</td>
+<td>s</td>
+</tr>
+<tr>
+<td>00010100</td>
+<td>20</td>
+<td>DC4</td>
+<td>00110100</td>
+<td>52</td>
+<td>4</td>
+<td>01010100</td>
+<td>84</td>
+<td>T</td>
+<td>01110100</td>
+<td>116</td>
+<td>t</td>
+</tr>
+<tr>
+<td>00010101</td>
+<td>21</td>
+<td>NAK</td>
+<td>00110101</td>
+<td>53</td>
+<td>5</td>
+<td>01010101</td>
+<td>85</td>
+<td>U</td>
+<td>01110101</td>
+<td>117</td>
+<td>u</td>
+</tr>
+<tr>
+<td>00010110</td>
+<td>22</td>
+<td>SYN</td>
+<td>00110110</td>
+<td>54</td>
+<td>6</td>
+<td>01010110</td>
+<td>86</td>
+<td>V</td>
+<td>01110110</td>
+<td>118</td>
+<td>v</td>
+</tr>
+<tr>
+<td>00010111</td>
+<td>23</td>
+<td>TB</td>
+<td>00110111</td>
+<td>55</td>
+<td>7</td>
+<td>01010111</td>
+<td>87</td>
+<td>W</td>
+<td>01110111</td>
+<td>119</td>
+<td>w</td>
+</tr>
+<tr>
+<td>00011000</td>
+<td>24</td>
+<td>CAN</td>
+<td>00111000</td>
+<td>56</td>
+<td>8</td>
+<td>01011000</td>
+<td>88</td>
+<td>X</td>
+<td>01111000</td>
+<td>120</td>
+<td>x</td>
+</tr>
+<tr>
+<td>00011001</td>
+<td>25</td>
+<td>EM</td>
+<td>00111001</td>
+<td>57</td>
+<td>9</td>
+<td>01011001</td>
+<td>89</td>
+<td>Y</td>
+<td>01111001</td>
+<td>121</td>
+<td>y</td>
+</tr>
+<tr>
+<td>00011010</td>
+<td>26</td>
+<td>SUB</td>
+<td>00111010</td>
+<td>58</td>
+<td>:</td>
+<td>01011010</td>
+<td>90</td>
+<td>Z</td>
+<td>01111010</td>
+<td>122</td>
+<td>z</td>
+</tr>
+<tr>
+<td>00011011</td>
+<td>27</td>
+<td>ESC</td>
+<td>00111011</td>
+<td>59</td>
+<td>;</td>
+<td>01011011</td>
+<td>91</td>
+<td>[</td>
+<td>01111011</td>
+<td>123</td>
+<td>{</td>
+</tr>
+<tr>
+<td>00011100</td>
+<td>28</td>
+<td>FS</td>
+<td>00111100</td>
+<td>60</td>
+<td>&lt;</td>
+<td>01011100</td>
+<td>92</td>
+<td>/</td>
+<td>01111100</td>
+<td>124</td>
+<td></td>
+</tr>
+<tr>
+<td>00011101</td>
+<td>29</td>
+<td>GS</td>
+<td>00111101</td>
+<td>61</td>
+<td>=</td>
+<td>01011101</td>
+<td>93</td>
+<td>]</td>
+<td>01111101</td>
+<td>125</td>
+<td>}</td>
+</tr>
+<tr>
+<td>00011110</td>
+<td>30</td>
+<td>RS</td>
+<td>00111110</td>
+<td>62</td>
+<td>&gt;</td>
+<td>01011110</td>
+<td>94</td>
+<td>^</td>
+<td>01111110</td>
+<td>126</td>
+<td>`</td>
+</tr>
+<tr>
+<td>00011111</td>
+<td>31</td>
+<td>US</td>
+<td>00111111</td>
+<td>63</td>
+<td>?</td>
+<td>01011111</td>
+<td>95</td>
+<td>_</td>
+<td>01111111</td>
+<td>127</td>
+<td>DEL</td>
+</tr>
+</tbody>
+</table>
+<h1 id="字符编码的发展史"><a href="#字符编码的发展史" class="headerlink" title="字符编码的发展史"></a>字符编码的发展史</h1><p>计算机开始普遍在其他国家开始使用，但是ASCII只能表示英文，无法表示中文、日文、韩文等。一个字节是8个比特，这意味着1个比特并没有被使用，也就是从128到255的编码并没有被制定ASCII标准的人所规定。其它国家的人趁这个机会开始使用128到255范围内的编码来表达自己语言中的字符。例如，144在阿拉伯人的ASCII码中是گ，而在俄罗斯的ASCII码中是ђ。ASCII码的问题在于尽管所有人都在0-127号字符的使用上达成了一致，但对于128-255号字符却有很多很多不同的解释。你必须告诉计算机使用哪种风格的ASCII码才能正确显示128-255号的字符。</p>
+<h2 id="关于中文"><a href="#关于中文" class="headerlink" title="关于中文"></a>关于中文</h2><p>为了处理汉字，程序员设计了用于简体中文的GB2312和用于繁体中文的big5</p>
+<p>GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。</p>
+<p>GB2312 支持的汉字太少。1995年的汉字扩展规范GBK1.0收录了21886个符号，它分为汉字区和图形符号区。汉字区包括21003个字符。2000年的 GB18030 是取代GBK1.0的正式国家标准。该标准收录了27484个汉字，同时还收录了藏文、蒙文、维吾尔文等主要的少数民族文字。现在的PC平台必须支持 GB18030，对嵌入式产品暂不作要求。所以手机、MP3一般只支持GB2312。</p>
+<p>从ASCII、GB2312、GBK 到 GB18030，这些编码方法是向下兼容的，即同一个字符在这些方案中总是有相同的编码，后面的标准支持更多的字符。在这些编码中，英文和中文可以统一地处理。区分中文编码的方法是高字节的最高位不为0。按照程序员的称呼，GB2312、GBK到GB18030都属于双字节字符集 (DBCS)。</p>
+<p>有的中文Windows的缺省内码还是GBK，可以通过GB18030升级包升级到GB18030。不过GB18030相对GBK增加的字符，普通人是很难用到的，通常我们还是用GBK指代中文Windows内码。</p>
+<h2 id="unicode"><a href="#unicode" class="headerlink" title="unicode"></a>unicode</h2><p>全世界有上百种语言，日本把日文编到Shift_JIS里，韩国把韩文编到Euc-kr里，各国有各国的标准，就会不可避免地出现冲突，结果就是，在多语言混合的文本中，显示出来会有乱码。比如如果中国的软件出口到美国，在美国人的电脑上就会显示乱码，因为他们没有gbk编码。</p>
+<p>因此，Unicode（统一码、万国码、单一码）应运而生。Unicode把所有语言都统一到一套编码里，这样就不会再有乱码问题了。规定所有的字符和符号统一最少由 16 位(2Bytes)代表一个字符，2**16-1=65535，可代表6万多个字符，因而兼容万国语言。</p>
+<h2 id="utf-8"><a href="#utf-8" class="headerlink" title="utf-8"></a>utf-8</h2><p>但对于通篇都是英文的文本来说，本来用一个字节就可以表示的内容，用unicode这种编码方式无疑是多了一倍的存储空间。本着节约的精神，于是产生了UTF-8，对英文字符只用1Bytes表示，对中文字符用3Bytes。如果你要传输的文本包含大量英文字符，用UTF-8编码就能节省空间：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>ASCII</th>
+<th>Unicode</th>
+<th>UTF-8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>01000001</td>
+<td>00000000 01000001</td>
+<td>01000001</td>
+</tr>
+<tr>
+<td>中</td>
+<td>无法表示</td>
+<td>01001110 00101101</td>
+<td>11100100 10111000 10101101</td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>为了处理英文字符，产生了ASCII码<br>为了处理中文字符，产生了GB2312<br>为了处理各国字符，产生了Unicode<br>为了提高Unicode存储和传输性能，产生了UTF-8，它是Unicode的一种实现形式</p>
+</blockquote>
+<ul>
+<li><p>unicode</p>
+<ul>
+<li>所有字符都是2Bytes，兼容所有语言字符，优点是字符-&gt;数字的转换速度快，缺点是占用空间大</li>
+</ul>
+</li>
+<li><p>utf-8</p>
+<ul>
+<li>精准，对不同的字符用不同的长度表示，优点是节省空间，缺点是：字符-&gt;数字的转换速度慢，因为每次都需要计算出字符需要多长的Bytes才能够准确表示</li>
+</ul>
+</li>
+<li><p>内存中使用的编码是unicode</p>
+<ul>
+<li>用空间换时间（程序都需要加载到内存才能运行，因而内存应该是尽可能的保证快）</li>
+</ul>
+</li>
+<li>硬盘中或者网络传输用 utf-8<ul>
+<li>网络I/O延迟或磁盘I/O延迟要远大与utf-8的转换延迟，而且I/O应该是尽可能地节省带宽，保证数据传输的稳定性。</li>
+</ul>
+</li>
+</ul>
+<h1 id="编码的使用"><a href="#编码的使用" class="headerlink" title="编码的使用"></a>编码的使用</h1><p>计算机中所有程序的运行都是在内存中进行的。内存 ( Memory ) 也被称为内存储器，其作用是用于暂时存放CPU中的运算数据，以及与硬盘等外部存储器交换的数据。只要计算机在运行中，CPU就会把需要运算的数据调到内存中进行运算，当运算完成后CPU再将结果传送出来。</p>
+<p>当我们在计算机上打开一个文本编辑器的时候，计算机实际上就是在内存中启动了一个相应的进程，所以我们所有编辑的内容也都在内存中存放，只有当我们点击保存的时候才会将数据写入硬盘，没有保存之前一旦断电，内存中未保存的数据就会丢失。</p>
+<p>在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就转换为UTF-8编码。需要注意的是 <strong>文件以什么编码保存的，就以什么编码方式打开</strong></p>
+<h1 id="Python的编码"><a href="#Python的编码" class="headerlink" title="Python的编码"></a>Python的编码</h1><h2 id="存取过程"><a href="#存取过程" class="headerlink" title="存取过程"></a>存取过程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test.py</span><br></pre></td></tr></table></figure>
+<p>上面是一个在命令行使用python解释器来执行写好的 python 程序，这个过程大致可以分成三个步骤：</p>
+<ul>
+<li>启动解释器，进程运行在内存中</li>
+<li>解释器将 <code>test.py</code> 从硬盘读入内存</li>
+<li>解释器执行内存中的代码</li>
+</ul>
+<p><img src="/2019/03/02/200410-Python的字符编码/code1.png" alt=""></p>
+<p>python 中关于编码出现的问题:</p>
+<ul>
+<li>如果不在 python 文件指定头信息 <code>＃-*-coding:utf-8-*-</code> ，在 python2 中就默认使用 ascii 读取文件，python3 中默认使用 utf-8 读取文件。我们使用以下代码做个演示</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.getdefaultencoding())</span><br><span class="line"></span><br><span class="line">s=<span class="string">"你好"</span></span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+<p>python2的运行结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  File <span class="string">"encode.py"</span>, line 4</span><br><span class="line">SyntaxError: Non-ASCII character <span class="string">'\xe4'</span> <span class="keyword">in</span> file encode.py on line 4, but no encoding declared; see http://www.python.org/peps/pep-0263.html <span class="keyword">for</span> details</span><br></pre></td></tr></table></figure>
+<p>python3的运行结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">utf-8</span><br><span class="line">你好</span><br></pre></td></tr></table></figure>
+<p>在 python 文件中使用utf-8编码进行存取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.getdefaultencoding())</span><br><span class="line"></span><br><span class="line">s=<span class="string">"你好"</span></span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+<p>python2的运行结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ascii</span><br><span class="line">你好</span><br></pre></td></tr></table></figure>
+<p>python3的运行结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">utf-8</span><br><span class="line">你好</span><br></pre></td></tr></table></figure>
+<h2 id="内存中的执行"><a href="#内存中的执行" class="headerlink" title="内存中的执行"></a>内存中的执行</h2><p>python 读取已经加载到内存的代码（unicode 编码的二进制），然后执行，执行过程中可能会开辟新的内存空间，比如 <code>x=&quot;hello&quot;</code></p>
+<p>内存的编码使用 unicode，不代表内存中全都是 unicode 编码的二进制，在程序执行之前，内存中确实都是 unicode 编码的二进制，比如从文件中读取了一行<code>x=&quot;hello&quot;</code>，其中的x，等号，引号，地位都一样，都是普通字符而已，都是以unicode编码的二进制形式存放与内存中的。但是程序在执行过程中，会申请内存（与程序代码所存在的内存是两个空间），可以存放任意编码格式的数据，比如<code>x=&quot;hello&quot;</code>，会被python解释器识别为字符串，会申请内存空间来存放<code>hello</code>，然后让<code>x</code>指向该内存地址，此时新申请的该内存地址保存也是unicode编码的<code>hello</code>，如果代码换成<code>x=&quot;hello&quot;.encode(&#39;utf-8&#39;)</code>，那么新申请的内存空间里存放的就是utf-8编码的字符串<code>hello</code>了.</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/code2.png" alt=""></p>
+<h2 id="Python2与python3编码区别"><a href="#Python2与python3编码区别" class="headerlink" title="Python2与python3编码区别"></a>Python2与python3编码区别</h2><h3 id="Python2"><a href="#Python2" class="headerlink" title="Python2"></a>Python2</h3><p>在 python2 中有两种字符串类型 str 和 unicode</p>
+<ul>
+<li>str类型</li>
+</ul>
+<p>当 python 解释器执行到产生字符串的代码时（例如 <code>s = &#39;好&#39;</code>），会申请新的内存地址，然后将 <code>&#39;好&#39;</code> 编码成文件开头指定的编码格式，这已经是encode(编码)之后的结果了，所以 <code>s</code> 只能 decode(解码)。再次 encode 就会报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">"好"</span></span><br><span class="line"><span class="comment"># print s.encode("utf-8")  # 报错</span></span><br><span class="line"><span class="keyword">print</span> s.decode(<span class="string">"utf-8"</span>)   <span class="comment"># 结果：好</span></span><br></pre></td></tr></table></figure>
+<p>在 python2 中，str 就是编码后的结果 bytes，str=bytes，所以在 python2 中，unicode 字符编码的结果是 str/bytes</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 在执行时,'好'会被以conding:utf-8的形式保存到新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> repr(s)  <span class="comment">#'\xe5\xa5\xbd' 三个Bytes,证明确实是utf-8</span></span><br><span class="line"><span class="keyword">print</span> type(s)  <span class="comment"># &lt;type 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">s.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="comment"># s.encode('utf-8')  # 报错，s为编码后的结果bytes，所以只能decode</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>unicode类型</li>
+</ul>
+<p>当 python 解释器执行到产生字符串的代码时（例如 <code>s = u&#39;好&#39;</code>），会申请新的内存地址，然后将 <code>&#39;好&#39;</code> 以 unicode 的格式存放到新的内存空间中，所以 s 只能 encode ，不能 decode.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">u'好'</span></span><br><span class="line"><span class="keyword">print</span> repr(s)  <span class="comment"># u'\u597d'</span></span><br><span class="line"><span class="keyword">print</span> type(s)  <span class="comment"># &lt;type 'unicode'&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># s.decode('utf-8')  # 报错，s为unicode，所以只能encode</span></span><br><span class="line">s.encode(<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Python3"><a href="#Python3" class="headerlink" title="Python3"></a>Python3</h3><p>在 python3 中也有两种字符串类型 str 和 bytes </p>
+<ul>
+<li>python3中，str 类型在内存中默认以 unicode 编码保存到新的内存空间中</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 当程序执行时，无需加 u，默认以 unicode 形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># s可以直接 encode 成任意编码格式</span></span><br><span class="line">s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>bytes类型</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 当程序执行时，无需加 u，默认以 unicode 形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># s可以直接 encode 成任意编码格式</span></span><br><span class="line">s1 = s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">s2 = s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">print(s)  <span class="comment"># 好</span></span><br><span class="line">print(s1)  <span class="comment"># b'\xe6\x9e\x97' 在 python3 中，是什么就打印什么</span></span><br><span class="line">print(s2)  <span class="comment"># b'\xc1\xd6' 同上</span></span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line">print(type(s1))  <span class="comment"># &lt;class 'bytes'&gt;</span></span><br><span class="line">print(type(s2))  <span class="comment"># &lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p><strong>当数据要打印到终端时，要注意一些问题.</strong></p>
+<ul>
+<li>当程序执行时，比如: <code>x = &#39;好&#39;;print(x)</code> ，这一步是将 <code>x</code> 指向的那块新的内存空间（非代码所在的内存空间）中的内存，打印到终端，而终端仍然是运行于内存中的，所以这打印可以理解为从内存打印到内存，即内存-&gt;内存，unicode -&gt; unicode，对于 unicode 格式的数据来说，无论怎么打印都不会乱码。</li>
+<li>python3 中的字符串与 python2 中的 u’字符串’，都是 unicode，所以无论如何打印都不会乱码。</li>
+<li>在 windows 终端（终端编码为gbk，文件编码为 utf-8，乱码产生）</li>
+</ul>
+<h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>在ASCII中一个中文字符占用几个字节？答：ASCII无法表示中文字符</li>
+<li>Python2 的默认文件编码是 ascii</li>
+<li>Python3 的默认文件编码是 utf-8，所有字符串都是 unicode</li>
+<li>unicode 中一个中文占用两个字节空间，utf-8 中一个中文占用三个字节</li>
+</ul>
+<p>参考链接：<br><a href="https://www.cnblogs.com/vipchenwei/p/6993788.html" target="_blank" rel="noopener">https://www.cnblogs.com/vipchenwei/p/6993788.html</a><br><a href="http://blog.csdn.net/apache0554/article/details/53889253" target="_blank" rel="noopener">http://blog.csdn.net/apache0554/article/details/53889253</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Silence
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/" title="Python的字符编码">http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python3/" rel="tag"><i class="fa fa-tag"></i> Python3</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/01/105110-Python初识/" rel="next" title="Python初识">
+                <i class="fa fa-chevron-left"></i> Python初识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/03/080810-第一个Python程序/" rel="prev" title="第一个Python程序">
+                第一个Python程序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence" />
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二进制与数字"><span class="nav-number">1.</span> <span class="nav-text">二进制与数字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASCII码"><span class="nav-number">2.</span> <span class="nav-text">ASCII码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符编码的发展史"><span class="nav-number">3.</span> <span class="nav-text">字符编码的发展史</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于中文"><span class="nav-number">3.1.</span> <span class="nav-text">关于中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode"><span class="nav-number">3.2.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utf-8"><span class="nav-number">3.3.</span> <span class="nav-text">utf-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码的使用"><span class="nav-number">4.</span> <span class="nav-text">编码的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python的编码"><span class="nav-number">5.</span> <span class="nav-text">Python的编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#存取过程"><span class="nav-number">5.1.</span> <span class="nav-text">存取过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存中的执行"><span class="nav-number">5.2.</span> <span class="nav-text">内存中的执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python2与python3编码区别"><span class="nav-number">5.3.</span> <span class="nav-text">Python2与python3编码区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python2"><span class="nav-number">5.3.1.</span> <span class="nav-text">Python2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3"><span class="nav-number">5.3.2.</span> <span class="nav-text">Python3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意事项"><span class="nav-number">6.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结-1"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

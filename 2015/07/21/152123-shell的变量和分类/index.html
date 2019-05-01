@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="BashShell," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="什么是变量变量：就是一个容器用来存储数据也是一段内存空间（内存是编制的存储单元）；通过变量赋值在变量中存储数据，然后可以通过变量名访问到的存储信息的内存空间地址。 变量是脚本语言的核心，shell 脚本又是无类型的，所以要使用变量就需要引用。 数据类型数据类型是指用来事先定义数据的存储格式和存储长度，参与的运算。 数据">
+<meta name="keywords" content="BashShell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell的变量和分类">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/07/21/152123-shell的变量和分类/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="什么是变量变量：就是一个容器用来存储数据也是一段内存空间（内存是编制的存储单元）；通过变量赋值在变量中存储数据，然后可以通过变量名访问到的存储信息的内存空间地址。 变量是脚本语言的核心，shell 脚本又是无类型的，所以要使用变量就需要引用。 数据类型数据类型是指用来事先定义数据的存储格式和存储长度，参与的运算。 数据类型的重要性：有一种系统攻击叫缓冲区溢出，如声明一个数据类型为整型并申请 1 字">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-01T15:31:26.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell的变量和分类">
+<meta name="twitter:description" content="什么是变量变量：就是一个容器用来存储数据也是一段内存空间（内存是编制的存储单元）；通过变量赋值在变量中存储数据，然后可以通过变量名访问到的存储信息的内存空间地址。 变量是脚本语言的核心，shell 脚本又是无类型的，所以要使用变量就需要引用。 数据类型数据类型是指用来事先定义数据的存储格式和存储长度，参与的运算。 数据类型的重要性：有一种系统攻击叫缓冲区溢出，如声明一个数据类型为整型并申请 1 字">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/07/21/152123-shell的变量和分类/"/>
+
+
+
+
+
+  <title>shell的变量和分类 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/07/21/152123-shell的变量和分类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell的变量和分类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-21T15:21:23+08:00">
+                2015-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,027
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="什么是变量"><a href="#什么是变量" class="headerlink" title="什么是变量"></a>什么是变量</h1><p>变量：就是一个容器用来存储数据也是一段内存空间（内存是编制的存储单元）；通过变量赋值在变量中存储数据，然后可以通过变量名访问到的存储信息的内存空间地址。</p>
+<p>变量是脚本语言的核心，shell 脚本又是无类型的，所以要使用变量就需要引用。</p>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>数据类型是指用来事先定义数据的存储格式和存储长度，参与的运算。</p>
+<p>数据类型的重要性：有一种系统攻击叫缓冲区溢出，如声明一个数据类型为整型并申请 1 字节空间。当在这个变量中存储 256 时，这个整型数据时就会产生溢出，因为 1 字节是 8 个位存储单元的存储范围是 0-255。而 256 就存储不了也就会产生溢出占用其他进程空间，解决缓冲溢出最简单的方法就是当用户存储一个数据时先检查数据是否可以存储下。</p>
+<p>对于解释型语言来说，它的数据类型都是弱类型的。不管变量中的数据有没有类型都可以，因为解释器能理解，而且由解释器在另外一个层次给予避免。</p>
+<p>对于编译型语言来说，一旦数据类型出了问题只能靠程序自身来解决，它没有额外的一层保护机制，编译器也可以在编译时检查明显错误，但是对于后期用户输入进来的数据就无法检查了，所以但凡编译型语言都是强类型编译必须事先严格定义变量中的数据类型。</p>
+<p>常用的数据类型有字符型，数值型，时间日期型，布尔型等等。</p>
+<h1 id="Bash-对变量的机制"><a href="#Bash-对变量的机制" class="headerlink" title="Bash 对变量的机制"></a>Bash 对变量的机制</h1><ul>
+<li>所有变量都看作为字符型</li>
+<li>它不支持浮点型数据，如果想要支持则需借助外部机制才能实现</li>
+<li>变量无需事先声明，也就是说变量赋值和变量声明是同时进行的</li>
+</ul>
+<p><strong>Tips：</strong> 变量引用机制：把变量名出现的位置，直接替换为其所指向的内存空间中的数据</p>
+<h1 id="变量的命名规范"><a href="#变量的命名规范" class="headerlink" title="变量的命名规范"></a>变量的命名规范</h1><ul>
+<li>不能以数字开头，只能包含数字、字母、下划线，且变量名中不能出现空格</li>
+<li>不能使用下划线以外的标点符号</li>
+<li>不能使用程序语言的保留字（<code>if</code> <code>else</code> <code>while</code> 等），保留关键字可以尝试 <code>help if</code> 这种方式查看</li>
+<li>变量名最好做到见名知义</li>
+</ul>
+<p><strong>Tips：</strong> 命名规则针对的是自定义变量</p>
+<h1 id="变量分类"><a href="#变量分类" class="headerlink" title="变量分类"></a>变量分类</h1><h2 id="本地变量"><a href="#本地变量" class="headerlink" title="本地变量"></a>本地变量</h2><p>本地变量作用域只对当前 shell 进程生效，对子 shell、其他 shell 进程无效。Bash 默认变量都是本地变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义本地变量</span></span><br><span class="line"><span class="built_in">set</span> VAR_NAME=value</span><br><span class="line"></span><br><span class="line"><span class="comment"># set一般都可以省略，如下</span></span><br><span class="line">VAR_NAME=VALUE</span><br><span class="line"></span><br><span class="line"><span class="comment"># 引用变量,其中&#123;&#125;一般可省略，直接echo $VAR_NAME;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;VAR_NAME&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><p>局部变量作用域对当前代码段有效，在一个脚本的函数中的变量跟函数外的变量名同名，就可以把函数内的变量定义为局部变量，这样就不会跟其他变量冲突。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[user1@study ~]$ cat test.sh</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">name=<span class="string">'Tom'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">func</span></span>()&#123;</span><br><span class="line">    <span class="comment"># 定义局部变量</span></span><br><span class="line">    <span class="built_in">local</span> name=<span class="string">'Jerry'</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$&#123;name&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func</span><br><span class="line">[user1@study ~]$ bash test.sh </span><br><span class="line">Jerry</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><p>环境变量用来定义每一个用户的操作环境，变量作用域只对当前用户 shell 进程及其子 shell 生效，并且机器重启变量失效。如我们常用的 <code>PATH</code> 变量就是一个环境变量，不管机器有没有重启，<code>PATH</code> 变量重来没有失效过，这是因为针对环境变量有特定的环境变量配置文件，每一次用户登录就会加载此配置文件，同理在此文件中的变量就会生效。</p>
+<h3 id="定义环境变量"><a href="#定义环境变量" class="headerlink" title="定义环境变量"></a>定义环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义环境变量，定义不存在的变量为环境变量;</span></span><br><span class="line"><span class="built_in">export</span> VAR_NAME=value</span><br><span class="line"><span class="comment"># 或如下方式</span></span><br><span class="line"><span class="built_in">declare</span> -x VAR_NAME=VALUE</span><br><span class="line"><span class="comment"># 或如下方式</span></span><br><span class="line">VARNAME=VALUE ; <span class="built_in">export</span> VARNAME</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义环境变量,定义已存在的变量为环境变量；</span></span><br><span class="line">$ <span class="built_in">export</span> VAR_NAME</span><br></pre></td></tr></table></figure>
+<h3 id="查看当前系统环境变量"><a href="#查看当前系统环境变量" class="headerlink" title="查看当前系统环境变量"></a>查看当前系统环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> <span class="comment"># 显示(设置)所有shell变量（包括环境变量及本地变量）</span></span><br><span class="line">env <span class="comment"># 显示(设置)当前shell的环境变量</span></span><br><span class="line">printenv   <span class="comment"># 同env</span></span><br><span class="line"><span class="built_in">export</span>     <span class="comment"># 显示(设置)导出成当前shell环境变量的变量。</span></span><br><span class="line"><span class="built_in">declare</span> -x <span class="comment"># 同export</span></span><br></pre></td></tr></table></figure>
+<h3 id="常见的系统环境变量"><a href="#常见的系统环境变量" class="headerlink" title="常见的系统环境变量"></a>常见的系统环境变量</h3><table>
+<thead>
+<tr>
+<th>变量名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SHELL</td>
+<td>当前用户用的是哪种Shell</td>
+</tr>
+<tr>
+<td>BASH</td>
+<td>bash的路径</td>
+</tr>
+<tr>
+<td>BASH_VERSION</td>
+<td>bash的版本号</td>
+</tr>
+<tr>
+<td>LANG</td>
+<td>字符集，是和语言相关的环境变量，使用多种语言的用户可以修改此环境变量</td>
+</tr>
+<tr>
+<td>HOSTNAME</td>
+<td>主机的名称，许多应用程序如果要用到主机名的话，通常是从这个环境变量中来取得的</td>
+</tr>
+<tr>
+<td>HOSTTYPE</td>
+<td>主机架构类型，用来识别系统硬件</td>
+</tr>
+<tr>
+<td>MACHTYPE</td>
+<td>平台类型，系统平台依赖的编译平台</td>
+</tr>
+<tr>
+<td>OSTYPE</td>
+<td>系统类型</td>
+</tr>
+<tr>
+<td>LOGNAME</td>
+<td>当前用户的登录名</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>当前的用户</td>
+</tr>
+<tr>
+<td>UID</td>
+<td>当前的用户的ID号</td>
+</tr>
+<tr>
+<td>EUID</td>
+<td>有效用户的ID号</td>
+</tr>
+<tr>
+<td>HOME</td>
+<td>当前用户的家目录</td>
+</tr>
+<tr>
+<td>PWD</td>
+<td>当前目录</td>
+</tr>
+<tr>
+<td>OLDPWD</td>
+<td>上次使用的目录</td>
+</tr>
+<tr>
+<td>PATH</td>
+<td>包含一系列由冒号分隔开的目录，系统从这些目录里寻找可执行文件。若输入的可执行文件不在这些目录中，系统就无法执行它（除非输入绝对路径）</td>
+</tr>
+<tr>
+<td>LDPATH</td>
+<td>包含一系列用冒号隔开的目录，动态链接器将在这些目录里查找库文件</td>
+</tr>
+<tr>
+<td>MANPATH</td>
+<td>包含一系列用冒号隔开的目录，命令man会在这些目录里搜索man页面，在<code>/etc/man.config</code>或<code>/etc/man_db.conf</code>中定义</td>
+</tr>
+<tr>
+<td>INFODIR</td>
+<td>包含一系列用冒号隔开的目录，命令info将在这些目录里搜索info页面</td>
+</tr>
+<tr>
+<td>PAGER</td>
+<td>包含浏览文件内容的程序的路径（例如less或者more）</td>
+</tr>
+<tr>
+<td>EDITOR</td>
+<td>包含修改文件内容的程序（文件编辑器）的路径（比如nano或者vi）</td>
+</tr>
+<tr>
+<td>KDEDIRS</td>
+<td>包含一系列用冒号隔开的目录，里面放的是KDE相关的资料</td>
+</tr>
+<tr>
+<td>MAIL</td>
+<td>当前用户的邮件存放目录</td>
+</tr>
+<tr>
+<td>HISTSIZE</td>
+<td>保存历史命令记录的条数</td>
+</tr>
+<tr>
+<td>PS1</td>
+<td>命令提示符，对于root用户是#，对于普通用户是$</td>
+</tr>
+<tr>
+<td>PS2</td>
+<td>是附属提示符，默认是“&gt;”。可以通过修改此环境变量来修改当前的命令符</td>
+</tr>
+<tr>
+<td>PS3</td>
+<td>第三提示符，用于select命令中</td>
+</tr>
+<tr>
+<td>PS4</td>
+<td>第四提示符，当使用-X选项调用脚本时，显示的提示符，默认为+号</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[user1@practice ~]$ <span class="built_in">export</span> PS2=<span class="string">'........'</span></span><br><span class="line">[user1@practice ~]$ <span class="keyword">if</span> <span class="literal">true</span>;<span class="keyword">then</span></span><br><span class="line">........<span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;USER&#125;</span>"</span>;</span><br><span class="line">........<span class="keyword">fi</span></span><br><span class="line">user1</span><br><span class="line">[user1@practice ~]$</span><br></pre></td></tr></table></figure>
+<h2 id="位置变量"><a href="#位置变量" class="headerlink" title="位置变量"></a>位置变量</h2><p>$1，$2，…$9，${10}，${11}…${n} 传递给脚本或函数的位置参数，只读</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$0</span>         <span class="comment"># 用于引用执行脚本的名称;</span></span><br><span class="line"><span class="variable">$1</span>         <span class="comment"># 用于引用执行脚本后跟的第一个位置参数;</span></span><br><span class="line"><span class="variable">$2</span>         <span class="comment"># 用于引用执行脚本后跟的第二个位置参数;</span></span><br><span class="line"><span class="variable">$N</span>         <span class="comment"># 用于引用执行脚本后跟的第N个位置参数;</span></span><br><span class="line"><span class="built_in">shift</span> 1    <span class="comment"># 轮换，用于替换一个或多个位置变量;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">args=<span class="variable">$#</span>           <span class="comment"># 位置参数的个数</span></span><br><span class="line">lastarg=<span class="variable">$&#123;!args&#125;</span>  <span class="comment"># 或</span></span><br><span class="line">lastarg=<span class="variable">$&#123;!#&#125;</span>     <span class="comment"># 取得位置参数中的最后一个参数</span></span><br><span class="line"><span class="comment"># 注意 lastarg=$&#123;!$#&#125; 将报错</span></span><br></pre></td></tr></table></figure>
+<h2 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h2><p>shell 对一些参数做特殊处理，只能被引用不能被赋值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$0</span>  <span class="comment"># 当前脚本的文件名</span></span><br><span class="line">$$  <span class="comment"># 获取当前shell的进程号</span></span><br><span class="line">$!  <span class="comment"># 执行上一个指令的进程号</span></span><br><span class="line"><span class="variable">$#</span>  <span class="comment"># 所有位置变量的个数</span></span><br><span class="line">$*  <span class="comment"># 所有位置变量，作为一个整体字符串</span></span><br><span class="line"><span class="variable">$@</span>  <span class="comment"># 所有位置变量，每个变量作为独立字符串</span></span><br><span class="line">$-  <span class="comment"># 当前Shell的命令行选项</span></span><br><span class="line"><span class="variable">$_</span>  <span class="comment"># 上一个命令或脚本的最后一个参数</span></span><br><span class="line">$?  <span class="comment"># 上一个命令或脚本的执行状态返回值</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Silence
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2015/07/21/152123-shell的变量和分类/" title="shell的变量和分类">http://linuxgeeks.github.io/2015/07/21/152123-shell的变量和分类/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/BashShell/" rel="tag"><i class="fa fa-tag"></i> BashShell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/20/194143-Bash的基本特性之HereDocuments与HereStrings/" rel="next" title="Bash的基本特性之 Here Documents 与 Here Strings">
+                <i class="fa fa-chevron-left"></i> Bash的基本特性之 Here Documents 与 Here Strings
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/24/094139-shell中对变量的操作/" rel="prev" title="shell中对变量的操作">
+                shell中对变量的操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence" />
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是变量"><span class="nav-number">1.</span> <span class="nav-text">什么是变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bash-对变量的机制"><span class="nav-number">3.</span> <span class="nav-text">Bash 对变量的机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量的命名规范"><span class="nav-number">4.</span> <span class="nav-text">变量的命名规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量分类"><span class="nav-number">5.</span> <span class="nav-text">变量分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地变量"><span class="nav-number">5.1.</span> <span class="nav-text">本地变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量"><span class="nav-number">5.2.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">5.3.</span> <span class="nav-text">环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义环境变量"><span class="nav-number">5.3.1.</span> <span class="nav-text">定义环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看当前系统环境变量"><span class="nav-number">5.3.2.</span> <span class="nav-text">查看当前系统环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的系统环境变量"><span class="nav-number">5.3.3.</span> <span class="nav-text">常见的系统环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位置变量"><span class="nav-number">5.4.</span> <span class="nav-text">位置变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊变量"><span class="nav-number">5.5.</span> <span class="nav-text">特殊变量</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

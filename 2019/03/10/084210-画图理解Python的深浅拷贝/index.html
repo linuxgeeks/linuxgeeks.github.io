@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python3," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，">
+<meta name="keywords" content="Python3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="画图理解Python的深浅拷贝">
+<meta property="og:url" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝 基本概念对象在 Python 中，一切皆对象。任何数据类型、函数">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy01.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy02.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy03.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy04.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy05.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy06.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy07.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy08.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy09.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy10.png">
+<meta property="og:updated_time" content="2019-04-01T12:42:06.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="画图理解Python的深浅拷贝">
+<meta name="twitter:description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝 基本概念对象在 Python 中，一切皆对象。任何数据类型、函数">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/"/>
+
+
+
+
+
+  <title>画图理解Python的深浅拷贝 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">画图理解Python的深浅拷贝</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-10T08:42:10+08:00">
+                2019-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,330
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。</p>
+<p>同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>在 Python 中，一切皆对象。任何数据类型、函数、模块在 Python 中都被当做对象处理。</p>
+<p>所有的 Python 对象都有三个属性：身份、类型、值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'Tom'</span>  <span class="comment"># 建立一个对象引用</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(name)  <span class="comment"># ID其实是内存地址，即身份的唯一标识</span></span><br><span class="line"><span class="number">19018976</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(name)  <span class="comment"># 对象的类型，决定对象可以引用什么样的值</span></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">name</span>  # 对象引用的值，即实际表示的数据</span></span><br><span class="line"><span class="class">'<span class="title">Tom</span>'</span></span><br></pre></td></tr></table></figure>
+<h2 id="可变与不可变对象"><a href="#可变与不可变对象" class="headerlink" title="可变与不可变对象"></a>可变与不可变对象</h2><p>可变对象：对象的值可变，身份是不变的，例如列表、字典、集合，这些都是容器类型的数据，容器的内存地址是不变的，发生变化的是容器内部的数据</p>
+<p>不可变对象： 对象的值和身份都是不变的，新创建的对象被原来的变量名引用，旧的对象就会被丢弃，最后交给垃圾回收机制处理掉，例如数字、字符串、元组</p>
+<h2 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h2><p>或许在很多人的直观印象中，变量是一个容器，给变量赋值，就像是往一个存储的容器中填入一个数据，再次赋值就是把容器中的数据换掉，<strong>在 Python 中，这种理解是不准确的！</strong></p>
+<p>更恰当的比喻是，我们可以把变量当做是一个标签：给变量赋值就是把标签贴在一个物体上；再次赋值就是把标签取下来贴在另一个物体上。</p>
+<h2 id="对象引用"><a href="#对象引用" class="headerlink" title="对象引用"></a>对象引用</h2><p>在 Python 程序中，每个对象都会在内存中申请开辟一块空间来保存该对象，该对象在内存中所在位置的地址被称为引用。在开发程序时，所定义的变量名实际就是对象的地址引用。</p>
+<p>引用实际就是内存中的一个数字地址编号（内存地址），在使用对象时，只要知道这个对象的内存地址，就可以操作这个对象，但是因为内存地址不方便在开发时使用和记忆，所以使用变量名的形式来代替对象的内存地址。 在 Python 中，变量就是地址的一种表示形式，并不开辟开辟存储空间。</p>
+<p>就像在访问网站时我们输入的是域名，而不是IP，但实际都是通过 IP 地址来进行网络通信的，而 IP 地址不方便记忆，所以使用域名来代替 IP 地址，在使用域名访问网站时，域名被 DNS 服务器解析成 IP 地址来使用。</p>
+<p>在创建一个数据项时，将其赋值给一个变量，或者将其插入到一个组合中时，实际上是使得某个变量对内存中存放数据的对象进行引用，使用 <code>del</code> 时，实际上是删除了相应的对象引用</p>
+<h3 id="不可变对象的引用赋值"><a href="#不可变对象的引用赋值" class="headerlink" title="不可变对象的引用赋值"></a>不可变对象的引用赋值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">497079344</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">497079344</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">'xyz'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">19019808</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">497079344</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p><code>a = 1</code> 相当于把标签 a 贴在了 <code>1</code> 上，他的身份（内存地址）是 <code>497079344</code></p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy01.png" alt=""></p>
+<p>使用 <code>b = a</code> 的方式，实际上就相当于把标签 b 也贴在了标签 a 贴的那个物体上，也就是 a 和 b 都指向了同一块内存地址，可以简单的认为给对象的引用做了一个别名</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy02.png" alt=""></p>
+<p>当重新为 a 进行赋值时（<code>a=&#39;xyz&#39;</code>），实际上是在内存中新开辟了一段空间存放字符串对象 <code>&#39;xyz&#39;</code> 并把 a 的指向改为 <code>&#39;xyz&#39;</code>，而 b 则还是原来的对象引用</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy03.png" alt=""></p>
+<h3 id="可变对象的引用赋值"><a href="#可变对象的引用赋值" class="headerlink" title="可变对象的引用赋值"></a>可变对象的引用赋值</h3><p>可变对象保存的其实是对象引用（内存地址），而不是真正的对象数据。当对可变对象进行赋值时，只是将可变对象中保存的引用指向了新的对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">19007448</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">19007448</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>] = <span class="string">'hello'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'hello'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="string">'hello'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">19007448</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">19007448</span></span><br></pre></td></tr></table></figure>
+<p>上例中变量 <code>a</code> 并不是引用了实际数据 <code>1, 2, 3</code> 的内存地址，而是单纯的列表的内存地址，引用实际数据的是这个列表对象而不是变量 <code>a</code></p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy04.png" alt=""></p>
+<p>当改变列表中的数据时，改变的不是列表的内存地址，而改变的是列表中对实际数据的引用</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy05.png" alt=""></p>
+<h1 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h1><h2 id="不可变对象的拷贝"><a href="#不可变对象的拷贝" class="headerlink" title="不可变对象的拷贝"></a>不可变对象的拷贝</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">505009200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">505009200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="number">1</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>不可变对象的拷贝就是对象赋值，实际上是让多个对象同时指向一个引用 （内存地址）</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy06.png" alt=""></p>
+<h2 id="可变对象的拷贝"><a href="#可变对象的拷贝" class="headerlink" title="可变对象的拷贝"></a>可变对象的拷贝</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>] = <span class="string">'hello'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'hello'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<p>可变对象的拷贝，会在内存中开辟一个新的空间来保存拷贝的数据。当再改变之前的对象时，对拷贝之后的对象没有任何影响</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy07.png" alt=""></p>
+<h2 id="可变对象与不可变对象的组合"><a href="#可变对象与不可变对象的组合" class="headerlink" title="可变对象与不可变对象的组合"></a>可变对象与不可变对象的组合</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Tom'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">3</span>][<span class="number">0</span>] = <span class="string">'Dog'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Dog'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Dog'</span>, <span class="string">'Jerry'</span>]]</span><br></pre></td></tr></table></figure>
+<p>复杂对象在拷贝时并没有解决数据在传递之后数据改变的问题。 这是因为 <code>copy()</code>  函数在拷贝对象时，只是将指定对象中的所有引用拷贝了一份，如果这些引用当中包含了一个可变对象的话，那么数据还是会被改变。 这种拷贝方式，称为浅拷贝。</p>
+<p>浅拷贝只拷贝顶层数据，不拷贝子层数据</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy08.png" alt=""></p>
+<p>再比如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1=dict.fromkeys([<span class="string">'host1'</span>,<span class="string">'host2'</span>,<span class="string">'host3'</span>],[<span class="string">'test1'</span>,<span class="string">'test2'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1</span><br><span class="line">&#123;<span class="string">'host1'</span>: [<span class="string">'test1'</span>, <span class="string">'test2'</span>], <span class="string">'host2'</span>: [<span class="string">'test1'</span>, <span class="string">'test2'</span>], <span class="string">'host3'</span>: [<span class="string">'test1'</span>, <span class="string">'test2'</span>]&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1[<span class="string">'host2'</span>][<span class="number">1</span>]=<span class="string">'test3'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1</span><br><span class="line">&#123;<span class="string">'host1'</span>: [<span class="string">'test1'</span>, <span class="string">'test3'</span>], <span class="string">'host2'</span>: [<span class="string">'test1'</span>, <span class="string">'test3'</span>], <span class="string">'host3'</span>: [<span class="string">'test1'</span>, <span class="string">'test3'</span>]&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Tom'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.deepcopy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11779528</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779688</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">3</span>][<span class="number">0</span>] = <span class="string">'Dog'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11779528</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779688</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Dog'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Tom'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>深拷贝会逐层进行拷贝，直到拷贝的所有引用都是不可变引用为止</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy09.png" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>在 Python 中，默认的拷贝方式是浅拷贝。从时间上看，浅拷贝花费时间更少；从使用空间上看，浅拷贝花费内存更少；从执行效率上看，浅拷贝只拷贝顶层数据，一般情况下比深拷贝效率高</li>
+<li>不可变对象在赋值时会开辟新空间</li>
+<li>深、浅拷贝对不可变对象拷贝时，不开辟新空间，相当于赋值操作</li>
+<li>浅拷贝在拷贝时，只拷贝第一层中的引用，如果元素是可变对象，并且被修改，那么拷贝的对象也会发生变化</li>
+<li>大多数情况下，编写程序时，都是使用浅拷贝，除非有特定的需求</li>
+</ul>
+<h1 id="小插曲"><a href="#小插曲" class="headerlink" title="小插曲"></a>小插曲</h1><p>下面这段代码是之前在和别人学习交流时遇到的，和深浅拷贝应该没有什么关联，但是觉着放到这篇文章比较合适。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">ls = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ls[<span class="number">-2</span>] <span class="keyword">in</span> ls:</span><br><span class="line">    print(ls[<span class="number">-2</span>])</span><br></pre></td></tr></table></figure>
+<p>乍一看，你能猜到执行的结果么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">3</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<p>这个是因为什么呢？画个图来理解一下：</p>
+<p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy10.png" alt=""></p>
+<p>那么到底是不是这样呢？我们打印每个元素的内存地址来验证一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ls = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> ls:</span><br><span class="line">    print(id(i))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ls[<span class="number">-2</span>] <span class="keyword">in</span> ls:</span><br><span class="line">    print(<span class="string">"\033[0;33m ls[-2] is \033[0m"</span>, ls[<span class="number">-2</span>], end=<span class="string">' ; '</span>)</span><br><span class="line">    print(<span class="string">"\033[0;32m ls is \033[0m"</span>, ls, end=<span class="string">' ; '</span>)</span><br><span class="line">    print(<span class="string">"\033[0;31m id ls[-2] is \033[0m"</span>, id(ls[<span class="number">-2</span>]))</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">139930381165920</span><br><span class="line">139930381165952</span><br><span class="line">139930381165984</span><br><span class="line">139930381166016</span><br><span class="line">139930381166048</span><br><span class="line"> ls[-2] is  1 ;  ls is  [1, 2, 3, 1, 5] ;  id ls[-2] is  139930381165920</span><br><span class="line"> ls[-2] is  2 ;  ls is  [1, 2, 3, 2, 5] ;  id ls[-2] is  139930381165952</span><br><span class="line"> ls[-2] is  3 ;  ls is  [1, 2, 3, 3, 5] ;  id ls[-2] is  139930381165984</span><br><span class="line"> ls[-2] is  3 ;  ls is  [1, 2, 3, 3, 5] ;  id ls[-2] is  139930381165984</span><br><span class="line"> ls[-2] is  5 ;  ls is  [1, 2, 3, 5, 5] ;  id ls[-2] is  139930381166048</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Silence
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/" title="画图理解Python的深浅拷贝">http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python3/" rel="tag"><i class="fa fa-tag"></i> Python3</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/09/082110-Python的组合数据类型-集合/" rel="next" title="Python的组合数据类型-集合">
+                <i class="fa fa-chevron-left"></i> Python的组合数据类型-集合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/11/124110-Python对文件的操作/" rel="prev" title="Python对文件的操作">
+                Python对文件的操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence" />
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象"><span class="nav-number">1.1.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变与不可变对象"><span class="nav-number">1.2.</span> <span class="nav-text">可变与不可变对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量赋值"><span class="nav-number">1.3.</span> <span class="nav-text">变量赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象引用"><span class="nav-number">1.4.</span> <span class="nav-text">对象引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变对象的引用赋值"><span class="nav-number">1.4.1.</span> <span class="nav-text">不可变对象的引用赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变对象的引用赋值"><span class="nav-number">1.4.2.</span> <span class="nav-text">可变对象的引用赋值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅拷贝"><span class="nav-number">2.</span> <span class="nav-text">浅拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变对象的拷贝"><span class="nav-number">2.1.</span> <span class="nav-text">不可变对象的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象的拷贝"><span class="nav-number">2.2.</span> <span class="nav-text">可变对象的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象与不可变对象的组合"><span class="nav-number">2.3.</span> <span class="nav-text">可变对象与不可变对象的组合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深拷贝"><span class="nav-number">3.</span> <span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小插曲"><span class="nav-number">5.</span> <span class="nav-text">小插曲</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
