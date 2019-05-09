@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="语句分支面向过程的语句结构：  顺序结构：逐条运行 选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支     循环结构：某循环体需要执行多次  If语句分支if单分支12345if [[ condition1 ]] ; then    # statements1    # statements2    ">
+<meta name="description" content="面向过程的语句结构：  顺序结构：逐条运行 选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支     循环结构：某循环体需要执行多次  If语句分支if单分支12345if [[ condition1 ]] ; then    # statements1    # statements2    # ..">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell的选择语句分支">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/09/190119-shell的选择语句分支/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="语句分支面向过程的语句结构：  顺序结构：逐条运行 选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支     循环结构：某循环体需要执行多次  If语句分支if单分支12345if [[ condition1 ]] ; then    # statements1    # statements2    # ...........fi 12345if ([[ condition1 ]">
+<meta property="og:description" content="面向过程的语句结构：  顺序结构：逐条运行 选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支     循环结构：某循环体需要执行多次  If语句分支if单分支12345if [[ condition1 ]] ; then    # statements1    # statements2    # ...........fi 12345if ([[ condition1 ]] )">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:04:36.823Z">
+<meta property="og:updated_time" content="2019-05-02T14:26:09.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的选择语句分支">
-<meta name="twitter:description" content="语句分支面向过程的语句结构：  顺序结构：逐条运行 选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支     循环结构：某循环体需要执行多次  If语句分支if单分支12345if [[ condition1 ]] ; then    # statements1    # statements2    # ...........fi 12345if ([[ condition1 ]">
+<meta name="twitter:description" content="面向过程的语句结构：  顺序结构：逐条运行 选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支     循环结构：某循环体需要执行多次  If语句分支if单分支12345if [[ condition1 ]] ; then    # statements1    # statements2    # ...........fi 12345if ([[ condition1 ]] )">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  360
+                  357
                 </span>
               
 
@@ -379,7 +379,7 @@
       
 
       
-        <h1 id="语句分支"><a href="#语句分支" class="headerlink" title="语句分支"></a>语句分支</h1><p>面向过程的语句结构：</p>
+        <p>面向过程的语句结构：</p>
 <ul>
 <li>顺序结构：逐条运行</li>
 <li>选择结构：两个或以上的,满足条件时只会执行其中一个满足条件的分支    </li>
@@ -390,28 +390,19 @@
 <h2 id="if双分支"><a href="#if双分支" class="headerlink" title="if双分支"></a>if双分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ condition1 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements1</span></span><br><span class="line">    <span class="comment"># statements2</span></span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">    <span class="comment"># statements3</span></span><br><span class="line">	<span class="comment"># ..........</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <h2 id="if多分支"><a href="#if多分支" class="headerlink" title="if多分支"></a>if多分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ condition1 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements1</span></span><br><span class="line">    <span class="comment"># statements2</span></span><br><span class="line"><span class="keyword">elif</span> [[ condition2 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements3</span></span><br><span class="line"><span class="keyword">elif</span> [[ condition3 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements4</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [[ condition1 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements1</span></span><br><span class="line">    <span class="comment"># statements2</span></span><br><span class="line"><span class="keyword">elif</span> [[ condition2 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements3</span></span><br><span class="line"><span class="keyword">elif</span> [[ condition3 ]] ; <span class="keyword">then</span></span><br><span class="line">    <span class="comment"># statements4</span></span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">    <span class="comment"># statements5</span></span><br><span class="line">	<span class="comment"># ..........</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-<h1 id="select语句分支"><a href="#select语句分支" class="headerlink" title="select语句分支"></a>select语句分支</h1><ul>
-<li>select表达式是bash的一种扩展应用，擅长于交互式场合。用户可以从一组不同的值中进行选择</li>
-<li>语法格式</li>
-</ul>
+<h1 id="select语句分支"><a href="#select语句分支" class="headerlink" title="select语句分支"></a>select语句分支</h1><p><code>select</code> 表达式是 bash 的一种扩展应用，擅长于交互式场合。用户可以从一组不同的值中进行选择</p>
+<p>语法格式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select varname <span class="keyword">in</span> <span class="string">"string1"</span> <span class="string">"string2"</span> ; <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># statements1</span></span><br><span class="line">    <span class="comment"># statements2</span></span><br><span class="line">    <span class="comment"># .....</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>实例</li>
-</ul>
+<p>示例</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"What is your favourite OS?"</span></span><br><span class="line">select var <span class="keyword">in</span> <span class="string">"Linux"</span> <span class="string">"Gnu Hurd"</span> <span class="string">"Free BSD"</span> <span class="string">"Other"</span> ; <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">break</span> ;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"You have selected <span class="variable">$var</span>"</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>运行结果如下：</li>
-</ul>
+<p>运行结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">What is your favourite OS?</span><br><span class="line">1) Linux</span><br><span class="line">2) Gnu Hurd</span><br><span class="line">3) Free BSD</span><br><span class="line">4) Other</span><br><span class="line">#? 1</span><br><span class="line">You have selected Linux</span><br></pre></td></tr></table></figure>
-<h1 id="case语句分支"><a href="#case语句分支" class="headerlink" title="case语句分支"></a>case语句分支</h1><ul>
-<li>用法</li>
-</ul>
+<h1 id="case语句分支"><a href="#case语句分支" class="headerlink" title="case语句分支"></a>case语句分支</h1><p>语法格式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> word <span class="keyword">in</span></span><br><span class="line">    pattern1)</span><br><span class="line">        <span class="comment"># statements1</span></span><br><span class="line">        ;;</span><br><span class="line">    pattern2)</span><br><span class="line">        <span class="comment"># statements2</span></span><br><span class="line">        ;;</span><br><span class="line">    	   <span class="comment"># ..........</span></span><br><span class="line">    patternN)</span><br><span class="line">        <span class="comment"># statementsN</span></span><br><span class="line">        ;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>case支持的globbing</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">*    <span class="comment"># 任意长度的任意字符		</span></span><br><span class="line">?    <span class="comment"># 任意单个字符</span></span><br><span class="line">[]   <span class="comment"># 指定范围内的单个字符	</span></span><br><span class="line">a|b  <span class="comment"># a或者b</span></span><br></pre></td></tr></table></figure>
-
       
     </div>
     
@@ -498,8 +489,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/12/130111-shell的循环结构和控制/" rel="prev" title="shell的循环结构和控制">
-                shell的循环结构和控制 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/08/12/130111-shell的循环结构及其流程控制/" rel="prev" title="shell的循环结构及其流程控制">
+                shell的循环结构及其流程控制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -619,21 +610,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -641,7 +623,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -791,7 +773,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#语句分支"><span class="nav-number">1.</span> <span class="nav-text">语句分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#If语句分支"><span class="nav-number">2.</span> <span class="nav-text">If语句分支</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#if单分支"><span class="nav-number">2.1.</span> <span class="nav-text">if单分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if双分支"><span class="nav-number">2.2.</span> <span class="nav-text">if双分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if多分支"><span class="nav-number">2.3.</span> <span class="nav-text">if多分支</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select语句分支"><span class="nav-number">3.</span> <span class="nav-text">select语句分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#case语句分支"><span class="nav-number">4.</span> <span class="nav-text">case语句分支</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#If语句分支"><span class="nav-number">1.</span> <span class="nav-text">If语句分支</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#if单分支"><span class="nav-number">1.1.</span> <span class="nav-text">if单分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if双分支"><span class="nav-number">1.2.</span> <span class="nav-text">if双分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#if多分支"><span class="nav-number">1.3.</span> <span class="nav-text">if多分支</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select语句分支"><span class="nav-number">2.</span> <span class="nav-text">select语句分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#case语句分支"><span class="nav-number">3.</span> <span class="nav-text">case语句分支</span></a></li></ol></div>
             
 
           </div>

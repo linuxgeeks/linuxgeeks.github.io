@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="在 Linux 系统中，默认情况下 Bash 就提供了下面这几个可以供用户在命令行使用的标准补全：  变量名补全 用户名补全 可执行命令补全 文件名和目录补全 主机名补全  变量名补全在终端输入 $ 后，敲两次 Tab 键就会列出所有可用的 shell 变量 123456789101112131415161718[root@study ~]# echo $[Tab][Tab]$_">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-30T05:20:42.450Z">
+<meta property="og:updated_time" content="2019-05-02T06:17:17.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bash的基本特性之命令行的5个标准补全">
 <meta name="twitter:description" content="在 Linux 系统中，默认情况下 Bash 就提供了下面这几个可以供用户在命令行使用的标准补全：  变量名补全 用户名补全 可执行命令补全 文件名和目录补全 主机名补全  变量名补全在终端输入 $ 后，敲两次 Tab 键就会列出所有可用的 shell 变量 123456789101112131415161718[root@study ~]# echo $[Tab][Tab]$_">
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,128
+                  1,132
                 </span>
               
 
@@ -407,9 +407,9 @@
 <h1 id="文件名和目录补全"><a href="#文件名和目录补全" class="headerlink" title="文件名和目录补全"></a>文件名和目录补全</h1><p>这是对在命令行的第二个位置和后续位置出现的文件名和目录名的补全。与上面的示例不同，它不检查任何权限，在给出的起始路径下只显示所有可用的文件和目录，并试图补全</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# ls</span><br><span class="line">dir1  dir2  dir3  file1  file2  file3  hello.sh</span><br><span class="line">[root@study ~]# cat file[Tab][Tab]</span><br><span class="line">file1  file2  file3  </span><br><span class="line">[root@study ~]# cat h[Tab][Tab]</span><br><span class="line">[root@study ~]# cat hello.sh</span><br></pre></td></tr></table></figure>
 <p>除此之外，如果要显示的文件太多，这可能会让人感到非常懵逼，它将给出警告消息而不是在屏幕上显示所有可用的文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# ls /etc/</span><br><span class="line">Display all 185 possibilities? (y or n)</span><br></pre></td></tr></table></figure>
-<h1 id="主机名补全"><a href="#主机名补全" class="headerlink" title="主机名补全"></a>主机名补全</h1><p>如果在 ssh 连接一个远程主机时，想要获得要连接的主机名，请在 <code>@</code> 后按两次tab键，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# ssh root@</span><br><span class="line">@::1                      @localhost6</span><br><span class="line">@localhost                @localhost6.localdomain6</span><br><span class="line">@localhost4               @localhost.localdomain</span><br><span class="line">@localhost4.localdomain4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# ls /etc/[Tab][Tab]</span><br><span class="line">Display all 185 possibilities? (y or n)</span><br></pre></td></tr></table></figure>
+<h1 id="主机名补全"><a href="#主机名补全" class="headerlink" title="主机名补全"></a>主机名补全</h1><p>如果在 ssh 连接一个远程主机时，想要获得要连接的主机名，请在 <code>@</code> 后按两次 <code>Tab</code> 键，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# ssh root@[Tab][Tab]</span><br><span class="line">@::1                      @localhost6</span><br><span class="line">@localhost                @localhost6.localdomain6</span><br><span class="line">@localhost4               @localhost.localdomain</span><br><span class="line">@localhost4.localdomain4</span><br></pre></td></tr></table></figure>
 <p>在任何可以为主机名提供 <code>@</code> 的命令中，都可以使用这个主机名补全功能。例如，可以将其与 <code>scp</code> 命令一起使用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# scp file1 root@[Tab][Tab]</span><br><span class="line">@::1                      @localhost6</span><br><span class="line">@localhost                @localhost6.localdomain6</span><br><span class="line">@localhost4               @localhost.localdomain</span><br><span class="line">@localhost4.localdomain4</span><br></pre></td></tr></table></figure>
 <p>用 <code>echo</code> 也是可以的</p>
@@ -623,21 +623,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -645,7 +636,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

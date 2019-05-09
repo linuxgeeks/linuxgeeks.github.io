@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="CentOS Linux系统默认的shell是（）  解答：bash查看方法： 12345&amp;gt; [root@centos-7.3 ~]# echo $SHELL&amp;gt; /bin/bash&amp;gt; [root@centos-7.3 ~]# awk -F &amp;apos;:&amp;apo">
+<meta name="description" content="CentOS Linux系统默认的shell是（）  解答：bash查看方法：12345&amp;gt; [root@centos-7.3 ~]# echo $SHELL&amp;gt; /bin/bash&amp;gt; [root@centos-7.3 ~]# awk -F &amp;apos;:&amp;apos">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell相关的面试题">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/10/17/174103-shell相关的面试题/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="CentOS Linux系统默认的shell是（）  解答：bash查看方法： 12345&amp;gt; [root@centos-7.3 ~]# echo $SHELL&amp;gt; /bin/bash&amp;gt; [root@centos-7.3 ~]# awk -F &amp;apos;:&amp;apos; &amp;apos;/^root/&amp;#123;print $NF&amp;#125;&amp;apos; /etc/passwd&amp;gt;">
+<meta property="og:description" content="CentOS Linux系统默认的shell是（）  解答：bash查看方法：12345&amp;gt; [root@centos-7.3 ~]# echo $SHELL&amp;gt; /bin/bash&amp;gt; [root@centos-7.3 ~]# awk -F &amp;apos;:&amp;apos; &amp;apos;/^root/&amp;#123;print $NF&amp;#125;&amp;apos; /etc/passwd&amp;gt; /">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:36:59.908Z">
+<meta property="og:updated_time" content="2019-05-05T06:03:55.731Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell相关的面试题">
-<meta name="twitter:description" content="CentOS Linux系统默认的shell是（）  解答：bash查看方法： 12345&amp;gt; [root@centos-7.3 ~]# echo $SHELL&amp;gt; /bin/bash&amp;gt; [root@centos-7.3 ~]# awk -F &amp;apos;:&amp;apos; &amp;apos;/^root/&amp;#123;print $NF&amp;#125;&amp;apos; /etc/passwd&amp;gt;">
+<meta name="twitter:description" content="CentOS Linux系统默认的shell是（）  解答：bash查看方法：12345&amp;gt; [root@centos-7.3 ~]# echo $SHELL&amp;gt; /bin/bash&amp;gt; [root@centos-7.3 ~]# awk -F &amp;apos;:&amp;apos; &amp;apos;/^root/&amp;#123;print $NF&amp;#125;&amp;apos; /etc/passwd&amp;gt; /">
 
 
 
@@ -379,18 +379,13 @@
       
 
       
-        <ul>
-<li><p>CentOS Linux系统默认的shell是（）</p>
+        <p>CentOS Linux系统默认的shell是（）</p>
 <blockquote>
-<p>解答：<code>bash</code><br>查看方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@centos-7.3 ~]# echo $SHELL</span><br><span class="line">&gt; /bin/bash</span><br><span class="line">&gt; [root@centos-7.3 ~]# awk -F &apos;:&apos; &apos;/^root/&#123;print $NF&#125;&apos; /etc/passwd</span><br><span class="line">&gt; /bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+<p>解答：<code>bash</code><br>查看方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@centos-7.3 ~]# echo $SHELL</span><br><span class="line">&gt; /bin/bash</span><br><span class="line">&gt; [root@centos-7.3 ~]# awk -F &apos;:&apos; &apos;/^root/&#123;print $NF&#125;&apos; /etc/passwd</span><br><span class="line">&gt; /bin/bash</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-</li>
-<li><p>已知如下命令及返回结果，请问<code>echo $user</code>的返回结果是（）</p>
+<p>已知如下命令及返回结果，请问<code>echo $user</code>的返回结果是（）</p>
 <blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; [root@test ~]# cat test.sh </span><br><span class="line">&gt; #!/bin/bash</span><br><span class="line">&gt; user=`whoami`</span><br><span class="line">&gt; [root@test ~]# sh test.sh  </span><br><span class="line">&gt; </span><br><span class="line">&gt; [root@test ~]# echo $user</span><br><span class="line">&gt; ？？？</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></blockquote>
-</li>
-</ul>
 
       
     </div>
@@ -468,8 +463,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/03/184310-使用dialog创建交互式shell对话框/" rel="next" title="使用dialog创建交互式shell对话框">
-                <i class="fa fa-chevron-left"></i> 使用dialog创建交互式shell对话框
+              <a href="/2015/10/06/114107-shell的学习建议/" rel="next" title="shell的学习建议">
+                <i class="fa fa-chevron-left"></i> shell的学习建议
               </a>
             
           </div>
@@ -590,21 +585,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -612,7 +598,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="在shell中，每个命令都会返回一个状态返回值。成功的命令返回0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。 脚本中的函数和脚本本身也会返回状态返回值。在脚本或者是脚本函数中执行的最后的命令会决定退出状态码。 在脚本中，exit n 命令将会把 n 退出状态码传递给父 shell并结束整个脚本（n必须是">
+<meta name="description" content="在 shell 中，每个命令都会返回一个状态返回值。成功的命令返回 0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。 在 shell 中$? 是一个特殊变量，它所引用的值就是上一条命令的执行状态返回值。  在 shell 的函数执行后，$? 返回的是函数执行的最后一条命令的状态返回值 在 shell 脚本">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell的状态返回值">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/15/194139-shell的状态返回值/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="在shell中，每个命令都会返回一个状态返回值。成功的命令返回0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。 脚本中的函数和脚本本身也会返回状态返回值。在脚本或者是脚本函数中执行的最后的命令会决定退出状态码。 在脚本中，exit n 命令将会把 n 退出状态码传递给父 shell并结束整个脚本（n必须是十进制数, 范围是0 - 255) 以下是常见的状态码及意义  0 运行成功 2">
+<meta property="og:description" content="在 shell 中，每个命令都会返回一个状态返回值。成功的命令返回 0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。 在 shell 中$? 是一个特殊变量，它所引用的值就是上一条命令的执行状态返回值。  在 shell 的函数执行后，$? 返回的是函数执行的最后一条命令的状态返回值 在 shell 脚本执行之后，$? 返回的是脚本执行的最后一条命令的状态返回值  在脚本中，exit">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:06:15.945Z">
+<meta property="og:updated_time" content="2019-05-02T15:45:59.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的状态返回值">
-<meta name="twitter:description" content="在shell中，每个命令都会返回一个状态返回值。成功的命令返回0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。 脚本中的函数和脚本本身也会返回状态返回值。在脚本或者是脚本函数中执行的最后的命令会决定退出状态码。 在脚本中，exit n 命令将会把 n 退出状态码传递给父 shell并结束整个脚本（n必须是十进制数, 范围是0 - 255) 以下是常见的状态码及意义  0 运行成功 2">
+<meta name="twitter:description" content="在 shell 中，每个命令都会返回一个状态返回值。成功的命令返回 0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。 在 shell 中$? 是一个特殊变量，它所引用的值就是上一条命令的执行状态返回值。  在 shell 的函数执行后，$? 返回的是函数执行的最后一条命令的状态返回值 在 shell 脚本执行之后，$? 返回的是脚本执行的最后一条命令的状态返回值  在脚本中，exit">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  221
+                  496
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
@@ -379,10 +379,13 @@
       
 
       
-        <p>在shell中，每个命令都会返回一个状态返回值。成功的命令返回0，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。</p>
-<p>脚本中的函数和脚本本身也会返回状态返回值。在脚本或者是脚本函数中执行的最后的命令会决定退出状态码。</p>
-<p>在脚本中，exit n 命令将会把 n 退出状态码传递给父 shell并结束整个脚本（n必须是十进制数, 范围是0 - 255)</p>
-<p>以下是常见的状态码及意义</p>
+        <p>在 shell 中，每个命令都会返回一个状态返回值。成功的命令返回 <code>0</code>，而不成功的命令返回非零值。非零值通常都被解释成一个错误码。</p>
+<p>在 shell 中<code>$?</code> 是一个特殊变量，它所引用的值就是上一条命令的执行状态返回值。</p>
+<ul>
+<li>在 shell 的函数执行后，<code>$?</code> 返回的是函数执行的最后一条命令的状态返回值</li>
+<li>在 shell 脚本执行之后，<code>$?</code> 返回的是脚本执行的最后一条命令的状态返回值</li>
+</ul>
+<p>在脚本中，<code>exit n</code> 命令将会把 <code>n</code> 退出状态码传递给父 shell 并结束整个脚本。<code>n</code> 必须是十进制数, 范围是<code>0 - 255</code>。以下是常见的状态码及意义</p>
 <ul>
 <li>0 运行成功</li>
 <li>2 权限拒绝</li>
@@ -391,7 +394,9 @@
 <li>127 要运行的命令不存在</li>
 <li>128 命令被系统强制结束</li>
 </ul>
-
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat exitstatus.sh</span><br><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Successful execution"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"====================="</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello world"</span></span><br><span class="line"><span class="comment"># Exit status returns 0, because the above command is a success.</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Exit status"</span> $? </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Incorrect usage"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"====================="</span></span><br><span class="line">ls --option</span><br><span class="line"><span class="comment"># Incorrect usage, so exit status will be 2.</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Exit status"</span> $? </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Command Not found"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"====================="</span></span><br><span class="line">bashscript</span><br><span class="line"><span class="comment"># Exit status returns 127, because bashscript command not found</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Exit status"</span> $? </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Command is not an executable"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"============================="</span></span><br><span class="line">&gt; execution.sh</span><br><span class="line">ls -l execution.sh</span><br><span class="line">./execution.sh</span><br><span class="line"><span class="comment"># Exit status returns 126, because its not an executable.</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Exit status"</span> $?</span><br></pre></td></tr></table></figure>
+<p>执行上面的 <code>exitstatus.sh</code> 查看各种退出状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ bash exitstatus.sh</span><br><span class="line">Successful execution</span><br><span class="line">=====================</span><br><span class="line">hello world</span><br><span class="line">Exit status 0</span><br><span class="line">Incorrect usage</span><br><span class="line">=====================</span><br><span class="line">ls: unrecognized option <span class="string">'--option'</span></span><br><span class="line">Try <span class="string">'ls --help'</span> <span class="keyword">for</span> more information.</span><br><span class="line">Exit status 2</span><br><span class="line">Command Not found</span><br><span class="line">=====================</span><br><span class="line">exitstatus.sh: line 17: bashscript: <span class="built_in">command</span> not found</span><br><span class="line">Exit status 127</span><br><span class="line">Command is not an executable</span><br><span class="line">=============================</span><br><span class="line">-rw-rw-r-- 1 user1 user1 0 Jul 15 23:33 execution.sh</span><br><span class="line">exitstatus.sh: line 24: ./execution.sh: Permission denied</span><br><span class="line">Exit status 126</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -468,8 +473,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/12/130111-shell的循环结构和控制/" rel="next" title="shell的循环结构和控制">
-                <i class="fa fa-chevron-left"></i> shell的循环结构和控制
+              <a href="/2015/08/12/130111-shell的循环结构及其流程控制/" rel="next" title="shell的循环结构及其流程控制">
+                <i class="fa fa-chevron-left"></i> shell的循环结构及其流程控制
               </a>
             
           </div>
@@ -590,21 +595,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -612,7 +608,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

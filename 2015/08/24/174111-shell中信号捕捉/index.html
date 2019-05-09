@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="信号捕捉 信号是一种进程间通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。 应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是SIG_IGN，就忽略该信号；如果是SIG_DFT，则会采用系统默认的处理动作，通常">
+<meta name="description" content="信号捕捉信号是一种进程间的通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。 应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是 SIG_IGN，就忽略该信号；如果是 SIG_DFT，则会采用系统默认的处理动作，">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell中信号捕捉">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/24/174111-shell中信号捕捉/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="信号捕捉 信号是一种进程间通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。 应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是SIG_IGN，就忽略该信号；如果是SIG_DFT，则会采用系统默认的处理动作，通常是终止进程或忽略该信号；如果给该信号指定了一个处理函数(捕捉)，则会中断当前进程">
+<meta property="og:description" content="信号捕捉信号是一种进程间的通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。 应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是 SIG_IGN，就忽略该信号；如果是 SIG_DFT，则会采用系统默认的处理动作，通常是终止进程或忽略该信号；如果给该信号指定了一个处理函数(捕捉)，则会中断当前">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:11:46.774Z">
+<meta property="og:updated_time" content="2019-05-05T04:09:34.214Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell中信号捕捉">
-<meta name="twitter:description" content="信号捕捉 信号是一种进程间通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。 应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是SIG_IGN，就忽略该信号；如果是SIG_DFT，则会采用系统默认的处理动作，通常是终止进程或忽略该信号；如果给该信号指定了一个处理函数(捕捉)，则会中断当前进程">
+<meta name="twitter:description" content="信号捕捉信号是一种进程间的通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。 应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是 SIG_IGN，就忽略该信号；如果是 SIG_DFT，则会采用系统默认的处理动作，通常是终止进程或忽略该信号；如果给该信号指定了一个处理函数(捕捉)，则会中断当前">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,029
+                  1,502
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4
+                  7
                 </span>
               
             </div>
@@ -379,15 +379,13 @@
       
 
       
-        <h1 id="信号捕捉"><a href="#信号捕捉" class="headerlink" title="信号捕捉"></a>信号捕捉</h1><ul>
-<li>信号是一种进程间通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。</li>
-<li>应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是SIG_IGN，就忽略该信号；如果是SIG_DFT，则会采用系统默认的处理动作，通常是终止进程或忽略该信号；如果给该信号指定了一个处理函数(捕捉)，则会中断当前进程正在执行的任务，转而去执行该信号的处理函数，返回后再继续执行被中断的任务。</li>
-</ul>
-<h1 id="常见信号"><a href="#常见信号" class="headerlink" title="常见信号"></a>常见信号</h1><ul>
-<li><code>kill -l</code> 和<code>trap -l</code>可列出系统的信号</li>
-<li><code>stty -a</code> 可列出中断信号与键盘的对应</li>
-<li>信号及描述列表</li>
-</ul>
+        <h1 id="信号捕捉"><a href="#信号捕捉" class="headerlink" title="信号捕捉"></a>信号捕捉</h1><p>信号是一种进程间的通信机制，它给应用程序提供一种异步的软件中断，使应用程序有机会接受其他程序活终端发送的命令(即信号)。</p>
+<p>应用程序收到信号后，有三种处理方式：忽略，默认，捕捉。进程收到一个信号后，会检查对该信号的处理机制。如果是 SIG_IGN，就忽略该信号；如果是 SIG_DFT，则会采用系统默认的处理动作，通常是终止进程或忽略该信号；如果给该信号指定了一个处理函数(捕捉)，则会中断当前进程正在执行的任务，转而去执行该信号的处理函数，返回后再继续执行被中断的任务。</p>
+<h1 id="常见信号"><a href="#常见信号" class="headerlink" title="常见信号"></a>常见信号</h1><p><code>kill -l</code> 和 <code>trap -l</code> 可列出系统的信号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ <span class="built_in">kill</span> -l</span><br><span class="line"> 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL       5) SIGTRAP</span><br><span class="line"> 6) SIGABRT      7) SIGBUS       8) SIGFPE       9) SIGKILL     10) SIGUSR1</span><br><span class="line">11) SIGSEGV     12) SIGUSR2     13) SIGPIPE     14) SIGALRM     15) SIGTERM</span><br><span class="line">16) SIGSTKFLT   17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP</span><br><span class="line">21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ</span><br><span class="line">26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO       30) SIGPWR</span><br><span class="line">31) SIGSYS      34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3</span><br><span class="line">38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8</span><br><span class="line">43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13</span><br><span class="line">48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12</span><br><span class="line">53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7</span><br><span class="line">58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2</span><br><span class="line">63) SIGRTMAX-1  64) SIGRTMAX</span><br><span class="line">[user1@study ~]$ <span class="built_in">trap</span> -l</span><br><span class="line"> 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL       5) SIGTRAP</span><br><span class="line"> 6) SIGABRT      7) SIGBUS       8) SIGFPE       9) SIGKILL     10) SIGUSR1</span><br><span class="line">11) SIGSEGV     12) SIGUSR2     13) SIGPIPE     14) SIGALRM     15) SIGTERM</span><br><span class="line">16) SIGSTKFLT   17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP</span><br><span class="line">21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ</span><br><span class="line">26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO       30) SIGPWR</span><br><span class="line">31) SIGSYS      34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3</span><br><span class="line">38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8</span><br><span class="line">43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13</span><br><span class="line">48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12</span><br><span class="line">53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7</span><br><span class="line">58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2</span><br><span class="line">63) SIGRTMAX-1  64) SIGRTMAX</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p><code>stty -a</code> 可列出中断信号与键盘的对应</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ stty -a</span><br><span class="line">speed 38400 baud; rows 25; columns 100; line = 0;</span><br><span class="line">intr = ^C; quit = ^\; erase = ^?; <span class="built_in">kill</span> = ^U; eof = ^D; eol = &lt;undef&gt;; eol2 = &lt;undef&gt;;</span><br><span class="line">swtch = &lt;undef&gt;; start = ^Q; stop = ^S; susp = ^Z; rprnt = ^R; werase = ^W; lnext = ^V; flush = ^O;</span><br><span class="line">min = 1; time = 0;</span><br><span class="line">-parenb -parodd -cmspar cs8 -hupcl -cstopb cread -clocal -crtscts</span><br><span class="line">-ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr icrnl ixon -ixoff -iuclc -ixany -imaxbel</span><br><span class="line">-iutf8</span><br><span class="line">opost -olcuc -ocrnl onlcr -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0</span><br><span class="line">isig icanon iexten <span class="built_in">echo</span> echoe echok -echonl -noflsh -xcase -tostop -echoprt echoctl echoke</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>常见的信号及其描述</p>
 <table>
 <thead>
 <tr>
@@ -434,41 +432,27 @@
 </tr>
 </tbody>
 </table>
-<h1 id="捕捉信号"><a href="#捕捉信号" class="headerlink" title="捕捉信号"></a>捕捉信号</h1><ul>
-<li><p>在终端一个shell程序的执行过程中，按下Ctrl + C键或Break键正常程序将立即终止，并返回命令提示符。可能并不总是可取的。比如有可能最终产生临时文件，不会被清理。</p>
+<h1 id="捕捉信号"><a href="#捕捉信号" class="headerlink" title="捕捉信号"></a>捕捉信号</h1><p>在终端一个 shel l程序的执行过程中，按下 <code>Ctrl</code> + <code>C</code> 键正常程序将立即终止，并返回命令提示符。可能并不总是可取的。比如有可能最终产生临时文件，不会被清理。</p>
 <ul>
 <li><code>Ctrl</code> + <code>C</code> —&gt; SIGINIT(2)</li>
 <li><code>Ctrl</code>+ <code>Z</code> —&gt; SIGCONT(18)</li>
 </ul>
-</li>
-<li><p>捕捉信号并执行引号中的命令串或函数：</p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trap</span> <span class="string">'commands或functions'</span> signal-list</span><br><span class="line"><span class="built_in">trap</span> <span class="string">"commands或functions"</span> signal-list</span><br></pre></td></tr></table></figure>
-<ul>
-<li>恢复信号的默认操作</li>
-</ul>
+<p>使用 <code>trap</code> 命令可以捕捉信号并执行引号（但双引均可）中的命令串或函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  trap 'commands或functions' signal-list</span></span><br><span class="line"><span class="built_in">trap</span> <span class="string">'echo -e "\n\nQuit....\n\a";exit 3'</span> SIGINT;</span><br></pre></td></tr></table></figure>
+<p>恢复信号的默认操作</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trap</span> signal-list</span><br><span class="line"><span class="built_in">trap</span> : signal-list</span><br></pre></td></tr></table></figure>
-<ul>
-<li>忽略信号</li>
-</ul>
+<p>忽略信号</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trap</span> <span class="string">" "</span> signal-list</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><strong>注意事项</strong></p>
+<p><strong>注意事项</strong></p>
 <ul>
 <li>对信号SIGSEGV(11)不能捕捉，因为shell本身需要捕捉（该信号去进行内存的转储）</li>
-<li>在脚本中可以捕捉信号,但无法捕捉KILL(9)和TERM(15)</li>
+<li>在脚本中可以捕捉信号，但无法捕捉KILL(9)和TERM(15)</li>
 <li>在trap中可以定义对信号0的处理(实际上没有此信号)，shell程序在其终止(如执行exit语句)时发出该信号</li>
 <li>在捕捉到signal-list中指定的信号并执行完相应的命令之后， 如果这些命令没有将shell程序终止的话，shell程序将继续执行收到信号时所执行的命令后面的命令，这样将很容易导致shell程序无法终止。</li>
 </ul>
-</li>
-<li><p>通常需要忽略的四个信号HUP(1), INT(2), QUIT(3), TSTP(24)</p>
-</li>
-</ul>
+<p>通常需要忽略的四个信号HUP(1), INT(2), QUIT(3), TSTP(24)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trap</span> <span class="string">""</span> 1 2 3 24 </span><br><span class="line"><span class="comment"># 或 </span></span><br><span class="line"><span class="built_in">trap</span> <span class="string">""</span> HUP INT QUIT TSTP</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使其恢复默认值</li>
-</ul>
+<p>使其恢复默认值</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trap</span> ：1 2 3 24 </span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line"><span class="built_in">trap</span> HUP INT QUIT TSTP</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -677,21 +661,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -699,7 +674,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

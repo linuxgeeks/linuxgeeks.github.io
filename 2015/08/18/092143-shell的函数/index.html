@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="函数 函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。 Shell必须先定义后使用而且不能独立运行，需要调用执行。 函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。其函数命名不应该为命令名。  函数的定义方式 方法一  1234function function_name &a">
+<meta name="description" content="函数函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。 在 shell 中必须先定义函数，然后使用，而且不能独立运行，需要调用执行。函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。函数命名不应该为命令名，否则会发生冲突。 函数的定义方式定义方式一 1234function fun">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell的函数">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/18/092143-shell的函数/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="函数 函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。 Shell必须先定义后使用而且不能独立运行，需要调用执行。 函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。其函数命名不应该为命令名。  函数的定义方式 方法一  1234function function_name &amp;#123;    list of commands    [ return val">
+<meta property="og:description" content="函数函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。 在 shell 中必须先定义函数，然后使用，而且不能独立运行，需要调用执行。函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。函数命名不应该为命令名，否则会发生冲突。 函数的定义方式定义方式一 1234function function_name &amp;#123;    list of commands">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:07:37.116Z">
+<meta property="og:updated_time" content="2019-05-05T12:09:34.529Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的函数">
-<meta name="twitter:description" content="函数 函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。 Shell必须先定义后使用而且不能独立运行，需要调用执行。 函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。其函数命名不应该为命令名。  函数的定义方式 方法一  1234function function_name &amp;#123;    list of commands    [ return val">
+<meta name="twitter:description" content="函数函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。 在 shell 中必须先定义函数，然后使用，而且不能独立运行，需要调用执行。函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。函数命名不应该为命令名，否则会发生冲突。 函数的定义方式定义方式一 1234function function_name &amp;#123;    list of commands">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  471
+                  896
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  4
                 </span>
               
             </div>
@@ -379,32 +379,28 @@
       
 
       
-        <h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><ul>
-<li>函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。</li>
-<li>Shell必须先定义后使用而且不能独立运行，需要调用执行。</li>
-<li>函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。其函数命名不应该为命令名。</li>
-</ul>
-<h1 id="函数的定义方式"><a href="#函数的定义方式" class="headerlink" title="函数的定义方式"></a>函数的定义方式</h1><ul>
-<li>方法一</li>
-</ul>
+        <h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>函数可将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。</p>
+<p>在 shell 中必须先定义函数，然后使用，而且不能独立运行，需要调用执行。函数可出现在任何位置，在代码执行时，都会被自动替换为函数代码。函数命名不应该为命令名，否则会发生冲突。</p>
+<h1 id="函数的定义方式"><a href="#函数的定义方式" class="headerlink" title="函数的定义方式"></a>函数的定义方式</h1><p>定义方式一</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> function_name &#123;</span><br><span class="line">    list of commands</span><br><span class="line">    [ <span class="built_in">return</span> value ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法二</li>
-</ul>
+<p>定义方式二</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">function_name</span></span> () &#123;</span><br><span class="line">    list of commands</span><br><span class="line">    [ <span class="built_in">return</span> value ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="函数的生命周期"><a href="#函数的生命周期" class="headerlink" title="函数的生命周期"></a>函数的生命周期</h1><p>每次被调用时创建，返回时终止</p>
+<h1 id="函数的生命周期"><a href="#函数的生命周期" class="headerlink" title="函数的生命周期"></a>函数的生命周期</h1><p>每次被调用时创建，返回时终止。在 RedHat 系列的系统中的 <code>/etc/init.d/functions</code> 文件中有很多系统原生的函数，可以用来参考学习。</p>
+<h1 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h1><p>调用函数时直接写函数名即可调用该函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat test.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">choice</span></span>()&#123;</span><br><span class="line">    <span class="built_in">read</span> -p <span class="string">"Do you want to continue? [yes/no] "</span> yourchoice</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">case</span> <span class="string">"<span class="variable">$&#123;yourchoice&#125;</span>"</span> <span class="keyword">in</span></span><br><span class="line">        y|Y|[yY][eE]|[yY][eE][sS])</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"OK, you can continue"</span></span><br><span class="line">            ;;</span><br><span class="line">        n|N|[nN][oO])</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"NO"</span></span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Usage: &#123; yes | no &#125;"</span></span><br><span class="line">            <span class="built_in">exit</span> 5</span><br><span class="line">            ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">choice</span><br><span class="line"></span><br><span class="line">[user1@study ~]$ bash test.sh </span><br><span class="line">Do you want to <span class="built_in">continue</span>? [yes/no] yes</span><br><span class="line">OK, you can <span class="built_in">continue</span></span><br><span class="line">[user1@study ~]$ bash test.sh </span><br><span class="line">Do you want to <span class="built_in">continue</span>? [yes/no] n</span><br><span class="line">NO</span><br><span class="line">[user1@study ~]$ bash test.sh</span><br><span class="line">Do you want to <span class="built_in">continue</span>? [yes/no] <span class="built_in">test</span>     </span><br><span class="line">Usage: &#123; yes | no &#125;</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <h1 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h1><ul>
-<li>函数返回值，可以使用return语句；如果不加，则将最后一条命令运行结果作为返回值。</li>
+<li>函数的返回值，可以使用 <code>return</code> 语句；如果不加，则将最后一条命令运行结果作为返回值。</li>
 <li>Shell 函数返回值只能是整数，一般用来表示函数执行成功与否，0表示成功，其他值表示失败。</li>
 <li>如果 return 其他数据，比如一个字符串，往往会得到错误提示：“numeric argument required”</li>
 </ul>
-<h1 id="函数中参数的传递"><a href="#函数中参数的传递" class="headerlink" title="函数中参数的传递"></a>函数中参数的传递</h1><p>在函数体中当中，可以使用<code>$1，$2，....$n</code>、<code>$@</code>、<code>$#</code>、<code>$*</code>等引用传递给函数的位置变量；在调用函数时，在函数名后面以空白符分隔给定参数列表即可，例如:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testfunc arg1 arg2 arg3</span><br></pre></td></tr></table></figure>
-<h1 id="函数中变量及作用域"><a href="#函数中变量及作用域" class="headerlink" title="函数中变量及作用域"></a>函数中变量及作用域</h1><h2 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">local</span> VARIABLE=VALUE</span><br><span class="line"><span class="comment"># 作用域是当前函数，在函数结束时被自动销毁</span></span><br></pre></td></tr></table></figure>
-<h2 id="本地变量"><a href="#本地变量" class="headerlink" title="本地变量"></a>本地变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> VARNAME=VALUE</span><br><span class="line"><span class="comment"># 作用域当前shell进程</span></span><br></pre></td></tr></table></figure>
-<h1 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h1><p>能够调用自身的函数成为递归函数。经典的fork炸弹 </p>
+<h1 id="函数中参数的传递"><a href="#函数中参数的传递" class="headerlink" title="函数中参数的传递"></a>函数中参数的传递</h1><p>在函数体中当中，可以使用  <code>$1，$2，....$n</code>、<code>$@</code>、<code>$#</code>、<code>$*</code> 等引用传递给函数的位置变量；在调用函数时，在函数名后面以空白符分隔给定参数列表即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat test.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">action=<span class="variable">$1</span></span><br><span class="line"><span class="comment"># 传递给脚本的第一个参数</span></span><br><span class="line">me=$(basename <span class="variable">$0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">servicectl</span></span>()&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">    <span class="comment"># 这里的 $1 是针对当前函数来说的，不是脚本的 $1</span></span><br><span class="line">        start)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;me&#125;</span> <span class="variable">$&#123;action&#125;</span>"</span></span><br><span class="line">            ;;</span><br><span class="line">        stop)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;me&#125;</span> <span class="variable">$&#123;action&#125;</span>"</span></span><br><span class="line">            ;;</span><br><span class="line">        reload)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;me&#125;</span> <span class="variable">$&#123;action&#125;</span>"</span></span><br><span class="line">            ;;</span><br><span class="line">        restart)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"<span class="variable">$&#123;me&#125;</span> <span class="variable">$&#123;action&#125;</span>"</span></span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$&#123;me&#125;</span> &#123; start | stop | reload | restart &#125;"</span></span><br><span class="line">            ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">servicectl <span class="variable">$&#123;action&#125;</span></span><br><span class="line"><span class="comment"># 通过 action 变量将传递给脚本的第一个参数再传递给函数</span></span><br><span class="line">[user1@study ~]$ bash test.sh </span><br><span class="line">Usage: test.sh &#123; start | stop | reload | restart &#125;</span><br><span class="line">[user1@study ~]$ bash test.sh start</span><br><span class="line">test.sh start</span><br><span class="line">[user1@study ~]$ bash test.sh restart</span><br><span class="line">test.sh restart</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<h1 id="局部变量及作用域"><a href="#局部变量及作用域" class="headerlink" title="局部变量及作用域"></a>局部变量及作用域</h1><p>使用 <code>local VARIABLE=VALUE</code> 的方式来定义一个局部变量，并且 <code>local</code> 关键字可以省略。局部变量的作用域是当前函数，不能被函数体外面的语句调用，在函数结束时被自动销毁。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat test.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">name=<span class="string">"Jerry"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">afunc</span></span>()&#123;</span><br><span class="line">    <span class="built_in">local</span> name=<span class="string">"Tom"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$&#123;name&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;name&#125;</span></span><br><span class="line"></span><br><span class="line">afunc</span><br><span class="line"></span><br><span class="line">[user1@study ~]$ bash test.sh </span><br><span class="line">Jerry</span><br><span class="line">Tom</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<h1 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h1><p>能够调用自身的函数成为递归函数。经典的 fork 炸弹</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.()&#123;.|.&amp;&#125;;.</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">. () </span><br><span class="line"><span class="comment"># 定义一个名叫 . 的函数，无可选参数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">#函数体开始</span></span><br><span class="line">.|.&amp;</span><br><span class="line"><span class="comment"># 递归调用函数本身，然后利用管道再次调函数本身并将其放到后台执行</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment"># 函数体结束</span></span><br><span class="line">.</span><br><span class="line"><span class="comment"># 调用函数</span></span><br></pre></td></tr></table></figure>
+<p>说明</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">. () </span><br><span class="line"><span class="comment"># 定义一个名叫 . 的函数，无可选参数</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment"># 函数体开始</span></span><br><span class="line">.|.&amp;</span><br><span class="line"><span class="comment"># 递归调用函数本身，然后利用管道再次调函数本身并将其放到后台执行</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment"># 函数体结束</span></span><br><span class="line">.</span><br><span class="line"><span class="comment"># 调用函数</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -613,21 +609,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -635,7 +622,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -785,7 +772,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的定义方式"><span class="nav-number">2.</span> <span class="nav-text">函数的定义方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的生命周期"><span class="nav-number">3.</span> <span class="nav-text">函数的生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的返回值"><span class="nav-number">4.</span> <span class="nav-text">函数的返回值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数中参数的传递"><span class="nav-number">5.</span> <span class="nav-text">函数中参数的传递</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数中变量及作用域"><span class="nav-number">6.</span> <span class="nav-text">函数中变量及作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#局部变量"><span class="nav-number">6.1.</span> <span class="nav-text">局部变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地变量"><span class="nav-number">6.2.</span> <span class="nav-text">本地变量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归函数"><span class="nav-number">7.</span> <span class="nav-text">递归函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的定义方式"><span class="nav-number">2.</span> <span class="nav-text">函数的定义方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的生命周期"><span class="nav-number">3.</span> <span class="nav-text">函数的生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调用函数"><span class="nav-number">4.</span> <span class="nav-text">调用函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的返回值"><span class="nav-number">5.</span> <span class="nav-text">函数的返回值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数中参数的传递"><span class="nav-number">6.</span> <span class="nav-text">函数中参数的传递</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#局部变量及作用域"><span class="nav-number">7.</span> <span class="nav-text">局部变量及作用域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归函数"><span class="nav-number">8.</span> <span class="nav-text">递归函数</span></a></li></ol></div>
             
 
           </div>

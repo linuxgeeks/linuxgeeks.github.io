@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="Shell登录提示符常用参数及含义在/etc/bashrc文件中会设定PS1变量，这个变量设置的就是登录之后的提示符信息 12[root@localhost ~]$ echo $PS1[\u@\h \W]\$  \d ：代表日期，格式为weekday month date，例如：”Mon Aug 1” \H ：完整的主">
+<meta name="description" content="登录提示符常用参数及含义 在 /etc/bashrc 文件中会设定 PS1 变量，这个变量设置的就是登录之后的提示符信息 12[root@localhost ~]$ echo $PS1[\u@\h \W]\$ 不同的参数代表的含义不同  \d ：代表日期，格式为 weekday month date，例如：”Mon A">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell登录提示符与登录提示信息">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/07/30/214135-shell登录提示符与登录提示信息/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="Shell登录提示符常用参数及含义在/etc/bashrc文件中会设定PS1变量，这个变量设置的就是登录之后的提示符信息 12[root@localhost ~]$ echo $PS1[\u@\h \W]\$  \d ：代表日期，格式为weekday month date，例如：”Mon Aug 1” \H ：完整的主机名称 \h ：仅取主机名中的第一个名字 \t ：显示时间为24小时格式，如：H">
+<meta property="og:description" content="登录提示符常用参数及含义 在 /etc/bashrc 文件中会设定 PS1 变量，这个变量设置的就是登录之后的提示符信息 12[root@localhost ~]$ echo $PS1[\u@\h \W]\$ 不同的参数代表的含义不同  \d ：代表日期，格式为 weekday month date，例如：”Mon Aug 1” \H ：完整的主机名称 \h ：仅取主机名中的第一个名字 \t ：显">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T12:59:31.592Z">
+<meta property="og:updated_time" content="2019-05-02T12:30:58.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell登录提示符与登录提示信息">
-<meta name="twitter:description" content="Shell登录提示符常用参数及含义在/etc/bashrc文件中会设定PS1变量，这个变量设置的就是登录之后的提示符信息 12[root@localhost ~]$ echo $PS1[\u@\h \W]\$  \d ：代表日期，格式为weekday month date，例如：”Mon Aug 1” \H ：完整的主机名称 \h ：仅取主机名中的第一个名字 \t ：显示时间为24小时格式，如：H">
+<meta name="twitter:description" content="登录提示符常用参数及含义 在 /etc/bashrc 文件中会设定 PS1 变量，这个变量设置的就是登录之后的提示符信息 12[root@localhost ~]$ echo $PS1[\u@\h \W]\$ 不同的参数代表的含义不同  \d ：代表日期，格式为 weekday month date，例如：”Mon Aug 1” \H ：完整的主机名称 \h ：仅取主机名中的第一个名字 \t ：显">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,210
+                  1,621
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  8
                 </span>
               
             </div>
@@ -379,30 +379,29 @@
       
 
       
-        <h1 id="Shell登录提示符"><a href="#Shell登录提示符" class="headerlink" title="Shell登录提示符"></a>Shell登录提示符</h1><h2 id="常用参数及含义"><a href="#常用参数及含义" class="headerlink" title="常用参数及含义"></a>常用参数及含义</h2><p>在<code>/etc/bashrc</code>文件中会设定PS1变量，这个变量设置的就是登录之后的提示符信息</p>
+        <h1 id="登录提示符"><a href="#登录提示符" class="headerlink" title="登录提示符"></a>登录提示符</h1><p><strong>常用参数及含义</strong></p>
+<p>在 <code>/etc/bashrc</code> 文件中会设定 <code>PS1</code> 变量，这个变量设置的就是登录之后的提示符信息</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]$ <span class="built_in">echo</span> <span class="variable">$PS1</span></span><br><span class="line">[\u@\h \W]\$</span><br></pre></td></tr></table></figure>
+<p>不同的参数代表的含义不同</p>
 <ul>
-<li><code>\d</code> ：代表日期，格式为weekday month date，例如：”Mon Aug 1”</li>
+<li><code>\d</code> ：代表日期，格式为 weekday month date，例如：”Mon Aug 1”</li>
 <li><code>\H</code> ：完整的主机名称</li>
 <li><code>\h</code> ：仅取主机名中的第一个名字</li>
-<li><code>\t</code> ：显示时间为24小时格式，如：HH：MM：SS</li>
+<li><code>\t</code> ：显示时间为24小时格式 <code>HH:MM;SS</code></li>
 <li><code>\T</code> ：显示时间为12小时格式</li>
-<li><code>\A</code> ：显示时间为24小时格式：HH：MM</li>
+<li><code>\A</code> ：显示时间为24小时格式 <code>HH:MM</code></li>
 <li><code>\u</code> ：当前用户的账号名称</li>
-<li><code>\v</code> ：BASH的版本信息</li>
+<li><code>\v</code> ：BASH 的版本信息</li>
 <li><code>\w</code> ：完整的工作目录名称</li>
-<li><code>\W</code> ：利用basename取得工作目录名称，只显示最后一个目录名</li>
+<li><code>\W</code> ：利用 <code>basename</code> 取得工作目录名称，只显示最后一个目录名</li>
 <li><code>\#</code> ：下达的第几个命令</li>
 <li><code>\$</code> ：提示字符，如果是root用户，提示符为 # ，普通用户则为 $</li>
 </ul>
-<p>所以linux默认的命令行提示信息的格式<code>PS1=&#39;[\u@\h \W]\$ &#39;</code>的意思就是：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[当前用户的账号名@主机名的第一个名字 工作目录的最后一层目录名]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-<h2 id="颜色参数"><a href="#颜色参数" class="headerlink" title="颜色参数"></a>颜色参数</h2><ul>
-<li><p>在<code>PS1</code>中设置字符颜色的格式为：<code>\[\e[F;Bm\]........\[\e[0m\]</code>，其中<code>\[\e[</code>作为颜色设定的开始，<code>F</code>为字体颜色，编号为<code>30-37</code>，<code>B</code>为背景颜色，编号为<code>40-47</code>，<code>\[\e[0m\]</code>作为颜色设定的结束。</p>
-</li>
-<li><p>颜色对照表：</p>
-</li>
-</ul>
+<p>所以 shell 默认的命令行提示信息的格式 <code>PS1=&#39;[\u@\h \W]\$ &#39;</code> 的意思就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[当前用户的账号名@主机名的第一个名字 工作目录的最后一层目录名]#</span><br></pre></td></tr></table></figure>
+<p><strong>颜色参数</strong></p>
+<p>在 <code>PS1</code> 中还可以设置字符的颜色，其格式为 <code>\[\e[F;Bm\]........\[\e[0m\]</code>，其中 <code>\[\e[</code> 作为颜色设定的开始。<code>F</code> 为字体颜色，编号范围是 <code>30-37</code>，<code>B</code> 为背景颜色，编号范围是 <code>40-47</code>，而 <code>\[\e[0m\]</code> 作为颜色设定的结束。</p>
+<p>下面是颜色对照表：</p>
 <table>
 <thead>
 <tr>
@@ -454,42 +453,34 @@
 </tr>
 </tbody>
 </table>
-<h2 id="个性化配置命令提示符"><a href="#个性化配置命令提示符" class="headerlink" title="个性化配置命令提示符"></a>个性化配置命令提示符</h2><p>linux终端命令行默认全部为白色，会经常导致命令与输出内容难以分辨。于是我们通过自定义<code>PS1</code>环境变量来实现这个需求。</p>
-<ul>
-<li>示例1：终端提示符添加颜色</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">'\[\e[1;36;40m\][\u@\H \W]\$\[\e[0m\] '</span></span><br><span class="line"><span class="comment"># 或不使用背景色</span></span><br><span class="line">PS1=<span class="string">'\[\e[1;36m\][\u@\H \W]\$\[\e[0m\] '</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>示例2：多行提示符</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">'\D&#123;%c&#125; \w\n[\u@\H]\$ '</span></span><br></pre></td></tr></table></figure>
-<p>如果想要永久生效，我们可以将这行命令写到<code>/etc/profile.d/myPS1.sh</code>，并添加权限即可</p>
-<h1 id="登录提示信息"><a href="#登录提示信息" class="headerlink" title="登录提示信息"></a>登录提示信息</h1><h2 id="登录前提示信息"><a href="#登录前提示信息" class="headerlink" title="登录前提示信息"></a>登录前提示信息</h2><p>每次登录系统时都会有提示信息，需要注意的是<strong>这个登录提示信息是针对本地终端tty{1-6}的，而并非类SSH登录</strong>。</p>
-<ul>
-<li>本地终端提示信息默认在文件<code>/etc/issue</code>中，如:</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/issue</span></span><br><span class="line">CentOS release 5.8 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
-<ul>
-<li>转义符说明</li>
-</ul>
+<p><strong>个性化配置命令提示符</strong></p>
+<p>在 linux 上终端命令行默认全部为白色，会经常导致命令与输出内容难以分辨，于是我们可以通过自定义 <code>PS1</code> 环境变量来解决这个问题。</p>
+<p>一行显示日期和时间，一行显示标准的提示符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ <span class="built_in">export</span> PS1=<span class="string">'\D&#123;%c&#125; \w\n[\u@\H]\$ '</span></span><br><span class="line">Wed 15 Jul 2015 08:22:15 PM CST ~</span><br><span class="line">[user1@study]$ <span class="built_in">echo</span> Tom                                       </span><br><span class="line">Tom</span><br><span class="line">Wed 15 Jul 2015 08:22:19 PM CST ~</span><br><span class="line">[user1@study]$ <span class="built_in">echo</span> Jerry                                     </span><br><span class="line">Jerry</span><br><span class="line">Wed 15 Jul 2015 08:22:21 PM CST ~</span><br><span class="line">[user1@study]$</span><br></pre></td></tr></table></figure>
+<p>显示当前时间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ <span class="built_in">export</span> PS1=<span class="string">"\u@\h [\$(date +%k:%M:%S)]&gt; "</span></span><br><span class="line">user1@study [20:21:24]&gt; <span class="built_in">echo</span> <span class="string">"yes"</span></span><br><span class="line">yes</span><br><span class="line">user1@study [20:21:29]&gt;</span><br></pre></td></tr></table></figure>
+<p>为了能永久生效，一般在 <code>/etc/profile.d/</code> 下自定义一个专门设置 <code>PS1</code> 的脚本并对其添加可执行权限。上面的格式只是设置了多行提示符，并没有对颜色和自己进行设置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]<span class="comment"># cat /etc/profile.d/my-PS1.sh</span></span><br><span class="line">PS1=<span class="string">'\[\e[1;36m\][\u@\H \W]\$\[\e[0m\] '</span></span><br><span class="line">[root@study ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h1 id="登录提示信息"><a href="#登录提示信息" class="headerlink" title="登录提示信息"></a>登录提示信息</h1><h2 id="登录前提示信息"><a href="#登录前提示信息" class="headerlink" title="登录前提示信息"></a>登录前提示信息</h2><p>每次登录系统时都会有提示信息，<strong>这个登录提示信息是针对本地终端 tty{1-6} 的，而并非类SSH登录</strong>。</p>
+<p>本地终端提示信息默认在文件 <code>/etc/issue</code> 中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat /etc/issue</span><br><span class="line">\S</span><br><span class="line">Kernel \r on an \m</span><br><span class="line"></span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>文件中使用了转义符，下面做一个简要的说明</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">\d：显示当前系统日期</span><br><span class="line">\s：显示操作系统名称</span><br><span class="line">\l：显示登录的终端号，这个比较常用</span><br><span class="line">\m：显示硬件体系结构，如x86</span><br><span class="line">\n：显示主机名</span><br><span class="line">\o：显示域名</span><br><span class="line">\r：显示内核版本号</span><br><span class="line">\t：显示当前系统时间</span><br><span class="line">\u：显示当前登录用户的序列号</span><br></pre></td></tr></table></figure>
-<ul>
-<li>远程终端提示信息默认在文件<code>/etc/issue.net</code>中，如:</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/issue.net</span></span><br><span class="line">CentOS release 5.8 (Final)</span><br><span class="line">Kernel \r on an \m</span><br></pre></td></tr></table></figure>
-<p>在SSH服务中默认并没有开启显示信息，要想在SSH登录时显示这些内容，可以在<code>/etc/ssh/sshd_config</code>文件中，把<code>Banner none</code>改为<code>Banner /etc/issue.net</code>，然后重启sshd服务重新登录就会看到显示信息。但是<code>Kernel \r on an \m</code>这行字符原样显示并没有进行转义，原因是远程信息提示不支持转义符的使用，一般就是用来写一些警告信息。</p>
-<h1 id="登陆后提示信息"><a href="#登陆后提示信息" class="headerlink" title="登陆后提示信息"></a>登陆后提示信息</h1><ul>
-<li><p>生产服务器最好做到什么信息都不要提示，以免带来安全问题。如果一定要写，建议写在/etc/motd文件中，并且最好写一些警告信息</p>
-</li>
-<li><p>登陆成功后如果需要给出提示信息，可以在文件<code>/etc/motd</code>中定义，默认这个文件是空的，需要写上面直接定义即可。</p>
-</li>
-<li><p>以下是几个供娱乐使用的提示信息模板</p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">                   _oo8oo_</span><br><span class="line">                  o8888888o</span><br><span class="line">                  88<span class="string">" . "</span>88</span><br><span class="line">                  (| -_- |)</span><br><span class="line">                  0\  =  /0</span><br><span class="line">                ___/<span class="string">'==='</span>\___</span><br><span class="line">              .<span class="string">' \\|     |// '</span>.</span><br><span class="line">             / \\|||  :  |||// \</span><br><span class="line">            / _||||| -:- |||||_ \</span><br><span class="line">           |   | \\\  -  /// |   |</span><br><span class="line">           | \_|  <span class="string">''</span>\---/<span class="string">''</span>  |_/ |</span><br><span class="line">           \  .-\__  <span class="string">'-'</span>  __/-.  /</span><br><span class="line">         ___<span class="string">'. .'</span>  /--.--\  <span class="string">'. .'</span>___</span><br><span class="line">      .<span class="string">""</span> <span class="string">'&lt;  '</span>.___\_&lt;|&gt;_/___.<span class="string">'  &gt;'</span> <span class="string">""</span>.</span><br><span class="line">     | | :  `- \`.:`\ _ /`:.`/ -`  : | |</span><br><span class="line">     \  \ `-.   \_ __\ /__ _/   .-` /  /</span><br><span class="line"> =====`-.____`.___ \_____/ ___.`____.-`=====</span><br><span class="line">                   `=---=`  </span><br><span class="line">  </span><br><span class="line">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">           God bless         Never crash</span><br></pre></td></tr></table></figure>
+<p>远程终端提示信息默认在文件 <code>/etc/issue.net</code> 中，如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat /etc/issue.net </span><br><span class="line">\S</span><br><span class="line">Kernel \r on an \m</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>在 SSH 服务中默认并没有开启显示信息，要想在 SSH 登录时显示这些内容，可以在服务配置文件 <code>/etc/ssh/sshd_config</code> 文件中，把 参数<code>Banner none</code> 改为 <code>Banner /etc/issue.net</code>，然后重启 sshd 服务重新登录就会看到显示信息。但是 <code>Kernel \r on an \m</code> 这行字符原样显示并没有进行转义，原因是远程信息提示不支持转义符的使用，一般就是用来写一些警告信息。</p>
+<h1 id="登陆后提示信息"><a href="#登陆后提示信息" class="headerlink" title="登陆后提示信息"></a>登陆后提示信息</h1><p>使用环境变量配置文件来输出会比较易于定制，因为都是用 shell 来做的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat ~/.bash_profile</span><br><span class="line"><span class="comment"># .bash_profile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the aliases and functions</span></span><br><span class="line"><span class="keyword">if</span> [ -f ~/.bashrc ]; <span class="keyword">then</span></span><br><span class="line">        . ~/.bashrc</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># User specific environment and startup programs</span></span><br><span class="line"></span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/.<span class="built_in">local</span>/bin:<span class="variable">$HOME</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line"></span><br><span class="line"><span class="comment"># Look at them</span></span><br><span class="line">hname=`hostname`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Welcome on <span class="variable">$hname</span>."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Kernel Details: "</span> `uname -smr`</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"`bash --version`"</span></span><br><span class="line"><span class="built_in">echo</span> -ne <span class="string">"Uptime: "</span>; uptime</span><br><span class="line"><span class="built_in">echo</span> -ne <span class="string">"Server time : "</span>; date</span><br></pre></td></tr></table></figure>
+<p>重新登录后就会出现提示信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]<span class="comment"># su - user1</span></span><br><span class="line">Last login: Wed Jul 15 19:43:13 CST 2015 on pts/3</span><br><span class="line">Welcome on study.</span><br><span class="line">Kernel Details:  Linux 3.10.0-862.el7.x86_64 x86_64</span><br><span class="line">GNU bash, version 4.2.46(2)-release (x86_64-redhat-linux-gnu)</span><br><span class="line">Copyright (C) 2011 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">This is free software; you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line">Uptime:  20:17:08 up  6:49,  9 users,  load average: 0.00, 0.01, 0.05</span><br><span class="line">Server time : Wed Jul 15 20:17:08 CST 2015</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>生产环境的服务器最好做到什么信息都不要提示，以免带来安全问题。如果一定要写，建议写在 <code>/etc/motd</code> 文件中，并且最好写一些警告信息。默认这个文件是空的，将提示信息写入即可。</p>
+<p>以下是几个供娱乐使用的提示信息模板</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat /etc/motd </span><br><span class="line"></span><br><span class="line">                              _oo8oo_</span><br><span class="line">                             o8888888o</span><br><span class="line">                             88<span class="string">" . "</span>88</span><br><span class="line">                             (| -_- |)</span><br><span class="line">                             0\  =  /0</span><br><span class="line">                           ___/<span class="string">'==='</span>\___</span><br><span class="line">                         .<span class="string">' \\|     |// '</span>.</span><br><span class="line">                        / \\|||  :  |||// \</span><br><span class="line">                       / _||||| -:- |||||_ \</span><br><span class="line">                      |   | \\\  -  /// |   |</span><br><span class="line">                      | \_|  <span class="string">''</span>\---/<span class="string">''</span>  |_/ |</span><br><span class="line">                      \  .-\__  <span class="string">'-'</span>  __/-.  /</span><br><span class="line">                    ___<span class="string">'. .'</span>  /--.--\  <span class="string">'. .'</span>___</span><br><span class="line">                 .<span class="string">""</span> <span class="string">'&lt;  '</span>.___\_&lt;|&gt;_/___.<span class="string">'  &gt;'</span> <span class="string">""</span>.</span><br><span class="line">                | | :  `- \`.:`\ _ /`:.`/ -`  : | |</span><br><span class="line">                \  \ `-.   \_ __\ /__ _/   .-` /  /</span><br><span class="line">            =====`-.____`.___ \_____/ ___.`____.-`=====</span><br><span class="line">                              `=---=`  </span><br><span class="line">  </span><br><span class="line">           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span><br><span class="line">                      God bless         Never crash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">////////////////////////////////////////////////////////////////////  </span><br><span class="line">//                          _ooOoo_                               //  </span><br><span class="line">//                         o8888888o                              //  </span><br><span class="line">//                         88<span class="string">" . "</span>88                              //  </span><br><span class="line">//                         (| ^_^ |)                              //  </span><br><span class="line">//                         O\  =  /O                              //  </span><br><span class="line">//                      ____/`---<span class="string">'\____                           //  </span></span><br><span class="line"><span class="string">//                    .'</span>  \\|     |//  `.                         //  </span><br><span class="line">//                   /  \\|||  :  |||//  \                        //  </span><br><span class="line">//                  /  _||||| -:- |||||-  \                       //  </span><br><span class="line">//                  |   | \\\  -  /// |   |                       //  </span><br><span class="line">//                  | \_|  <span class="string">''</span>\---/<span class="string">''</span>  |   |                       //  </span><br><span class="line">//                  \  .-\__  `-`  ___/-. /                       //  </span><br><span class="line">//                ___`. .<span class="string">'  /--.--\  `. . ___                     //  </span></span><br><span class="line"><span class="string">//              ."" '</span>&lt;  `.___\_&lt;|&gt;_/___.<span class="string">'  &gt;'</span><span class="string">""</span>.                  //  </span><br><span class="line">//            | | :  `- \`.;`\ _ /`;.`/ - ` : | |                 //  </span><br><span class="line">//            \  \ `-.   \_ __\ /__ _/   .-` /  /                 //  </span><br><span class="line">//      ========`-.____`-.___\_____/___.-`____.-<span class="string">'========         //  </span></span><br><span class="line"><span class="string">//                           `=---='</span>                              //  </span><br><span class="line">//      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //  </span><br><span class="line">//         佛祖保佑       永无BUG     永不修改                      //  </span><br><span class="line">////////////////////////////////////////////////////////////////////</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//                       .::::.</span><br><span class="line">//                     .::::::::.</span><br><span class="line">//                    :::::::::::</span><br><span class="line">//                 ..:::::::::::<span class="string">'</span></span><br><span class="line"><span class="string">//              '</span>::::::::::::<span class="string">'</span></span><br><span class="line"><span class="string">//                .::::::::::</span></span><br><span class="line"><span class="string">//           '</span>::::::::::::::..</span><br><span class="line">//                ..::::::::::::.</span><br><span class="line">//              ``::::::::::::::::</span><br><span class="line">//               ::::``:::::::::<span class="string">'        .:::.</span></span><br><span class="line"><span class="string">//              ::::'</span>   <span class="string">':::::'</span>       .::::::::.</span><br><span class="line">//            .::::<span class="string">'      ::::     .:::::::'</span>::::.</span><br><span class="line">//           .:::<span class="string">'       :::::  .:::::::::'</span> <span class="string">':::::.</span></span><br><span class="line"><span class="string">//          .::'</span>        :::::.:::::::::<span class="string">'      '</span>:::::.</span><br><span class="line">//         .::<span class="string">'         ::::::::::::::'</span>         ``::::.</span><br><span class="line">//     ...:::           ::::::::::::<span class="string">'              ``::.</span></span><br><span class="line"><span class="string">//    ```` '</span>:.          <span class="string">':::::::::'</span>                  ::::..</span><br><span class="line">//                       <span class="string">'.:::::'</span>                    <span class="string">':'</span>````..</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">**</span><br><span class="line"> * ┌───┐   ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐</span><br><span class="line"> * │Esc│   │ F1│ F2│ F3│ F4│ │ F5│ F6│ F7│ F8│ │ F9│F10│F11│F12│ │P/S│S L│P/B│  ┌┐    ┌┐    ┌┐</span><br><span class="line"> * └───┘   └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┘  └┘    └┘    └┘</span><br><span class="line"> * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐ ┌───┬───┬───┐ ┌───┬───┬───┬───┐</span><br><span class="line"> * │~ `│! 1│@ 2│<span class="comment"># 3│$ 4│% 5│^ 6│&amp; 7│* 8│( 9│) 0│_ -│+ =│ BacSp │ │Ins│Hom│PUp│ │N L│ / │ * │ - │</span></span><br><span class="line"> * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤ ├───┼───┼───┤ ├───┼───┼───┼───┤</span><br><span class="line"> * │ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │&#123; [│&#125; ]│ | \ │ │Del│End│PDn│ │ 7 │ 8 │ 9 │   │</span><br><span class="line"> * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤ └───┴───┴───┘ ├───┼───┼───┤ + │</span><br><span class="line"> * │ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │: ;│<span class="string">" '│ Enter  │               │ 4 │ 5 │ 6 │   │</span></span><br><span class="line"><span class="string"> * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────────┤     ┌───┐     ├───┼───┼───┼───┤</span></span><br><span class="line"><span class="string"> * │ Shift  │ Z │ X │ C │ V │ B │ N │ M │&lt; ,│&gt; .│? /│  Shift   │     │ ↑ │     │ 1 │ 2 │ 3 │   │</span></span><br><span class="line"><span class="string"> * ├─────┬──┴─┬─┴──┬┴───┴───┴───┴───┴───┴──┬┴───┼───┴┬────┬────┤ ┌───┼───┼───┐ ├───┴───┼───┤ E││</span></span><br><span class="line"><span class="string"> * │ Ctrl│    │Alt │         Space         │ Alt│    │    │Ctrl│ │ ← │ ↓ │ → │ │   0   │ . │←─┘│</span></span><br><span class="line"><span class="string"> * └─────┴────┴────┴───────────────────────┴────┴────┴────┴────┘ └───┴───┴───┘ └───────┴───┴───┘</span></span><br><span class="line"><span class="string"> *</span></span><br></pre></td></tr></table></figure>
+<p>参考： <a href="https://www.thegeekstuff.com/2008/09/bash-shell-ps1-10-examples-to-make-your-linux-prompt-like-angelina-jolie/" target="_blank" rel="noopener">https://www.thegeekstuff.com/2008/09/bash-shell-ps1-10-examples-to-make-your-linux-prompt-like-angelina-jolie/</a></p>
+
       
     </div>
     
@@ -697,21 +688,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -719,7 +701,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -869,7 +851,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shell登录提示符"><span class="nav-number">1.</span> <span class="nav-text">Shell登录提示符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用参数及含义"><span class="nav-number">1.1.</span> <span class="nav-text">常用参数及含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#颜色参数"><span class="nav-number">1.2.</span> <span class="nav-text">颜色参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#个性化配置命令提示符"><span class="nav-number">1.3.</span> <span class="nav-text">个性化配置命令提示符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登录提示信息"><span class="nav-number">2.</span> <span class="nav-text">登录提示信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录前提示信息"><span class="nav-number">2.1.</span> <span class="nav-text">登录前提示信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登陆后提示信息"><span class="nav-number">3.</span> <span class="nav-text">登陆后提示信息</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#登录提示符"><span class="nav-number">1.</span> <span class="nav-text">登录提示符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登录提示信息"><span class="nav-number">2.</span> <span class="nav-text">登录提示信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录前提示信息"><span class="nav-number">2.1.</span> <span class="nav-text">登录前提示信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登陆后提示信息"><span class="nav-number">3.</span> <span class="nav-text">登陆后提示信息</span></a></li></ol></div>
             
 
           </div>

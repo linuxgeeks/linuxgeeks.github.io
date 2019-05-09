@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="无逻辑关系1COMMAND1;COMMAND2;COMMAND3... 逻辑关系 顺序执行  用 ;间隔的各命令按顺序依次执行   逻辑与： &amp;amp;&amp;amp; 第一个条件为假时，第二条件不用再判断，最终结果已确定； 第一个条件为真时，第二条件必须得判断   逻辑或：||  第一个条件为真时，第二条件">
+<meta name="description" content="无逻辑关系 用 ; 间隔的各命令按顺序依次执行 1COMMAND1;COMMAND2;COMMAND3... 逻辑关系  逻辑与： &amp;amp;&amp;amp; 第一个条件为假时，第二条件不用再判断，最终结果已确定； 第一个条件为真时，第二条件必须得判断 &amp;amp;&amp;amp; 前面的命令执行成功">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell命令间的逻辑关系">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/03/212127-shell命令间的逻辑关系/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="无逻辑关系1COMMAND1;COMMAND2;COMMAND3... 逻辑关系 顺序执行  用 ;间隔的各命令按顺序依次执行   逻辑与： &amp;amp;&amp;amp; 第一个条件为假时，第二条件不用再判断，最终结果已确定； 第一个条件为真时，第二条件必须得判断   逻辑或：||  第一个条件为真时，第二条件不用再判断，最终结果已确定； 第一个条件为假时，第二条件必须得判断   优先级：  ;   优先">
+<meta property="og:description" content="无逻辑关系 用 ; 间隔的各命令按顺序依次执行 1COMMAND1;COMMAND2;COMMAND3... 逻辑关系  逻辑与： &amp;amp;&amp;amp; 第一个条件为假时，第二条件不用再判断，最终结果已确定； 第一个条件为真时，第二条件必须得判断 &amp;amp;&amp;amp; 前面的命令执行成功则执行 &amp;amp;&amp;amp; 后面的命令   逻辑或：|| 第一个条件为真时，第二条件不用再判断，最终结果已确定">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:00:18.668Z">
+<meta property="og:updated_time" content="2019-05-02T13:02:40.732Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell命令间的逻辑关系">
-<meta name="twitter:description" content="无逻辑关系1COMMAND1;COMMAND2;COMMAND3... 逻辑关系 顺序执行  用 ;间隔的各命令按顺序依次执行   逻辑与： &amp;amp;&amp;amp; 第一个条件为假时，第二条件不用再判断，最终结果已确定； 第一个条件为真时，第二条件必须得判断   逻辑或：||  第一个条件为真时，第二条件不用再判断，最终结果已确定； 第一个条件为假时，第二条件必须得判断   优先级：  ;   优先">
+<meta name="twitter:description" content="无逻辑关系 用 ; 间隔的各命令按顺序依次执行 1COMMAND1;COMMAND2;COMMAND3... 逻辑关系  逻辑与： &amp;amp;&amp;amp; 第一个条件为假时，第二条件不用再判断，最终结果已确定； 第一个条件为真时，第二条件必须得判断 &amp;amp;&amp;amp; 前面的命令执行成功则执行 &amp;amp;&amp;amp; 后面的命令   逻辑或：|| 第一个条件为真时，第二条件不用再判断，最终结果已确定">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  297
+                  339
                 </span>
               
 
@@ -379,34 +379,26 @@
       
 
       
-        <h1 id="无逻辑关系"><a href="#无逻辑关系" class="headerlink" title="无逻辑关系"></a>无逻辑关系</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COMMAND1;COMMAND2;COMMAND3...</span><br></pre></td></tr></table></figure>
-<h1 id="逻辑关系"><a href="#逻辑关系" class="headerlink" title="逻辑关系"></a>逻辑关系</h1><ul>
-<li>顺序执行 <ul>
-<li>用 <code>;</code>间隔的各命令按顺序依次执行</li>
-</ul>
-</li>
+        <p><strong>无逻辑关系</strong></p>
+<p>用 <code>;</code> 间隔的各命令按顺序依次执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COMMAND1;COMMAND2;COMMAND3...</span><br></pre></td></tr></table></figure>
+<p><strong>逻辑关系</strong></p>
+<ul>
 <li>逻辑与： <code>&amp;&amp;</code><ul>
 <li>第一个条件为假时，第二条件不用再判断，最终结果已确定；</li>
 <li>第一个条件为真时，第二条件必须得判断</li>
+<li><code>&amp;&amp;</code> 前面的命令执行成功则执行 <code>&amp;&amp;</code> 后面的命令</li>
 </ul>
 </li>
-<li><p>逻辑或：<code>||</code></p>
-<ul>
+<li>逻辑或：<code>||</code><ul>
 <li>第一个条件为真时，第二条件不用再判断，最终结果已确定；</li>
 <li>第一个条件为假时，第二条件必须得判断</li>
+<li><code>||</code> 前面的命令执行不成功则执行 <code>||</code> 后面的命令</li>
 </ul>
 </li>
-<li><p>优先级：</p>
-<ul>
-<li>;   优先级最低</li>
-<li><code>||</code>和<code>&amp;&amp;</code>具有相同的优先级</li>
-<li>同优先级，按从左到右的结合原则执行命令行</li>
-<li>使用<code>( )</code>可以组合命令行中的命令，改变执行顺序</li>
+<li><code>!</code> 对条件的结果取反</li>
 </ul>
-</li>
-<li><p>示例</p>
-</li>
-</ul>
+<p>从优先级上讲，<code>;</code>   优先级最低，<code>||</code> 和 <code>&amp;&amp;</code> 具有相同的优先级。在同等优先级上，按从左到右的结合原则执行命令。使用 <code>( )</code> 可以组合命令行中的命令，改变执行顺序</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">! id user6 &amp;&amp; useradd user6</span><br><span class="line">id user6 || useradd user6</span><br><span class="line"><span class="comment"># 如果用户user6不存在，就添加用户user6</span></span><br><span class="line">id user1 &amp;&amp; <span class="built_in">echo</span> <span class="string">"user1 exists."</span> || useradd user1</span><br><span class="line"><span class="comment"># 如果用户存在，就显示用户已存在；否则，就添加此用户</span></span><br><span class="line">! id user1 &amp;&amp; useradd user1 || <span class="built_in">echo</span> <span class="string">"user1 exists."</span></span><br><span class="line"><span class="comment"># 如果用户不存在，就添加；否则，显示其已经存在</span></span><br><span class="line">! id user1 &amp;&amp; useradd user1 &amp;&amp; <span class="built_in">echo</span> <span class="string">"user1"</span> | passwd --stdin user1  || <span class="built_in">echo</span> <span class="string">"user1 exists."</span></span><br><span class="line"><span class="comment">#如果用户不存在，添加并且给密码；否则，显示其已经存在</span></span><br></pre></td></tr></table></figure>
       
     </div>
@@ -586,17 +578,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -615,21 +598,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -637,7 +611,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -777,22 +751,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#无逻辑关系"><span class="nav-number">1.</span> <span class="nav-text">无逻辑关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#逻辑关系"><span class="nav-number">2.</span> <span class="nav-text">逻辑关系</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

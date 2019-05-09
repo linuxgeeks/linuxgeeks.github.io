@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="BashShell," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="在做 Linux 系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell 脚本严格意义上讲并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写 shell 脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的">
+<meta name="keywords" content="BashShell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell的学习建议">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/10/06/114107-shell的学习建议/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="在做 Linux 系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell 脚本严格意义上讲并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写 shell 脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的代码风格根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-05T06:01:47.711Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell的学习建议">
+<meta name="twitter:description" content="在做 Linux 系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell 脚本严格意义上讲并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写 shell 脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。 规范自己的代码风格根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/10/06/114107-shell的学习建议/"/>
+
+
+
+
+
+  <title>shell的学习建议 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/10/06/114107-shell的学习建议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">shell的学习建议</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-06T11:41:07+08:00">
+                2015-10-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,463
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在做 Linux 系统相关的运维工作中，经常会编写shell脚本来完成服务的一键配置，定时维护等任务。shell 脚本严格意义上讲并不是编程语言。很多人在写脚本的时候，想到哪里就写到哪里，多人协作的时候代码很难得到规范和统一。为了更高效地写 shell 脚本，结合自己的经验，查阅了一些资料，罗列了一些建议。</p>
+<h1 id="规范自己的代码风格"><a href="#规范自己的代码风格" class="headerlink" title="规范自己的代码风格"></a>规范自己的代码风格</h1><p>根据自己的使用习惯，写脚本时遵循一致的代码风格。最简单的一个就是缩进如果习惯了是4个空格那就一直保持，最好不要是今天写的时候缩进是4个空格，明天写的时候成了两个空格或一个制表符。</p>
+<h2 id="开头的解释器"><a href="#开头的解释器" class="headerlink" title="开头的解释器"></a>开头的解释器</h2><ul>
+<li>shebang 其实就是在很多脚本的第一行出现的以<code>#!</code>开头的注释，指明了当我们没有指定解释器的时候默认的解释器，一般是下面这样：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>直接使用<code>./a.sh</code> 来执行这个脚本的时候，如果没有 shebang，那么它就会默认用 <code>$SHELL</code> 指定的解释器，否则就会用 shebang 指定的解释器</p>
+</li>
+<li><p>上面的写法可能不太具备适应性，一般我们会用下面的方式来指定，而且这也是比较推荐的使用方式</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解释器分很多种，可以用下面的命令查看本机支持的解释器：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[user1@<span class="built_in">test</span> ~]$ cat /etc/shells </span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/sbin/nologin</span><br><span class="line">/bin/tcsh</span><br><span class="line">/bin/csh</span><br><span class="line">/bin/ksh</span><br></pre></td></tr></table></figure>
+<h2 id="内容做到注释"><a href="#内容做到注释" class="headerlink" title="内容做到注释"></a>内容做到注释</h2><ul>
+<li><p>不管是其他开发语言也好，shell这种脚本语言也要，在写代码的过程中养成良好的注释习惯。没有注释的情况下，在三四个月之后你可能回头看自己的代码时不知道当初的自己是如何想的，以及不知道代码实现了什么功能；另一方面注释可以提高可读性，和别人协作的时候，别人看了也不至于头大。</p>
+</li>
+<li><p>注释一般包括以下几个方面：</p>
+<ul>
+<li>shebang</li>
+<li>脚本的参数</li>
+<li>脚本的用途</li>
+<li>脚本的注意事项</li>
+<li>脚本的写作时间，作者，版权等</li>
+<li>各个函数前的说明注释</li>
+<li>一些较复杂的单行命令注释</li>
+</ul>
+</li>
+</ul>
+<h2 id="参数要规范"><a href="#参数要规范" class="headerlink" title="参数要规范"></a>参数要规范</h2><p>当我们的脚本需要接受参数的时候，一定要先判断参数是否合乎规范，并给出合适的回显，方便使用者了解参数的使用。至少需要判断下参数的个数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> <span class="variable">$#</span> -le 1;<span class="keyword">then</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Usage : <span class="variable">$(basename $0)</span>   srcip   &lt; destip | dest domainname &gt;"</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"....."</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h2 id="环境变量的定义"><a href="#环境变量的定义" class="headerlink" title="环境变量的定义"></a>环境变量的定义</h2><p>一般情况下我们会将一些重要的环境变量定义在开头，确保这些变量的存在。最典型的应用就是，当我们本地安装了很多 java 版本时，我们可能需要指定一个 java 来用。那么这时我们就会在脚本开头重新定义 JAVA_HOME 以及 PATH 变量来进行控制。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># load profile</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set up a default search path.</span></span><br><span class="line">PATH=<span class="string">"/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin"</span></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+<h2 id="缩进要规矩"><a href="#缩进要规矩" class="headerlink" title="缩进要规矩"></a>缩进要规矩</h2><ul>
+<li><p>正确的缩进是很重要的，尤其是在写函数的时候，否则我们在阅读的时候很容易把函数体跟直接执行的命令搞混。</p>
+</li>
+<li><p>对于 shell 脚本，因为很多需要缩进的地方 (比如 <code>if</code>，<code>for</code> 语句) 都不长，很多人因此都懒得去缩进，而且很多人不习惯用函数，导致缩进功能被弱化。</p>
+</li>
+<li><p>常见的缩进方法主要有”soft tab” 和”hard tab” 两种</p>
+<ul>
+<li><code>soft tab</code>：就是使用 n 个空格进行缩进 (n 通常是 2 或 4)</li>
+<li><code>hard tab</code>： 指的就是制表符<code>\t</code></li>
+</ul>
+</li>
+<li><p>根据自己的使用习惯选择适合自己的缩进方式，并一直保持下去</p>
+</li>
+<li>对于 if 和 for 语句之类的，我们最好不要把 then，do 这些关键字单独写一行，这样看上去比较丑。下面是示例</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..10&#125;;<span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$&#123;i&#125;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Check network</span></span><br><span class="line">dstname=<span class="string">"mirrors.163.com"</span></span><br><span class="line"><span class="keyword">if</span> (ping <span class="variable">$&#123;dstname&#125;</span> -c 3 -i 0.01 -w 2 -q 1&gt;/dev/null 2&gt;&amp;1)<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Network is OK "</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Network is unreachable "</span></span><br><span class="line">    <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<h2 id="脚本和变量命名要标准"><a href="#脚本和变量命名要标准" class="headerlink" title="脚本和变量命名要标准"></a>脚本和变量命名要标准</h2><p>遵循合理的规范：</p>
+<ul>
+<li>文件名规范：以<code>. sh</code> 结尾，方便识别</li>
+<li>变量名规范：<ul>
+<li>最好见名知意</li>
+<li>统一命名风格， 一般用小写字母加下划线（file_path），或使用驼峰语法（filePath）</li>
+</ul>
+</li>
+</ul>
+<h2 id="编码要统一"><a href="#编码要统一" class="headerlink" title="编码要统一"></a>编码要统一</h2><ul>
+<li><p>在写脚本的时候尽量使用 UTF-8 编码，能够支持中文等一些奇奇怪怪的字符。虽然能写中文，但是在写注释以及打 log 的时候还是尽量英文，因为很多机器还是没有直接支持中文的，打出来可能会有乱码。</p>
+</li>
+<li><p>尤其需要注意一点，当我们是在 windows 下用 utf-8 编码来写 shell 脚本的时候，一定要注意这个 utf-8 是否是有 BOM 的。默认情况下 windows 判断 utf-8 格式是通过在文件开头加上三个 EF BB BF 字节来判断的，但是在 Linux 中默认是无 BOM 的。因此如果我们是在 windows 下写脚本的时候，一定要注意将编码改成 Utf-8 无 BOM，一般用 notepad++ 之类的编辑器都能改。否则，在 Linux 下运行的时候就会识别到开头的三个字符，从而报一些无法识别命令的错。</p>
+</li>
+</ul>
+<h2 id="使用统一的执行方式"><a href="#使用统一的执行方式" class="headerlink" title="使用统一的执行方式"></a>使用统一的执行方式</h2><p>执行shell脚本的方式大致有如下几种</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash /tmp/test.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/tmp/test.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./test.sh</span><br></pre></td></tr></table></figure>
+<p>其中后面两种是需要脚本有执行权限的，这也是建议的执行方式。不加执行权限导致无法直接执行。</p>
+<h2 id="日志回显"><a href="#日志回显" class="headerlink" title="日志回显"></a>日志回显</h2><ul>
+<li>日志的重要性不必多说，能够方便我们回头纠错，在大型的项目里是非常重要的。</li>
+<li>如果这个脚本是供用户直接在命令行使用的，那么我们最好还要能够在执行时实时回显执行过程，方便用户掌控。</li>
+<li>为了提高用户体验，我们可以在回显中添加一些特效，比如颜色、闪烁等</li>
+</ul>
+<h2 id="不在脚本中使用密码"><a href="#不在脚本中使用密码" class="headerlink" title="不在脚本中使用密码"></a>不在脚本中使用密码</h2><p>安全很重要，不要把密码硬编码在脚本里，尤其是当脚本托管在类似 Github 这类平台中时，明文密码就暴露在互联网中了。</p>
+<h2 id="代码太长要分行"><a href="#代码太长要分行" class="headerlink" title="代码太长要分行"></a>代码太长要分行</h2><p>在源码包编译安装软件时，参数可能会很长，为了保证较好的阅读体验，我们可以用反斜杠来分行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./configure \   </span><br><span class="line">–prefix=/usr \   </span><br><span class="line">–sbin-path=/usr/sbin/nginx \   </span><br><span class="line">–conf-path=/etc/nginx/nginx.conf \</span><br></pre></td></tr></table></figure>
+<p><strong>注意:</strong> 在<code>\</code>前要有个空格</p>
+<h1 id="编码的细节和规范"><a href="#编码的细节和规范" class="headerlink" title="编码的细节和规范"></a>编码的细节和规范</h1><h2 id="使用新的语法"><a href="#使用新的语法" class="headerlink" title="使用新的语法"></a>使用新的语法</h2><p>这里的新语法不是指有多厉害，而是指我们可能更希望使用较新引入的一些语法，更多是偏向代码风格的，比如</p>
+<ul>
+<li>尽量使用 <code>func(){}</code>来定义函数，而不是<code>func{}</code></li>
+<li>尽量使用<code>[[]]</code>来代替<code>[]</code></li>
+<li>尽量使用<code>$()</code>将命令的结果赋给变量，而不是反引号</li>
+<li>在复杂的场景下尽量使用 <code>printf</code>代替 <code>echo</code>进行回显</li>
+</ul>
+<p>事实上，这些新写法很多功能都比旧的写法要强大，用的时候就知道了。</p>
+<h2 id="让自己的代码更简短"><a href="#让自己的代码更简短" class="headerlink" title="让自己的代码更简短"></a>让自己的代码更简短</h2><p>这里的简短不单单是指代码长度，而是用到的命令个数。这不仅牵涉到代码的可读性，而且也关乎代码的执行效率。</p>
+<ul>
+<li>原则上应该做到：<ul>
+<li>能一条命令解决的问题绝不用两条命令解决</li>
+<li>能直接读取文件就不要用管道</li>
+<li>命令能少尽可能少，管道并不是越多越好</li>
+</ul>
+</li>
+<li>题外话：你用的管道太多会让别人感觉你很low</li>
+</ul>
+<ul>
+<li>示例</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd | grep root   </span><br><span class="line">grep root /etc/passwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其实代码简短在还能某种程度上能保证效率的提升，比如下面的例子：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#method1   </span></span><br><span class="line">find . -name <span class="string">'*.txt'</span> |xargs sed -i s/233/666/g   </span><br><span class="line">find . -name <span class="string">'*.txt'</span> |xargs sed -i s/235/626/g   </span><br><span class="line">find . -name <span class="string">'*.txt'</span> |xargs sed -i s/333/616/g   </span><br><span class="line">find . -name <span class="string">'*.txt'</span> |xargs sed -i s/233/664/g</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#method1   </span></span><br><span class="line">find . -name <span class="string">'*.txt'</span> |xargs sed -i <span class="string">"s/233/666/g;s/235/626/g;s/333/616/g;s/233/664/g"</span></span><br></pre></td></tr></table></figure>
+<p>这两种方法做的事情都一样，就是查找所有的<code>. txt</code>后缀的文件并做一系列替换。前者是多次执行<code>find</code>，后者是执行一次 <code>find</code>，但是增加了<code>sed</code>的模式串。第一种可读性更好一点，但是当替换的量变大的时候，第二种的速度就会比第一种快很多。这里效率提升的原因，就是第二种只要执行一次命令，而第一种要执行多次。</p>
+<h2 id="让自己的代码更有效率"><a href="#让自己的代码更有效率" class="headerlink" title="让自己的代码更有效率"></a>让自己的代码更有效率</h2><p>在使用命令的时候要了解命令的具体做法，尤其当数据处理量大的时候，要时刻考虑该命令是否会影响效率。<br>比如下面的两个 sed 命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sed -n <span class="string">'1p'</span> file</span><br><span class="line">sed -n <span class="string">'1p;1q'</span> file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 他们的作用一样，都是获取文件的第一行</span></span><br><span class="line"><span class="comment"># 但是第一条命令会读取整个文件，而第二条命令只读取第一行。</span></span><br><span class="line"><span class="comment"># 当文件很大的时候，仅仅是这样一条命令不一样就会造成巨大的效率差异。</span></span><br></pre></td></tr></table></figure>
+<h2 id="在敏感操作时变量引用要严谨"><a href="#在敏感操作时变量引用要严谨" class="headerlink" title="在敏感操作时变量引用要严谨"></a>在敏感操作时变量引用要严谨</h2><p>对一个值为路径的变量进行删除、移动操作时，一定要先判断该变量是否为空</p>
+<ul>
+<li>示例</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">path=/server/backup</span><br><span class="line">find <span class="variable">$path</span> -name <span class="string">"*.tar.gz"</span> -<span class="built_in">type</span> f  | xargs rm -f </span><br><span class="line"><span class="comment"># 一旦变量为空，则会删除当前目录</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>避免方法</p>
+<ul>
+<li>删除操作之前，切换到一个临时目录</li>
+<li>使用变量展开，若变量未定义或者为空则赋一个值给这个变量，</li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm -f <span class="variable">$&#123;pidfile:=/tmp/test&#125;</span> /var/lock/subsys/<span class="variable">$&#123;prog:=/tmp/test&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="勤用双引号"><a href="#勤用双引号" class="headerlink" title="勤用双引号"></a>勤用双引号</h2><ul>
+<li>示例1</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash   </span></span><br><span class="line"><span class="comment"># 已知当前文件夹有一个a.sh的文件   </span></span><br><span class="line">var=<span class="string">"*.sh"</span>   </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>   </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$var</span>"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行结果如下：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.sh</span><br><span class="line">*.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这是因为shell对<code>*</code>进行了解释，变成了下面这样</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> *.sh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"*.sh"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>示例2</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">arg1=<span class="variable">$1</span></span><br><span class="line">[ <span class="variable">$&#123;arg1&#125;</span> == <span class="string">"0"</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"0"</span> || <span class="built_in">echo</span> 1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>直接执行<code>bash test.sh</code>，不加参数的情况下就会报错，因此需要使用双引号：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">arg1=<span class="variable">$1</span></span><br><span class="line">[ <span class="string">"<span class="variable">$&#123;arg1&#125;</span>"</span> == <span class="string">"0"</span> ] &amp;&amp; <span class="built_in">echo</span> <span class="string">"0"</span> || <span class="built_in">echo</span> 1</span><br></pre></td></tr></table></figure>
+<p>在很多情况下，在将变量作为参数的时候，一定要注意双引号的使用，实际应用的时候由于这个细节导致的问题实在是太多了</p>
+<h2 id="使用main函数"><a href="#使用main函数" class="headerlink" title="使用main函数"></a>使用main函数</h2><p>像 java，C 这样的编译型语言都会有一个函数入口，这种结构使得代码可读性很强，我们知道哪些直接执行，哪些是函数。但是脚本不一样，脚本属于解释性语言，从第一行直接执行到最后一行，如果在这当中命令与函数糅杂在一起，那就非常难读了。</p>
+<p>用 python 的朋友都知道，一个合乎标准的 python 脚本大体上至少是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python   </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">()</span>:</span>   </span><br><span class="line">    <span class="keyword">pass</span>   </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">()</span>:</span>   </span><br><span class="line">    <span class="keyword">pass</span>   </span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:   </span><br><span class="line">    func1()   </span><br><span class="line">    func2()</span><br></pre></td></tr></table></figure>
+<p>他用一个很巧妙的方法实现了我们习惯的 main 函数，使得代码可读性更强</p>
+<p>在 shell 中，我们也有类似的小技巧:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash   </span></span><br><span class="line"><span class="function"><span class="title">func1</span></span>()&#123;   </span><br><span class="line">    <span class="comment">#do sth   </span></span><br><span class="line">&#125;   </span><br><span class="line"><span class="function"><span class="title">func2</span></span>()&#123;   </span><br><span class="line">    <span class="comment">#do sth   </span></span><br><span class="line">&#125;   </span><br><span class="line"><span class="function"><span class="title">main</span></span>()&#123;   </span><br><span class="line">    func1   </span><br><span class="line">    func2   </span><br><span class="line">&#125;   </span><br><span class="line">main <span class="string">"<span class="variable">$@</span>"</span></span><br></pre></td></tr></table></figure>
+<p>我们可以采用这种写法，同样实现类似的 main 函数，使得脚本的结构化程度更好。</p>
+<h2 id="理清作用域"><a href="#理清作用域" class="headerlink" title="理清作用域"></a>理清作用域</h2><p>shell 中默认的变量作用域都是全局的，比如下面的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash   </span></span><br><span class="line">var=1</span><br><span class="line"><span class="function"><span class="title">func</span></span>()&#123;   </span><br><span class="line">    var=2</span><br><span class="line">   &#125;   </span><br><span class="line">func   </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br></pre></td></tr></table></figure>
+<p>他的输出结果就是 2 而不是 1，这样显然不符合我们的编码习惯，很容易造成一些问题。</p>
+<p>因此，相比直接使用全局变量，我们最好使用 local readonly 这类的命令，其次我们可以使用 declare 来声明变量。这些方式都比使用全局方式定义要好。</p>
+<ul>
+<li>下面是做了修整的示例</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash   </span></span><br><span class="line">var=1</span><br><span class="line"><span class="function"><span class="title">func</span></span>()&#123;   </span><br><span class="line">    <span class="built_in">local</span> var=2</span><br><span class="line">   &#125;   </span><br><span class="line">func   </span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br></pre></td></tr></table></figure>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ul>
+<li>路径尽量保持绝对路径，绝多路径不容易出错，如果非要用相对路径，最好用<code>./</code>修饰</li>
+<li>优先使用 bash 的变量替换代替 awk sed，这样更加简短，比如</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a=131341</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;a/3/h&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;a//3/h&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>简单的<code>if</code>尽量使用 <code>&amp;&amp; ||</code>，写成单行。比如</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ x -gt 2]] &amp;&amp; <span class="built_in">echo</span> x</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 export 变量时，尽量加上子脚本的 namespace，保证变量不冲突</li>
+<li>会使用 trap 捕获信号，并在接受到终止信号时执行一些收尾工作</li>
+<li>使用 mktemp 生成临时文件或文件夹来避免和他人冲突</li>
+<li>利用 / dev/null 结合输入输出重定向来过滤不友好的输出信息</li>
+<li>利用命令的返回值判断命令的执行情况</li>
+<li>使用文件前要判断文件是否存在，否则做好异常处理</li>
+<li>不要处理 ls 后的数据 (比如<code>ls -l | awk &#39;{ print $8}&#39;</code>)，ls 的结果非常不确定，并且和平台有关</li>
+<li>读取文件时不要使用 <code>for loop</code> 而要使用 <code>while read</code></li>
+<li>写脚本一定先测试再到生产环境</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Silence
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2015/10/06/114107-shell的学习建议/" title="shell的学习建议">http://linuxgeeks.github.io/2015/10/06/114107-shell的学习建议/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/BashShell/" rel="tag"><i class="fa fa-tag"></i> BashShell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/03/184310-使用dialog创建交互式shell对话框/" rel="next" title="使用dialog创建交互式shell对话框">
+                <i class="fa fa-chevron-left"></i> 使用dialog创建交互式shell对话框
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/17/174103-shell相关的面试题/" rel="prev" title="shell相关的面试题">
+                shell相关的面试题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence" />
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#规范自己的代码风格"><span class="nav-number">1.</span> <span class="nav-text">规范自己的代码风格</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开头的解释器"><span class="nav-number">1.1.</span> <span class="nav-text">开头的解释器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内容做到注释"><span class="nav-number">1.2.</span> <span class="nav-text">内容做到注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数要规范"><span class="nav-number">1.3.</span> <span class="nav-text">参数要规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量的定义"><span class="nav-number">1.4.</span> <span class="nav-text">环境变量的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缩进要规矩"><span class="nav-number">1.5.</span> <span class="nav-text">缩进要规矩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本和变量命名要标准"><span class="nav-number">1.6.</span> <span class="nav-text">脚本和变量命名要标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码要统一"><span class="nav-number">1.7.</span> <span class="nav-text">编码要统一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用统一的执行方式"><span class="nav-number">1.8.</span> <span class="nav-text">使用统一的执行方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志回显"><span class="nav-number">1.9.</span> <span class="nav-text">日志回显</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不在脚本中使用密码"><span class="nav-number">1.10.</span> <span class="nav-text">不在脚本中使用密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码太长要分行"><span class="nav-number">1.11.</span> <span class="nav-text">代码太长要分行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码的细节和规范"><span class="nav-number">2.</span> <span class="nav-text">编码的细节和规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用新的语法"><span class="nav-number">2.1.</span> <span class="nav-text">使用新的语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让自己的代码更简短"><span class="nav-number">2.2.</span> <span class="nav-text">让自己的代码更简短</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让自己的代码更有效率"><span class="nav-number">2.3.</span> <span class="nav-text">让自己的代码更有效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在敏感操作时变量引用要严谨"><span class="nav-number">2.4.</span> <span class="nav-text">在敏感操作时变量引用要严谨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#勤用双引号"><span class="nav-number">2.5.</span> <span class="nav-text">勤用双引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用main函数"><span class="nav-number">2.6.</span> <span class="nav-text">使用main函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理清作用域"><span class="nav-number">2.7.</span> <span class="nav-text">理清作用域</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

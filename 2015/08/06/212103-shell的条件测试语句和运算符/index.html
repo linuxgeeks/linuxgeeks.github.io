@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="条件测试 语法  格式1     test expression 格式2    [ expression ] 格式3     [[ expression ]]   说明  [是一条命令， 与test等价。在其中的表达式应是它的命令行参数，所以字符串串比较操作符 &amp;gt; 与 &amp;lt; 必须转义，否则就变">
+<meta name="description" content="条件测试语句 语法格式  格式1     test expression 格式2    [ expression ] 格式3     [[ expression ]]  [ 是一条命令，它与 test 是等价的。在其中的表达式应是它的命令行参数，所以字符串比较操作符  &amp;gt; 与 &amp;lt; 必须转义，">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell的条件测试语句和运算符">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/06/212103-shell的条件测试语句和运算符/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="条件测试 语法  格式1     test expression 格式2    [ expression ] 格式3     [[ expression ]]   说明  [是一条命令， 与test等价。在其中的表达式应是它的命令行参数，所以字符串串比较操作符 &amp;gt; 与 &amp;lt; 必须转义，否则就变成IO重定向向操作符了 [[]]是是扩展的 test 命令，用[[ ... ]]测试结构比用[">
+<meta property="og:description" content="条件测试语句 语法格式  格式1     test expression 格式2    [ expression ] 格式3     [[ expression ]]  [ 是一条命令，它与 test 是等价的。在其中的表达式应是它的命令行参数，所以字符串比较操作符  &amp;gt; 与 &amp;lt; 必须转义，否则就变成 重定向向操作符了 12345 [user1@study ~]$ [ 3 \&amp;gt;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:02:06.147Z">
+<meta property="og:updated_time" content="2019-05-02T14:01:34.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的条件测试语句和运算符">
-<meta name="twitter:description" content="条件测试 语法  格式1     test expression 格式2    [ expression ] 格式3     [[ expression ]]   说明  [是一条命令， 与test等价。在其中的表达式应是它的命令行参数，所以字符串串比较操作符 &amp;gt; 与 &amp;lt; 必须转义，否则就变成IO重定向向操作符了 [[]]是是扩展的 test 命令，用[[ ... ]]测试结构比用[">
+<meta name="twitter:description" content="条件测试语句 语法格式  格式1     test expression 格式2    [ expression ] 格式3     [[ expression ]]  [ 是一条命令，它与 test 是等价的。在其中的表达式应是它的命令行参数，所以字符串比较操作符  &amp;gt; 与 &amp;lt; 必须转义，否则就变成 重定向向操作符了 12345 [user1@study ~]$ [ 3 \&amp;gt;">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,324
+                  1,741
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  8
                 </span>
               
             </div>
@@ -379,24 +379,25 @@
       
 
       
-        <h1 id="条件测试"><a href="#条件测试" class="headerlink" title="条件测试"></a>条件测试</h1><ul>
-<li><p>语法</p>
+        <h1 id="条件测试语句"><a href="#条件测试语句" class="headerlink" title="条件测试语句"></a>条件测试语句</h1><ul>
+<li><p>语法格式</p>
 <ul>
 <li>格式1     <code>test expression</code></li>
 <li>格式2    <code>[ expression ]</code></li>
 <li>格式3     <code>[[ expression ]]</code></li>
 </ul>
-</li>
-<li><p>说明</p>
-<ul>
-<li><code>[</code>是一条命令， 与<code>test</code>等价。在其中的表达式应是它的命令行参数，所以字符串串比较操作符 <code>&gt;</code> 与 <code>&lt;</code> 必须转义，否则就变成IO重定向向操作符了</li>
-<li><code>[[]]</code>是是扩展的 test 命令，用<code>[[ ... ]]</code>测试结构比用<code>[ ... ]</code>更能防止脚本里的许多逻辑错误。</li>
-<li><code>&amp;&amp;</code>，<code>||</code>， <code>&lt;</code>， 和 <code>&gt;</code> 操作符能够正常存在于<code>[[ ]]</code>中，但不能在 <code>[]</code>中出现</li>
-<li>在<code>[[ ]]</code>中可以使用通配符进行模式匹配，使用<code>=~</code>时支持shell的正则表达式</li>
-<li>要对整数进行关系运算也可以使用Shell的算术运算符 <code>(())</code> 进行测试</li>
-</ul>
+<p><code>[</code> 是一条命令，它与 <code>test</code> 是等价的。在其中的表达式应是它的命令行参数，所以字符串比较操作符  <code>&gt;</code> 与 <code>&lt;</code> 必须转义，否则就变成 重定向向操作符了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> [user1@study ~]$ [ 3 \&gt; 2 ] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$ [ 1 \&gt; 2 ] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no </span><br><span class="line">no</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
+<p><code>[[]]</code> 是是扩展的 <code>test</code> 命令，用 <code>[[]]</code> 测试结构比用 <code>[]</code> 更能防止脚本里的许多逻辑错误。<code>&amp;&amp;</code> 、<code>||</code>、 <code>&lt;</code>、<code>&gt;</code>  操作符能够正常存在于 <code>[[ ]]</code> 中，但不能在  <code>[]</code> 中出现。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ [[ <span class="string">"2"</span> = <span class="string">"2"</span> &amp;&amp; <span class="string">"3"</span> = <span class="string">"3"</span> ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$ [[ <span class="string">"2"</span> = <span class="string">"2"</span> &amp;&amp; <span class="string">"3"</span> = <span class="string">"5"</span> ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no </span><br><span class="line">no</span><br><span class="line">[user1@study ~]$ [ <span class="string">"2"</span> = <span class="string">"2"</span> &amp;&amp; <span class="string">"3"</span> = <span class="string">"5"</span> ] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no  </span><br><span class="line">-bash: [: missing `]<span class="string">'</span></span><br><span class="line"><span class="string">no</span></span><br><span class="line"><span class="string">[user1@study ~]$ </span></span><br><span class="line"><span class="string">[user1@study ~]$ [[ 3 &gt; 2 ]] &amp;&amp; echo yes || echo no</span></span><br><span class="line"><span class="string">yes</span></span><br><span class="line"><span class="string">[user1@study ~]$</span></span><br></pre></td></tr></table></figure>
+<p>在 <code>[[]]</code> 中可以使用通配符进行模式匹配</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ [[ abc123 = abc* ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$ [[ ac123 = abc* ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no </span><br><span class="line">no</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>在 <code>[[]]</code> 中使用 <code>=~</code> 时支持 shell 的正则表达式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ [[ <span class="string">'12345'</span> =~ [0-9]&#123;5&#125; ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$ [[ <span class="string">'123afsa'</span> =~ [0-9]&#123;5&#125; ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no  </span><br><span class="line">no</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>需要注意，不管是 <code>[[]]</code> 还是 <code>[]</code> ，最里面的中括号旁边都必须保留一个空格，否则是语法错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ [3=3] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">-bash: [3=3]: <span class="built_in">command</span> not found</span><br><span class="line">no</span><br><span class="line">[user1@study ~]$ [[3=3]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">-bash: [[3=3]]: <span class="built_in">command</span> not found</span><br><span class="line">no</span><br><span class="line">[user1@study ~]$ [[ 3=3 ]] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$ [ 3=3 ] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no  </span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <h1 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h1><table>
 <thead>
 <tr>
@@ -448,23 +449,17 @@
 </tr>
 </tbody>
 </table>
-<h1 id="算术运算"><a href="#算术运算" class="headerlink" title="算术运算"></a>算术运算</h1><ul>
-<li>let 算术运算表达式    </li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> C=<span class="variable">$A</span>+<span class="variable">$B</span> ; </span><br><span class="line"><span class="built_in">let</span> C+=1</span><br><span class="line"><span class="built_in">let</span> C=C+8 <span class="comment"># 等同于 ((C=C+8))，后者效率更高</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>$[算术运算表达式]</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C=$[<span class="variable">$A</span>+<span class="variable">$B</span>]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>$((算术运算表达式))    </li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C=$((<span class="variable">$A</span>+<span class="variable">$B</span>))</span><br><span class="line"><span class="comment">#或</span></span><br><span class="line">((C=A+B))</span><br></pre></td></tr></table></figure>
-<ul>
-<li>C=`expr $A + $B`    表达式中各操作符及运算符之间要有空格，且要使用命令替换<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> $((<span class="variable">$A</span>+<span class="variable">$B</span>))</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>注意：</strong> (())比let、expr会更高效</p>
+<h1 id="算术运算"><a href="#算术运算" class="headerlink" title="算术运算"></a>算术运算</h1><p>要对整数进行关系运算可以下面几种方式实现</p>
+<p><code>let</code> 算术运算表达式    </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ a=1; b=2        </span><br><span class="line">[user1@study ~]$ <span class="built_in">let</span> c=<span class="variable">$&#123;a&#125;</span>+<span class="variable">$&#123;b&#125;</span>; <span class="built_in">echo</span> <span class="variable">$c</span></span><br><span class="line">3</span><br><span class="line">[user1@study ~]$ <span class="built_in">let</span> c+=1; <span class="built_in">echo</span> <span class="variable">$c</span></span><br><span class="line">4</span><br><span class="line">[user1@study ~]$ <span class="built_in">let</span> c=c+b; <span class="built_in">echo</span> <span class="variable">$c</span>  <span class="comment"># 等同于 ((c=c+b))，但后者效率更高</span></span><br><span class="line">6</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p><code>$[算术运算表达式]</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ a=1; b=2</span><br><span class="line">[user1@study ~]$ c=$[<span class="variable">$a</span>+<span class="variable">$b</span>]</span><br><span class="line">[user1@study ~]$ <span class="built_in">echo</span> <span class="variable">$c</span></span><br><span class="line">3</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p><code>$((算术运算表达式))</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ a=1; b=2</span><br><span class="line">[user1@study ~]$ c=$((<span class="variable">$a</span>+<span class="variable">$b</span>))</span><br><span class="line">[user1@study ~]$ <span class="built_in">echo</span> <span class="variable">$c</span></span><br><span class="line">3</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p><code>expr</code> 算术运算表达式，要注意 <code>expr</code> 的表达式中各操作符及运算符之间要有空格，且要使用命令替换</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ a=1; b=2</span><br><span class="line">[user1@study ~]$ c=$(expr <span class="variable">$a</span> + <span class="variable">$b</span>)</span><br><span class="line">[user1@study ~]$ <span class="built_in">echo</span> <span class="variable">$c</span></span><br><span class="line">3</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>也可以使用 shell 的算术运算符 <code>(())</code> 进行计算，事实上 <code>(())</code> 比 <code>let</code>、<code>expr</code> 会更高效，最建议使用这种方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ a=1; b=2     </span><br><span class="line">[user1@study ~]$ (( sum=a+b ))</span><br><span class="line">[user1@study ~]$ <span class="built_in">echo</span> <span class="variable">$&#123;sum&#125;</span></span><br><span class="line">3</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <h1 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h1><p>关系运算符只支持整数，不支持字符串，除非字符串的值是整数</p>
 <table>
 <thead>
@@ -507,8 +502,7 @@
 </tr>
 </tbody>
 </table>
-<h1 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ -O FILE ] &amp;&amp; [ -r FILE]  等价于 [ -O FILE -a -r FILE ]</span><br><span class="line">![ expression ]</span><br></pre></td></tr></table></figure>
-<table>
+<h1 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h1><table>
 <thead>
 <tr>
 <th>运算符</th>
@@ -530,9 +524,12 @@
 <tr>
 <td>-a</td>
 <td>与运算，两个表达式都为 true 才返回 true</td>
+<td>[ $a -lt 20 -a $b -gt 100 ]</td>
 </tr>
 </tbody>
 </table>
+<p><code>[ expression1 ] &amp;&amp; [ expression2 ]</code>  等价于 <code>[ expression1 -a expression2 ]</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ [ <span class="string">"abc"</span> = <span class="string">"abc"</span> -a <span class="string">"bcd"</span> = <span class="string">"efg"</span> ] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">no</span><br><span class="line">[user1@study ~]$ [ <span class="string">"abc"</span> = <span class="string">"abc"</span> ] &amp;&amp; [ <span class="string">"bcd"</span> = <span class="string">"efg"</span> ] &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no   </span><br><span class="line">no</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <h1 id="字符串运算符"><a href="#字符串运算符" class="headerlink" title="字符串运算符"></a>字符串运算符</h1><table>
 <thead>
 <tr>
@@ -584,9 +581,10 @@
 </tr>
 </tbody>
 </table>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="string">"abc123"</span></span><br><span class="line">[ <span class="string">"<span class="variable">$a</span>"</span> == abc* ]        <span class="comment"># false (字面比较)</span></span><br><span class="line">[ <span class="string">"<span class="variable">$a</span>"</span> == <span class="string">"abc*"</span> ]	<span class="comment"># false (字面比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> == abc* ]]	<span class="comment"># true (globbing比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> == <span class="string">"abc*"</span> ]] 	<span class="comment"># false (字面比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> =~ [abc]+[123]+ ]] <span class="comment"># true (regex比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> =~ <span class="string">"abc*"</span> ]]	<span class="comment"># false (字面比较)</span></span><br></pre></td></tr></table></figure>
-<p>从bash 3.2版开始，正则表达式和globbing表达式都不能用引号包裹。若表达式里有空格，则可以把它存储到一个变量里：</p>
+<p>从 Bash 3.2 版本开始，正则表达式和globbing表达式都不能用引号包裹。若表达式里有空格，则可以把它存储到一个变量里：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="string">"a b+"</span></span><br><span class="line">[[ <span class="string">"a bbb"</span> =~ <span class="variable">$a</span> ]] 	<span class="comment"># true (regex比较)</span></span><br></pre></td></tr></table></figure>
+<p>做个练习，比较一下不同的运算符及其作用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="string">"abc123"</span></span><br><span class="line">[ <span class="string">"<span class="variable">$a</span>"</span> == abc* ]        <span class="comment"># false (字面比较)</span></span><br><span class="line">[ <span class="string">"<span class="variable">$a</span>"</span> == <span class="string">"abc*"</span> ]	<span class="comment"># false (字面比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> == abc* ]]	<span class="comment"># true (globbing比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> == <span class="string">"abc*"</span> ]] 	<span class="comment"># false (字面比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> =~ [abc]+[123]+ ]] <span class="comment"># true (regex比较)</span></span><br><span class="line">[[ <span class="string">"<span class="variable">$a</span>"</span> =~ <span class="string">"abc*"</span> ]]	<span class="comment"># false (字面比较)</span></span><br></pre></td></tr></table></figure>
 <h1 id="文件测试运算符"><a href="#文件测试运算符" class="headerlink" title="文件测试运算符"></a>文件测试运算符</h1><table>
 <thead>
 <tr>
@@ -693,15 +691,17 @@
 </tr>
 <tr>
 <td>f1 -nt f2</td>
-<td>测试文件f1是否比文件f2新                          </td>
+<td>测试文件f1是否比文件f2新</td>
+<td></td>
 </tr>
 <tr>
 <td>f1 -ot f2</td>
-<td>测试文件f1是否比文件f2旧                          </td>
+<td>测试文件f1是否比文件f2旧</td>
+<td></td>
 </tr>
 <tr>
 <td>f1 -ef f2</td>
-<td>测试文件f1和文件f2是否是相同文件的硬链接                        </td>
+<td>测试文件f1和文件f2是否是相同文件的硬链接</td>
 </tr>
 </tbody>
 </table>
@@ -913,21 +913,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -935,7 +926,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1085,7 +1076,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#条件测试"><span class="nav-number">1.</span> <span class="nav-text">条件测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算术运算符"><span class="nav-number">2.</span> <span class="nav-text">算术运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算术运算"><span class="nav-number">3.</span> <span class="nav-text">算术运算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关系运算符"><span class="nav-number">4.</span> <span class="nav-text">关系运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#逻辑运算符"><span class="nav-number">5.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串运算符"><span class="nav-number">6.</span> <span class="nav-text">字符串运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件测试运算符"><span class="nav-number">7.</span> <span class="nav-text">文件测试运算符</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#条件测试语句"><span class="nav-number">1.</span> <span class="nav-text">条件测试语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算术运算符"><span class="nav-number">2.</span> <span class="nav-text">算术运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算术运算"><span class="nav-number">3.</span> <span class="nav-text">算术运算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关系运算符"><span class="nav-number">4.</span> <span class="nav-text">关系运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#逻辑运算符"><span class="nav-number">5.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串运算符"><span class="nav-number">6.</span> <span class="nav-text">字符串运算符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件测试运算符"><span class="nav-number">7.</span> <span class="nav-text">文件测试运算符</span></a></li></ol></div>
             
 
           </div>

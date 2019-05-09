@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="对于 Linux 的运维人员来说，免不了经常敲一大堆命令，有些命令很长或者选项要经常被用到，重复性的输入很长的命令或选项显得效率十分低下，这时候我们使用命令别名来代替复杂的命令就非常有用了。 如何设置一个别名我们可以在命令行使用如下格式定义一个别名 1alias CMDALIAS=&apos;COMMAND [options] [arguments]&apos;  alias 是一个 shell 内置命令 CMDAL">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-01T08:13:51.963Z">
+<meta property="og:updated_time" content="2019-05-02T06:32:25.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bash的基本特性之命令别名alias">
 <meta name="twitter:description" content="对于 Linux 的运维人员来说，免不了经常敲一大堆命令，有些命令很长或者选项要经常被用到，重复性的输入很长的命令或选项显得效率十分低下，这时候我们使用命令别名来代替复杂的命令就非常有用了。 如何设置一个别名我们可以在命令行使用如下格式定义一个别名 1alias CMDALIAS=&apos;COMMAND [options] [arguments]&apos;  alias 是一个 shell 内置命令 CMDAL">
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,314
+                  1,319
                 </span>
               
 
@@ -410,7 +410,7 @@
 <p>移除一个别名</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ <span class="built_in">unalias</span> cls</span><br><span class="line">[user1@study ~]$ cls</span><br><span class="line">-bash: cls: <span class="built_in">command</span> not found</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <p>移除所有别名</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cls</span><br><span class="line">-bash: cls: <span class="built_in">command</span> not found</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ <span class="built_in">unalias</span> -a</span><br><span class="line">[user1@study ~]$ cls</span><br><span class="line">-bash: cls: <span class="built_in">command</span> not found</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <p>如果在 <code>~/.bash_profile</code>、<code>~/.bashrc</code> 这两个文件中定义了命令别名，想要删除的话使用上述命令行的方式只能在当前 shell 生命周期内有效，下次登录后命令别名依然还在。想要永久移除就需要修改文件并删除。</p>
 <h1 id="常用的命令别名范例"><a href="#常用的命令别名范例" class="headerlink" title="常用的命令别名范例"></a>常用的命令别名范例</h1><p>使用 vim 打开最近被修改的文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Open last modified file in vim</span></span><br><span class="line"><span class="built_in">alias</span> Vim=<span class="string">"vim <span class="variable">$(ls -t | head -1)</span>"</span></span><br></pre></td></tr></table></figure>
@@ -651,21 +651,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -673,7 +664,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

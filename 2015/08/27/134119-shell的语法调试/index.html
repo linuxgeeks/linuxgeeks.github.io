@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="使用bash选项12345678# 检查脚本语法格式是否有错bash -n script.sh# 跟踪脚本中每个命令的执行bash -v script.sh# 脚本单步执行，将整个脚本每一步解释和执行过程显示出来bash -x script.sh 使用set命令1234set -x # 在执行时候显示参数和命令。set">
+<meta name="description" content="使用bash选项-n 检查脚本语法格式是否有错 1bash -n script.sh -v 选项将跟踪脚本中每个命令的执行 1bash -v script.sh -x 选项会使脚本单步执行，将整个脚本每一步解释和执行过程显示出来 1234567891011121314151617181920[user1@study ~">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell的语法调试">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/08/27/134119-shell的语法调试/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="使用bash选项12345678# 检查脚本语法格式是否有错bash -n script.sh# 跟踪脚本中每个命令的执行bash -v script.sh# 脚本单步执行，将整个脚本每一步解释和执行过程显示出来bash -x script.sh 使用set命令1234set -x # 在执行时候显示参数和命令。set +x # 禁止调式。set -v # 当命令进入读取时候显示输入。set +v">
+<meta property="og:description" content="使用bash选项-n 检查脚本语法格式是否有错 1bash -n script.sh -v 选项将跟踪脚本中每个命令的执行 1bash -v script.sh -x 选项会使脚本单步执行，将整个脚本每一步解释和执行过程显示出来 1234567891011121314151617181920[user1@study ~]$ cat script.sh #!/bin/bashif [[ &apos;2&apos; =">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T13:13:05.612Z">
+<meta property="og:updated_time" content="2019-05-05T04:20:34.524Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的语法调试">
-<meta name="twitter:description" content="使用bash选项12345678# 检查脚本语法格式是否有错bash -n script.sh# 跟踪脚本中每个命令的执行bash -v script.sh# 脚本单步执行，将整个脚本每一步解释和执行过程显示出来bash -x script.sh 使用set命令1234set -x # 在执行时候显示参数和命令。set +x # 禁止调式。set -v # 当命令进入读取时候显示输入。set +v">
+<meta name="twitter:description" content="使用bash选项-n 检查脚本语法格式是否有错 1bash -n script.sh -v 选项将跟踪脚本中每个命令的执行 1bash -v script.sh -x 选项会使脚本单步执行，将整个脚本每一步解释和执行过程显示出来 1234567891011121314151617181920[user1@study ~]$ cat script.sh #!/bin/bashif [[ &apos;2&apos; =">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  532
+                  689
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>
@@ -379,29 +379,25 @@
       
 
       
-        <h1 id="使用bash选项"><a href="#使用bash选项" class="headerlink" title="使用bash选项"></a>使用bash选项</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查脚本语法格式是否有错</span></span><br><span class="line">bash -n script.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 跟踪脚本中每个命令的执行</span></span><br><span class="line">bash -v script.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 脚本单步执行，将整个脚本每一步解释和执行过程显示出来</span></span><br><span class="line">bash -x script.sh</span><br></pre></td></tr></table></figure>
+        <h1 id="使用bash选项"><a href="#使用bash选项" class="headerlink" title="使用bash选项"></a>使用bash选项</h1><p><code>-n</code> 检查脚本语法格式是否有错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -n script.sh</span><br></pre></td></tr></table></figure>
+<p><code>-v</code> 选项将跟踪脚本中每个命令的执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -v script.sh</span><br></pre></td></tr></table></figure>
+<p><code>-x</code> 选项会使脚本单步执行，将整个脚本每一步解释和执行过程显示出来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat script.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">'2'</span> = <span class="string">'3'</span> ]];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> yes</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> no</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"123"</span> | grep 2 &amp;&amp; <span class="built_in">echo</span> yes || <span class="built_in">echo</span> no</span><br><span class="line">[user1@study ~]$ bash -x script.sh</span><br><span class="line">+ [[ 2 = \3 ]]</span><br><span class="line">+ <span class="built_in">echo</span> no</span><br><span class="line">no</span><br><span class="line">+ <span class="built_in">echo</span> 123</span><br><span class="line">+ grep 2</span><br><span class="line">123</span><br><span class="line">+ <span class="built_in">echo</span> yes</span><br><span class="line">yes</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <h1 id="使用set命令"><a href="#使用set命令" class="headerlink" title="使用set命令"></a>使用set命令</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -x <span class="comment"># 在执行时候显示参数和命令。</span></span><br><span class="line"><span class="built_in">set</span> +x <span class="comment"># 禁止调式。</span></span><br><span class="line"><span class="built_in">set</span> -v <span class="comment"># 当命令进入读取时候显示输入。</span></span><br><span class="line"><span class="built_in">set</span> +v <span class="comment">#  禁止打印输入</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>仅在 -x 和 +x 区域显示调试信息</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125; ; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line">    <span class="built_in">set</span> +x</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<h1 id="使用-DEBUG环境变量"><a href="#使用-DEBUG环境变量" class="headerlink" title="使用_DEBUG环境变量"></a>使用<code>_DEBUG</code>环境变量</h1><ul>
-<li>若需要自定义格式显示调式信息可通过<code>_DEBUG</code>环境变量来建立：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="function"><span class="title">DEBUG</span></span> () &#123;</span><br><span class="line">[ <span class="string">"<span class="variable">$_DEBUG</span>"</span> = <span class="string">"on"</span> ] &amp;&amp; <span class="variable">$@</span> || :</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125; ; <span class="keyword">do</span></span><br><span class="line">	DEBUG <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>将调试功能设置为“on”来运行脚本：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_DEBUG=on ./script.sh</span><br></pre></td></tr></table></figure>
-<ul>
-<li>将需要调式的行前加上DEBUG，运行脚本前没有加<code>_DEBUG=on</code>就不会显示任何信息，脚本中<code>:</code>告诉shell不进行任何操作。</li>
-</ul>
-<h1 id="使用shellbang"><a href="#使用shellbang" class="headerlink" title="使用shellbang"></a>使用shellbang</h1><p>把shebang 从 <code>#!/bin/bash</code> 修改成 <code>#!/bin/bash -xv</code> 即可</p>
+<p>仅在 <code>-x</code> 和 <code>+x</code> 区域显示调试信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat test.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125; ; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line">    <span class="built_in">set</span> +x</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">[user1@study ~]$ bash test.sh</span><br><span class="line">+ <span class="built_in">echo</span> 1</span><br><span class="line">1</span><br><span class="line">+ <span class="built_in">set</span> +x</span><br><span class="line">+ <span class="built_in">echo</span> 2</span><br><span class="line">2</span><br><span class="line">+ <span class="built_in">set</span> +x</span><br><span class="line">+ <span class="built_in">echo</span> 3</span><br><span class="line">3</span><br><span class="line">+ <span class="built_in">set</span> +x</span><br><span class="line">+ <span class="built_in">echo</span> 4</span><br><span class="line">4</span><br><span class="line">+ <span class="built_in">set</span> +x</span><br><span class="line">+ <span class="built_in">echo</span> 5</span><br><span class="line">5</span><br><span class="line">+ <span class="built_in">set</span> +x</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<h1 id="使用-DEBUG-环境变量"><a href="#使用-DEBUG-环境变量" class="headerlink" title="使用 _DEBUG 环境变量"></a>使用 <code>_DEBUG</code> 环境变量</h1><p>若需要自定义格式显示调式信息可通过 <code>_DEBUG</code> 环境变量来建立。将需要调式的行前加上 <code>DEBUG</code>，运行脚本前没有加 <code>_DEBUG=on</code> 就不会显示任何信息，脚本中 <code>:</code> 告诉shell不进行任何操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="function"><span class="title">DEBUG</span></span> () &#123;</span><br><span class="line">    [ <span class="string">"<span class="variable">$_DEBUG</span>"</span> = <span class="string">"on"</span> ] &amp;&amp; <span class="variable">$@</span> || :</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125; ; <span class="keyword">do</span></span><br><span class="line">    DEBUG <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">[user1@study ~]$ bash test.sh</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p>将调试功能设置为“on”来运行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ _DEBUG=on bash test.sh </span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<h1 id="使用shellbang"><a href="#使用shellbang" class="headerlink" title="使用shellbang"></a>使用shellbang</h1><p>把 shebang 从 <code>#!/bin/bash</code> 修改成 <code>#!/bin/bash -xv</code> 即可</p>
 <h1 id="静态检查工具-shellcheck"><a href="#静态检查工具-shellcheck" class="headerlink" title="静态检查工具 shellcheck"></a>静态检查工具 shellcheck</h1><p>为了从制度上保证脚本的质量，我们最简单的想法大概就是搞一个静态检查工具，通过引入工具来弥补开发者可能存在的知识盲点。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="https://www.shellcheck.net" target="_blank" rel="noopener">shellcheck</a>这个工具的对不同平台的支持力度都很大，他至少支持了<code>Debian</code>，<code>Arch</code>，<code>Gentoo</code>，<code>EPEL</code>，<code>Fedora</code>，<code>OS X</code>,，<code>openSUSE</code> 等等各种的平台的主流包管理工具。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>Github：<a href="https://github.com/koalaman/shellcheck" target="_blank" rel="noopener">https://github.com/koalaman/shellcheck</a></p>
+<p><a href="https://www.shellcheck.net" target="_blank" rel="noopener">shellcheck</a>这个工具的对不同平台的支持力度都很大，他至少支持 <code>Debian</code>，<code>Arch</code>，<code>Gentoo</code>，<code>EPEL</code>，<code>Fedora</code>，<code>OS X</code>,，<code>openSUSE</code> 等等各种的平台的主流包管理工具。</p>
+<p>使用 epel 的 yum 源即可安装。它的 Github 地址为 <a href="https://github.com/koalaman/shellcheck" target="_blank" rel="noopener">https://github.com/koalaman/shellcheck</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release</span><br><span class="line">yum install ShellCheck</span><br></pre></td></tr></table></figure>
-<h2 id="本质"><a href="#本质" class="headerlink" title="本质"></a>本质</h2><p>shellcheck提供了一个非常非常强大的wiki。在这个 wiki 里，我们可以找到这个工具所有判断的依据，每一个检测到的问题都可以在 wiki 里找到对应的问题单号，他不仅告诉我们” 这样写不好”，而且告诉我们” 为什么这样写不好”，” 我们应当怎么写才好”，非常适合刨根问底党进一步研究。</p>
+<p>shellcheck 提供了一个非常非常强大的 wiki。在这个 wiki 里，我们可以找到这个工具所有判断的依据，每一个检测到的问题都可以在 wiki 里找到对应的问题单号，他不仅告诉我们” 这样写不好”，而且告诉我们” 为什么这样写不好”，” 我们应当怎么写才好”，非常适合刨根问底党进一步研究。</p>
 
       
     </div>
@@ -489,8 +485,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/30/134135-shell中使用read命令接收键盘输入/" rel="prev" title="shell中使用read命令接收键盘输入">
-                shell中使用read命令接收键盘输入 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/08/30/134135-shell的进程替换/" rel="prev" title="shell的进程替换">
+                shell的进程替换 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -610,21 +606,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -632,7 +619,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -782,7 +769,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用bash选项"><span class="nav-number">1.</span> <span class="nav-text">使用bash选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用set命令"><span class="nav-number">2.</span> <span class="nav-text">使用set命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-DEBUG环境变量"><span class="nav-number">3.</span> <span class="nav-text">使用_DEBUG环境变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用shellbang"><span class="nav-number">4.</span> <span class="nav-text">使用shellbang</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态检查工具-shellcheck"><span class="nav-number">5.</span> <span class="nav-text">静态检查工具 shellcheck</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">5.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">5.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本质"><span class="nav-number">5.3.</span> <span class="nav-text">本质</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用bash选项"><span class="nav-number">1.</span> <span class="nav-text">使用bash选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用set命令"><span class="nav-number">2.</span> <span class="nav-text">使用set命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-DEBUG-环境变量"><span class="nav-number">3.</span> <span class="nav-text">使用 _DEBUG 环境变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用shellbang"><span class="nav-number">4.</span> <span class="nav-text">使用shellbang</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态检查工具-shellcheck"><span class="nav-number">5.</span> <span class="nav-text">静态检查工具 shellcheck</span></a></li></ol></div>
             
 
           </div>

@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="Bash Shell四种模式介绍登录式Shell（login shell）取得bash时需要完整的登入流程，就称为 login shell。  正常通常某终端登录当系统启动时或开启一个新的终端登录系统时，系统通过调用 /bin/login 程序处理登录并在 一个 shell 中显示命令行提示符，这个 shell 就是 ">
+<meta name="description" content="四种模式登录式Shell（login shell）取得 bash 时需要完整的登入流程，就称为 login shell 正常通过某终端登录的 shell，当系统启动时或开启一个新的终端登录系统时，系统通过调用 /bin/login 程序处理登录并在一个 shell 中显示命令行提示符，这个 shell 就是 login">
 <meta name="keywords" content="BashShell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell的模式与环境变量的配置文件">
 <meta property="og:url" content="http://linuxgeeks.github.io/2015/07/27/210135-shell的模式与环境变量的配置文件/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="Bash Shell四种模式介绍登录式Shell（login shell）取得bash时需要完整的登入流程，就称为 login shell。  正常通常某终端登录当系统启动时或开启一个新的终端登录系统时，系统通过调用 /bin/login 程序处理登录并在 一个 shell 中显示命令行提示符，这个 shell 就是 login shell；该 shell 程序可以是 bash 也可以是 sh 或">
+<meta property="og:description" content="四种模式登录式Shell（login shell）取得 bash 时需要完整的登入流程，就称为 login shell 正常通过某终端登录的 shell，当系统启动时或开启一个新的终端登录系统时，系统通过调用 /bin/login 程序处理登录并在一个 shell 中显示命令行提示符，这个 shell 就是 login shell；该 shell 程序可以是 bash 也可以是 sh 或 csh，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-01T16:18:51.172Z">
+<meta property="og:updated_time" content="2019-05-02T11:37:32.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell的模式与环境变量的配置文件">
-<meta name="twitter:description" content="Bash Shell四种模式介绍登录式Shell（login shell）取得bash时需要完整的登入流程，就称为 login shell。  正常通常某终端登录当系统启动时或开启一个新的终端登录系统时，系统通过调用 /bin/login 程序处理登录并在 一个 shell 中显示命令行提示符，这个 shell 就是 login shell；该 shell 程序可以是 bash 也可以是 sh 或">
+<meta name="twitter:description" content="四种模式登录式Shell（login shell）取得 bash 时需要完整的登入流程，就称为 login shell 正常通过某终端登录的 shell，当系统启动时或开启一个新的终端登录系统时，系统通过调用 /bin/login 程序处理登录并在一个 shell 中显示命令行提示符，这个 shell 就是 login shell；该 shell 程序可以是 bash 也可以是 sh 或 csh，">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,529
+                  1,751
                 </span>
               
 
@@ -358,7 +358,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  7
                 </span>
               
             </div>
@@ -379,33 +379,16 @@
       
 
       
-        <h1 id="Bash-Shell四种模式介绍"><a href="#Bash-Shell四种模式介绍" class="headerlink" title="Bash Shell四种模式介绍"></a>Bash Shell四种模式介绍</h1><h2 id="登录式Shell（login-shell）"><a href="#登录式Shell（login-shell）" class="headerlink" title="登录式Shell（login shell）"></a>登录式Shell（login shell）</h2><p>取得bash时需要完整的登入流程，就称为 <code>login shell</code>。</p>
-<ul>
-<li><p>正常通常某终端登录<br>当系统启动时或开启一个新的终端登录系统时，系统通过调用 <code>/bin/login</code> 程序处理登录并在 一个 shell 中显示命令行提示符，这个 shell 就是 <code>login shell</code>；该 shell 程序可以是 bash 也可以是 sh 或 csh，具体使用哪种 shell 可以在 <code>/etc/passwd</code> 中设置（ <code>/bin/login</code> 程序读取该文件决定使用哪种Shell）。</p>
-</li>
-<li><p>完全切换到另一个用户环境</p>
-<ul>
-<li><code>su - USERNAME</code></li>
-<li><code>su -l USERNAME</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="非登录式Shell（non-login-shell）"><a href="#非登录式Shell（non-login-shell）" class="headerlink" title="非登录式Shell（non-login shell）"></a>非登录式Shell（non-login shell）</h2><ul>
-<li><p>图形终端下打开命令窗口<br>以 <code>X window</code> 登入Linux后，再以X的图形化界面启动命令终端，此时的命令终端并不需要再次输入用户名和密码，所以此时bash的环境就称为 <code>non-login shell</code></p>
-</li>
-<li><p>自动执行的shell脚本</p>
-</li>
-<li><p>半切换只切换不使用用户环境</p>
-<ul>
-<li><code>su USERNAME</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="Interactive-shell-and-non-interactive-shell"><a href="#Interactive-shell-and-non-interactive-shell" class="headerlink" title="Interactive shell and non-interactive shell"></a>Interactive shell and non-interactive shell</h2><p><code>interactive</code> 意为交互式。</p>
-<ul>
-<li><code>interactive shell</code>会有一个输入提示符，并且它的标准输入、输出和错误输出都会显示在控制台上。所以一般来说只要是需要用户交互的，即一个命令一个命令的输入的shell都是 <code>interactive shell</code>。</li>
-<li><code>non-interactive shell</code>，无需用户交互。通常来说如 <code>bash script.sh</code> 此类执行脚本的命令就会启动一个 <code>non-interactive shell</code>，它不需要与用户进行交互，执行完后它便会退出创建的 shell。</li>
-</ul>
+        <h1 id="四种模式"><a href="#四种模式" class="headerlink" title="四种模式"></a>四种模式</h1><h2 id="登录式Shell（login-shell）"><a href="#登录式Shell（login-shell）" class="headerlink" title="登录式Shell（login shell）"></a>登录式Shell（login shell）</h2><p>取得 bash 时需要完整的登入流程，就称为 <code>login shell</code></p>
+<p>正常通过某终端登录的 shell，当系统启动时或开启一个新的终端登录系统时，系统通过调用 <code>/bin/login</code> 程序处理登录并在一个 shell 中显示命令行提示符，这个 shell 就是 <code>login shell</code>；该 shell 程序可以是 bash 也可以是 sh 或 csh，具体使用哪种 shell 可以在 <code>/etc/passwd</code> 中设置（<code>/bin/login</code>  程序读取该文件决定使用哪种 Shell）。</p>
+<p>使用命令 <code>su - USERNAME</code> 或 <code>su -l USERNAME</code> 进行用户切换，这种切换方式是完全切换到了另一个的用户环境，也是 <code>login shell</code></p>
+<h2 id="非登录式Shell（non-login-shell）"><a href="#非登录式Shell（non-login-shell）" class="headerlink" title="非登录式Shell（non-login shell）"></a>非登录式Shell（non-login shell）</h2><p>以 <code>X window</code> 登入Linux后，再以X的图形化界面启动命令终端，此时的命令终端并不需要再次输入用户名和密码，所以此时 bash 的环境就称为 <code>non-login shell</code></p>
+<p>自动执行的 shell 脚本也是  <code>non-login shell</code> </p>
+<p>使用命令 <code>su USERNAME</code> 进行用户切换，这种切换方式不会切换使用用户的环境，也属于 <code>non-login shell</code> </p>
+<h2 id="Interactive-shell-and-non-interactive-shell"><a href="#Interactive-shell-and-non-interactive-shell" class="headerlink" title="Interactive shell and non-interactive shell"></a>Interactive shell and non-interactive shell</h2><p><code>interactive shell</code> 即交互式 shell，会有一个输入提示符，并且它的标准输入、输出和错误输出都会显示在控制台上。所以一般来说只要是需要用户交互的，即一个命令一个命令的输入的 shell 都是 <code>interactive shell</code>。</p>
+<p><code>non-interactive shell</code>，即非交互式 shell，无需用户交互。通常来说如 <code>bash script.sh</code> 此类执行脚本的命令就会启动一个 <code>non-interactive shell</code>，它不需要与用户进行交互，执行完后它便会退出创建的 shell。</p>
+<p>打印 shell 内置的特殊变量 <code>$-</code>，就能知道当前的 shell 是不是交互式的。一旦输出的结果中包含了 <code>i</code> 就说明当前的 shell 是 <code>interactive shell</code> ，也就是交互式 shell。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ <span class="built_in">echo</span> $-</span><br><span class="line">himBH</span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
 <h2 id="典型的启动方式及其shell模式"><a href="#典型的启动方式及其shell模式" class="headerlink" title="典型的启动方式及其shell模式"></a>典型的启动方式及其shell模式</h2><p>1）登陆机器后的第一个Shell：属于 <code>login + interactive</code></p>
 <p>2）新启动一个 Shell 进程，如运行bash：属于 <code>non-login + interactive</code></p>
 <p>3）执行脚本，如 <code>bash script.sh</code>：属于 <code>non-login + non-interactive</code></p>
@@ -414,52 +397,27 @@
 <p>6）远程执行脚本，如 <code>ssh user@remote script.sh</code>：属于 <code>non-login + non-interactive</code></p>
 <p>7）远程执行脚本，同时请求控制台，如 <code>ssh user@remote -t &#39;echo $PWD&#39;</code>：属于 <code>non-login + interactive</code></p>
 <p>8）在图形化界面中打开终端：属于 <code>non-login + interactive</code></p>
-<h1 id="bash配置文件"><a href="#bash配置文件" class="headerlink" title="bash配置文件"></a>bash配置文件</h1><ul>
-<li><p>全局配置：对所有用户生效</p>
-<ul>
-<li><code>/etc/profile</code>  <code>/etc/profile.d/*.sh</code>  <code>/etc/bashrc</code></li>
-</ul>
-</li>
-<li><p>个人配置：对当前用户生效，每个用户家目录都有以下两个文件</p>
-<ul>
-<li><code>~/.bash_profile</code>  <code>~/.bashrc</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="文件读取顺序"><a href="#文件读取顺序" class="headerlink" title="文件读取顺序"></a>文件读取顺序</h2><ul>
-<li><p>登录式shell<br>登陆 ==&gt; 执行<code>/etc/profile</code> ==&gt; profile调用执行<code>/etc/profile.d/*.sh</code> ==&gt; profile执行<code>~/.bash_profile</code> ==&gt; 执行<code>~/.bashrc</code> ==&gt; 执行<code>/etc/bashrc</code> ==&gt; 命令提示符</p>
-</li>
-<li><p>非登录式shell<br><code>~/.bashrc</code> ==&gt; <code>/etc/basrc</code> ==&gt; <code>/etc/profile.d/*.sh</code></p>
-</li>
-</ul>
-<h1 id="bash配置文件作用"><a href="#bash配置文件作用" class="headerlink" title="bash配置文件作用"></a>bash配置文件作用</h1><ul>
-<li>profile类的文件：设定环境变量，运行命令或脚本</li>
-<li>bashrc类的文件：设定本地变量，定义命令别名</li>
-</ul>
-<p>根据登录式Shell的启动顺序详细介绍这些这些文件的作用</p>
-<ul>
-<li><code>/etc/profile</code></li>
-</ul>
-<p>它是系统整体的配置文件，该配置文件里包含很多重要的变量信息，每个用户登陆取得bash后一定会读取这个配置文件。如果你想要设定环境变量对所有用户起作用，就要在这个地方设置。大概内容如下:</p>
-<p>  (1) <code>USER</code>变量设置。<br>  (2) <code>LOGNAME</code>变量设置。<br>  (3) <code>MAIL</code>变量设置。<br>  (4) <code>PATH</code>变量设置。<br>  (5) <code>HOSTNAME</code>变量设置。<br>  (6) <code>HISTSIZE</code>变量设置1000。<br>  (7) 然后使用export把以上所有变量声明成环境变量。<br>  (8) 管理员和普通用户的umask设置。<br>  (9) 调用<code>/etc/profile.d/*.sh</code>文件。</p>
-<ul>
-<li><code>/etc/profile.d/*.sh</code></li>
-</ul>
-<p>在这个目录下一般用户可以自定义一些脚本，系统默认也有一些脚本，如<code>/etc/profile.d/lang.sh</code>这个脚本，其中最重要的就是这个脚本调用了<code>/etc/sysconfig/i18n</code>这个文件，而这个文件中定义定义的就是系统的默认语言，如</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/sysconfig/i18n</span></span><br><span class="line">LANG=<span class="string">"en_US.UTF-8"</span></span><br><span class="line">SYSFONT=<span class="string">"latarcyrheb-sun16"</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>~/.bash_profile</code></li>
-</ul>
-<p>这个文件文件会先检查<code>~/.bashrc</code>是否存在，然后会执行<code>export PATH</code>这个变量。</p>
-<ul>
-<li><code>~/.bashrc</code></li>
-</ul>
-<p>这个文件中都是用来定义别名使用的，如果你要定义别名就可以放在这个文件中。</p>
-<ul>
-<li><code>/etc/bashrc</code></li>
-</ul>
-<p>这个文件定义了<code>PS1</code>变量，可以用来设定登录提示符等信息；设定本地变量，添加定义命令别名。并且特别针对非登录的Shell重新设定了一些变量，如<code>PATH</code>，<code>PS1</code>等。</p>
-<p><strong>注意:</strong> 按照文件的启动顺序，基本上定义的所有变量都会生效，但是后面启动的文件中定义的变量会覆盖前面文件中定义的相同名称的变量。所以要想更好地设定一些变量和别名，就需要知道这些文件的作用域以及非登录式Shell和登录式Shell各自应用哪些文件。</p>
+<h1 id="Bash-环境变量的配置文件"><a href="#Bash-环境变量的配置文件" class="headerlink" title="Bash 环境变量的配置文件"></a>Bash 环境变量的配置文件</h1><p><strong>全局配置</strong>：针对所有用户生效的，它的配置文件有 <code>/etc/profile</code> 和  <code>/etc/profile.d/*.sh</code> 以及 <code>/etc/bashrc</code></p>
+<p><strong>个人配置</strong>：仅对当前用户生效，每个用户家目录都有两个环境变量配置文件 <code>~/.bash_profile</code> 和 <code>~/.bashrc</code></p>
+<h2 id="文件的读取顺序"><a href="#文件的读取顺序" class="headerlink" title="文件的读取顺序"></a>文件的读取顺序</h2><p><strong>登录式shell</strong></p>
+<p>1）登陆<br>2）执行 <code>/etc/profile</code><br>3）<code>/etc/profile</code> 调用并执行 <code>/etc/profile.d/*.sh</code><br>4） 执行 <code>~/.bash_profile</code> ==&gt;<br>5） <code>~/.bash_profile</code> 调用并执行 <code>~/.bashrc</code><br>6）  <code>~/.bashrc</code> 调用并执行 <code>/etc/bashrc</code><br>命令提示符</p>
+<p><strong>非登录式shell</strong></p>
+<p><code>~/.bashrc</code> ==&gt; <code>/etc/bashrc</code> ==&gt; <code>/etc/profile.d/*.sh</code></p>
+<h1 id="Bash-环境变量配置文件作用"><a href="#Bash-环境变量配置文件作用" class="headerlink" title="Bash 环境变量配置文件作用"></a>Bash 环境变量配置文件作用</h1><p><code>profile</code> 类的文件用来设定系统环境环境和启动程序，用于登录的设置；<code>bashrc</code> 类的文件用于设定本地变量，定义命令别名</p>
+<p><strong><code>/etc/profile</code></strong></p>
+<p>它是系统整体的配置文件，该配置文件里包含很多重要的变量信息，每个用户登陆取得 bash 后一定会读取这个配置文件。如果你想要设定环境变量对所有用户起作用，就要在这个地方设置。大概内容如下:</p>
+<p>  (1) <code>USER</code> 变量设置。<br>  (2) <code>LOGNAME</code> 变量设置。<br>  (3) <code>MAIL</code> 变量设置。<br>  (4) <code>PATH</code> 变量设置。<br>  (5) <code>HOSTNAME</code> 变量设置。<br>  (6) <code>HISTSIZE</code> 变量设置1000。<br>  (7) 然后使用export把以上所有变量声明成环境变量。<br>  (8) 管理员和普通用户的umask设置。<br>  (9) 调用并执行 <code>/etc/profile.d/*.sh</code> 文件。</p>
+<p><strong><code>/etc/profile.d/*.sh</code></strong></p>
+<p>在这个目录下一般用户可以自定义一些脚本，系统默认也有一些脚本，如 <code>/etc/profile.d/lang.sh</code> 这个脚本，其中最重要的就是这个脚本调用了 <code>/etc/locale.conf</code> 和 <code>$HOME/.i18n</code> 这两个文件，而这个文件中定义的就是系统的默认语言</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat /etc/locale.conf </span><br><span class="line">LANG=<span class="string">"en_US.UTF-8"</span></span><br><span class="line">[user1@study ~]$</span><br></pre></td></tr></table></figure>
+<p><strong><code>~/.bash_profile</code></strong></p>
+<p>这个文件文件会先检查 <code>~/.bashrc</code> 是否存在，然后会执行 <code>export PATH</code> 定义 <code>PATH</code> 这个环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[user1@study ~]$ cat ~/.bash_profile </span><br><span class="line"><span class="comment"># .bash_profile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the aliases and functions</span></span><br><span class="line"><span class="keyword">if</span> [ -f ~/.bashrc ]; <span class="keyword">then</span></span><br><span class="line">        . ~/.bashrc</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># User specific environment and startup programs</span></span><br><span class="line"></span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$HOME</span>/.<span class="built_in">local</span>/bin:<span class="variable">$HOME</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+<p><strong><code>~/.bashrc</code></strong></p>
+<p>这个文件中会先检查 <code>/etc//.bashrc</code> 是否存在，然后调用并执行。<code>~/.bashrc</code> 主要是用来定义别名使用的，如果你要定义别名就可以放在这个文件中</p>
+<p><strong><code>/etc/bashrc</code></strong></p>
+<p>这个文件定义了 <code>PS1</code> 变量，可以用来设定登录提示符等信息；设定本地变量，添加定义命令别名。并且特别针对非登录的 shell 重新设定了一些变量，如 <code>PATH</code>，<code>PS1</code> 等。</p>
+<p><strong>注意:</strong> 按照文件的启动顺序，基本上定义的所有变量都会生效，但是后面启动的文件中定义的变量会覆盖前面文件中定义的相同名称的变量。所以要想更好地设定一些变量和别名，就需要知道这些文件的作用域以及非登录式 shell 和登录式 shell 各自应用哪些文件</p>
 <h1 id="其他变量配置文件"><a href="#其他变量配置文件" class="headerlink" title="其他变量配置文件"></a>其他变量配置文件</h1><ul>
 <li><code>~/.bash_logout</code></li>
 </ul>
@@ -480,8 +438,8 @@
 <li><code>~/.mysql_history</code></li>
 </ul>
 <p>安装MySQL之后就会生成这个文件，跟<code>.bash_history</code>作用基本相同，不同的是<code>.mysql_history</code>是用来记录SQL语句的。</p>
-<h1 id="shell中将配置生效"><a href="#shell中将配置生效" class="headerlink" title="shell中将配置生效"></a>shell中将配置生效</h1><p>可以使环境变量生效，也可用于编写脚本加载脚本定义的配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /PATH/TO/PROFILE 或 . /PATH/TO/PROFILE</span><br></pre></td></tr></table></figure>
+<h1 id="将配置文件立即生效"><a href="#将配置文件立即生效" class="headerlink" title="将配置文件立即生效"></a>将配置文件立即生效</h1><p>使用 <code>source</code> 或 <code>.</code> 都可以使环境变量配置文件立即生效，也可用于在编写脚本时加载脚本定义的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /PATH/TO/PROFILE</span><br><span class="line">. /PATH/TO/PROFILE</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -689,21 +647,12 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
             
 
             
@@ -711,7 +660,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -861,7 +810,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Bash-Shell四种模式介绍"><span class="nav-number">1.</span> <span class="nav-text">Bash Shell四种模式介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录式Shell（login-shell）"><span class="nav-number">1.1.</span> <span class="nav-text">登录式Shell（login shell）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非登录式Shell（non-login-shell）"><span class="nav-number">1.2.</span> <span class="nav-text">非登录式Shell（non-login shell）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interactive-shell-and-non-interactive-shell"><span class="nav-number">1.3.</span> <span class="nav-text">Interactive shell and non-interactive shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#典型的启动方式及其shell模式"><span class="nav-number">1.4.</span> <span class="nav-text">典型的启动方式及其shell模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bash配置文件"><span class="nav-number">2.</span> <span class="nav-text">bash配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件读取顺序"><span class="nav-number">2.1.</span> <span class="nav-text">文件读取顺序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bash配置文件作用"><span class="nav-number">3.</span> <span class="nav-text">bash配置文件作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他变量配置文件"><span class="nav-number">4.</span> <span class="nav-text">其他变量配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shell中将配置生效"><span class="nav-number">5.</span> <span class="nav-text">shell中将配置生效</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#四种模式"><span class="nav-number">1.</span> <span class="nav-text">四种模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录式Shell（login-shell）"><span class="nav-number">1.1.</span> <span class="nav-text">登录式Shell（login shell）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非登录式Shell（non-login-shell）"><span class="nav-number">1.2.</span> <span class="nav-text">非登录式Shell（non-login shell）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interactive-shell-and-non-interactive-shell"><span class="nav-number">1.3.</span> <span class="nav-text">Interactive shell and non-interactive shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#典型的启动方式及其shell模式"><span class="nav-number">1.4.</span> <span class="nav-text">典型的启动方式及其shell模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bash-环境变量的配置文件"><span class="nav-number">2.</span> <span class="nav-text">Bash 环境变量的配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件的读取顺序"><span class="nav-number">2.1.</span> <span class="nav-text">文件的读取顺序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bash-环境变量配置文件作用"><span class="nav-number">3.</span> <span class="nav-text">Bash 环境变量配置文件作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他变量配置文件"><span class="nav-number">4.</span> <span class="nav-text">其他变量配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将配置文件立即生效"><span class="nav-number">5.</span> <span class="nav-text">将配置文件立即生效</span></a></li></ol></div>
             
 
           </div>
