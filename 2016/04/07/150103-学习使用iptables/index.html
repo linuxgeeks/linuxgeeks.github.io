@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="安全,Network,iptables," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="基础知识防火墙 工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件 iptables linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 Linux 内核模块，">
+<meta name="keywords" content="安全,Network,iptables">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习使用iptables">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="基础知识防火墙 工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件 iptables linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 Linux 内核模块，工作于 Kernel space 做实际的包过滤。 Netfilter 的官方站">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables1.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables2.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables3.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables_03.gif">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables_04.gif">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables3.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables4.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables5.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables6.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables7.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables8.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables9.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables10.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables11.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables12.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables13.png">
+<meta property="og:updated_time" content="2019-05-24T02:30:51.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习使用iptables">
+<meta name="twitter:description" content="基础知识防火墙 工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件 iptables linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 Linux 内核模块，工作于 Kernel space 做实际的包过滤。 Netfilter 的官方站">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/"/>
+
+
+
+
+
+  <title>学习使用iptables | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">学习使用iptables</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-07T15:01:03+08:00">
+                2016-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  17,660
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  72
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p><strong>防火墙</strong></p>
+<p>工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件</p>
+<p><strong>iptables</strong></p>
+<p>linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 Linux 内核模块，工作于 Kernel space 做实际的包过滤。</p>
+<p>Netfilter 的官方站点  <a href="http://www.netfilter.org" target="_blank" rel="noopener">http://www.netfilter.org</a> ，此站点的 FAQ 是开始学习 iptables 和 Netfilter 的好地方。</p>
+<h1 id="四表五链"><a href="#四表五链" class="headerlink" title="四表五链"></a>四表五链</h1><p>netfilter 使用表（Tables）和 链（Chains）来组织网络包的处理规则（Rules）。按照从高到低的优先级，它默认定义了以下表和链：</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables1.png" alt=""></p>
+<h1 id="防火墙规则的匹配顺序"><a href="#防火墙规则的匹配顺序" class="headerlink" title="防火墙规则的匹配顺序"></a>防火墙规则的匹配顺序</h1><p>因为 iptables 是利用数据包过滤的机制， 所以它会分析数据包的表头数据，将表头数据与定义的规则做匹配，根据匹配结果来决定该数据包是否可以进入主机或者是被丢弃。 也就是说如果数据包能被防火墙规则匹配到就进行相应的动作（Target），否则就继续进行下一条规则的匹配，直到有一条规则能匹配到为止，而重点在于规则的匹配顺序。</p>
+<p>假设我们在一台主机已经事先定义好了 10 条防火墙规则，那么当互联网中来了一个数据包想要进入这台主机时， 防火墙是如何分析和匹配这个数据包的呢？</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables2.png" alt=""></p>
+<p>当数据包要进入到主机之前，会先经由 NetFilter 进行检查，也就是 iptables 规则。 检查通过则接受 (ACCEPT) 进入本机取得资源，如果检查不通过，则可能予以丢弃 (DROP) 。</p>
+<p>上图主要是为了说明 <strong>规则是有顺序的</strong>，当数据包被 Rule 1 做匹配时， 如果数据包能被它匹配到，就进行 Action 1 的动作，而不会再被后续的 Rule 2, Rule 3…. 等做匹配了。</p>
+<p>而如果这个数据包并没有被 Rule 1 匹配到，那就会开始进行 Rule 2 的匹配，同理数据包就会被一个一个规则做匹配，直到有一条规则能匹配到为止。 如果所有的规则都无法匹配到这个数据包，此时就会交给默认策略( Policy) 来决定数据包的去向。 所以一旦定义的规则顺序排列错误，那就会产生很严重的后果。 </p>
+<p>比如我们有一台 Linux 服务器提供 Web 服务，那么就要针对 port 80 来启用通过的规则，但是后来发现有一个来源为 192.168.100.100 的 IP 总是恶意地尝试入侵 Web 服务器，所以这时候应该编写规则将这个 IP 拒绝，其他将请求 Web 服务的数据包通过， 最后把所有的不是请求 Web 服务的数据包都给丢弃。就这三个规则而言，应该如何设定匹配顺序呢？</p>
+<ul>
+<li>Rule 1 先把来自 192.168.100.100 的 IP 执行丢弃动作 DROP</li>
+<li>Rule 2 再让请求 Web 服务的数据包通过</li>
+<li>Rule 3 将所有的数据包丢弃</li>
+</ul>
+<p>这样的排列顺序就能符合我们的需求，一旦你没有搞清楚将顺序排错了，变成：</p>
+<ul>
+<li>Rule 1 先让请求 Web 服务的数据包通过</li>
+<li>Rule 2 再把来自 192.168.100.100 的 IP 执行丢弃动作 DROP</li>
+<li>Rule 3 将所有的数据包丢弃</li>
+</ul>
+<p>此时那个 192.168.100.100 将可以正常请求 Web 服务，因为它会被定义的第一条规则匹配到并且让它通过，一旦有一条规则匹配了，就不会再去进行第二条规则的匹配。</p>
+<h1 id="数据包的处理过程"><a href="#数据包的处理过程" class="headerlink" title="数据包的处理过程"></a>数据包的处理过程</h1><p>暂时不考虑由哪个表处理，在只看链处理过程的情况下，数据包一般是这样来处理的</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables3.png" alt=""></p>
+<p>其中路由判断是判断数据包的目标，也就是判断 <code>Destination = localhost ??</code></p>
+<p>而实际上的处理过程比较复杂，数据包要经过多个 table 来处理。</p>
+<p>对于 Web 服务器来说，要想让客户端对它发送 web 请求，就得处理 filter 的 INPUT 链； 对于用作局域网路由器的 Linux 来说，就得要分析 nat 的各个链以及 filter 的 FORWARD 链才行。</p>
+<p>总而言之，各个表以及链之间是有关联的：</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables_03.gif" alt=""></p>
+<p>上面的图示很复杂，不过基本上 iptables 可以控制三种数据包的流向：</p>
+<ul>
+<li><p>数据包进入 Linux 主机使用资源 (<strong>路径 A</strong>)，在路由判断后已经确定是向 Linux 主机发送请求的数据包，比如客户端向 web 服务器端发送的请求，主要会经过 filter 的 INPUT 链来进行处理；</p>
+</li>
+<li><p>数据包的目的地不是本机，而是经过本机做转发，没有使用本机的资源，向其后端主机流动 (<strong>路径 B</strong>)： 在路由判断之前进行数据包表头的修订作业后，发现到数据包主要是要经过防火墙而去后端，此时就会经过路径 B 来跑动。 主要经过的链是 nat 的 PREROUTING， filter 的 FORWARD 以及 nat 的 POSTROUTING。</p>
+</li>
+<li><p>数据包由本机发送出去 (<strong>路径 C</strong>)： 例如服务器端要响应客户端的请求，或者是本机作为客户端向其他服务器主动发送的数据包，都是经过路径 C 来处理的。先是经过路由判断， 决定了输出的路径后，再由 filter 的 OUTPUT 链来处理，当然最终还会经过 nat 的 POSTROUTING 链。</p>
+</li>
+</ul>
+<p>由于 mangle 这个表的过滤很少被使用，将上面图里 mangle 拿掉的话，那就容易看的多了：</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables_04.gif" alt=""></p>
+<h1 id="iptables命令"><a href="#iptables命令" class="headerlink" title="iptables命令"></a>iptables命令</h1><p>iptables 命令用来编写规则，规则就是指向标，对不同的连接和数据包做过滤，或者允许它们去向什么地方。</p>
+<p>它的语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables [-t table]  <span class="built_in">command</span> CHAIN [match] [target/jump]</span><br></pre></td></tr></table></figure>
+<p><code>[-t table]</code> 用来指定要操作的表。一般情况下不是必须要指定使用的表，因为 iptables 不指定 table 就默认使用 filter 表来执行所有的命令。</p>
+<p><code>command</code> 告诉程序该做什么，比如插入一条规则还是追加一条规则，或者是删除一条规则。</p>
+<p><code>CHAIN</code> 说明了要操作哪一条链</p>
+<p><code>match</code> 来根据包的特点来匹配数据包，其中会细致地描述包的某个特点，比如来源 IP 地址，网络接口，端口，协议类型等，以使这个包区别于其它所有的包。</p>
+<p><code>target/jump</code> 说明了对 match 到的数据包做什么操作，或者告诉数据包它应该去往何处。若数据包符合所有的 match，内核就用 target 来处理它，或者说把包发往 target。比如我们可以让内核把包发送到当前表中的其他链（可能是自定义链），或者只是丢弃这个包而没有什么处理，或者向发送者返回某个特殊的应答信息。非常重要的一点是  target 指令必须在最后。</p>
+<p>iptables 虽然不是服务但在红帽的 5 和 6 版本系统上有服务脚本 <code>/etc/init.d/iptables</code>，服务脚本的主要作用在于生效保存的规则，装载及移除相关内核模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iptable_nat</span><br><span class="line">iptable_filter</span><br><span class="line">iptable_mangle</span><br><span class="line">iptable_raw</span><br><span class="line">ip_nat</span><br><span class="line">ip_conntrack</span><br></pre></td></tr></table></figure>
+<p>在红帽 7 上  <code>ip_nat</code> 换为了 <code>nf_nat</code> ， <code>ip_conntrack</code> 换为了 <code>nf_conntrack</code>，并且它使用 firewalld.service 服务来处理数据包而没有 iptables.service，也没有服务脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@m1 ~]# systemctl status firewalld.service iptables.service</span><br><span class="line">● firewalld.service - firewalld - dynamic firewall daemon</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; disabled; vendor preset: enabled)</span><br><span class="line">   Active: inactive (dead)</span><br><span class="line">     Docs: man:firewalld(1)</span><br><span class="line">Unit iptables.service could not be found.</span><br><span class="line">[root@m1 ~]#</span><br></pre></td></tr></table></figure>
+<p>如果想要使用 iptables.service ，通过 yum 直接安装即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install iptables-services</span><br></pre></td></tr></table></figure>
+<h2 id="table"><a href="#table" class="headerlink" title="table"></a>table</h2><p><strong>raw</strong></p>
+<p>raw 表优先级最高，它支持一个特殊的 target，即 TRACE ，使用内核记录下每条匹配该包的对应 iptables 规则信息。利用这个 target ，可以实现对 iptables 规则的跟踪调试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t raw -A OUTPUT -p icmp -j TRACE</span><br></pre></td></tr></table></figure>
+<p>使用 raw 表添加了 iptables 规则后，将不经过连接跟踪模块，一般是为了不让 iptables 做数据包连接追踪来达到提高性能的目的。比如一台访问量比较高的 web 服务器，可以让 80 端口不再经过 iptables 做数据包的链接跟踪处理，以提高用户的访问速度。</p>
+<p>在 raw 表的规则处理完后，将跳过 nat 表和 nf_conntrack 处理，即不再做地址转换和数据包的链接跟踪处理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t raw -I PREROUTING -p tcp --dport 80 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p><strong>mangle</strong></p>
+<p>在 mangle 表中可以进行高级路由信息数据包的修改。不建议在这个表里做任何过滤性的操作，不管是 DANT，SNAT 或 MASQUERADE。</p>
+<p><strong>nat</strong></p>
+<p>Network Address Translation 简称 nat ，在 nat 表中主要用来实现网络地址转换，它处理源、目标 IP 和端口的转换，与本机资源无关。</p>
+<p><strong>filter</strong></p>
+<p>filter 表用来匹配并过滤数据包，我们就是在这里根据包的内容对包做 DROP 或 ACCEPT 的。当然也可以预先在其他地方做些过滤，但是 filter 表才是设计用来做过滤的，所以说用它做过滤最合适不过了。</p>
+<h2 id="command"><a href="#command" class="headerlink" title="command"></a>command</h2><p>使用 <code>-L</code> 或 <code>--list</code> 列出指定链中所有的规则，默认列出 filter 表中所有链的内容。.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -L</span><br></pre></td></tr></table></figure>
+<p>结合 <code>-L</code> 使用的还有几个附属选项，<code>-n</code> 或 <code>--numeric</code> 以数字形式显示地址和端口号，不对其进行解析。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -nL</span><br></pre></td></tr></table></figure>
+<p><code>-v</code> 或 <code>--verbose</code> 显示链及规则详细信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -vL</span><br></pre></td></tr></table></figure>
+<p><code>--line-numbers</code> 显示规则的序号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -L --line-numbers</span><br></pre></td></tr></table></figure>
+<p>最常用的情况是把这几个选项结合起来，使得其屏幕输出显得更人性化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iptables -vnL --line-numbers</span><br><span class="line">iptables -vnL INPUT --line-numbers</span><br><span class="line">iptables -t nat -vnL</span><br><span class="line">iptables -t nat -vnL PREROUTING</span><br><span class="line">iptables -t nat -vnL PREROUTING --line-numbers</span><br></pre></td></tr></table></figure>
+<p><code>-x</code> 或 <code>--exact</code> 显示计数器的精确值而不是近似值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -vnL INPUT -x</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-P</code> 或 <code>--policy</code> 设置指定链的默认策略，如果将默认策略设置为 <code>DROP</code> 时，请事先将自己信任的数据放行，比如 TCP 协议的 22 号端口，即 ssh 。在列出规则时，每一个链上都有一个 <code>policy</code> 的信息，它后面第一个字段就是默认的策略 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -P INPUT ACCEPT</span><br><span class="line">iptables -P OUTPUT ACCEPT</span><br><span class="line">iptables -P FORWARD ACCEPT</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-I</code> 或 <code>--insert</code> 在指定链中插入一条新的规则，默认在链的开头插入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -I INPUT -p tcp --dport 22 -j ACCEPT</span><br><span class="line">iptables -t filter -I INPUT -p tcp --dport 22   <span class="comment"># 不写 -j target 将会交给默认策略处理</span></span><br><span class="line">iptables -t filter -I INPUT 5 -p tcp --dport 22 <span class="comment"># 将规则插入到第五条</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>-A</code> 或 <code>--append</code> 在指定链的末尾处追加一条新的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp --dport 22 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-D</code> 或 <code>--delete</code> 删除指定链中的某条规则，可以按照内容确定要删除的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -D INPUT -p tcp --dport 22 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>还可以根据规则的序号删除，规则删除后将重新进行编号，这一点一定要注意</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -vnL INPUT --line-numbers</span><br><span class="line">iptables -t filter -D INPUT 3</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-R</code> 或 <code>--replace</code> 修改、替换指定链中的一条规则，按规则序号或内容确定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -R INPUT 2 -p icmp -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-F</code> 或 <code>--flush</code> 清空指定链中的所有规则，默认清空表中所有链的内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -F</span><br><span class="line"><span class="comment"># 清空 mangle 表中所有链中的规则</span></span><br><span class="line">iptables -t filter -F INPUT</span><br><span class="line"><span class="comment"># 清空 filter 表中 INPUT 链中的所有规则</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>-N</code> 或 <code>--new-chain</code> 新建一条用户自己定义的规则链</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -N DOCKER</span><br><span class="line"><span class="comment"># 在 filter 表中新建一个名为 DOCKER 的自定义链</span></span><br><span class="line"></span><br><span class="line">iptables -t filter -I DOCKER -j ACCEPT</span><br><span class="line"><span class="comment"># 在自定义的链 DOCKER 中添加对应匹配条件的处理规则</span></span><br><span class="line"></span><br><span class="line">iptables -t filter -I FORWARD -o docker0 -j DOCKER</span><br><span class="line"><span class="comment"># 在 FORWARD 中添加规则，用来匹配符合条件的数据包，并将其交给自定义链处理</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>-X</code> 或 <code>--delete-chain</code> 删除指定表中用户自定义的规则链，如果自定义链被其他链中的规则引用则无法删除，需要提前将有引用的规则删除，并清空自定义链中的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -X DOCKER</span><br><span class="line">iptables -D FORWARD -o docker0 -j DOCKER</span><br><span class="line">iptables -F DOCKER</span><br><span class="line">iptables -X DOCKER</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-E</code> 或 <code>--rename-chain</code> 重命名自定义链</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -N <span class="string">'test-chain'</span></span><br><span class="line">iptables -E <span class="string">'test-chain'</span> <span class="string">'TEST-CHAIN'</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>-Z</code> 或 <code>--zero</code> 将指定链中的所有规则的包字节计数器归零，不指定链则将所有链中的计数器置零</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -Z</span><br><span class="line">iptables -Z INPUT</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-V</code> 或 <code>--version</code> 查看 iptables 命令工具的版本信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -V</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-h</code> 或 <code>--help</code> 查看命令帮助信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -h</span><br></pre></td></tr></table></figure>
+<h2 id="chain"><a href="#chain" class="headerlink" title="chain"></a>chain</h2><p>说到链还是得把简化的处理流程图再拿过来：</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables3.png" alt=""></p>
+<p><strong>默认链</strong></p>
+<ul>
+<li>PREROUTING：进入 netfilter 后的数据包在进入路由判断前执行的规则</li>
+<li>INPUT：路由判断后，目的地是本机，要进入本机内部获取本地服务资源</li>
+<li>FORWARD：路由判断后目的地不是本机，经过本机做转发的数据包而执行的规则。与本机没有关联。</li>
+<li>OUTPUT：由本机产生，需向外发的数据包执行的规则</li>
+<li>POSTROUTING：路由判断后发送到网卡接口前，数据包准备离开 netfilter 时执行的规则</li>
+</ul>
+<p><strong>自定义链</strong></p>
+<p>自定义链必须在默认链调用后才能发挥作用，如果没有被自定义链中的任何规则匹配，还应该有返回机制。用户可以删除自定义的空链，但不可以删除默认链。</p>
+<p><strong>计数器</strong></p>
+<p>每一条规则都有两个内置的计数器，在 <code>pkts</code> 一列将会记录被规则被匹配到的报文个数，<code>bytes</code> 一列将会记录被匹配的报文大小之和</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@study ~]# iptables -vnL INPUT</span><br><span class="line">Chain INPUT (policy ACCEPT 1608 packets, 176K bytes)</span><br><span class="line"> pkts bytes target     prot opt in     out     source               destination  </span><br><span class="line">[root@study ~]#</span><br></pre></td></tr></table></figure>
+<h2 id="match"><a href="#match" class="headerlink" title="match"></a>match</h2><p>匹配模式分为通用匹配和扩展匹配</p>
+<h3 id="通用匹配"><a href="#通用匹配" class="headerlink" title="通用匹配"></a>通用匹配</h3><p>通用匹配适用于所有的规则，无需依赖模块，自己本身就能完成检查匹配。</p>
+<table>
+<thead>
+<tr>
+<th>匹配参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>！</td>
+<td>使用叹号对条件取反</td>
+</tr>
+<tr>
+<td><code>-p,--protocol</code></td>
+<td>指定协议（tcp，udp，icmp等），可使用all来指定所有协议</td>
+</tr>
+<tr>
+<td><code>-s,--src,--source</code></td>
+<td>指定数据包源地址，可使用IP地址、网络地址、主机名</td>
+</tr>
+<tr>
+<td><code>-d,--dst,--destination</code></td>
+<td>指定目的地址</td>
+</tr>
+<tr>
+<td><code>-i,--in-interface</code></td>
+<td>指定数据报文流入接口，用于PREROUTING、INPUT、FORWARD</td>
+</tr>
+<tr>
+<td><code>-o,--out-interface</code></td>
+<td>指定数据报文流出接口，用于OUTPUT、POSTROUTING、FORWARD</td>
+</tr>
+</tbody>
+</table>
+<p>使用 <code>-i</code>  或 <code>-o</code> 可以使用 <code>+</code> 做通配，比如 <code>-i eth+</code> 指的是从 <code>eth</code> 网卡进入的数据包。</p>
+<h3 id="扩展匹配"><a href="#扩展匹配" class="headerlink" title="扩展匹配"></a>扩展匹配</h3><p>扩展匹配，需要依赖模块来完成检查匹配。扩展匹配比较特殊，其中有些专门针对不同的协议，还有一些针对的是状态（state），所有者（owner），访问的频率限制（limit）等。你可以通过 <code>man iptables-extensions</code> 查看相关的帮助。</p>
+<p>扩展匹配又分为了隐式扩展和显式扩展</p>
+<h4 id="隐式扩展"><a href="#隐式扩展" class="headerlink" title="隐式扩展"></a>隐式扩展</h4><p>隐式扩展，不用特别指明由那个模块进行，当使用 <code>-p {tcp|udp|icmp}</code> 中的一种时，可以直接使用扩展专用选项</p>
+<table>
+<thead>
+<tr>
+<th>扩展条件</th>
+<th>扩展选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-p tcp</code>，<code>--protocol tcp</code></td>
+<td><code>--sport</code>，<code>--source-port</code></td>
+<td>来源端口，可以是连续的，例如 1024:65535</td>
+</tr>
+<tr>
+<td></td>
+<td><code>--dport</code>，<code>--destination-port</code></td>
+<td>目的端口</td>
+</tr>
+<tr>
+<td></td>
+<td><code>--tcp-flags</code></td>
+<td>tcp 标志位</td>
+</tr>
+<tr>
+<td></td>
+<td><code>--syn</code></td>
+<td>第一次握手</td>
+</tr>
+<tr>
+<td><code>-p udp</code>，<code>--protocol udp</code></td>
+<td><code>--sport</code>，<code>--source-port</code></td>
+<td>来源端口</td>
+</tr>
+<tr>
+<td></td>
+<td><code>--dport</code>，<code>--destination-port</code></td>
+<td>目的端口</td>
+</tr>
+<tr>
+<td><code>-p icmp</code>，<code>--protocol icmp</code></td>
+<td><code>--icmp-type</code></td>
+<td>icmp 类型</td>
+</tr>
+</tbody>
+</table>
+<p><code>--tcp-flags mask comp</code> 用于匹配 TCP 标志位。其中只检查 mask 指定的 TCP 的标志位（逗号分开的标志位列表），comp 表示此列表出现在 mask 中，且必须为 1。如果没有出现在 mask 中，而 comp 中出现的，必须为 0</p>
+<p>匹配 TCP 三次握手的第一次，即匹配四个 TCP 标志位（<code>SYN,FIN,ACK,RST</code>），其中 <code>SYN</code> 为 1，其他为 0</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING -p tcp --tcp-flags SYN,FIN,ACK,RST SYN -j ACCEPT</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">iptables -t nat -I PREROUTING -p tcp --syn -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>再比如匹配四个 TCP 标志位（<code>SYN,FIN,ACK,RST</code>），其中 <code>SYN</code> 和 <code>ACK</code> 为 1，其他为 0</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING -p tcp --tcp-flags SYN,FIN,ACK,RST SYN,ACK -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p><code>--icmp-type</code> 用来匹配 ICMP 报文类型，可以使报文类型代码。其中 8 等同于 <code>echo-request</code>， 0 等同于 <code>echo-reply</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 允许本机能 ping 其他主机</span></span><br><span class="line">iptables -A OUTPUT -p icmp --icmp-type <span class="built_in">echo</span>-request -j ACCEPT</span><br><span class="line">iptables -A INPUT  -p icmp --icmp-type <span class="built_in">echo</span>-reply   -j ACCEPT</span><br><span class="line"><span class="comment"># -----------------------------------------------</span></span><br><span class="line"><span class="comment"># 允许其他主机能 ping 本机</span></span><br><span class="line">iptables -A INPUT  -p icmp --icmp-type 8 -j ACCEPT</span><br><span class="line">iptables -A OUTPUT -p icmp --icmp-type 0 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>代码的摘要，具体可以参考 <a href="https://tools.ietf.org/html/rfc792" target="_blank" rel="noopener">rfc文档</a> 以及 <a href="https://www.cnblogs.com/Amedeo/p/7900206.html" target="_blank" rel="noopener">网络博客</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> 0  Echo Reply</span><br><span class="line"> 3  Destination Unreachable</span><br><span class="line"> 4  Source Quench</span><br><span class="line"> 5  Redirect</span><br><span class="line"> 8  Echo</span><br><span class="line">11  Time Exceeded</span><br><span class="line">12  Parameter Problem</span><br><span class="line">13  Timestamp</span><br><span class="line">14  Timestamp Reply</span><br><span class="line">15  Information Request</span><br><span class="line">16  Information Reply</span><br></pre></td></tr></table></figure>
+<h4 id="显式扩展"><a href="#显式扩展" class="headerlink" title="显式扩展"></a>显式扩展</h4><p>显式扩展必须使用 <code>-m</code> 或 <code>--match</code> 选项指明是由哪个模块进行的扩展，此功能可以使用额外的匹配机制</p>
+<p><strong>-m state</strong>：状态扩展，结合 <code>nf_conntrack</code> 模块追踪回话的状态</p>
+<ul>
+<li>NEW    新连接发起的请求</li>
+<li>ESTABLISHED    已经建立的连接(即:对于新请求的相应)</li>
+<li>INVALID    非法连接请求</li>
+<li>RELATED    相关连的连接(由命令发起，例如 ftp )</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -I INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT</span><br><span class="line"><span class="comment"># 将与本机新建立 ssh 连接的数据包放行</span></span><br><span class="line">iptables -t filter -I INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line"><span class="comment"># 状态为 NEW 或 ESTABLISHED 的 ssh 连接都放行</span></span><br></pre></td></tr></table></figure>
+<p><strong>-m multiport</strong>：离散的多端口扩展</p>
+<ul>
+<li><code>--source-ports</code>，<code>--sports</code>  指定多个源端口</li>
+<li><code>--destination-ports</code>，<code>--dports</code>   指定多个目的端口</li>
+<li><code>--ports</code>  源和目的端口</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -I INPUT -p tcp -m multiport --dports 21,22,80 -j ACCEPT</span><br><span class="line"><span class="comment"># 将协议为 TCP 目标端口为 21,22,80 的数据包放行</span></span><br></pre></td></tr></table></figure>
+<p><strong>-m iprange</strong>：匹配IP范围。</p>
+<ul>
+<li><code>--src-range</code>  匹配源 IP 范围</li>
+<li><code>--dst-range</code> 匹配目的 IP 范围</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -I INPUT -m iprange --src-range 192.168.1.100-192.168.1.200 -j ACCEPT</span><br><span class="line"><span class="comment"># 将来源IP范围是 192.168.1.100-192.168.1.20 的数据包放行</span></span><br></pre></td></tr></table></figure>
+<p><strong>-m connlimit</strong>：连接数限定。</p>
+<ul>
+<li><code>--connlimit-above n</code>，匹配连接数达到 n，一般进行取反使用</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -d 192.168.2.2 -p tcp --dport 80 -m connlimt !--connlimt-above 5 -j ACCEPT</span><br><span class="line"><span class="comment"># 连接数未达到 5 个则放行，否则按默认规则处理（一般默认规则是丢弃）</span></span><br></pre></td></tr></table></figure>
+<p><strong>-m limit</strong>：令牌桶过滤器，不控制最大上限。</p>
+<ul>
+<li><code>--limit n[/second|/minute|/hour|/day]</code> 用来在单位时间内最多允许 n 个数据包，<code>3/minute</code> 表示每分钟最多 3 个</li>
+<li><code>--limit-burst</code> 来匹配峰值，即匹配蜂拥而至的连接数有多大，默认为 5</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -d 192.168.2.2 -p icmp --icmp-type 8 -m <span class="built_in">limit</span> --<span class="built_in">limit</span> 5/minute --<span class="built_in">limit</span>-burst 6 -j ACCEPT</span><br><span class="line">iptables -I INPUT -d 192.168.2.2 -p icmp --icmp-type 8 -j DROP </span><br><span class="line"><span class="comment"># 目标为本机，协议为 icmp，限定每分钟最多可以连接5个(1/12s)，一批最高峰值为6个，即前6个速度比较快，后面的按照 5/minute 作回应</span></span><br></pre></td></tr></table></figure>
+<p><strong>-m string</strong>：匹配请求的报文中的字符串，字符匹配检查高效算法：kmp， bm。</p>
+<ul>
+<li><code>--algo {kmp|bm}</code> 指定算</li>
+<li><code>--string &quot;STRING&quot;</code> 指定普通字符串</li>
+<li><code>--hex-string &quot;HEX_STRING&quot;</code>,  指定编码成16进制格式的字符串</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -I OUTPUT -s 192.168.2.2 -m string --algo kmp --string <span class="string">"H7N9"</span> -j REJECT</span><br><span class="line"><span class="comment"># 源地址为 192.168.2.2，并且报文中匹配到 H7N9 则丢弃</span></span><br><span class="line">iptables -I FORWARD -p tcp -m string --string <span class="string">"qq.com"</span> --algo bm -j DROP</span><br><span class="line">iptables -I FORWARD -p udp -m string --string <span class="string">"qq.com"</span> --algo bm -j DROP</span><br></pre></td></tr></table></figure>
+<p><strong>-m time</strong>：基于时间做访问控制，在有些限制时间段访问网络的情况下十分有用</p>
+<ul>
+<li><code>--datestart YYYY[-MM][-DD[Thh[:mm[:ss]]]]</code>   起始日期</li>
+<li><code>--datestop  YYYY[-MM][-DD[Thh[:mm[:ss]]]]</code>   终止日期  </li>
+<li><code>--timestart hh:mm[:ss]</code>   起始时间</li>
+<li><code>--timestop hh:mm[:ss]</code>   终止时间</li>
+<li><code>--weekdays Sa[,Su]</code>     一周中的哪些天 </li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -d 172.16.100.7 -p tcp --dport 80 -m time --timestart 08:20 --timestop 18:40 --weekdays Mon,Tue,Thu,Fri -j REJECT</span><br><span class="line"><span class="comment"># 周一、二、四、五的 8:20 到 18:40 禁止其他主机访问本机（172.16.100.7）的80端口</span></span><br></pre></td></tr></table></figure>
+<p><strong>-m mac –mac-source</strong>：基于包的 MAC 源地址做访问控制，地址格式只能是 <code>XX:XX:XX:XX:XX:XX</code>，它也可以用叹号 <code>!</code> 取反。因为 MAC addresses 只用于 Ethernet 类型的网络，所以只能用于 Ethernet 接口。而且它只能在 PREROUTING，FORWARD 和 INPUT 链里使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A FORWARD -m mac --mac-source 00:00:00:00:00:01 -j  DROP</span><br></pre></td></tr></table></figure>
+<p>在局域网中如果有人在下载比较大的文件，会占用极大的带宽而影响到了其他人的网络访问，这时候我们在防火墙上针对这个来源的 IP 做 <code>limit</code> 或者直接 <code>DROP</code> 就好了，但是如果这个人发现自己被封网了，就自己指定了静态地址并且换了另外一个 IP ，这时候就需要针对 MAC 地址做限制了，限制了 MAC 来源之后，不管怎么换 IP 地址都无济于事。</p>
+<p><strong>-m commen –commentt</strong>，对规则做注释，最长 256 个字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -s 192.168.1.0/24 -p tcp --dport 80 -j ACCEPT -m comment --comment <span class="string">"This is my local Lan"</span></span><br></pre></td></tr></table></figure>
+<p>添加了注释的规则，即便是在很久以后回头查看规则的时候你就能很直观地知道这个规则是用来做什么的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@m2 ~]<span class="comment"># iptables -vnL INPUT</span></span><br><span class="line">Chain INPUT (policy ACCEPT 34 packets, 3072 bytes)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line">    0     0 ACCEPT     tcp  --  *      *       192.168.1.0/24       0.0.0.0/0            tcp dpt:80 /* This is my <span class="built_in">local</span> Lan */</span><br><span class="line">[root@m2 ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<h1 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h1><p>target 指的是由规则指定的操作，对规则匹配到的包做什么样的动作</p>
+<h2 id="ACCEPT"><a href="#ACCEPT" class="headerlink" title="ACCEPT"></a>ACCEPT</h2><p>使用 <code>-j ACCEPT</code> 放行，一旦数据包满足了指定的匹配条件就允许数据包通过，并且不会再去匹配当前链中的其他规则或同一个表内的其他规则，但它还要通过其他表中的链，而且在那儿可能会被 DROP 也说不准。</p>
+<p>放行 TCP 协议目标端口是 22 的数据包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -I INPUT -p tcp --destination-port 22 -j ACCEPT</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">iptables -I INPUT -p tcp --dport 22 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>放行本机到本机的连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -i lo -j ACCEPT</span><br><span class="line">iptables -A OUTPUT -o lo -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h2 id="DROP"><a href="#DROP" class="headerlink" title="DROP"></a>DROP</h2><p>使用 <code>-j DROP</code> 丢弃，不做任何回应。在某些情况下，这个 target 会引起意外的结果，因为它不会向发送者返回任何信息，也不会向路由器返回信息，这就可能会使连接的另一方的 sockets 因苦等回音而亡。解决这个问题的较好的办法是使用 REJECT </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p tcp --dport 22 -j DROP</span><br></pre></td></tr></table></figure>
+<p>很多情况下我们并不期望所有的来源都能访问某些服务器，只允许一个或多个 IP ，一个或多个网段来访问。比如，在局域网中有一个 Web 服务器为 192.168.100.100，只允许 192.168.1.0/24 来访问，其他的拒绝。要实现这样的功能，在 Web 服务器上有两种做法，我们假设两种情况下的默认策略都是 ACCEPT 。</p>
+<p>一种是先允许信任的地址段，最后再拒绝所有的。也就是说来自 192.168.1.0/24 匹配到第一条规则，否则就被第二条规则匹配到并丢弃</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp -s 192.168.1.0/24 --dport 80 -j ACCEPT</span><br><span class="line">iptables -t filter -A INPUT -p tcp --dport 80 -j DROP</span><br></pre></td></tr></table></figure>
+<p>另一种则把不是我们信任的地址段直接丢弃，如果是信任的地址段就不会被这个规则匹配到，然后交给默认规则处理。看上去这种方法更好，一条就搞定了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp ! -s 192.168.1.0/24 --dport 80 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>现在由于业务有了新的变动，需要再加入一个信任的地址段 192.168.2.0/24，于是你又按照第二种方法加入了一条规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp ! -s 192.168.2.0/24 --dport 80 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>看上去把来源不是 192.168.1.0/24 内的包丢弃，然后再把来源不是 192.168.2.0/24 内的包丢弃就可以了，但是最后测试的时候你发现 Web 服务器好像谁都不能访问了。我们来分析一下原因：</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables4.png" alt=""></p>
+<p>当来源是 192.168.1.123 发起的请求时，第一条规则没有被匹配，继续向下走让第二条做匹配，匹配成功然后被丢弃，也就是上图中蓝色箭头做指向的方向</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables5.png" alt=""></p>
+<p>当来源是 192.168.2.123 发起的请求时，第一条规则匹配成功然后被丢弃，也就是上图中蓝色箭头做指向的方向</p>
+<p>这样一来，不管谁来请求都被 DROP 掉了。所以应当使用第一种先允许再拒绝的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp -s 192.168.1.0/24 --dport 80 -j ACCEPT</span><br><span class="line">iptables -t filter -A INPUT -p tcp -s 192.168.2.0/24 --dport 80 -j ACCEPT</span><br><span class="line">iptables -t filter -A INPUT -p tcp --dport 80 -j DROP</span><br></pre></td></tr></table></figure>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables6.png" alt=""></p>
+<p>当来源是 192.168.3.123 发起的请求时，第一条规则没有匹配到，然后交给第二条规则，也没有匹配到，再交给第三条规则，匹配成功然后被丢弃，也就是上图中蓝色箭头做指向的方向</p>
+<h2 id="REJECT"><a href="#REJECT" class="headerlink" title="REJECT"></a>REJECT</h2><p>使用 <code>-j REJECT</code> 拒绝数据包通过，并且向发送者返回错误信息。这个 target 只能用在 filter表中 INPUT、FORWARD、OUTPU和它们的子链里，而且包含 REJECT 的链也只能被它们调用，否则不能发挥作用。它只有一个选项 <code>--reject-with</code>，是用来控制返回的错误信息的种类的。可用的信息类型有：</p>
+<ul>
+<li>icmp-net-unreachable</li>
+<li>icmp-host-unreachable </li>
+<li>icmp-port-unreachable</li>
+<li>icmp-proto-unreachable</li>
+<li>icmp-net-prohibited</li>
+<li>icmp-host-prohibited 。 </li>
+</ul>
+<p>其中缺省的是 icmp-port-unreachable。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p icmp -j REJECT --reject-with icmp-port-unreachable</span><br></pre></td></tr></table></figure>
+<p>另外一个类型是 tcp-reset，只能用于TCP协议。 它的作用是告诉 REJECT 返回一个 TCP RST 包（这个包以文雅的方式关闭TCP连接，正如 iptables 的 man page 中说的，tcpreset 主要用来阻止身份识别探针（即113/tcp，当向被破坏的邮件主机发送邮件时，探针常被用到，否则它不会接受你的信）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p tcp --sport 113 -j REJECT --reject-with tcp-reset</span><br></pre></td></tr></table></figure>
+<h2 id="SNAT"><a href="#SNAT" class="headerlink" title="SNAT"></a>SNAT</h2><p>这个 target 是用来做来源IP地址转换的，就是重写包的源IP地址。SNAT 只能用在 nat 表的 POSTROUTING 链里。只要会话连接中的的第一个符合条件的包被 SNAT 了，那么这个连接的其他所有的包都会自动地被 SNAT，而且这个规则还会应用于这个连接所在流的所有数据包。</p>
+<p>局域网中的主机想要通过防火墙访问互联网时，就需要用到它。先在内核里打开 ip 转发功能，然后再写一个 SNAT 规则，就可以把所有从本地网络出去的包的源地址改为外网地址了。如果不这样做而是直接转发本地网的包的话，互联网中的服务器发现是个内网 IP 发送过来的请求，就不知道往哪儿发送响应了，因为内网属于私有专用网络，不能在互联网上直接使用的。</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables7.png" alt=""></p>
+<p>在这里 SNAT 的作用就是让所有从局域网发出去的的包看起来都是从防火墙发出的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br><span class="line"><span class="comment"># 临时开启转发</span></span><br><span class="line">iptables -t nat -I POSTROUTING -o eth0 -s 192.168.1.0/24 -j SNAT --to 12.34.56.78</span><br></pre></td></tr></table></figure>
+<p>要永久开启转发需要编辑 <code>/etc/sysctll.conf</code>，并配置 <code>net.ipv4.ip_forward = 1</code>，再执行 <code>sysctl -p</code> 即可</p>
+<p>如果一个网卡上有多个连续的 IP 还可以对一个范围内的 IP 做 SNAT，以达到负载均衡的效果，每个会话流被随机分配一个 IP，但对于同一个会话，在会话期间使用的是同一个 IP 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I POSTROUTING -o eth0 -s 192.168.1.0/24 -j SNAT --to 12.34.56.78-12.34.56.80</span><br></pre></td></tr></table></figure>
+<p>在指定 <code>-p tcp</code> 或 <code>-p udp</code> 的前提下在 SNAT 的时候还可以指定源端口的范围</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I POSTROUTING -p tcp -o eth0 -s 192.168.1.0/24 -j SNAT --to 12.34.56.78-12.34.56.80:1024-32000</span><br></pre></td></tr></table></figure>
+<p>这样的话包的源端口就被限制在 1024-32000了。注意，如果可能的话 iptables 总是想尽可能避免任何的端口的变更，也就是说，它总是尽力使用建立连接时所用的端口。</p>
+<p>但是如果两台主机使用了相同的源端口，iptables 将会把他们的其中之一映射到另外的一个端口。如果没有指定端口范围， 所有的在 512 以内的源端口会被映射到 512 以内的另一个端口，512 和 1023 之间的将会被映射到 1024 内的另一个端口，其他的将会被映射到大于或等于于 1024 的另一个端口，即同范围映射。这种映射和目的端口无关，因此，如果客户端想要发送请求到防火墙外的 HTTP 服务器，它是不会被映射到 FTP 所用的端口的。</p>
+<h2 id="MASQUERADE"><a href="#MASQUERADE" class="headerlink" title="MASQUERADE"></a>MASQUERADE</h2><p>这个 target 和 SNAT 的作用是一样的，但是它可以自动获得可用的 IP 而不是像 SNAT 那样需要指定 <code>--to-source</code>。</p>
+<p>MASQUERADE 是被专门设计用于那些动态获取 IP 地址的连接的，比如拨号上网、DHCP连接等，这些情况下 SNAT 就会有很大的局限性。如果有固定的 IP 地址的话，最好还是用SNAT，因为 MASQUERADE 在获取可用 IP 的时候会带来额外的资源消耗。</p>
+<p>另外，当网卡停用时 MASQUERADE 不会记住任何连接，而 SNAT 是会将连接跟踪的数据保留下来一段时间，并且 SNAT 会占用很多链接追踪的内存资源。</p>
+<p>所以当 IP 地址是动态获取而不固定时，使用 MASQUERADE，有固定的 IP 地址时最好用 SNAT。</p>
+<p>还要注意 MASQUERADE 和 SNAT 一样，只能用于 nat 表的 POSTROUTING 链。它也可以指定源端口或范围，如果是指定单个端口用 <code>--to-ports 1025</code>，指定端口范围用 <code>--to-1024-3000</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I POSTROUTING -o eth0 -s 192.168.1.0/24 j MASQUERADE</span><br><span class="line"><span class="comment"># 不管现在 eth0上获得了怎样的动态 IP，使用 MASQUERADE 都会自动读取网卡上可用 IP 然后做 SNAT 出去，这样就实现了很好的动态SNAT地址转换</span></span><br></pre></td></tr></table></figure>
+<h2 id="DNAT"><a href="#DNAT" class="headerlink" title="DNAT"></a>DNAT</h2><p>这个 target 是用来做目标 IP 地址转换的，就是重写包的目的 IP 地址。如果一个包被匹配了，那么和它属于同一个流的所有的包都会被自动转换，然后就可以被路由到正确的主机或网络。目的地址也可以是一个范围，这样的话 DNAT会为每一个流随机分配一个地址。因此可以用这个 target 做某种类型的负载均衡。为了便于理解，下面阐述为映射。</p>
+<p>注意，DNAT 必须在 POSTROUTING 之前进行，因为交给 POSTROUTING 的时候目标地址就已经确定了，此时做 DNAT 已经为时已晚。并且 DNAT 只能用在 nat 表的 PREROUTING 和 OUTPUT 链中，或者是被这两条链调用的链里。</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables8.png" alt=""></p>
+<p>如图所示，如果你的 Web 、MySQL、FTP 服务器在局域网内部，而且没有外网 IP 地址，那就可以使用这个 target 让防火墙把所有到它自己的端口的分别映射到局域网内部的各个主机上。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 80   -j DNAT --to 192.168.1.101:80</span><br><span class="line">iptables -t nat -I PREROUTING 2 -p tcp -d 12.34.56.78 --dport 3306 -j DNAT --to 192.168.1.102:3306</span><br><span class="line">iptables -t nat -I PREROUTING 3 -p tcp -d 12.34.56.78 --dport 21   -j DNAT --to 192.168.1.103:21</span><br></pre></td></tr></table></figure>
+<p>在默认情况下，很多服务器的 SSH 服务都监听在 22 号端口，如果是 ssh 到局域网的一台服务器查看配置，做些操作该怎么办呢？</p>
+<p>第一个想到的就是按照刚才的方式再做 22 端口的映射</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.101:22</span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.102:22</span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.103:22</span><br></pre></td></tr></table></figure>
+<p>根据匹配规则的顺序，结果可想而知，最后只映射到了局域网其中一台机器上。当再次 ssh 连接 Firewall 时发现连接的却是其他机器，这是因为到它的 ssh 连接被 DNAT 到了局域网内部的主机，这显然是不切合实际的。要解决这个问题，除了修改 SSH 服务的端口号，还可以在 Firewall 上映射不同端口到不同机器的 22 端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1231 -j DNAT --to 192.168.1.101:22</span><br><span class="line"><span class="comment"># 1231 端口映射为 Web Server 的 22 端口</span></span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1232 -j DNAT --to 192.168.1.102:22</span><br><span class="line"><span class="comment"># 1232 端口映射为 MySQL Server 的 22 端口</span></span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1233 -j DNAT --to 192.168.1.103:22</span><br><span class="line"><span class="comment"># 1233 端口映射为 FTP Server 的 22 端口</span></span><br></pre></td></tr></table></figure>
+<p>由此一来，想要 ssh 连接局域网内部多个主机只需要指定对应的端口号就可以了。</p>
+<p>对于访问量比较高的 Web 服务器，可以通过 Squid 做缓存来提高访问效率。通常回把客户端发送的资源请求映射到 Squid 缓存服务器上，如果没有现有的缓存则回源站服务器请求。</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables9.png" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 80  -j DNAT --to 192.168.1.106:3128</span><br><span class="line">iptables -t nat -I PREROUTING 2 -p tcp -d 12.34.56.78 --dport 443 -j DNAT --to 192.168.1.106:3128</span><br></pre></td></tr></table></figure>
+<p>在规则越来越多的时候，要匹配的规则就会越来越多，处理速度就会随之越来越慢，所以规则的精简是十分重要的，上面的规则可以使用 <code>multiport</code> 简化为一条：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 -m multiport --dports 80,443 -j DNAT --to 192.168.1.106:3128</span><br></pre></td></tr></table></figure>
+<p>现在，我们已经把所有从互联网来的到防火墙的 1232 端口去的包都映射到在局域网内部的 MySQL 服务器的 22 端口上，并且在这之前为了能让内网访问外网我们还做了 SNAT。如果在外网机器上试验一下，一切正常。但是再从内网机器里试验一下，却完全不能用，这其实是路由的问题。下面我们来好好分析这个问题。</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables10.png" alt=""></p>
+<ul>
+<li>包从 User1 发起，他的外网是 1.2.3.4 ，向 12.34.56.78 的 1232 端口发送请求</li>
+<li>包到达防火墙，然后被防火墙做 DNAT，目标变成了向 192.168.1.102 的 22 端口发送请求</li>
+<li>防火墙转发这个包，而且包会经过很多其他的链检验及处理</li>
+<li>包离开防火墙走并到达 192.168.102，即 MySQL 服务器</li>
+<li>此时 MySQL 服务器看到的来源没有变化，还是是 1.2.3.4 </li>
+<li>MySQL 服务器试图进行数据包的响应，此时变成了 MySQL 作为源，User1 作为目标进行响应</li>
+<li>MySQL 服务器在路由数据库中看到他要相应的目标是 1.2.3.4 ，这属于来自外网的一个IP（scope global），因此经过默认网关，即防火墙做出响应。一般情况下，防火墙就是内网服务器的缺省网关。</li>
+<li>防火墙再对返回包做 SNAT，这样 User1 看到的就是防火墙回复了之前的请求。</li>
+</ul>
+<p>那么，从局域网内部发起的请求时如何处理的呢？</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables11.png" alt=""></p>
+<ul>
+<li>包从 User2 发起，他的地址为局域网的 192.168.1.110，向 12.34.56.78 的 1232 端口发送请求，上图绿色箭头</li>
+<li>包到达防火墙，然后被防火墙做 DNAT，目标变成了向 192.168.1.102 的 22 端口发送请求</li>
+<li>防火墙转发这个包，而且还会经过其他的处理。</li>
+<li>包离开防火墙走并到达 192.168.102，即 MySQL 服务器，上图红色箭头</li>
+<li>此时 MySQL 服务器看到的来源没有变化，还是是 192.168.1.110</li>
+<li>MySQL 服务器试图进行数据包的响应，此时变成了 MySQL 作为源，User2 作为目标进行响应</li>
+<li>MySQL 服务器试图响应这个包，但是它在路由数据库中看到包是来自同一个网络的 192.168.1.110 ，也就是 User2，这属于直连网络（scope link）不需要防火墙转发 。因此 MySQL 服务器会把响应的包直接发送给 User2 。上图黑色箭头</li>
+<li>响应的包的确到达了 User2，但它会很困惑，因为他是把请求发送给了防火墙，结果防火墙没有响应自己，却莫名其妙收到了一个其他机器的包。这样肯定没有办法建立连接，但 User2 会等待防火墙的响应，最终超过指定的时间会话被关闭（Connection timed out）。</li>
+</ul>
+<p>这就是 IP 传输包的特点，只根据目的地的不同改变目的地址，但不因传输过程中要经过很多路由器而随着路由器改变其源地址，除非你单独进行源地址的改变。其实这一步的处理和对外来包的处理是一样的，只不过内网包的问题就在于此。</p>
+<p>针对这个问题有个简单的解决办法，因为这些包都要进入防火墙，而且它们都去往需要做 DNAT 才能到达的那个地址，所以我们只要对做了 DNAT 的这些包再做 SNAT 操作即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING  1 -p tcp -d 12.34.56.78 --dport 1232 -j DNAT --to 192.168.1.102:22</span><br><span class="line">iptables -t nat -I POSTROUTING 1 -p tcp -d 192.168.1.102 --dport 22 -j SNAT --to 192.168.1.100</span><br></pre></td></tr></table></figure>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables12.png" alt=""></p>
+<p>对照规则和上面的流程图你应该很容易就搞清楚是到底如何工作的了。</p>
+<h2 id="REDIRECT"><a href="#REDIRECT" class="headerlink" title="REDIRECT"></a>REDIRECT</h2><p>这个 target 把要转发的包的目的地址改写为我们自己机器的 IP 和端口，这个在局域网中相当于做了透明代理，客户机根本不知道有代理的存在，并且可以正常上网。</p>
+<p>REDIRECT 只能用在 nat 表的 PREROUTING、OUTPUT 链和被它们调用的自定义链里。它只有一个选项 <code>--to</code> ，其完整格式是 <code>--to-ports</code></p>
+<p>在使用 <code>-p tcp</code>  或 <code>-p udp</code> 的前提下，有三种指定端口的方式：<br>1、不使用这个选项，目的端口不会被改变<br>2、指定一个端口，用 <code>--to-ports 8080</code><br>3、指定端口范围，用 <code>--to-ports 8080-8090</code></p>
+<p>别人都使用 80 端口提供 Web 服务，如果你想要把 8080 映射到自己的 80 而不是直接 80 对外提供 Web 服务，用 REDIRECT 就能完美地解决这个问题，本机生成的包都会被映射到 127.0.0.1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING -p tcp --dport 8080 -j REDIRECT --to 80</span><br></pre></td></tr></table></figure>
+<h2 id="RETURN"><a href="#RETURN" class="headerlink" title="RETURN"></a>RETURN</h2><p>它使包返回上一层，顺序是：子链 =&gt; 父链 =&gt; 默认策略。具体地说，就是若包在子链中遇到了 RETURN，则返回父链的下一条规则继续进行匹配，若是在父链（或称主链，比如INPUT）中遇到了RETURN，就要被缺省的策略（一般是ACCEPT或DROP）操作了。</p>
+<p>举个例子说明一下，假设一个包进入了 INPUT 链，匹配了某条规则并且 target 为 <code>-j DOCKER</code> ，然后数据包进入了子链 DOCKER 。在子链中又匹配了某条规则，恰巧 target 为 <code>-j RETURN</code>，那包就返回父链 INPUT 链并继续进行下一条规则的匹配。如果在 INPUT链里又遇到了 <code>-j RETURN</code>，那这个包就要被缺省的策略（一般是ACCEPT 或 DROP）处理了。</p>
+<p><img src="/2016/04/07/150103-学习使用iptables/iptables13.png" alt=""></p>
+<h2 id="TOS"><a href="#TOS" class="headerlink" title="TOS"></a>TOS</h2><p>TOS 是用来设置 IP 头中的 Type of Service 字段的。这个字段长一个字节，可以控制包的路由情况。它也是 iproute2 及其子系统可以直接使用的字段之一。值得注意的是，如果你有几个独立的防火墙和路由器，而且还想在他们之间利用包的头部来传递路由信息，TOS 是唯一的办法。</p>
+<p><code>-p</code> 选项除了可以指定 <code>tcp</code> 或 <code>udp</code> 还可以使用协议号来代替协议，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p 6 -j ACCEPT</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">iptables -I INPUT -p tcp -j ACCEPT</span><br></pre></td></tr></table></figure>
+<p>不同的协议都有各自的协议号，具体可以参照本篇文章末尾的表格</p>
+<p>TOS 只能在 mangle 表内使用，要想设置 TOS 的值，值的形式可以是名字或者使相应的数值（十进制或16进制的）。一般情况下，建议使用名字而不使用数值形式，因为以后这些数值可能会有所改变， 而名字一般是固定的。TOS 字段有 8 个二进制位，所以可能的值是 0-255（十进制）或 0x00-0xFF（16进制）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I PREROUTING -p 135 -m tos ! --tos 0 -j TOS --<span class="built_in">set</span>-tos=0</span><br><span class="line">iptables -t mangle -I PREROUTING -p 47  -m tos ! --tos 0 -j TOS --<span class="built_in">set</span>-tos=0</span><br><span class="line">iptables -t mangle -A PREROUTING -p tcp  --dport 22 -j TOS --<span class="built_in">set</span>-tos 0x10</span><br></pre></td></tr></table></figure>
+<p>如前所述，你好使用预定义的值：<br>1、Minimize-Delay 16 (0x10)，要求找一条路径使延时最小，一些标准服务如 telnet、SSH、FTP- control 就需要这个选项。<br>2、Maximize-Throughput 8 (0x08)，要求找一条路径能使吞吐量最大，标准服务 FTP-data 能用到这个。<br>3、Maximize-Reliability4 (0x04)，要求找一条路径能使可靠性最高，使用它的有 BOOTP 和 TFTP。<br>4、Minimize-Cost 2 (0x02)，要求找一条路径能使费用最低，一般情况下使用这个选项的是一些视频音频流协议，如RTSP（Real Time Stream Control Protocol）。<br>5、Normal-Service 0 (0x00)，一般服务，没有什么特殊要求。这个值也是大部分包的缺省值。</p>
+<p>完整的列表可以通过命令 <code>iptables -j TOS -h</code> 得到</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TOS target vlibxtables.so.10 options:</span><br><span class="line">  --<span class="built_in">set</span>-tos value[/mask]  Set Type of Service/Priority field to value</span><br><span class="line">                          (Zero out bits <span class="keyword">in</span> mask and XOR value into TOS)</span><br><span class="line">  --<span class="built_in">set</span>-tos symbol        Set TOS field (IPv4 only) by symbol</span><br><span class="line">                          (this zeroes the 4-bit Precedence part!)</span><br><span class="line">                          Accepted symbolic names <span class="keyword">for</span> value are:</span><br><span class="line">                            (0x10) 16 Minimize-Delay</span><br><span class="line">                            (0x08)  8 Maximize-Throughput</span><br><span class="line">                            (0x04)  4 Maximize-Reliability</span><br><span class="line">                            (0x02)  2 Minimize-Cost</span><br><span class="line">                            (0x00)  0 Normal-Service</span><br></pre></td></tr></table></figure>
+<h2 id="TTL"><a href="#TTL" class="headerlink" title="TTL"></a>TTL</h2><p>TTL 可以修改 IP 头中Time To Live 字段的值。它有很大的作用，我们可以把所有外出包的 Time To Live 值都改为一样的，比如 64，这是 Linux 的默认值。</p>
+<p>有些 ISP 不允许我们共享连接（他们可以通过 TTL 的值来区分是不是有多个机器使用同一个连接），如果我们把 TTL 都改为一样的值，他们就不能再根据 TTL 来判断了。</p>
+<p>TTL 只能在 mangle 表内使用，它有 3 个选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TTL target options</span><br><span class="line">  --ttl-set value               Set TTL to &lt;value 0-255&gt;</span><br><span class="line">  --ttl-dec value               Decrement TTL by &lt;value 1-255&gt;</span><br><span class="line">  --ttl-inc value               Increment TTL by &lt;value 1-255&gt;</span><br></pre></td></tr></table></figure>
+<p><code>--ttl-set</code> 用来设置 TTL 的值。</p>
+<p>这个值不要太大也不要太小，大约 64 就很好。值太大会影响网络，而且有点不道德，为什么这样说呢？如果有些路由器的配置不太正确，包的 TTL 又非常大，那它们就会在这些路由器之间往返很多次，值越大，占用的带宽越多。这个 target 就可以被用来限制包能走多远，一个比较恰当的距离是刚好能到达 DNS 服器的距离。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -A PREROUTING -i eth0 -j TTL --ttl-set 64</span><br></pre></td></tr></table></figure>
+<p><code>--ttl-dec</code>  设定 TTL要被减掉的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I PREROUTING -i eth1 -j TTL --ttl-dec 3</span><br></pre></td></tr></table></figure>
+<p>假设一个进来的包的 TTL 是 53，那么当它离开我们这台机子时，TTL 就变为 49 了。为什么不是 50 呢？ 因为经过我们这台机器，TTL 本身就要减 1，还要被 iptables 的 TTL 再减3，当然总共就是减去 4 了。</p>
+<p>使用这个 target 可以限制“使用我们的服务的用户” 离我们有多远。比如用户总是使用比较近的 DNS，那我们就可以对我们的 DNS 服务器发出的包进行几个 <code>--ttl-dec</code>。意思也就是，我们只想让距离 DNS 服务器近一些的用户访问我们的服务，当然用 <code>--set-ttl</code> 控制会更方便。</p>
+<p><code>--ttl-inc</code> 设定 TTL 要被增加的值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -A PREROUTING -i eth0 -j TTL --ttl-inc 4</span><br></pre></td></tr></table></figure>
+<p>假设一个进来的包的 TTL 是53，那么当它离开我们这台机子时，TTL 应是多少呢？答案是 <code>53+4-1=56</code>，原因同 <code>--ttl-dec</code>。</p>
+<p>在防火墙上没有操作 TTL 之前，从局域网的机器使用 traceroute 做路由追踪可以看到经过了防火墙（网关）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">traceroute to 182.61.200.7 (182.61.200.7), 30 hops max, 60 byte packets</span><br><span class="line"> 1  192.168.1.101  0.237 ms  0.224 ms  0.440 ms</span><br><span class="line"> 2  192.168.127.2  0.403 ms  0.364 ms  0.310 ms</span><br><span class="line"> 3  * * *</span><br><span class="line"> 4  * * *</span><br><span class="line"> 5  * * *</span><br><span class="line"> 6  * * *</span><br><span class="line"> 7  * * *</span><br><span class="line"> 8  * * *</span><br><span class="line"> 9  * * *</span><br><span class="line">10  * * *</span><br></pre></td></tr></table></figure>
+<p>使用这个选项可以使我们的防火墙更加隐蔽，而不被 traceroute 发现， 方法就是设置 <code>--ttl-inc 1</code> 。原因很简单，数据包每经过一个路由器，TTL 就要自动减 1，但在我们的防火墙里这个 1 又被补上了，也就是说 TTL 的值没变，那么 traceroute 就会认为我们的防火墙是不存在的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">traceroute to 182.61.200.7 (182.61.200.7), 30 hops max, 60 byte packets</span><br><span class="line"> 1  * * *</span><br><span class="line"> 2  * * *</span><br><span class="line"> 3  * * *</span><br><span class="line"> 4  * * *</span><br><span class="line"> 5  * * *</span><br><span class="line"> 6  * * *</span><br><span class="line"> 7  * * *</span><br><span class="line"> 8  * * *</span><br><span class="line"> 9  * * *</span><br><span class="line">10  * * *</span><br></pre></td></tr></table></figure>
+<p>实际上使用三个选项中的任意一个，只要修改了 TTL 的值就可以不被 traceroute 追踪到。</p>
+<h2 id="MARK"><a href="#MARK" class="headerlink" title="MARK"></a>MARK</h2><p>为数据包做 mark 标记，这个值只能在 mangle 表里使用。因为 mark 比较特殊，它不是包本身的一部分，而是在包穿越计算机的过程中由内核分配的和它相关联的一个字段。它可以和本地的高级路由功能联用，以使不同的包能使用不同的策略路由，队列要求等等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I PREROUTING -p tcp -s 10.0.0.0/8 -d 31.13.95.48 --dport 80 -j MARK --<span class="built_in">set</span>-mark 2</span><br><span class="line"><span class="comment"># 对相应符合条件的数据包进行标记</span></span><br><span class="line">    </span><br><span class="line">ip rule add fwmark 2 lookup 12 prio 997</span><br><span class="line"><span class="comment"># 对标记的数据包做策略路由</span></span><br></pre></td></tr></table></figure>
+<h2 id="TCPMSS"><a href="#TCPMSS" class="headerlink" title="TCPMSS"></a>TCPMSS</h2><p>在 ip foward 的时候内核会检查 mss 和 mtu 值来决定是否分片，而 mss 和 tcp 连接有关。为达到最佳的传输效能 TCP 在建立连接时会协商 MSS（最大分段长度，一般为1460字节）值，即 MTU（最大传输单元，不超过1500字节）减去 IP 数据包包头 20 字节和 TCP 数据包头 20 字节，取最小的 MSS 值为本次连接的最大 MSS 值。一般 tcp 通信中一些数据包不允许分片，所以需要在发送的时候，直接发送一个比较小的数据报文，不然就会被网络处理的时候丢弃掉。在 ADSL 拨号环境中由于 PPP 包头占用 8 字节，MTU 为 1492 字节，MSS 为 1452 字节，如果不能正确设置会导致网络不正常。</p>
+<p>iptables 中 TCPMSS 就是用来调整 TC P数据包中 MSS 的数值的，配合使用的有两个选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TCPMSS target mutually-exclusive options:</span><br><span class="line">  --<span class="built_in">set</span>-mss value               explicitly <span class="built_in">set</span> MSS option to specified value</span><br><span class="line">  --clamp-mss-to-pmtu           automatically clamp MSS value to (path_MTU - 20)</span><br></pre></td></tr></table></figure>
+<p><code>--set-mss value</code> 将设置手动指定的 MSS 值 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I PREROUTING  -i pppoe-wan -p tcp --tcp-flags SYN,FIN,ACK,RST SYN -j TCPMSS --<span class="built_in">set</span>-mss 1360</span><br><span class="line"><span class="comment"># 从 pppoe-wan 进来，握手信号的包</span></span><br><span class="line">iptables -t mangle -I POSTROUTING -o pppoe-wan -p tcp --tcp-flags SYN,FIN,ACK,RST SYN,ACK -j TCPMSS --<span class="built_in">set</span>-mss 1360</span><br><span class="line"><span class="comment"># 从 pppoe-wan 出去，响应握手信号的包</span></span><br></pre></td></tr></table></figure>
+<p><code>--clamp-mss-to-pmtu</code> 将根据 MTU 自动调整 MSS，它只能用在  FORWARD, OUTPUT 和 POSTROUTING 链</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I POSTROUTING -o pppoe-wan -p tcp --tcp-flags SYN,FIN,ACK,RST SYN -j TCPMSS --clamp-mss-to-pmtu</span><br></pre></td></tr></table></figure>
+<p>如果想匹配指定的 MSS 范围的包，并且把它的 MSS 值改为特定的，则需要依赖于显示扩展的 <code>tcpmss</code> 模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I PREROUTING  -i ppp+ -p tcp --syn -m tcpmss --mss 1400:1500 -j TCPMSS --<span class="built_in">set</span>-mss 1360</span><br><span class="line">iptables -t mangle -I POSTROUTING -o ppp+ -p tcp --tcp-flags SYN,FIN,ACK,RST -m tcpmss --mss 1400:1500 -j TCPMSS --<span class="built_in">set</span>-mss 1360</span><br></pre></td></tr></table></figure>
+<h2 id="LOG"><a href="#LOG" class="headerlink" title="LOG"></a>LOG</h2><p>这个 target 是专门用来记录包地有关信息的。这些信息可能是非法的，那就可以用来除错。LOG 会返回包的有关细节，如 IP 头的大部分和其他有趣的信息。这个功能是通过内核的日志工具完成的，一般是 rsyslogd。返回的信息可用 dmesg 阅读，或者可以直接查看 rsyslogd 的日志文件，也可以用其他的什么程序来看。 </p>
+<p>LOG 对调试规则有很大的帮助，你可以看到包去了哪里、经过了什么规则的处理，什么样的规则处理什么样的包，等等。当你在生产服务器上调试一个不敢保证 100% 正常的规则集时，用 LOG 代替 DROP 是比较好的，有详细的信息可看，错误就容易定位解决了。</p>
+<p>LOG 有5个选项，你可以用它们指定需要的信息类型或针对不同的信息设定一 些值以便在记录中使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LOG target options:</span><br><span class="line"> --<span class="built_in">log</span>-level level              Level of logging (numeric or see syslog.conf)</span><br><span class="line"> --<span class="built_in">log</span>-prefix prefix            Prefix <span class="built_in">log</span> messages with this prefix.</span><br><span class="line"> --<span class="built_in">log</span>-tcp-sequence             Log TCP sequence numbers.</span><br><span class="line"> --<span class="built_in">log</span>-tcp-options              Log TCP options.</span><br><span class="line"> --<span class="built_in">log</span>-ip-options               Log IP options.</span><br></pre></td></tr></table></figure>
+<p> <code>--log-level</code> 告诉 iptables 和 rsyslog 使用哪个记录等级。记录等级的详细信息可以查看文件 <code>/etc/rsyslog.conf</code>，一般来说有以下几种，它们的级别依次是：debug，info，notice，warning，warn，err，error，crit，alert， emerg，panic。其中，error 和 err、warn 和 warning、panic 和 emerg 分别是同义词，也就是说作用完全 一样的。这三种级别的信息量太大，所以不太建议使用。信息级别说明了被记录信息所反映的问题的严重程度。所有信息都是通过内核的功能被记录的。</p>
+<p> 先在文件 <code>/etc/rsyslog.conf</code> 里设置 <code>kern.=info /var/log/iptables</code>，然后再让所有关于 iptables 的 LOG 信息使用级别 info，就可以把所有的信息存入文件 <code>/var/log/iptables</code> 内。其中也可能会有其他的信息，它们是内核中使用 info 这个等级的其他部分产生的。如果你不想这样做，那么所有日志默认在 <code>/var/log/messages</code> 文件中记录，然后将数据包传递给下一条规则。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p ICMP -j LOG --<span class="built_in">log</span>-level info</span><br><span class="line">iptables -I INPUT -p ICMP -j LOG --<span class="built_in">log</span>-level notice</span><br></pre></td></tr></table></figure>
+<p> 在其他机器做 ping 测试后，回来查看 <code>tail /var/log/messages</code> 你将看到相关的日志信息</p>
+<p> <code>--log-prefix</code> 告诉 iptables 在记录的信息之前加上指定的前缀。这样用 grep 或其他工具就容易追踪特定的问题，而且也方便从不同的规则输出。前缀最多能有 29 个英文字符，这已经是包括空白字符和其他特殊符号的总长度了。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p ICMP -j LOG --<span class="built_in">log</span>-level info --<span class="built_in">log</span>-prefix <span class="string">"INPUT icmp packets: "</span></span><br></pre></td></tr></table></figure>
+<p><code>--log-tcp-sequence</code> 把包的 TCP 序列号和其他日志信息一起记录下来。TCP 序列号可以唯一标识一个包，在重组时也是用它来确定每个分组在包里的位置。注意，这个选项可能会带来危险， 因为这些记录被未授权的用户看到的话，可能会使他们更容易地破坏系统。其实任何 iptables 的输出信息 都增加了这种危险，“言多必失”，“沉默是金”。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp -j LOG --<span class="built_in">log</span>-tcp-sequence</span><br></pre></td></tr></table></figure>
+<p><code>--log-tcp-options</code> 记录 TCP 包头中的字段大小不变的选项。这对一些除错是很有价值的，通过它提供的信息，可以知道哪里可能出错，或者哪里已经出了错。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A FORWARD -p tcp -j LOG --<span class="built_in">log</span>-tcp-options</span><br></pre></td></tr></table></figure>
+<p><code>--log-ip-options</code> 记录IP包头中的字段大小不变的选项。这对一些除错是很有 价值的，还可以用来跟踪特定地址的包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A FORWARD -p tcp -j LOG --<span class="built_in">log</span>-ip-options</span><br></pre></td></tr></table></figure>
+<h1 id="连接跟踪机制-conntrack"><a href="#连接跟踪机制-conntrack" class="headerlink" title="连接跟踪机制 conntrack"></a>连接跟踪机制 conntrack</h1><p>在 iptables 里，包是和被跟踪连接的四种不同状态有关的。它们是 NEW，ESTABLISHED，RELATED 和 INVALID 。使用 <code>--state</code> 匹配操作，就能很容易地控制 “谁或什么能发起新的会话”。 所有在内核中由 Netfilter 的特定框架做的连接跟踪称作 conntrack（connection tracking）。</p>
+<p>除了本机产生的包由 OUTPUT 链处理外，所有连接跟踪都是在 PREROUTING 链里进行处理的，也就是说 iptables 会在 PREROUTING 链里重新计算所有的状态。如果我们发送一个初始包出去，状态就会在 OUTPUT 链里被设置为 NEW，当我们收到回应的包时，状态就会在 PREROUTING 链里被设置为 ESTABLISHED。如果第一个包不是本机产生的，那就会在 PREROUTING 链里被设置为 NEW 状态。</p>
+<h2 id="nf-conntrack"><a href="#nf-conntrack" class="headerlink" title="nf_conntrack"></a>nf_conntrack</h2><p>nf_conntrack 是 Linux 内核 NAT 的模块，实时记录当前主机上 client 和 server 彼此建立的连接关系，且可以追踪某个连接和其他某个连接处于何种状态，既可以追踪 TCP 协议，也可以追踪 UDP 协议和 ICMP 协议。</p>
+<p>默认的 timeout 是 432000秒（五天）。每个 nf_conntrack 记录约会占用 292 Bytes 的内存，所以系统所能记录的nf_conntrack 也是有限的，如果超过了这个限度，就会出现内核级错误 <code>nf_conntrack: table full, dropping packet</code>，其结果就是无法再有任何的网络连接了。另外，在使用 iptables 命令查看 nat 表时，由于内核模块的依赖关系，将会自动激活 nf_conntrack 模块，如果在访问量非常繁忙的服务器上执行此操作将会导致大量请求被丢弃。这时候就需要修改它能记录的最大值了。你也可以在 <code>/proc/sys/net/nf_conntrack_max</code> 里查看、设置，也可以编辑文件 <code>/etc/sysctl.conf</code> 来实现。</p>
+<h2 id="conntrack记录"><a href="#conntrack记录" class="headerlink" title="conntrack记录"></a>conntrack记录</h2><p>在 <code>/proc/net/nf_conntrack</code> 中记录了当前被跟踪的连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ipv4     2 tcp      6 300 SYN_SENT  src=192.168.127.1 dst=192.168.127.131 sport=3069 dport=22 \</span><br><span class="line">[UNREPLIED] src=192.168.127.131 dst=192.168.127.1 sport=22 dport=3069 [ASSURED] mark=0 zone=0 use=2</span><br></pre></td></tr></table></figure>
+<p>通过这个文件就可以知道某个特定的连接处于什么状态。首先显示的是协议，这里是 tcp，接着是十进制的 6即 tcp 的协议类型代码。之后的 300 是这条 conntrack 记录的生存时间，它会有规律地被消耗，直到收到这个连接的更多的包。那时这个值就 被设为当时那个状态的缺省值。接下来的是这个连接在当前时间点的状态。上面的例子说明这个包处在 SYN_SENT  状态，这个值是 iptables 显示的，以便我们好理解，而内部用的值稍有不同。SYN_SENT 说明我们正在观察的这个连接只在一个方向发送了一 TCP SYN 包。再下面是源地址、目的地址、源端口和目的端口。其中有个特殊的词 UNREPLIED，说明这个连接还没有收到任何回应。最后是希望接收的应答包的信息，他们的地址和端口和前面是相反的。</p>
+<p>连接跟踪记录的信息依据 IP 所包含的协议不同而不同，所有相应的值都是在头文件中定义的，即</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/include/linux/netfilter/nf_conntrack*.h</span><br></pre></td></tr></table></figure>
+<p>当一个连接在两个方向上都有传输时，conntrack 记录就删除 [UNREPLIED] 标志，然后重置。在末尾有  [ASSURED] 的记录说明两个方向已没有流量。这样的记录是确定的，在连接跟踪表满时，是不会被删除的， 没有 [ASSURED] 的记录就要被删除。连接跟踪表能容纳多少记录是被一个变量控制的，它可由内核中的 ip- sysctl 函数设置。默认值取决于你的内存大小，128MB 可以包含 8192 条目录，256MB 是 16376 条。所以，需要合理调整 <code>nf_conntrack_max</code> 的值。</p>
+<h2 id="数据包在用户空间的状态"><a href="#数据包在用户空间的状态" class="headerlink" title="数据包在用户空间的状态"></a>数据包在用户空间的状态</h2><p><strong>NEW</strong> 说明这个包是我们看到的第一个包。意思就是这是 conntrack 模块看到的某个连接第一个包，它即将被匹配了。比如我们看到一个 SYN 包，是我们所留意的连接的第一个包，就要匹配它。第一个包也可能不是 SYN 包，但它仍会被认为是 NEW 状态。</p>
+<p><strong>ESTABLISHED</strong> 已经注意到两个方向上 的数据传输，而且会继续匹配这个连接的包。只要发送请求并收到响应，连接就是 ESTABLISHED 的了。一个连接要从 NEW 变 为 ESTABLISHED，只需要接到响应包即可，不管这个包是发往防火墙的，还是要由防火墙转发的。ICMP 的错误和重定向等信息包也被看作是 ESTABLISHED，只要它们是发出请求后得到的响应。</p>
+<p><strong>RELATED</strong> 当一个连接和某个已处于 ESTABLISHED 状态的连接有关系时，就被认为是 RELATED 的了。换句话说，一个连接要想是RELATED的，首先要有一个 ESTABLISHED 的连接。这个 ESTABLISHED 连接再产生一个主连接之外的连接，这个新的连接就是 RELATED 的了，当然前提是 conntrack 模块要能理解 RELATED。ftp 就是个很好的例子，FTP-data 连接就是和 FTP-control 有 RELATED 的。注意，大部分还有一些UDP协议都依赖这个机制。这些协议是很复杂的，它们把连接信息放在数据包里，并且要求这些信息能被正确理解。</p>
+<p><strong>INVALID</strong> 说明数据包不能被识别属于哪个连接或没有任何状态。有几个原因可以产生这种情况，比如，内存溢出，收到不知属于哪个连接的 ICMP 错误信息。一般这种状态的数据包都最好 DROP 。</p>
+<p>这些状态可以一起使用，以便匹配数据包。这可以使我们的防火墙非常强壮和有效。以前我们经常打开 1024 以上的所有端口来放行应答的数据。现在有了状态机制就不需再这样了。因为我们可以只开放那些有应答数据的端口，其他的都可以关闭，这样就安全多了。</p>
+<p>对于本机 SSH 服务的 22 号端口，就可以通过状态机制处理了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -d 192.168.2.133 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line"><span class="comment"># 将目的地为本机，目的端口 22，状态为新请求或者已建立的连接放行</span></span><br><span class="line">iptables -A OUTPUT -s 192.168.2.133 -m state --state ESTABLISED -j ACCEPT</span><br><span class="line"><span class="comment"># 将本机发出去的，状态为已建立的连接放行</span></span><br></pre></td></tr></table></figure>
+<p>对于 FTP 连接的规则，需要事先装载 <code>nf_conntrack_ftp</code> 和 <code>nf_nat_ftp</code> 模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">modprobe nf_conntrack_ftp</span><br><span class="line">modprobe nf_nat_ftp</span><br><span class="line">iptables -A INPUT  -d 192.168.2.133 -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT</span><br><span class="line">iptables -I OUTPUT -s 192.168.2.133 -m state --state ESTABLISHED,RELATED -j ACCEPT</span><br></pre></td></tr></table></figure>
+<h1 id="规则的保存和恢复"><a href="#规则的保存和恢复" class="headerlink" title="规则的保存和恢复"></a>规则的保存和恢复</h1><p>iptables 提供了两个工具来处理大规则集： iptables-save 和 iptables-restore，iptables-save 用来把规则集保存到一个特殊格式的文本文件里，而 iptables-restore 是用来把这个文件重新装入内核空间的。</p>
+<h2 id="处理效率"><a href="#处理效率" class="headerlink" title="处理效率"></a>处理效率</h2><p>使用 iptables-save 和 iptables-restore 的一个最重要的原因是，它们能提高装载、保存规则的速度。</p>
+<p>iptables-save 运行一次就可以把整个规则集从内核里提取出来，并保存到文件里，而 iptables-restore 是每次将规则装入一个表。使用脚本更改规则的问题是，改动每个规则都要调用 iptables 命令，而每一次调用 iptables，它首先要把 Netfilter 内核空间中的整个规则集都提取出来， 然后再插入或追加，或做其他的改动，最后再把新的规则集从它的内存空间插入到内核空间中。相对于一次操作一个表而言，这会花费很多时间。</p>
+<h2 id="iptables-restore的不足"><a href="#iptables-restore的不足" class="headerlink" title="iptables-restore的不足"></a>iptables-restore的不足</h2><p>iptables-restore 最大的缺点就是不能替代所有的脚本来设置规则，也就是不能用来做复杂的规则集。最常见的情况就是，一个动态获取 IP 的主机，使用脚本就可以很方便地得到这个 IP，用 iptables-restore 却是无法实现的。</p>
+<p>有一个笨办法是先装入 iptables-restore 文件，再运行一个特定的脚本把动态的规则载入。虽然可行，但是 iptables-restore 并不适合于使用动态 IP 的场合，如果你想在配置文件里使用选项来实现不同的要求，iptables-restore 也不适用。</p>
+<h2 id="iptables-save"><a href="#iptables-save" class="headerlink" title="iptables-save"></a>iptables-save</h2><p>iptables-save 用来把当前的规则存入一个文件里以备 iptables-restore 使用。它的使用很简单，只有两个参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables-save [-c] [-t table]</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-c</code> 保存包和字节计数器的值，这可以使我们在重启防火墙后不丢失对包和字节的统计。默认情况下是不保存的计数器的数值的。</p>
+<p>使用 <code>-t</code> 指定要保存的表，默认是保存所有的表。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Generated by iptables-save v1.2.6a on Wed Apr 24 10:19:17 2002</span></span><br><span class="line">*filter</span><br><span class="line">:INPUT ACCEPT [404:19766]</span><br><span class="line">:FORWARD ACCEPT [0:0]</span><br><span class="line">:OUTPUT ACCEPT [530:43376]</span><br><span class="line">COMMIT</span><br><span class="line"><span class="comment"># Completed on Wed Apr 24 10:19:17 2002</span></span><br><span class="line"><span class="comment"># Generated by iptables-save v1.2.6a on Wed Apr 24 10:19:17 2002</span></span><br><span class="line">*mangle</span><br><span class="line">:PREROUTING ACCEPT [451:22060]</span><br><span class="line">:INPUT ACCEPT [451:22060]</span><br><span class="line">:FORWARD ACCEPT [0:0]</span><br><span class="line">:OUTPUT ACCEPT [594:47151]</span><br><span class="line">:POSTROUTING ACCEPT [594:47151]</span><br><span class="line">COMMIT</span><br><span class="line"><span class="comment"># Completed on Wed Apr 24 10:19:17 2002</span></span><br><span class="line"><span class="comment"># Generated by iptables-save v1.2.6a on Wed Apr 24 10:19:17 2002</span></span><br><span class="line">*nat</span><br><span class="line">:PREROUTING ACCEPT [0:0]</span><br><span class="line">:POSTROUTING ACCEPT [3:450]</span><br><span class="line">:OUTPUT ACCEPT [3:450]</span><br><span class="line">COMMIT</span><br><span class="line"><span class="comment"># Completed on Wed Apr 24 10:19:17 2002</span></span><br></pre></td></tr></table></figure>
+<p>上面的输出格式中 <code>#</code> 后面的是注释，表都以 <code>*&lt;table-name&gt;</code> 开始。每个表都包含链和规则，链的详细说明是 <code>&lt;chain-name&gt; &lt;chain-policy&gt; [&lt;packet-counter&gt;:&lt;byte-counter&gt;]</code>。每个表的描述都以关键字 <code>COMMIT</code> 结束，在 iptables-restore 的时候遇到它就说明此时要把规则装入内核了。</p>
+<p>默认情况下命令的执行结果会输出到屏幕，想要保存到文件，直接输出重定向即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables-save -c &gt; /etc/iptables.save</span><br></pre></td></tr></table></figure>
+<h2 id="iptables-restore"><a href="#iptables-restore" class="headerlink" title="iptables-restore"></a>iptables-restore</h2><p>iptables-restore 用来载入由 iptables-save 保存的规则集。它不能直接读取文件，只能通过标准输入重定向载入规则。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables-restore [-c] [-n]</span><br></pre></td></tr></table></figure>
+<p>使用 <code>-c</code> 要求载入包和字节计数器，如果你用 iptables-save 保存了计数器，现在想重新装入，就必须用这个参数。它的长选项格式是 <code>--counters</code>。</p>
+<p>使用 <code>-n</code> 告诉 iptables-restore 不要覆盖已有的表或表内的规则。默认情况是清除所有已存在的规则。它的长选项格式是 <code>--noflush</code>。如果使用了这个选项，你的规则就很有可能出现很多重复，所以不太建议使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables-restore -c &lt; /etc/iptables.save</span><br></pre></td></tr></table></figure>
+<p>这样规则集应该正确地装入内核并正常工作了。如果有问题，就要开始排错了。</p>
+<h2 id="iptables-service"><a href="#iptables-service" class="headerlink" title="iptables.service"></a>iptables.service</h2><p>如果你用的是红帽 7 系列的系统，并且安装了 <code>iptables-services</code>，那么 <code>/etc/sysconfig/iptables</code> 就作为了 iptables.service 规则存放的文件， <code>/etc/sysconfig/iptables-config</code> 作为 iptables.service 的服务配置文件 。你可以使用 <code>/usr/libexec/iptables/iptables.init save</code> 保存规则。</p>
+<h1 id="编写规则抵御常见攻击"><a href="#编写规则抵御常见攻击" class="headerlink" title="编写规则抵御常见攻击"></a>编写规则抵御常见攻击</h1><p><strong>SYN FLOOD</strong></p>
+<p>方法一，限制请求速度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">iptables -N SYN_FLOOD</span><br><span class="line"><span class="comment"># 自定义链 SYN_FLOOD</span></span><br><span class="line">iptables -A INPUT -p tcp --syn -j SYN_FLOOD </span><br><span class="line"><span class="comment"># 对第一次握手 SYN 包进行 jump ，跳转到自定义链   </span></span><br><span class="line">iptables -A SYN_FLOOD -m <span class="built_in">limit</span> --<span class="built_in">limit</span> 1/s --<span class="built_in">limit</span>-burst 4 -j RETURN </span><br><span class="line">iptables -A SYN_FLOOD -j DROP</span><br><span class="line"><span class="comment"># 限定每秒最多可以连接1个，一批最高峰值为4个，即前4个速度比较快，后面的按照1/s返回主链进行回应。否则将丢弃</span></span><br></pre></td></tr></table></figure>
+<p>方法二，限制单个IP最大连接数，也可以用于限制访问量过大的IP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -i eth0 -p tcp --syn -m connlimit --connlimit-above 15 -j DROP</span><br><span class="line"><span class="comment"># 限定单个 IP 连接，超过15个就丢弃</span></span><br></pre></td></tr></table></figure>
+<p><strong>Dos</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT 1 -p tcp -m multiport --dport 22 -m connlimit --connlimit-above 5 -j DROP</span><br><span class="line"><span class="comment"># 单个 IP 最多 5 个会话</span></span><br><span class="line">iptables -I INPUT 2 -p tcp --dport 22 -m state --state NEW -m recent --<span class="built_in">set</span> --name SSH  </span><br><span class="line"><span class="comment"># 只要是新的连接请求，就把它加入到 SSH 列表中，此处需要使用 recent 模块</span></span><br><span class="line">iptables -I INPUT 3 -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 300 --hitcount 3 --name SSH -j DROP</span><br><span class="line"><span class="comment"># 5分钟(300s)内尝试次数达到3次，就拒绝为 SSH 列表中的这个 IP 提供服务。被限制5分钟后即可恢复访问。</span></span><br></pre></td></tr></table></figure>
+<p><strong>反弹木马</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A OUTPUT -m state --state NEW -j DROP</span><br><span class="line"><span class="comment"># 防止本机向外发送连接请求（如果本机有类似 DNS 请求的数据则据具体情况而待）</span></span><br></pre></td></tr></table></figure>
+<p><strong>ping攻击</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p icmp --icmp-type <span class="built_in">echo</span>-request -m <span class="built_in">limit</span> --<span class="built_in">limit</span> 1/m -j ACCEPT</span><br><span class="line"><span class="comment"># 限制连接速率</span></span><br></pre></td></tr></table></figure>
+<h1 id="防火墙脚本"><a href="#防火墙脚本" class="headerlink" title="防火墙脚本"></a>防火墙脚本</h1><p><strong>清除规则脚本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">:&lt;&lt;:</span><br><span class="line">------------------------------------------------                                </span><br><span class="line">        FileName : flush-iptables-rules.sh                                      </span><br><span class="line">          Author : Silence</span><br><span class="line">         Version : 0.0.1</span><br><span class="line">     Description :</span><br><span class="line">------------------------------------------------                                </span><br><span class="line">:</span><br><span class="line"></span><br><span class="line"><span class="comment"># Check if iptable module is loaded</span></span><br><span class="line">PROC_iptables_NAMES=/proc/net/ip_tables_names</span><br><span class="line">[ ! -e <span class="string">"<span class="variable">$PROC_iptables_NAMES</span>"</span> ] &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get active tables</span></span><br><span class="line">NF_TABLES=$(cat <span class="string">"<span class="variable">$PROC_iptables_NAMES</span>"</span> 2&gt;/dev/null)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Check if firewall is configured (has tables)</span></span><br><span class="line">[ -z <span class="string">"<span class="variable">$NF_TABLES</span>"</span> ] &amp;&amp; <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># only usable for root</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$EUID</span> != 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"iptables: Only usable by root."</span>; <span class="built_in">exit</span> 4</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -x /sbin/iptables ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -n $<span class="string">"iptables: /sbin/iptables does not exist."</span>; warning; <span class="built_in">echo</span></span><br><span class="line">    <span class="built_in">exit</span> 5</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Flush firewall rules and delete chains.</span></span><br><span class="line"><span class="built_in">echo</span> -n $<span class="string">"iptables: Flushing firewall rules: "</span></span><br><span class="line"><span class="comment"># For all tables</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">$NF_TABLES</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># Flush firewall rules.</span></span><br><span class="line">    iptables -t <span class="variable">$i</span> -F;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Delete firewall chains.</span></span><br><span class="line">    iptables -t <span class="variable">$i</span> -X;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Set counter to zero.</span></span><br><span class="line">    iptables -t <span class="variable">$i</span> -Z;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Set policy for configured tables.</span></span><br><span class="line">    policy=ACCEPT</span><br><span class="line">    <span class="built_in">echo</span> -n <span class="string">"<span class="variable">$i</span> "</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">"<span class="variable">$i</span>"</span> <span class="keyword">in</span></span><br><span class="line">        raw)</span><br><span class="line">            <span class="keyword">for</span> chain <span class="keyword">in</span> PREROUTING OUTPUT;<span class="keyword">do</span></span><br><span class="line">                iptables -t <span class="variable">$i</span> -P <span class="variable">$&#123;chain&#125;</span> <span class="variable">$policy</span></span><br><span class="line">            <span class="keyword">done</span></span><br><span class="line">            <span class="built_in">unset</span> chain</span><br><span class="line">            ;;</span><br><span class="line">        filter)</span><br><span class="line">            <span class="keyword">for</span> chain <span class="keyword">in</span> INPUT OUTPUT FORWARD;<span class="keyword">do</span></span><br><span class="line">                iptables -t <span class="variable">$i</span> -P <span class="variable">$&#123;chain&#125;</span> <span class="variable">$policy</span></span><br><span class="line">            <span class="keyword">done</span></span><br><span class="line">            <span class="built_in">unset</span> chain</span><br><span class="line">            ;;</span><br><span class="line">        nat)</span><br><span class="line">            <span class="keyword">for</span> chain <span class="keyword">in</span> PREROUTING POSTROUTING OUTPUT;<span class="keyword">do</span></span><br><span class="line">                iptables -t <span class="variable">$i</span> -P <span class="variable">$&#123;chain&#125;</span> <span class="variable">$policy</span></span><br><span class="line">            <span class="keyword">done</span></span><br><span class="line">            <span class="built_in">unset</span> chain</span><br><span class="line">            ;;</span><br><span class="line">        mangle)</span><br><span class="line">            <span class="keyword">for</span> chain <span class="keyword">in</span> PREROUTING POSTROUTING INPUT OUTPUT FORWARD;<span class="keyword">do</span></span><br><span class="line">                iptables -t <span class="variable">$i</span> -P <span class="variable">$&#123;chain&#125;</span> <span class="variable">$policy</span></span><br><span class="line">            <span class="keyword">done</span></span><br><span class="line">            <span class="built_in">unset</span> chain</span><br><span class="line">            ;;</span><br><span class="line">        security)</span><br><span class="line">            : Ignore the security table</span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            : Do nothing</span><br><span class="line">            ;;</span><br><span class="line">    <span class="keyword">esac</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span></span><br></pre></td></tr></table></figure>
+<h1 id="TCP-IP协议号"><a href="#TCP-IP协议号" class="headerlink" title="TCP/IP协议号"></a>TCP/IP协议号</h1><p><a href="https://www.frozentux.net/iptables-tutorial/cn/other/protocols.txt" target="_blank" rel="noopener">https://www.frozentux.net/iptables-tutorial/cn/other/protocols.txt</a></p>
+<table>
+<thead>
+<tr>
+<th>协议号</th>
+<th>协议类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>HOPOPT</td>
+<td>IPv6 逐跳选项</td>
+</tr>
+<tr>
+<td>1</td>
+<td>ICMP</td>
+<td>Internet 控制消息</td>
+</tr>
+<tr>
+<td>2</td>
+<td>IGMP</td>
+<td>Internet 组管理</td>
+</tr>
+<tr>
+<td>3</td>
+<td>GGP</td>
+<td>网关对网关</td>
+</tr>
+<tr>
+<td>4</td>
+<td>IP</td>
+<td>IP 中的 IP（封装）</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ST</td>
+<td>流</td>
+</tr>
+<tr>
+<td>6</td>
+<td>TCP</td>
+<td>传输控制</td>
+</tr>
+<tr>
+<td>7</td>
+<td>CBT</td>
+<td>CBT</td>
+</tr>
+<tr>
+<td>8</td>
+<td>EGP</td>
+<td>外部网关协议</td>
+</tr>
+<tr>
+<td>9</td>
+<td>IGP</td>
+<td>任何专用内部网关 （Cisco 将其用于 IGRP）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>BBN-RCC-MON</td>
+<td>BBN RCC 监视</td>
+</tr>
+<tr>
+<td>11</td>
+<td>NVP-II</td>
+<td>网络语音协议</td>
+</tr>
+<tr>
+<td>12</td>
+<td>PUP</td>
+<td>PUP</td>
+</tr>
+<tr>
+<td>13</td>
+<td>ARGUS</td>
+<td>ARGUS</td>
+</tr>
+<tr>
+<td>14</td>
+<td>EMCON</td>
+<td>EMCON</td>
+</tr>
+<tr>
+<td>15</td>
+<td>XNET</td>
+<td>跨网调试器</td>
+</tr>
+<tr>
+<td>16</td>
+<td>CHAOS</td>
+<td>Chaos</td>
+</tr>
+<tr>
+<td>17</td>
+<td>UDP</td>
+<td>用户数据报</td>
+</tr>
+<tr>
+<td>18</td>
+<td>MUX</td>
+<td>多路复用</td>
+</tr>
+<tr>
+<td>19</td>
+<td>DCN-MEAS</td>
+<td>DCN 测量子系统</td>
+</tr>
+<tr>
+<td>20</td>
+<td>HMP</td>
+<td>主机监视</td>
+</tr>
+<tr>
+<td>21</td>
+<td>PRM</td>
+<td>数据包无线测量</td>
+</tr>
+<tr>
+<td>22</td>
+<td>XNS-IDP</td>
+<td>XEROX NS IDP</td>
+</tr>
+<tr>
+<td>23</td>
+<td>TRUNK-1</td>
+<td>第 1 主干</td>
+</tr>
+<tr>
+<td>24</td>
+<td>TRUNK-2</td>
+<td>第 2 主干</td>
+</tr>
+<tr>
+<td>25</td>
+<td>LEAF-1</td>
+<td>第 1 叶</td>
+</tr>
+<tr>
+<td>26</td>
+<td>LEAF-2</td>
+<td>第 2 叶</td>
+</tr>
+<tr>
+<td>27</td>
+<td>RDP</td>
+<td>可靠数据协议</td>
+</tr>
+<tr>
+<td>28</td>
+<td>IRTP</td>
+<td>Internet 可靠事务</td>
+</tr>
+<tr>
+<td>29</td>
+<td>ISO-TP4</td>
+<td>ISO 传输协议第 4 类</td>
+</tr>
+<tr>
+<td>30</td>
+<td>NETBLT</td>
+<td>批量数据传输协议</td>
+</tr>
+<tr>
+<td>31</td>
+<td>MFE-NSP</td>
+<td>MFE 网络服务协议</td>
+</tr>
+<tr>
+<td>32</td>
+<td>MERIT-INP</td>
+<td>MERIT 节点间协议</td>
+</tr>
+<tr>
+<td>33</td>
+<td>SEP</td>
+<td>顺序交换协议</td>
+</tr>
+<tr>
+<td>34</td>
+<td>3PC</td>
+<td>第三方连接协议</td>
+</tr>
+<tr>
+<td>35</td>
+<td>IDPR</td>
+<td>域间策略路由协议</td>
+</tr>
+<tr>
+<td>36</td>
+<td>XTP</td>
+<td>XTP</td>
+</tr>
+<tr>
+<td>37</td>
+<td>DDP</td>
+<td>数据报传送协议</td>
+</tr>
+<tr>
+<td>38</td>
+<td>IDPR-CMTP</td>
+<td>IDPR 控制消息传输协议</td>
+</tr>
+<tr>
+<td>39</td>
+<td>TP++</td>
+<td>TP++ 传输协议</td>
+</tr>
+<tr>
+<td>40</td>
+<td>IL</td>
+<td>IL 传输协议</td>
+</tr>
+<tr>
+<td>41</td>
+<td>IPv6</td>
+<td>Ipv6</td>
+</tr>
+<tr>
+<td>42</td>
+<td>SDRP</td>
+<td>源要求路由协议</td>
+</tr>
+<tr>
+<td>43</td>
+<td>IPv6-Route</td>
+<td>IPv6 的路由标头</td>
+</tr>
+<tr>
+<td>44</td>
+<td>IPv6-Frag</td>
+<td>IPv6 的片断标头</td>
+</tr>
+<tr>
+<td>45</td>
+<td>IDRP</td>
+<td>域间路由协议</td>
+</tr>
+<tr>
+<td>46</td>
+<td>RSVP</td>
+<td>保留协议</td>
+</tr>
+<tr>
+<td>47</td>
+<td>GRE</td>
+<td>通用路由封装</td>
+</tr>
+<tr>
+<td>48</td>
+<td>MHRP</td>
+<td>移动主机路由协议</td>
+</tr>
+<tr>
+<td>49</td>
+<td>BNA</td>
+<td>BNA</td>
+</tr>
+<tr>
+<td>50</td>
+<td>ESP</td>
+<td>IPv6 的封装安全负载</td>
+</tr>
+<tr>
+<td>51</td>
+<td>AH</td>
+<td>IPv6 的身份验证标头</td>
+</tr>
+<tr>
+<td>52</td>
+<td>I-NLSP</td>
+<td>集成网络层安全性 TUBA</td>
+</tr>
+<tr>
+<td>53</td>
+<td>SWIPE</td>
+<td>采用加密的 IP</td>
+</tr>
+<tr>
+<td>54</td>
+<td>NARP</td>
+<td>NBMA 地址解析协议</td>
+</tr>
+<tr>
+<td>55</td>
+<td>MOBILE</td>
+<td>IP 移动性</td>
+</tr>
+<tr>
+<td>56</td>
+<td>TLSP</td>
+<td>传输层安全协议 使用 Kryptonet 密钥管理</td>
+</tr>
+<tr>
+<td>57</td>
+<td>SKIP</td>
+<td>SKIP</td>
+</tr>
+<tr>
+<td>58</td>
+<td>IPv6-ICMP</td>
+<td>用于 IPv6 的 ICMP</td>
+</tr>
+<tr>
+<td>59</td>
+<td>IPv6-NoNxt</td>
+<td>用于 IPv6 的无下一个标头</td>
+</tr>
+<tr>
+<td>60</td>
+<td>IPv6-Opts</td>
+<td>IPv6 的目标选项</td>
+</tr>
+<tr>
+<td>61</td>
+<td></td>
+<td>任意主机内部协议</td>
+</tr>
+<tr>
+<td>62</td>
+<td>CFTP</td>
+<td>CFTP</td>
+</tr>
+<tr>
+<td>63</td>
+<td></td>
+<td>任意本地网络</td>
+</tr>
+<tr>
+<td>64</td>
+<td>SAT-EXPAK</td>
+<td>SATNET 与后台 EXPAK</td>
+</tr>
+<tr>
+<td>65</td>
+<td>KRYPTOLAN</td>
+<td>Kryptolan</td>
+</tr>
+<tr>
+<td>66</td>
+<td>RVD MIT</td>
+<td>远程虚拟磁盘协议</td>
+</tr>
+<tr>
+<td>67</td>
+<td>IPPC</td>
+<td>Internet Pluribus 数据包核心</td>
+</tr>
+<tr>
+<td>68</td>
+<td></td>
+<td>任意分布式文件系统</td>
+</tr>
+<tr>
+<td>69</td>
+<td>SAT-MON</td>
+<td>SATNET 监视</td>
+</tr>
+<tr>
+<td>70</td>
+<td>VISA</td>
+<td>VISA 协议</td>
+</tr>
+<tr>
+<td>71</td>
+<td>IPCV</td>
+<td>Internet 数据包核心工具</td>
+</tr>
+<tr>
+<td>72</td>
+<td>CPNX</td>
+<td>计算机协议网络管理</td>
+</tr>
+<tr>
+<td>73</td>
+<td>CPHB</td>
+<td>计算机协议检测信号</td>
+</tr>
+<tr>
+<td>74</td>
+<td>WSN</td>
+<td>王安电脑网络</td>
+</tr>
+<tr>
+<td>75</td>
+<td>PVP</td>
+<td>数据包视频协议</td>
+</tr>
+<tr>
+<td>76</td>
+<td>BR-SAT-MON</td>
+<td>后台 SATNET 监视</td>
+</tr>
+<tr>
+<td>77</td>
+<td>SUN-ND</td>
+<td>SUN ND PROTOCOL-Temporary</td>
+</tr>
+<tr>
+<td>78</td>
+<td>WB-MON</td>
+<td>WIDEBAND 监视</td>
+</tr>
+<tr>
+<td>79</td>
+<td>WB-EXPAK</td>
+<td>WIDEBAND EXPAK</td>
+</tr>
+<tr>
+<td>80</td>
+<td>ISO-IP</td>
+<td>ISO Internet 协议</td>
+</tr>
+<tr>
+<td>81</td>
+<td>VMTP</td>
+<td>VMTP</td>
+</tr>
+<tr>
+<td>82</td>
+<td>SECURE-VMTP</td>
+<td>SECURE-VMTP</td>
+</tr>
+<tr>
+<td>83</td>
+<td>VINES</td>
+<td>VINES</td>
+</tr>
+<tr>
+<td>84</td>
+<td>TTP</td>
+<td>TTP</td>
+</tr>
+<tr>
+<td>85</td>
+<td>NSFNET-IGP</td>
+<td>NSFNET-IGP</td>
+</tr>
+<tr>
+<td>86</td>
+<td>DGP</td>
+<td>异类网关协议</td>
+</tr>
+<tr>
+<td>87</td>
+<td>TCF</td>
+<td>TCF</td>
+</tr>
+<tr>
+<td>88</td>
+<td>EIGRP</td>
+<td>EIGRP</td>
+</tr>
+<tr>
+<td>89</td>
+<td>OSPFIGP</td>
+<td>OSPFIGP</td>
+</tr>
+<tr>
+<td>90</td>
+<td>Sprite-RPC</td>
+<td>Sprite RPC 协议</td>
+</tr>
+<tr>
+<td>91</td>
+<td>LARP</td>
+<td>轨迹地址解析协议</td>
+</tr>
+<tr>
+<td>92</td>
+<td>MTP</td>
+<td>多播传输协议</td>
+</tr>
+<tr>
+<td>93</td>
+<td>AX.25</td>
+<td>AX.25 帧</td>
+</tr>
+<tr>
+<td>94</td>
+<td>IPIP</td>
+<td>IP 中的 IP 封装协议</td>
+</tr>
+<tr>
+<td>95</td>
+<td>MICP</td>
+<td>移动互联控制协议</td>
+</tr>
+<tr>
+<td>96</td>
+<td>SCC-SP</td>
+<td>信号通讯安全协议</td>
+</tr>
+<tr>
+<td>97</td>
+<td>ETHERIP</td>
+<td>IP 中的以太网封装</td>
+</tr>
+<tr>
+<td>98</td>
+<td>ENCAP</td>
+<td>封装标头</td>
+</tr>
+<tr>
+<td>99</td>
+<td></td>
+<td>任意专用加密方案</td>
+</tr>
+<tr>
+<td>100</td>
+<td>GMTP</td>
+<td>GMTP</td>
+</tr>
+<tr>
+<td>101</td>
+<td>IFMP</td>
+<td>Ipsilon 流量管理协议</td>
+</tr>
+<tr>
+<td>102</td>
+<td>PNNI</td>
+<td>IP 上的 PNNI</td>
+</tr>
+<tr>
+<td>103</td>
+<td>PIM</td>
+<td>独立于协议的多播</td>
+</tr>
+<tr>
+<td>104</td>
+<td>ARIS</td>
+<td>ARIS</td>
+</tr>
+<tr>
+<td>105</td>
+<td>SCPS</td>
+<td>SCPS</td>
+</tr>
+<tr>
+<td>106</td>
+<td>QNX</td>
+<td>QNX</td>
+</tr>
+<tr>
+<td>107</td>
+<td>A/N</td>
+<td>活动网络</td>
+</tr>
+<tr>
+<td>108</td>
+<td>IPComp</td>
+<td>IP 负载压缩协议</td>
+</tr>
+<tr>
+<td>109</td>
+<td>SNP</td>
+<td>Sitara 网络协议</td>
+</tr>
+<tr>
+<td>110</td>
+<td>Compaq-Peer</td>
+<td>Compaq 对等协议</td>
+</tr>
+<tr>
+<td>111</td>
+<td>IPX-in-IP</td>
+<td>IP 中的 IPX</td>
+</tr>
+<tr>
+<td>112</td>
+<td>VRRP</td>
+<td>虚拟路由器冗余协议</td>
+</tr>
+<tr>
+<td>113</td>
+<td>PGM</td>
+<td>PGM 可靠传输协议</td>
+</tr>
+<tr>
+<td>114</td>
+<td></td>
+<td>任意 0 跳协议</td>
+</tr>
+<tr>
+<td>115</td>
+<td>L2TP</td>
+<td>第二层隧道协议</td>
+</tr>
+<tr>
+<td>116</td>
+<td>DDX D-II</td>
+<td>数据交换 (DDX)</td>
+</tr>
+<tr>
+<td>117</td>
+<td>IATP</td>
+<td>交互式代理传输协议</td>
+</tr>
+<tr>
+<td>118</td>
+<td>STP</td>
+<td>计划传输协议</td>
+</tr>
+<tr>
+<td>119</td>
+<td>SRP</td>
+<td>SpectraLink 无线协议</td>
+</tr>
+<tr>
+<td>120</td>
+<td>UTI</td>
+<td>UTI</td>
+</tr>
+<tr>
+<td>121</td>
+<td>SMP</td>
+<td>简单邮件协议</td>
+</tr>
+<tr>
+<td>122</td>
+<td>SM</td>
+<td>SM</td>
+</tr>
+<tr>
+<td>123</td>
+<td>PTP</td>
+<td>性能透明协议</td>
+</tr>
+<tr>
+<td>124</td>
+<td>ISIS</td>
+<td>over IPv4</td>
+</tr>
+<tr>
+<td>125</td>
+<td>FIRE</td>
+<td></td>
+</tr>
+<tr>
+<td>126</td>
+<td>CRTP</td>
+<td>Combat 无线传输协议</td>
+</tr>
+<tr>
+<td>127</td>
+<td>CRUDP</td>
+<td>Combat 无线用户数据报</td>
+</tr>
+<tr>
+<td>128</td>
+<td>SSCOPMCE</td>
+<td></td>
+</tr>
+<tr>
+<td>129</td>
+<td>IPLT</td>
+<td></td>
+</tr>
+<tr>
+<td>130</td>
+<td>SPS</td>
+<td>安全数据包防护</td>
+</tr>
+<tr>
+<td>131</td>
+<td>PIPE</td>
+<td>IP 中的专用 IP 封装</td>
+</tr>
+<tr>
+<td>132</td>
+<td>SCTP</td>
+<td>流控制传输协议</td>
+</tr>
+<tr>
+<td>133</td>
+<td>FC</td>
+<td>光纤通道</td>
+</tr>
+<tr>
+<td>134-254</td>
+<td></td>
+<td>未分配</td>
+</tr>
+<tr>
+<td>255</td>
+<td></td>
+<td>保留</td>
+</tr>
+</tbody>
+</table>
+<p>参考链接：<br><a href="https://www.linuxtopia.org/Linux_Firewall_iptables/" target="_blank" rel="noopener">https://www.linuxtopia.org/Linux_Firewall_iptables/</a><br><a href="https://www.frozentux.net/iptables-tutorial/cn/iptables-tutorial-cn-1.1.19.html" target="_blank" rel="noopener">https://www.frozentux.net/iptables-tutorial/cn/iptables-tutorial-cn-1.1.19.html</a><br><a href="http://cn.linux.vbird.org/linux_server/0250simple_firewall_3.php" target="_blank" rel="noopener">http://cn.linux.vbird.org/linux_server/0250simple_firewall_3.php</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Silence
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/" title="学习使用iptables">http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/安全/" rel="tag"><i class="fa fa-tag"></i> 安全</a>
+          
+            <a href="/tags/Network/" rel="tag"><i class="fa fa-tag"></i> Network</a>
+          
+            <a href="/tags/iptables/" rel="tag"><i class="fa fa-tag"></i> iptables</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/28/132143-SElinux和Rsyslog/" rel="next" title="SElinux和Rsyslog">
+                <i class="fa fa-chevron-left"></i> SElinux和Rsyslog
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/10/134143-iptables实现不连续地址的SNAT-源地址转换/" rel="prev" title="iptables实现不连续地址的SNAT(源地址转换)">
+                iptables实现不连续地址的SNAT(源地址转换) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence" />
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="网络之路" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四表五链"><span class="nav-number">2.</span> <span class="nav-text">四表五链</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防火墙规则的匹配顺序"><span class="nav-number">3.</span> <span class="nav-text">防火墙规则的匹配顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据包的处理过程"><span class="nav-number">4.</span> <span class="nav-text">数据包的处理过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iptables命令"><span class="nav-number">5.</span> <span class="nav-text">iptables命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#table"><span class="nav-number">5.1.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#command"><span class="nav-number">5.2.</span> <span class="nav-text">command</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chain"><span class="nav-number">5.3.</span> <span class="nav-text">chain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#match"><span class="nav-number">5.4.</span> <span class="nav-text">match</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用匹配"><span class="nav-number">5.4.1.</span> <span class="nav-text">通用匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展匹配"><span class="nav-number">5.4.2.</span> <span class="nav-text">扩展匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式扩展"><span class="nav-number">5.4.2.1.</span> <span class="nav-text">隐式扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显式扩展"><span class="nav-number">5.4.2.2.</span> <span class="nav-text">显式扩展</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Target"><span class="nav-number">6.</span> <span class="nav-text">Target</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ACCEPT"><span class="nav-number">6.1.</span> <span class="nav-text">ACCEPT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DROP"><span class="nav-number">6.2.</span> <span class="nav-text">DROP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#REJECT"><span class="nav-number">6.3.</span> <span class="nav-text">REJECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNAT"><span class="nav-number">6.4.</span> <span class="nav-text">SNAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MASQUERADE"><span class="nav-number">6.5.</span> <span class="nav-text">MASQUERADE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNAT"><span class="nav-number">6.6.</span> <span class="nav-text">DNAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#REDIRECT"><span class="nav-number">6.7.</span> <span class="nav-text">REDIRECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RETURN"><span class="nav-number">6.8.</span> <span class="nav-text">RETURN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TOS"><span class="nav-number">6.9.</span> <span class="nav-text">TOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TTL"><span class="nav-number">6.10.</span> <span class="nav-text">TTL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MARK"><span class="nav-number">6.11.</span> <span class="nav-text">MARK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCPMSS"><span class="nav-number">6.12.</span> <span class="nav-text">TCPMSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LOG"><span class="nav-number">6.13.</span> <span class="nav-text">LOG</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#连接跟踪机制-conntrack"><span class="nav-number">7.</span> <span class="nav-text">连接跟踪机制 conntrack</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nf-conntrack"><span class="nav-number">7.1.</span> <span class="nav-text">nf_conntrack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conntrack记录"><span class="nav-number">7.2.</span> <span class="nav-text">conntrack记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据包在用户空间的状态"><span class="nav-number">7.3.</span> <span class="nav-text">数据包在用户空间的状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#规则的保存和恢复"><span class="nav-number">8.</span> <span class="nav-text">规则的保存和恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#处理效率"><span class="nav-number">8.1.</span> <span class="nav-text">处理效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iptables-restore的不足"><span class="nav-number">8.2.</span> <span class="nav-text">iptables-restore的不足</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iptables-save"><span class="nav-number">8.3.</span> <span class="nav-text">iptables-save</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iptables-restore"><span class="nav-number">8.4.</span> <span class="nav-text">iptables-restore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iptables-service"><span class="nav-number">8.5.</span> <span class="nav-text">iptables.service</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写规则抵御常见攻击"><span class="nav-number">9.</span> <span class="nav-text">编写规则抵御常见攻击</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防火墙脚本"><span class="nav-number">10.</span> <span class="nav-text">防火墙脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP-IP协议号"><span class="nav-number">11.</span> <span class="nav-text">TCP/IP协议号</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
