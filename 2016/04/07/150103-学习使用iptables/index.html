@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables11.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables12.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2016/04/07/150103-学习使用iptables/iptables13.png">
-<meta property="og:updated_time" content="2019-05-24T02:30:51.965Z">
+<meta property="og:updated_time" content="2019-05-25T02:06:01.018Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习使用iptables">
 <meta name="twitter:description" content="基础知识防火墙 工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件 iptables linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 Linux 内核模块，工作于 Kernel space 做实际的包过滤。 Netfilter 的官方站">
@@ -359,7 +359,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  17,660
+                  17,683
                 </span>
               
 
@@ -617,10 +617,13 @@
 <h4 id="显式扩展"><a href="#显式扩展" class="headerlink" title="显式扩展"></a>显式扩展</h4><p>显式扩展必须使用 <code>-m</code> 或 <code>--match</code> 选项指明是由哪个模块进行的扩展，此功能可以使用额外的匹配机制</p>
 <p><strong>-m state</strong>：状态扩展，结合 <code>nf_conntrack</code> 模块追踪回话的状态</p>
 <ul>
+<li><code>--state</code> 匹配连接的状态<ul>
 <li>NEW    新连接发起的请求</li>
 <li>ESTABLISHED    已经建立的连接(即:对于新请求的相应)</li>
 <li>INVALID    非法连接请求</li>
 <li>RELATED    相关连的连接(由命令发起，例如 ftp )</li>
+</ul>
+</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -I INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT</span><br><span class="line"><span class="comment"># 将与本机新建立 ssh 连接的数据包放行</span></span><br><span class="line">iptables -t filter -I INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line"><span class="comment"># 状态为 NEW 或 ESTABLISHED 的 ssh 连接都放行</span></span><br></pre></td></tr></table></figure>
 <p><strong>-m multiport</strong>：离散的多端口扩展</p>
@@ -663,13 +666,19 @@
 <li><code>--weekdays Sa[,Su]</code>     一周中的哪些天 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -d 172.16.100.7 -p tcp --dport 80 -m time --timestart 08:20 --timestop 18:40 --weekdays Mon,Tue,Thu,Fri -j REJECT</span><br><span class="line"><span class="comment"># 周一、二、四、五的 8:20 到 18:40 禁止其他主机访问本机（172.16.100.7）的80端口</span></span><br></pre></td></tr></table></figure>
-<p><strong>-m mac –mac-source</strong>：基于包的 MAC 源地址做访问控制，地址格式只能是 <code>XX:XX:XX:XX:XX:XX</code>，它也可以用叹号 <code>!</code> 取反。因为 MAC addresses 只用于 Ethernet 类型的网络，所以只能用于 Ethernet 接口。而且它只能在 PREROUTING，FORWARD 和 INPUT 链里使用。</p>
+<p><strong>-m mac</strong>：基于包的 MAC 源地址做访问控制，它也可以用叹号 <code>!</code> 取反。因为 MAC addresses 只用于 Ethernet 类型的网络，所以只能用于 Ethernet 接口。而且它只能在 PREROUTING，FORWARD 和 INPUT 链里使用。</p>
+<ul>
+<li><code>--mac-source</code> 指定源 MAC 地址，格式只能是 <code>XX:XX:XX:XX:XX:XX</code>，</li>
+</ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A FORWARD -m mac --mac-source 00:00:00:00:00:01 -j  DROP</span><br></pre></td></tr></table></figure>
 <p>在局域网中如果有人在下载比较大的文件，会占用极大的带宽而影响到了其他人的网络访问，这时候我们在防火墙上针对这个来源的 IP 做 <code>limit</code> 或者直接 <code>DROP</code> 就好了，但是如果这个人发现自己被封网了，就自己指定了静态地址并且换了另外一个 IP ，这时候就需要针对 MAC 地址做限制了，限制了 MAC 来源之后，不管怎么换 IP 地址都无济于事。</p>
-<p><strong>-m commen –commentt</strong>，对规则做注释，最长 256 个字符</p>
+<p><strong>-m comment</strong>：对规则做说明、注释</p>
+<ul>
+<li><code>--comment &#39;string&#39;</code> 指定注释为 <code>string</code>，注释最长 256 个字符</li>
+</ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -s 192.168.1.0/24 -p tcp --dport 80 -j ACCEPT -m comment --comment <span class="string">"This is my local Lan"</span></span><br></pre></td></tr></table></figure>
 <p>添加了注释的规则，即便是在很久以后回头查看规则的时候你就能很直观地知道这个规则是用来做什么的</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@m2 ~]<span class="comment"># iptables -vnL INPUT</span></span><br><span class="line">Chain INPUT (policy ACCEPT 34 packets, 3072 bytes)</span><br><span class="line"> pkts bytes target     prot opt <span class="keyword">in</span>     out     <span class="built_in">source</span>               destination         </span><br><span class="line">    0     0 ACCEPT     tcp  --  *      *       192.168.1.0/24       0.0.0.0/0            tcp dpt:80 /* This is my <span class="built_in">local</span> Lan */</span><br><span class="line">[root@m2 ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@m2 ~]# iptables -vnL INPUT</span><br><span class="line">Chain INPUT (policy ACCEPT 34 packets, 3072 bytes)</span><br><span class="line"> pkts bytes target     prot opt in     out     source               destination         </span><br><span class="line">    0     0 ACCEPT     tcp  --  *      *       192.168.1.0/24       0.0.0.0/0            tcp dpt:80 /* This is my local Lan */</span><br><span class="line">[root@m2 ~]#</span><br></pre></td></tr></table></figure>
 <h1 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h1><p>target 指的是由规则指定的操作，对规则匹配到的包做什么样的动作</p>
 <h2 id="ACCEPT"><a href="#ACCEPT" class="headerlink" title="ACCEPT"></a>ACCEPT</h2><p>使用 <code>-j ACCEPT</code> 放行，一旦数据包满足了指定的匹配条件就允许数据包通过，并且不会再去匹配当前链中的其他规则或同一个表内的其他规则，但它还要通过其他表中的链，而且在那儿可能会被 DROP 也说不准。</p>
 <p>放行 TCP 协议目标端口是 22 的数据包</p>
@@ -682,18 +691,18 @@
 <p>一种是先允许信任的地址段，最后再拒绝所有的。也就是说来自 192.168.1.0/24 匹配到第一条规则，否则就被第二条规则匹配到并丢弃</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp -s 192.168.1.0/24 --dport 80 -j ACCEPT</span><br><span class="line">iptables -t filter -A INPUT -p tcp --dport 80 -j DROP</span><br></pre></td></tr></table></figure>
 <p>另一种则把不是我们信任的地址段直接丢弃，如果是信任的地址段就不会被这个规则匹配到，然后交给默认规则处理。看上去这种方法更好，一条就搞定了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp ! -s 192.168.1.0/24 --dport 80 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp ! -s 192.168.1.0/24 --dport 80 -j DROP</span><br></pre></td></tr></table></figure>
 <p>现在由于业务有了新的变动，需要再加入一个信任的地址段 192.168.2.0/24，于是你又按照第二种方法加入了一条规则</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp ! -s 192.168.2.0/24 --dport 80 -j ACCEPT</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp ! -s 192.168.2.0/24 --dport 80 -j DROP</span><br></pre></td></tr></table></figure>
 <p>看上去把来源不是 192.168.1.0/24 内的包丢弃，然后再把来源不是 192.168.2.0/24 内的包丢弃就可以了，但是最后测试的时候你发现 Web 服务器好像谁都不能访问了。我们来分析一下原因：</p>
 <p><img src="/2016/04/07/150103-学习使用iptables/iptables4.png" alt=""></p>
-<p>当来源是 192.168.1.123 发起的请求时，第一条规则没有被匹配，继续向下走让第二条做匹配，匹配成功然后被丢弃，也就是上图中蓝色箭头做指向的方向</p>
+<p>当来源是 192.168.1.123 发起的请求时，第一条规则没有被匹配，继续向下走让第二条做匹配，匹配成功然后被丢弃，也就是上图中蓝色箭头所指向的方向</p>
 <p><img src="/2016/04/07/150103-学习使用iptables/iptables5.png" alt=""></p>
-<p>当来源是 192.168.2.123 发起的请求时，第一条规则匹配成功然后被丢弃，也就是上图中蓝色箭头做指向的方向</p>
+<p>当来源是 192.168.2.123 发起的请求时，第一条规则匹配成功然后被丢弃，也就是上图中蓝色箭头所指向的方向</p>
 <p>这样一来，不管谁来请求都被 DROP 掉了。所以应当使用第一种先允许再拒绝的方法</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A INPUT -p tcp -s 192.168.1.0/24 --dport 80 -j ACCEPT</span><br><span class="line">iptables -t filter -A INPUT -p tcp -s 192.168.2.0/24 --dport 80 -j ACCEPT</span><br><span class="line">iptables -t filter -A INPUT -p tcp --dport 80 -j DROP</span><br></pre></td></tr></table></figure>
 <p><img src="/2016/04/07/150103-学习使用iptables/iptables6.png" alt=""></p>
-<p>当来源是 192.168.3.123 发起的请求时，第一条规则没有匹配到，然后交给第二条规则，也没有匹配到，再交给第三条规则，匹配成功然后被丢弃，也就是上图中蓝色箭头做指向的方向</p>
+<p>当来源是 192.168.3.123 发起的请求时，第一条规则没有匹配到，然后交给第二条规则，也没有匹配到，再交给第三条规则，匹配成功然后被丢弃，也就是上图中蓝色箭头所指向的方向</p>
 <h2 id="REJECT"><a href="#REJECT" class="headerlink" title="REJECT"></a>REJECT</h2><p>使用 <code>-j REJECT</code> 拒绝数据包通过，并且向发送者返回错误信息。这个 target 只能用在 filter表中 INPUT、FORWARD、OUTPU和它们的子链里，而且包含 REJECT 的链也只能被它们调用，否则不能发挥作用。它只有一个选项 <code>--reject-with</code>，是用来控制返回的错误信息的种类的。可用的信息类型有：</p>
 <ul>
 <li>icmp-net-unreachable</li>
@@ -730,13 +739,13 @@
 <p><img src="/2016/04/07/150103-学习使用iptables/iptables8.png" alt=""></p>
 <p>如图所示，如果你的 Web 、MySQL、FTP 服务器在局域网内部，而且没有外网 IP 地址，那就可以使用这个 target 让防火墙把所有到它自己的端口的分别映射到局域网内部的各个主机上。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 80   -j DNAT --to 192.168.1.101:80</span><br><span class="line">iptables -t nat -I PREROUTING 2 -p tcp -d 12.34.56.78 --dport 3306 -j DNAT --to 192.168.1.102:3306</span><br><span class="line">iptables -t nat -I PREROUTING 3 -p tcp -d 12.34.56.78 --dport 21   -j DNAT --to 192.168.1.103:21</span><br></pre></td></tr></table></figure>
-<p>在默认情况下，很多服务器的 SSH 服务都监听在 22 号端口，如果是 ssh 到局域网的一台服务器查看配置，做些操作该怎么办呢？</p>
+<p>在默认情况下，很多服务器的 SSH 服务都监听在 22 号端口，如果是 ssh 到局域网的一台服务器查看配置，这些操作该怎么办呢？</p>
 <p>第一个想到的就是按照刚才的方式再做 22 端口的映射</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.101:22</span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.102:22</span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.103:22</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.101:22</span><br><span class="line">iptables -t nat -I PREROUTING 2 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.102:22</span><br><span class="line">iptables -t nat -I PREROUTING 3 -p tcp -d 12.34.56.78 --dport 22   -j DNAT --to 192.168.1.103:22</span><br></pre></td></tr></table></figure>
 <p>根据匹配规则的顺序，结果可想而知，最后只映射到了局域网其中一台机器上。当再次 ssh 连接 Firewall 时发现连接的却是其他机器，这是因为到它的 ssh 连接被 DNAT 到了局域网内部的主机，这显然是不切合实际的。要解决这个问题，除了修改 SSH 服务的端口号，还可以在 Firewall 上映射不同端口到不同机器的 22 端口</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1231 -j DNAT --to 192.168.1.101:22</span><br><span class="line"><span class="comment"># 1231 端口映射为 Web Server 的 22 端口</span></span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1232 -j DNAT --to 192.168.1.102:22</span><br><span class="line"><span class="comment"># 1232 端口映射为 MySQL Server 的 22 端口</span></span><br><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1233 -j DNAT --to 192.168.1.103:22</span><br><span class="line"><span class="comment"># 1233 端口映射为 FTP Server 的 22 端口</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 1231 -j DNAT --to 192.168.1.101:22</span><br><span class="line"><span class="comment"># 1231 端口映射为 Web Server 的 22 端口</span></span><br><span class="line">iptables -t nat -I PREROUTING 2 -p tcp -d 12.34.56.78 --dport 1232 -j DNAT --to 192.168.1.102:22</span><br><span class="line"><span class="comment"># 1232 端口映射为 MySQL Server 的 22 端口</span></span><br><span class="line">iptables -t nat -I PREROUTING 3 -p tcp -d 12.34.56.78 --dport 1233 -j DNAT --to 192.168.1.103:22</span><br><span class="line"><span class="comment"># 1233 端口映射为 FTP Server 的 22 端口</span></span><br></pre></td></tr></table></figure>
 <p>由此一来，想要 ssh 连接局域网内部多个主机只需要指定对应的端口号就可以了。</p>
-<p>对于访问量比较高的 Web 服务器，可以通过 Squid 做缓存来提高访问效率。通常回把客户端发送的资源请求映射到 Squid 缓存服务器上，如果没有现有的缓存则回源站服务器请求。</p>
+<p>对于访问量比较高的 Web 服务器，可以通过 Squid 做缓存来提高访问效率。通常会把客户端发送的资源请求映射到 Squid 缓存服务器上，如果没有现有的缓存则回源站服务器请求。</p>
 <p><img src="/2016/04/07/150103-学习使用iptables/iptables9.png" alt=""></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING 1 -p tcp -d 12.34.56.78 --dport 80  -j DNAT --to 192.168.1.106:3128</span><br><span class="line">iptables -t nat -I PREROUTING 2 -p tcp -d 12.34.56.78 --dport 443 -j DNAT --to 192.168.1.106:3128</span><br></pre></td></tr></table></figure>
 <p>在规则越来越多的时候，要匹配的规则就会越来越多，处理速度就会随之越来越慢，所以规则的精简是十分重要的，上面的规则可以使用 <code>multiport</code> 简化为一条：</p>
@@ -748,7 +757,7 @@
 <li>包到达防火墙，然后被防火墙做 DNAT，目标变成了向 192.168.1.102 的 22 端口发送请求</li>
 <li>防火墙转发这个包，而且包会经过很多其他的链检验及处理</li>
 <li>包离开防火墙走并到达 192.168.102，即 MySQL 服务器</li>
-<li>此时 MySQL 服务器看到的来源没有变化，还是是 1.2.3.4 </li>
+<li>此时 MySQL 服务器看到的来源没有变化，还是 1.2.3.4 </li>
 <li>MySQL 服务器试图进行数据包的响应，此时变成了 MySQL 作为源，User1 作为目标进行响应</li>
 <li>MySQL 服务器在路由数据库中看到他要相应的目标是 1.2.3.4 ，这属于来自外网的一个IP（scope global），因此经过默认网关，即防火墙做出响应。一般情况下，防火墙就是内网服务器的缺省网关。</li>
 <li>防火墙再对返回包做 SNAT，这样 User1 看到的就是防火墙回复了之前的请求。</li>
@@ -760,7 +769,7 @@
 <li>包到达防火墙，然后被防火墙做 DNAT，目标变成了向 192.168.1.102 的 22 端口发送请求</li>
 <li>防火墙转发这个包，而且还会经过其他的处理。</li>
 <li>包离开防火墙走并到达 192.168.102，即 MySQL 服务器，上图红色箭头</li>
-<li>此时 MySQL 服务器看到的来源没有变化，还是是 192.168.1.110</li>
+<li>此时 MySQL 服务器看到的来源没有变化，还是 192.168.1.110</li>
 <li>MySQL 服务器试图进行数据包的响应，此时变成了 MySQL 作为源，User2 作为目标进行响应</li>
 <li>MySQL 服务器试图响应这个包，但是它在路由数据库中看到包是来自同一个网络的 192.168.1.110 ，也就是 User2，这属于直连网络（scope link）不需要防火墙转发 。因此 MySQL 服务器会把响应的包直接发送给 User2 。上图黑色箭头</li>
 <li>响应的包的确到达了 User2，但它会很困惑，因为他是把请求发送给了防火墙，结果防火墙没有响应自己，却莫名其妙收到了一个其他机器的包。这样肯定没有办法建立连接，但 User2 会等待防火墙的响应，最终超过指定的时间会话被关闭（Connection timed out）。</li>
@@ -784,7 +793,7 @@
 <p>不同的协议都有各自的协议号，具体可以参照本篇文章末尾的表格</p>
 <p>TOS 只能在 mangle 表内使用，要想设置 TOS 的值，值的形式可以是名字或者使相应的数值（十进制或16进制的）。一般情况下，建议使用名字而不使用数值形式，因为以后这些数值可能会有所改变， 而名字一般是固定的。TOS 字段有 8 个二进制位，所以可能的值是 0-255（十进制）或 0x00-0xFF（16进制）。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -t mangle -I PREROUTING -p 135 -m tos ! --tos 0 -j TOS --<span class="built_in">set</span>-tos=0</span><br><span class="line">iptables -t mangle -I PREROUTING -p 47  -m tos ! --tos 0 -j TOS --<span class="built_in">set</span>-tos=0</span><br><span class="line">iptables -t mangle -A PREROUTING -p tcp  --dport 22 -j TOS --<span class="built_in">set</span>-tos 0x10</span><br></pre></td></tr></table></figure>
-<p>如前所述，你好使用预定义的值：<br>1、Minimize-Delay 16 (0x10)，要求找一条路径使延时最小，一些标准服务如 telnet、SSH、FTP- control 就需要这个选项。<br>2、Maximize-Throughput 8 (0x08)，要求找一条路径能使吞吐量最大，标准服务 FTP-data 能用到这个。<br>3、Maximize-Reliability4 (0x04)，要求找一条路径能使可靠性最高，使用它的有 BOOTP 和 TFTP。<br>4、Minimize-Cost 2 (0x02)，要求找一条路径能使费用最低，一般情况下使用这个选项的是一些视频音频流协议，如RTSP（Real Time Stream Control Protocol）。<br>5、Normal-Service 0 (0x00)，一般服务，没有什么特殊要求。这个值也是大部分包的缺省值。</p>
+<p>如前所述，最好使用预定义的值：<br>1、Minimize-Delay 16 (0x10)，要求找一条路径使延时最小，一些标准服务如 telnet、SSH、FTP- control 就需要这个选项。<br>2、Maximize-Throughput 8 (0x08)，要求找一条路径能使吞吐量最大，标准服务 FTP-data 能用到这个。<br>3、Maximize-Reliability4 (0x04)，要求找一条路径能使可靠性最高，使用它的有 BOOTP 和 TFTP。<br>4、Minimize-Cost 2 (0x02)，要求找一条路径能使费用最低，一般情况下使用这个选项的是一些视频音频流协议，如RTSP（Real Time Stream Control Protocol）。<br>5、Normal-Service 0 (0x00)，一般服务，没有什么特殊要求。这个值也是大部分包的缺省值。</p>
 <p>完整的列表可以通过命令 <code>iptables -j TOS -h</code> 得到</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TOS target vlibxtables.so.10 options:</span><br><span class="line">  --<span class="built_in">set</span>-tos value[/mask]  Set Type of Service/Priority field to value</span><br><span class="line">                          (Zero out bits <span class="keyword">in</span> mask and XOR value into TOS)</span><br><span class="line">  --<span class="built_in">set</span>-tos symbol        Set TOS field (IPv4 only) by symbol</span><br><span class="line">                          (this zeroes the 4-bit Precedence part!)</span><br><span class="line">                          Accepted symbolic names <span class="keyword">for</span> value are:</span><br><span class="line">                            (0x10) 16 Minimize-Delay</span><br><span class="line">                            (0x08)  8 Maximize-Throughput</span><br><span class="line">                            (0x04)  4 Maximize-Reliability</span><br><span class="line">                            (0x02)  2 Minimize-Cost</span><br><span class="line">                            (0x00)  0 Normal-Service</span><br></pre></td></tr></table></figure>
 <h2 id="TTL"><a href="#TTL" class="headerlink" title="TTL"></a>TTL</h2><p>TTL 可以修改 IP 头中Time To Live 字段的值。它有很大的作用，我们可以把所有外出包的 Time To Live 值都改为一样的，比如 64，这是 Linux 的默认值。</p>
@@ -803,7 +812,7 @@
 <p>假设一个进来的包的 TTL 是53，那么当它离开我们这台机子时，TTL 应是多少呢？答案是 <code>53+4-1=56</code>，原因同 <code>--ttl-dec</code>。</p>
 <p>在防火墙上没有操作 TTL 之前，从局域网的机器使用 traceroute 做路由追踪可以看到经过了防火墙（网关）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">traceroute to 182.61.200.7 (182.61.200.7), 30 hops max, 60 byte packets</span><br><span class="line"> 1  192.168.1.101  0.237 ms  0.224 ms  0.440 ms</span><br><span class="line"> 2  192.168.127.2  0.403 ms  0.364 ms  0.310 ms</span><br><span class="line"> 3  * * *</span><br><span class="line"> 4  * * *</span><br><span class="line"> 5  * * *</span><br><span class="line"> 6  * * *</span><br><span class="line"> 7  * * *</span><br><span class="line"> 8  * * *</span><br><span class="line"> 9  * * *</span><br><span class="line">10  * * *</span><br></pre></td></tr></table></figure>
-<p>使用这个选项可以使我们的防火墙更加隐蔽，而不被 traceroute 发现， 方法就是设置 <code>--ttl-inc 1</code> 。原因很简单，数据包每经过一个路由器，TTL 就要自动减 1，但在我们的防火墙里这个 1 又被补上了，也就是说 TTL 的值没变，那么 traceroute 就会认为我们的防火墙是不存在的。</p>
+<p>使用 <code>--ttl-inc</code>  这个选项可以使我们的防火墙更加隐蔽，而不被 traceroute 发现， 方法就是设置 <code>--ttl-inc 1</code> 。原因很简单，数据包每经过一个路由器，TTL 就要自动减 1，但在我们的防火墙里这个 1 又被补上了，也就是说 TTL 的值没变，那么 traceroute 就会认为我们的防火墙是不存在的。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">traceroute to 182.61.200.7 (182.61.200.7), 30 hops max, 60 byte packets</span><br><span class="line"> 1  * * *</span><br><span class="line"> 2  * * *</span><br><span class="line"> 3  * * *</span><br><span class="line"> 4  * * *</span><br><span class="line"> 5  * * *</span><br><span class="line"> 6  * * *</span><br><span class="line"> 7  * * *</span><br><span class="line"> 8  * * *</span><br><span class="line"> 9  * * *</span><br><span class="line">10  * * *</span><br></pre></td></tr></table></figure>
 <p>实际上使用三个选项中的任意一个，只要修改了 TTL 的值就可以不被 traceroute 追踪到。</p>
 <h2 id="MARK"><a href="#MARK" class="headerlink" title="MARK"></a>MARK</h2><p>为数据包做 mark 标记，这个值只能在 mangle 表里使用。因为 mark 比较特殊，它不是包本身的一部分，而是在包穿越计算机的过程中由内核分配的和它相关联的一个字段。它可以和本地的高级路由功能联用，以使不同的包能使用不同的策略路由，队列要求等等。</p>
@@ -821,7 +830,7 @@
 <p>LOG 对调试规则有很大的帮助，你可以看到包去了哪里、经过了什么规则的处理，什么样的规则处理什么样的包，等等。当你在生产服务器上调试一个不敢保证 100% 正常的规则集时，用 LOG 代替 DROP 是比较好的，有详细的信息可看，错误就容易定位解决了。</p>
 <p>LOG 有5个选项，你可以用它们指定需要的信息类型或针对不同的信息设定一 些值以便在记录中使用。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LOG target options:</span><br><span class="line"> --<span class="built_in">log</span>-level level              Level of logging (numeric or see syslog.conf)</span><br><span class="line"> --<span class="built_in">log</span>-prefix prefix            Prefix <span class="built_in">log</span> messages with this prefix.</span><br><span class="line"> --<span class="built_in">log</span>-tcp-sequence             Log TCP sequence numbers.</span><br><span class="line"> --<span class="built_in">log</span>-tcp-options              Log TCP options.</span><br><span class="line"> --<span class="built_in">log</span>-ip-options               Log IP options.</span><br></pre></td></tr></table></figure>
-<p> <code>--log-level</code> 告诉 iptables 和 rsyslog 使用哪个记录等级。记录等级的详细信息可以查看文件 <code>/etc/rsyslog.conf</code>，一般来说有以下几种，它们的级别依次是：debug，info，notice，warning，warn，err，error，crit，alert， emerg，panic。其中，error 和 err、warn 和 warning、panic 和 emerg 分别是同义词，也就是说作用完全 一样的。这三种级别的信息量太大，所以不太建议使用。信息级别说明了被记录信息所反映的问题的严重程度。所有信息都是通过内核的功能被记录的。</p>
+<p> <code>--log-level</code> 告诉 iptables 和 rsyslog 使用哪个记录等级。记录等级的详细信息可以查看文件 <code>/etc/rsyslog.conf</code>，一般来说有以下几种，它们的级别依次是：debug，info，notice，warning，warn，err，error，crit，alert， emerg，panic。其中，error 和 err、warn 和 warning、panic 和 emerg 分别是同义词，也就是说作用完全一样的。这三种级别的信息量太大，所以不太建议使用。信息级别说明了被记录信息所反映的问题的严重程度。所有信息都是通过内核的功能被记录的。</p>
 <p> 先在文件 <code>/etc/rsyslog.conf</code> 里设置 <code>kern.=info /var/log/iptables</code>，然后再让所有关于 iptables 的 LOG 信息使用级别 info，就可以把所有的信息存入文件 <code>/var/log/iptables</code> 内。其中也可能会有其他的信息，它们是内核中使用 info 这个等级的其他部分产生的。如果你不想这样做，那么所有日志默认在 <code>/var/log/messages</code> 文件中记录，然后将数据包传递给下一条规则。</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p ICMP -j LOG --<span class="built_in">log</span>-level info</span><br><span class="line">iptables -I INPUT -p ICMP -j LOG --<span class="built_in">log</span>-level notice</span><br></pre></td></tr></table></figure>
 <p> 在其他机器做 ping 测试后，回来查看 <code>tail /var/log/messages</code> 你将看到相关的日志信息</p>
@@ -831,7 +840,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A INPUT -p tcp -j LOG --<span class="built_in">log</span>-tcp-sequence</span><br></pre></td></tr></table></figure>
 <p><code>--log-tcp-options</code> 记录 TCP 包头中的字段大小不变的选项。这对一些除错是很有价值的，通过它提供的信息，可以知道哪里可能出错，或者哪里已经出了错。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A FORWARD -p tcp -j LOG --<span class="built_in">log</span>-tcp-options</span><br></pre></td></tr></table></figure>
-<p><code>--log-ip-options</code> 记录IP包头中的字段大小不变的选项。这对一些除错是很有 价值的，还可以用来跟踪特定地址的包。</p>
+<p><code>--log-ip-options</code> 记录IP包头中的字段大小不变的选项。这对一些除错是很有价值的，还可以用来跟踪特定地址的包。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -A FORWARD -p tcp -j LOG --<span class="built_in">log</span>-ip-options</span><br></pre></td></tr></table></figure>
 <h1 id="连接跟踪机制-conntrack"><a href="#连接跟踪机制-conntrack" class="headerlink" title="连接跟踪机制 conntrack"></a>连接跟踪机制 conntrack</h1><p>在 iptables 里，包是和被跟踪连接的四种不同状态有关的。它们是 NEW，ESTABLISHED，RELATED 和 INVALID 。使用 <code>--state</code> 匹配操作，就能很容易地控制 “谁或什么能发起新的会话”。 所有在内核中由 Netfilter 的特定框架做的连接跟踪称作 conntrack（connection tracking）。</p>
 <p>除了本机产生的包由 OUTPUT 链处理外，所有连接跟踪都是在 PREROUTING 链里进行处理的，也就是说 iptables 会在 PREROUTING 链里重新计算所有的状态。如果我们发送一个初始包出去，状态就会在 OUTPUT 链里被设置为 NEW，当我们收到回应的包时，状态就会在 PREROUTING 链里被设置为 ESTABLISHED。如果第一个包不是本机产生的，那就会在 PREROUTING 链里被设置为 NEW 状态。</p>
@@ -845,7 +854,7 @@
 <p>当一个连接在两个方向上都有传输时，conntrack 记录就删除 [UNREPLIED] 标志，然后重置。在末尾有  [ASSURED] 的记录说明两个方向已没有流量。这样的记录是确定的，在连接跟踪表满时，是不会被删除的， 没有 [ASSURED] 的记录就要被删除。连接跟踪表能容纳多少记录是被一个变量控制的，它可由内核中的 ip- sysctl 函数设置。默认值取决于你的内存大小，128MB 可以包含 8192 条目录，256MB 是 16376 条。所以，需要合理调整 <code>nf_conntrack_max</code> 的值。</p>
 <h2 id="数据包在用户空间的状态"><a href="#数据包在用户空间的状态" class="headerlink" title="数据包在用户空间的状态"></a>数据包在用户空间的状态</h2><p><strong>NEW</strong> 说明这个包是我们看到的第一个包。意思就是这是 conntrack 模块看到的某个连接第一个包，它即将被匹配了。比如我们看到一个 SYN 包，是我们所留意的连接的第一个包，就要匹配它。第一个包也可能不是 SYN 包，但它仍会被认为是 NEW 状态。</p>
 <p><strong>ESTABLISHED</strong> 已经注意到两个方向上 的数据传输，而且会继续匹配这个连接的包。只要发送请求并收到响应，连接就是 ESTABLISHED 的了。一个连接要从 NEW 变 为 ESTABLISHED，只需要接到响应包即可，不管这个包是发往防火墙的，还是要由防火墙转发的。ICMP 的错误和重定向等信息包也被看作是 ESTABLISHED，只要它们是发出请求后得到的响应。</p>
-<p><strong>RELATED</strong> 当一个连接和某个已处于 ESTABLISHED 状态的连接有关系时，就被认为是 RELATED 的了。换句话说，一个连接要想是RELATED的，首先要有一个 ESTABLISHED 的连接。这个 ESTABLISHED 连接再产生一个主连接之外的连接，这个新的连接就是 RELATED 的了，当然前提是 conntrack 模块要能理解 RELATED。ftp 就是个很好的例子，FTP-data 连接就是和 FTP-control 有 RELATED 的。注意，大部分还有一些UDP协议都依赖这个机制。这些协议是很复杂的，它们把连接信息放在数据包里，并且要求这些信息能被正确理解。</p>
+<p><strong>RELATED</strong> 当一个连接和某个已处于 ESTABLISHED 状态的连接有关系时，就被认为是 RELATED 的了。换句话说，一个连接要想是 RELATED 的，首先要有一个 ESTABLISHED 的连接。这个 ESTABLISHED 连接再产生一个主连接之外的连接，这个新的连接就是 RELATED 的了，当然前提是 conntrack 模块要能理解 RELATED。ftp 就是个很好的例子，FTP-data 连接就是和 FTP-control 有 RELATED 的。注意，大部分还有一些 UDP 协议都依赖这个机制。这些协议是很复杂的，它们把连接信息放在数据包里，并且要求这些信息能被正确理解。</p>
 <p><strong>INVALID</strong> 说明数据包不能被识别属于哪个连接或没有任何状态。有几个原因可以产生这种情况，比如，内存溢出，收到不知属于哪个连接的 ICMP 错误信息。一般这种状态的数据包都最好 DROP 。</p>
 <p>这些状态可以一起使用，以便匹配数据包。这可以使我们的防火墙非常强壮和有效。以前我们经常打开 1024 以上的所有端口来放行应答的数据。现在有了状态机制就不需再这样了。因为我们可以只开放那些有应答数据的端口，其他的都可以关闭，这样就安全多了。</p>
 <p>对于本机 SSH 服务的 22 号端口，就可以通过状态机制处理了。</p>
@@ -1790,7 +1799,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
