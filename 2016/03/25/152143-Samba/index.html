@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="SambaSamba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。 Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。 Samba服务器的工作原理是：客户端向Samba服">
+<meta name="description" content="SambaSamba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。它是在 Linux 和 UNIX 系统上实现 SMB 协议的一个免费软件，由服务器及客户端程序构成。 Samba 服务器的工作原理是：客户端向 Sam">
 <meta name="keywords" content="Service">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Samba">
 <meta property="og:url" content="http://linuxgeeks.github.io/2016/03/25/152143-Samba/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="SambaSamba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。 Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。 Samba服务器的工作原理是：客户端向Samba服务器发起请求，请求访问共享目录，Samba服务器接收请求，查询smb.conf文">
+<meta property="og:description" content="SambaSamba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。它是在 Linux 和 UNIX 系统上实现 SMB 协议的一个免费软件，由服务器及客户端程序构成。 Samba 服务器的工作原理是：客户端向 Samba 服务器发起请求，请求访问共享目录，Samba 服务器接收请求，查询 smb">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-06T07:33:36.715Z">
+<meta property="og:updated_time" content="2019-05-28T09:03:55.403Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Samba">
-<meta name="twitter:description" content="SambaSamba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。 Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。 Samba服务器的工作原理是：客户端向Samba服务器发起请求，请求访问共享目录，Samba服务器接收请求，查询smb.conf文">
+<meta name="twitter:description" content="SambaSamba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。它是在 Linux 和 UNIX 系统上实现 SMB 协议的一个免费软件，由服务器及客户端程序构成。 Samba 服务器的工作原理是：客户端向 Samba 服务器发起请求，请求访问共享目录，Samba 服务器接收请求，查询 smb">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  719
+                  721
                 </span>
               
 
@@ -379,18 +379,16 @@
       
 
       
-        <h1 id="Samba"><a href="#Samba" class="headerlink" title="Samba"></a>Samba</h1><p>Samba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。</p>
-<p>Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。</p>
-<p>Samba服务器的工作原理是：客户端向Samba服务器发起请求，请求访问共享目录，Samba服务器接收请求，查询smb.conf文件，查看共享目录是否存在，以及来访者的访问权限，如果来访者具有相应的权限，则允许客户端访问，最后将访问过程中系统的信息以及采集的用户访问行为信息存放在日志文件中。</p>
-<h1 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h1><p>安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install samba</span><br></pre></td></tr></table></figure>
-<p>Samba的配置文件一般就放在 <code>/etc/samba</code> 目录中，主配置文件名为<code>smb.conf</code>，文件中记录着大量的规则和共享信息，所以是samba服务非常重要的核心配置文件，完成samba服务器搭建的大部分主要配置都在该文件中进行。</p>
+        <h1 id="Samba"><a href="#Samba" class="headerlink" title="Samba"></a>Samba</h1><p>Samba 是 SMB/CIFS 网络协议的重新实现, 它作为 NFS 的补充使得在 Linux 和 Windows 系统中进行文件共享、打印机共享更容易实现。它是在 Linux 和 UNIX 系统上实现 SMB 协议的一个免费软件，由服务器及客户端程序构成。</p>
+<p>Samba 服务器的工作原理是：客户端向 Samba 服务器发起请求，请求访问共享目录，Samba 服务器接收请求，查询 <code>smb.conf</code> 文件，查看共享目录是否存在，以及来访者的访问权限，如果来访者具有相应的权限，则允许客户端访问，最后将访问过程中系统的信息以及采集的用户访问行为信息存放在日志文件中。</p>
+<h1 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install samba</span><br></pre></td></tr></table></figure>
+<p>Samba的配置文件一般就放在 <code>/etc/samba</code> 目录中，主配置文件名为 <code>smb.conf</code>，文件中记录着大量的规则和共享信息，所以是 samba 服务非常重要的核心配置文件，完成 samba 服务器搭建的大部分主要配置都在该文件中进行。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/samba</span><br><span class="line">cp -a smb.conf&#123;,.bak&#125;</span><br><span class="line">vim smb.conf</span><br></pre></td></tr></table></figure>
 <p>配置参考</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">    workgroup = Samba</span><br><span class="line">    netbios name = SambaServer</span><br><span class="line">    server string = Linux Samba Server TestServer</span><br><span class="line">    security = user</span><br><span class="line"><span class="comment"># workgroup：在Windows中显示的工作组</span></span><br><span class="line"><span class="comment"># netbios name：在Windows中显示出来的计算机名</span></span><br><span class="line"><span class="comment"># server string ：Samba服务器说明，可以自定义</span></span><br><span class="line"><span class="comment"># security：验证和登录方式，share为共享；user为用户认证</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[shared]</span><br><span class="line">    path = /opt/shared</span><br><span class="line">    writeable = no</span><br><span class="line">    browseable = yes</span><br><span class="line">    guest ok = yes</span><br><span class="line"><span class="comment"># [shared]：在Windows中显示出来是共享的目录</span></span><br><span class="line"><span class="comment"># path = 设置要共享的目录的路径</span></span><br><span class="line"><span class="comment"># writeable 是否可写</span></span><br><span class="line"><span class="comment"># browseable 是否可以浏览；可以浏览意味着，在工作组下能看到共享文件夹</span></span><br><span class="line"><span class="comment"># guest ok 匿名用户以guest身份是登录</span></span><br></pre></td></tr></table></figure>
-<p>建立目录、用户并授权。Samba的所有用户都必须是系统里已存在的用户。密码是独立的，不是 <code>/etc/shadow</code> 中的密码</p>
+<p>建立目录、用户并授权。Samba 的所有用户都必须是系统里已存在的用户。密码是独立的，不是 <code>/etc/shadow</code> 中的密码</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">install -cdv /opt/shared</span><br><span class="line">useradd <span class="built_in">test</span></span><br><span class="line">smbpasswd  -a  <span class="built_in">test</span></span><br><span class="line">chown -R test.test /opt/shared/</span><br></pre></td></tr></table></figure>
-<p>启动smbd和nmbd服务</p>
+<p>启动 smbd 和 nmbd 服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> --now smb nmb</span><br></pre></td></tr></table></figure>
 <p>使用 Windows 的运行输入<code>\\Samba</code> 服务器的地址访问测试</p>
 <h1 id="附加配置"><a href="#附加配置" class="headerlink" title="附加配置"></a>附加配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [global]字段可选配置：</span></span><br><span class="line"><span class="comment"># dos charset = GB2312</span></span><br><span class="line"><span class="comment"># 将Windows 客户端的文字编码设置为简体中文 GB2312</span></span><br><span class="line"><span class="comment"># unix charset =GB2312</span></span><br><span class="line"><span class="comment"># 指定Samba所在的CentOS服务端新建文件或目录时的编码为 GB2312</span></span><br><span class="line"><span class="comment"># display charset= GB2312</span></span><br><span class="line"><span class="comment"># 指定使用SWAT（一种通过浏览器控制Samba的工具）时页面的默认文字编码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># directory mask = 0777</span></span><br><span class="line"><span class="comment"># force directorymode = 0777</span></span><br><span class="line"><span class="comment"># directorysecurity mask = 0777</span></span><br><span class="line"><span class="comment"># force directorysecurity mode = 0777</span></span><br><span class="line"><span class="comment"># 指定新建目录的权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># create mask =0777</span></span><br><span class="line"><span class="comment"># force createmode = 0777</span></span><br><span class="line"><span class="comment"># security mask =0777</span></span><br><span class="line"><span class="comment"># force securitymode = 0777</span></span><br><span class="line"><span class="comment"># 指定新建文件的权限</span></span><br></pre></td></tr></table></figure>
@@ -601,7 +599,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

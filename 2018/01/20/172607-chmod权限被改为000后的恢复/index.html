@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="方法一：使用库文件的管理程序调用chmod  1/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod  方法二：使用busybox的chmod授权  1busybox chmod 755 /bin/chmod  方法三：使用dd命令  1234567mv /bin/">
+<meta name="description" content="使用库文件的管理程序 ld-linux-x86-64.so.2 调用 chmod 1/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod 使用 busybox 的 chmod 授权 1busybox chmod 755 /bin/chmod 使用 dd 生成一个 c">
 <meta name="keywords" content="Maintenance">
 <meta property="og:type" content="article">
 <meta property="og:title" content="chmod权限被改为000后的恢复">
 <meta property="og:url" content="http://linuxgeeks.github.io/2018/01/20/172607-chmod权限被改为000后的恢复/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="方法一：使用库文件的管理程序调用chmod  1/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod  方法二：使用busybox的chmod授权  1busybox chmod 755 /bin/chmod  方法三：使用dd命令  1234567mv /bin/chmod /bin/chmod.origcp -a /bin/chown /">
+<meta property="og:description" content="使用库文件的管理程序 ld-linux-x86-64.so.2 调用 chmod 1/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod 使用 busybox 的 chmod 授权 1busybox chmod 755 /bin/chmod 使用 dd 生成一个 chmod 1234567mv /bin/chmod /bin/chmod.ori">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-27T08:28:07.468Z">
+<meta property="og:updated_time" content="2019-05-28T08:41:24.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="chmod权限被改为000后的恢复">
-<meta name="twitter:description" content="方法一：使用库文件的管理程序调用chmod  1/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod  方法二：使用busybox的chmod授权  1busybox chmod 755 /bin/chmod  方法三：使用dd命令  1234567mv /bin/chmod /bin/chmod.origcp -a /bin/chown /">
+<meta name="twitter:description" content="使用库文件的管理程序 ld-linux-x86-64.so.2 调用 chmod 1/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod 使用 busybox 的 chmod 授权 1busybox chmod 755 /bin/chmod 使用 dd 生成一个 chmod 1234567mv /bin/chmod /bin/chmod.ori">
 
 
 
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  216
+                  219
                 </span>
               
 
@@ -379,38 +379,22 @@
       
 
       
-        <ul>
-<li>方法一：使用库文件的管理程序调用chmod</li>
-</ul>
+        <p>使用库文件的管理程序 <code>ld-linux-x86-64.so.2</code> 调用 <code>chmod</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/lib64/ld-linux-x86-64.so.2 /bin/chmod 755 /bin/chmod</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法二：使用busybox的chmod授权</li>
-</ul>
+<p>使用 busybox 的 <code>chmod</code> 授权</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">busybox chmod 755 /bin/chmod</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法三：使用dd命令</li>
-</ul>
+<p>使用 <code>dd</code> 生成一个 <code>chmod</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mv /bin/chmod /bin/chmod.orig</span><br><span class="line">cp -a /bin/chown /bin/chmod</span><br><span class="line">dd <span class="keyword">if</span>=/bin/chmod.orig of=/bin/chmod</span><br><span class="line"></span><br><span class="line">95+1 records <span class="keyword">in</span></span><br><span class="line">95+1 records out</span><br><span class="line">48712 bytes (49 kB) copied,0.00117323 s, 41.5 MB/s</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法四：使用facl额外授权</li>
-</ul>
+<p>使用 <code>facl</code> 额外授权</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setfacl -m u::rx /bin/chmod </span><br><span class="line">chmod 755 /bin/chmod </span><br><span class="line">setfacl -b /bin/chmod</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法五：复制一个可执行文件，然后使用chmod命令覆盖</li>
-</ul>
+<p>复制一个可执行文件，然后使用 chmod 命令覆盖</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp /bin/ls chmod</span><br><span class="line">\cp /bin/chmod .</span><br><span class="line">\cp -a chmod /bin/chmod</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法六：使用install命令的-m选项也可以设置权限</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install -ma+x /bin/chmod .</span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法七：使用perl</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perl -e<span class="string">'chmod 0755, "/bin/chmod"'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>方法八：使用Python</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c<span class="string">'import os; os.chmod("/bin/chmod", 0755)'</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>install</code> 命令的 <code>-m</code> 选项也可以设置权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">install -ma+x /bin/chmod .</span><br><span class="line">cp chmod /bin/chmod</span><br></pre></td></tr></table></figure>
+<p>使用 <code>perl</code> 修改文件权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perl -e <span class="string">'chmod 0755, "/bin/chmod"'</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>Python</code> 修改文件权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c <span class="string">'import os; os.chmod("/bin/chmod", 0755)'</span></span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -609,7 +593,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
