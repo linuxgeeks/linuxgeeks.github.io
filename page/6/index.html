@@ -280,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/18/135556-NegativeCaching的简单理解/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/04/11/110119-CentOS中resolv.conf的配置实验/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -299,7 +299,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/18/135556-NegativeCaching的简单理解/" itemprop="url">NegativeCaching的简单理解</a></h1>
+                <a class="post-title-link" href="/2016/04/11/110119-CentOS中resolv.conf的配置实验/" itemprop="url">CentOS中resolv.conf的配置实验</a></h1>
         
 
         <div class="post-meta">
@@ -311,8 +311,327 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-18T19:01:15+08:00">
-                2016-03-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-11T11:01:19+08:00">
+                2016-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  13,115
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  70
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          通常情况下，在 Linux 中可以用来配置 DNS 地址的文件有两个：
+
+解析配置文件 /etc/resolv.conf，文件中的注释行可以采用 # 或者 ; 开头
+网卡 ifcfg 配置文件 /etc/sysconfig/network-scripts/ifcfg-eth*
+
+resolv.con
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/04/11/110119-CentOS中resolv.conf的配置实验/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/04/07/214147-利用Dnsmasq搭建本地自有DNS服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/07/214147-利用Dnsmasq搭建本地自有DNS服务器/" itemprop="url">利用Dnsmasq搭建本地自有DNS服务器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-07T21:41:47+08:00">
+                2016-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7,450
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  32
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Dnsmasq 提供 DNS 缓存和 DHCP服务、Tftp服务功能。作为域名解析服务器(DNS)，dnsmasq可以通过缓存 DNS 请求来提高对访问过的网址的连接速度。作为DHCP 服务器，Dnsmasq 可以用于为局域网电脑分配内网ip地址和提供路由。DNS和DHCP两个功能可以同时或分别单独
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/04/07/214147-利用Dnsmasq搭建本地自有DNS服务器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/04/03/130135-NegativeCaching的简单理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/03/130135-NegativeCaching的简单理解/" itemprop="url">NegativeCaching的简单理解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-03T13:01:35+08:00">
+                2016-04-03
               </time>
             
 
@@ -387,7 +706,7 @@
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/18/135556-NegativeCaching的简单理解/#espandi" rel="contents">
+            <a class="btn" href="/2016/04/03/130135-NegativeCaching的简单理解/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -438,7 +757,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/17/174139-利用Dnsmasq搭建本地自有DNS服务器/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/29/192111-使用普通用户管理DNS服务器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -457,7 +776,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/17/174139-利用Dnsmasq搭建本地自有DNS服务器/" itemprop="url">利用Dnsmasq搭建本地自有DNS服务器</a></h1>
+                <a class="post-title-link" href="/2016/03/29/192111-使用普通用户管理DNS服务器/" itemprop="url">使用普通用户管理DNS服务器</a></h1>
         
 
         <div class="post-meta">
@@ -469,165 +788,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-17T17:41:39+08:00">
-                2016-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  7,450
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  32
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Dnsmasq 提供 DNS 缓存和 DHCP服务、Tftp服务功能。作为域名解析服务器(DNS)，dnsmasq可以通过缓存 DNS 请求来提高对访问过的网址的连接速度。作为DHCP 服务器，Dnsmasq 可以用于为局域网电脑分配内网ip地址和提供路由。DNS和DHCP两个功能可以同时或分别单独
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/17/174139-利用Dnsmasq搭建本地自有DNS服务器/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/16/170124-使用普通用户管理DNS服务器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Silence">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/16/170124-使用普通用户管理DNS服务器/" itemprop="url">使用普通用户管理DNS服务器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-16T17:01:24+08:00">
-                2016-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-29T19:21:11+08:00">
+                2016-03-29
               </time>
             
 
@@ -702,7 +864,7 @@ Linux 系统规
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/16/170124-使用普通用户管理DNS服务器/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/29/192111-使用普通用户管理DNS服务器/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -753,7 +915,7 @@ Linux 系统规
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/16/150111-DNS服务/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/25/212131-DNS服务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -772,7 +934,7 @@ Linux 系统规
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/16/150111-DNS服务/" itemprop="url">DNS服务</a></h1>
+                <a class="post-title-link" href="/2016/03/25/212131-DNS服务/" itemprop="url">DNS服务</a></h1>
         
 
         <div class="post-meta">
@@ -784,8 +946,8 @@ Linux 系统规
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-16T15:01:11+08:00">
-                2016-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-25T21:21:31+08:00">
+                2016-03-25
               </time>
             
 
@@ -860,7 +1022,7 @@ ICANN，全称I
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/16/150111-DNS服务/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/25/212131-DNS服务/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -911,7 +1073,7 @@ ICANN，全称I
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/13/150143-OpenSSH/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/21/190139-OpenSSH/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -930,7 +1092,7 @@ ICANN，全称I
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/13/150143-OpenSSH/" itemprop="url">OpenSSH</a></h1>
+                <a class="post-title-link" href="/2016/03/21/190139-OpenSSH/" itemprop="url">OpenSSH</a></h1>
         
 
         <div class="post-meta">
@@ -942,8 +1104,8 @@ ICANN，全称I
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-13T15:01:43+08:00">
-                2016-03-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-21T19:01:39+08:00">
+                2016-03-21
               </time>
             
 
@@ -1018,7 +1180,7 @@ SSH 是专为远程登录会话和其他网络服务提供的安
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/13/150143-OpenSSH/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/21/190139-OpenSSH/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1069,7 +1231,7 @@ SSH 是专为远程登录会话和其他网络服务提供的安
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/10/150143-什么是数字签名/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/17/110123-什么是数字签名/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -1088,7 +1250,7 @@ SSH 是专为远程登录会话和其他网络服务提供的安
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/10/150143-什么是数字签名/" itemprop="url">什么是数字签名</a></h1>
+                <a class="post-title-link" href="/2016/03/17/110123-什么是数字签名/" itemprop="url">什么是数字签名</a></h1>
         
 
         <div class="post-meta">
@@ -1100,8 +1262,8 @@ SSH 是专为远程登录会话和其他网络服务提供的安
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-10T15:01:43+08:00">
-                2016-03-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-17T11:01:23+08:00">
+                2016-03-17
               </time>
             
 
@@ -1177,7 +1339,7 @@ SSH 是专为远程登录会话和其他网络服务提供的安
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/10/150143-什么是数字签名/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/17/110123-什么是数字签名/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1228,7 +1390,7 @@ SSH 是专为远程登录会话和其他网络服务提供的安
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/07/192107-私有CA及https/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/13/194143-私有CA及https/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -1247,7 +1409,7 @@ SSH 是专为远程登录会话和其他网络服务提供的安
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/07/192107-私有CA及https/" itemprop="url">私有CA及https</a></h1>
+                <a class="post-title-link" href="/2016/03/13/194143-私有CA及https/" itemprop="url">私有CA及https</a></h1>
         
 
         <div class="post-meta">
@@ -1259,8 +1421,8 @@ SSH 是专为远程登录会话和其他网络服务提供的安
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-07T19:21:07+08:00">
-                2016-03-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-13T19:41:43+08:00">
+                2016-03-13
               </time>
             
 
@@ -1354,7 +1516,7 @@ SSL会话基于 IP 地址进行，不支持在基于主机名的虚拟主机上�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/07/192107-私有CA及https/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/13/194143-私有CA及https/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1405,7 +1567,7 @@ SSL会话基于 IP 地址进行，不支持在基于主机名的虚拟主机上�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/05/132119-是时候理解下HTTPS及背后的加密原理了/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/09/212119-是时候理解下HTTPS及背后的加密原理了/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -1424,7 +1586,7 @@ SSL会话基于 IP 地址进行，不支持在基于主机名的虚拟主机上�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/05/132119-是时候理解下HTTPS及背后的加密原理了/" itemprop="url">是时候理解下HTTPS及背后的加密原理了</a></h1>
+                <a class="post-title-link" href="/2016/03/09/212119-是时候理解下HTTPS及背后的加密原理了/" itemprop="url">是时候理解下HTTPS及背后的加密原理了</a></h1>
         
 
         <div class="post-meta">
@@ -1436,8 +1598,8 @@ SSL会话基于 IP 地址进行，不支持在基于主机名的虚拟主机上�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-05T13:21:19+08:00">
-                2016-03-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-09T21:21:19+08:00">
+                2016-03-09
               </time>
             
 
@@ -1516,7 +1678,7 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/05/132119-是时候理解下HTTPS及背后的加密原理了/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/09/212119-是时候理解下HTTPS及背后的加密原理了/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1567,7 +1729,7 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/04/134123-OpenSSL/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/05/170135-OpenSSL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Silence">
@@ -1586,7 +1748,7 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/04/134123-OpenSSL/" itemprop="url">OpenSSL</a></h1>
+                <a class="post-title-link" href="/2016/03/05/170135-OpenSSL/" itemprop="url">OpenSSL</a></h1>
         
 
         <div class="post-meta">
@@ -1598,8 +1760,8 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-04T13:41:23+08:00">
-                2016-03-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-05T17:01:35+08:00">
+                2016-03-05
               </time>
             
 
@@ -1676,172 +1838,7 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/04/134123-OpenSSL/#espandi" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/03/01/112123-加密技术和算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Silence">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/01/112123-加密技术和算法/" itemprop="url">加密技术和算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-01T11:21:23+08:00">
-                2016-03-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  3,644
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  13
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          TCP/IP 安全因素
-数据机密性
-保证数据密文传输，不能被中间人破解数据读取到真实内容
-常见的不机密通信：ftp、http、smtp、telnet。这些协议的通信过程中都是明文传输，无法保证数据的机密性。
-
-
-数据完整性
-数据是否被篡改：不能让入侵者使用假数据代替合法数据，否则数据将丧失完整性。
-
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/03/01/112123-加密技术和算法/#espandi" rel="contents">
+            <a class="btn" href="/2016/03/05/170135-OpenSSL/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1935,7 +1932,7 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-count">115</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1957,7 +1954,7 @@ HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

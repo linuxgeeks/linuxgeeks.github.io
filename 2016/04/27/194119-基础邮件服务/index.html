@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Service," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="概述 MUA（Mail User Agent）邮件用户代理：接收邮件所使用的邮件客户端程序，使用IMAP或POP3协议与服务器通信，它提供了阅读、发送和接收电子邮件的用户接口。常见的客户端：outlook、foxmail等  MTA（Mail Transfer Agent）邮件传送代理：通过SMTP协议负责邮件的存储、">
+<meta name="keywords" content="Service">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础邮件服务器">
+<meta property="og:url" content="http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="概述 MUA（Mail User Agent）邮件用户代理：接收邮件所使用的邮件客户端程序，使用IMAP或POP3协议与服务器通信，它提供了阅读、发送和接收电子邮件的用户接口。常见的客户端：outlook、foxmail等  MTA（Mail Transfer Agent）邮件传送代理：通过SMTP协议负责邮件的存储、发送和转发。监视MUA的请求，根据电子邮件的目标地址找出对应的邮件服务器，将信件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/postfix_dovecot.png">
+<meta property="og:updated_time" content="2019-05-29T11:53:57.654Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基础邮件服务器">
+<meta name="twitter:description" content="概述 MUA（Mail User Agent）邮件用户代理：接收邮件所使用的邮件客户端程序，使用IMAP或POP3协议与服务器通信，它提供了阅读、发送和接收电子邮件的用户接口。常见的客户端：outlook、foxmail等  MTA（Mail Transfer Agent）邮件传送代理：通过SMTP协议负责邮件的存储、发送和转发。监视MUA的请求，根据电子邮件的目标地址找出对应的邮件服务器，将信件">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/postfix_dovecot.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/"/>
+
+
+
+
+
+  <title>基础邮件服务器 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基础邮件服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-27T19:41:19+08:00">
+                2016-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6,306
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  27
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><ul>
+<li><p>MUA（Mail User Agent）邮件用户代理：接收邮件所使用的邮件客户端程序，使用IMAP或POP3协议与服务器通信，它提供了阅读、发送和接收电子邮件的用户接口。常见的客户端：outlook、foxmail等</p>
+</li>
+<li><p>MTA（Mail Transfer Agent）邮件传送代理：通过SMTP协议负责邮件的存储、发送和转发。监视MUA的请求，根据电子邮件的目标地址找出对应的邮件服务器，将信件在服务器之间传输并将接受到的邮件进行缓冲。在linux环境中常见的MTA有：sendmail、qmail等</p>
+</li>
+<li><p>MDA（Mail Deliver Agent）邮件投递代理：将MTA接收到的邮件保存到磁盘或指定地方，通常会进行垃圾邮件及病毒扫描。常用的MDA：procmail、dropmail等</p>
+</li>
+<li><p>MRA（Mail Retrieval  Agent）邮件取回代理：负责实现IMAP与POP3协议，与MUA进行交互。常用的MRA：dovecot</p>
+</li>
+<li><p>MSA（Mail Submission Agent）邮件提交代理：检查邮件安全性与垃圾等，处理额外的工作</p>
+</li>
+</ul>
+<p>开源邮件系统</p>
+<ul>
+<li>Sendmail：资格最老，运行稳定，但安全性欠佳</li>
+<li>Qmail：更好的执行效率，配置管理也很方便，但兼容性不高</li>
+<li>Postfix：兼容Sendmail，采用模块化设计，在投递效率、稳定性、服务性能及安全方面都很优秀</li>
+</ul>
+<h1 id="一封邮件的流程"><a href="#一封邮件的流程" class="headerlink" title="一封邮件的流程"></a>一封邮件的流程</h1><ul>
+<li>发件人：MUA =&gt; 发送 =&gt; MTA =&gt;  若干个MTA… =&gt;  MTA =&gt; MDA &lt;= 收取 &lt;= MUA：收件人</li>
+<li>MUA并非直接将邮件发送至收件人手中，而是通过MTA代为传递，Sendmail和Postfix就是扮演MTA的角色</li>
+<li>一封邮件从MUA发出后，可能通过一个或多个MTA传递，最终到达MDA。然后存放在某个文件或特殊的数据库里，我们将这个长期保存邮件的地方称之为邮箱</li>
+<li>一旦邮件到达邮箱，就原地不动了，等用户再通过MUA将其取走，就是用Outlook，Foxmail等软件收信的过程</li>
+<li>MUA到MTA，以及MTA到MTA之间使用的协议就是SMTP协议，而收邮件时，MUA到MDA之间使用的协议最常用的是POP3或IMAP。</li>
+</ul>
+<p><img src="/2016/04/27/194119-基础邮件服务/postfix_dovecot.png" alt=""></p>
+<h1 id="邮件应用协议"><a href="#邮件应用协议" class="headerlink" title="邮件应用协议"></a>邮件应用协议</h1><ul>
+<li>简单邮件传输协议(SMTP)，用来发送或中转发出的电子邮件，占用tcp 25端口。</li>
+<li>第三版邮局协议(POP3)，用于将服务器上把邮件存储到本地主机，占用tcp 110端口。</li>
+<li>第四版互联网信息访问协议(IMAP4)，用于在本地主机上访问邮件，占用tcp 143端口。</li>
+</ul>
+<p>注意事项：如果想搭建企业级的电子邮件系统，请考虑以下几点：</p>
+<ul>
+<li>反垃圾与反病毒模块：阻止垃圾邮件或病毒邮件对企业邮箱的干扰。</li>
+<li>邮件加密：保证邮件内容不被嗅探、篡改。</li>
+<li>邮件监控审核：监控全体职员邮件中有无敏感词，透露企业资料等。</li>
+<li>稳定性：有较好的防DDOS攻击的能力，保证系统在线率等。</li>
+</ul>
+<h1 id="搭建邮件服务器"><a href="#搭建邮件服务器" class="headerlink" title="搭建邮件服务器"></a>搭建邮件服务器</h1><p><strong>准备工作</strong></p>
+<p>邮件服务依赖于 DNS 服务，事先确保 DNS 服务已经为邮件应用配置完成。为了方便，此处将邮件服务器和DNS服务器配置为一台：192.168.247.108。主机名为 <code>mail.test.com</code> ，区域为 <code>test.com</code> ，邮件服务器为 <code>mail.test.com</code></p>
+<p>修改主机名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name=<span class="string">"mail.test.com"</span></span><br><span class="line">sed -ri <span class="string">'s#(HOSTNAME=).*#\1'</span><span class="string">"<span class="variable">$&#123;name&#125;</span>"</span><span class="string">'#'</span> /etc/sysconfig/network </span><br><span class="line">hostname <span class="variable">$&#123;name&#125;</span></span><br></pre></td></tr></table></figure>
+<p>DNS配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">zone <span class="string">"test.com"</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">"test.com.zone"</span>;</span><br><span class="line">        allow-update &#123; none; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment"># 邮件服务器需要用到反向解析，否则会在互联网被视为垃圾邮件服务器</span></span><br><span class="line">zone <span class="string">"247.168.192.in-addr.arpa"</span> IN &#123;</span><br><span class="line">        <span class="built_in">type</span> master;</span><br><span class="line">        file <span class="string">"192.168.247.zone"</span>;</span><br><span class="line">        allow-update &#123; none; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>正向区域文件<code>/var/named/test.com.zone</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$TTL</span> 1D</span><br><span class="line">@       IN SOA  ns1.test.com. admin.test.com. (</span><br><span class="line">                                20160217        ; serial</span><br><span class="line">                                        1D      ; refresh</span><br><span class="line">                                        1H      ; retry</span><br><span class="line">                                        1W      ; expire</span><br><span class="line">                                        3H )    ; minimum</span><br><span class="line">        IN      NS      ns1</span><br><span class="line">        IN      MX 10   mail</span><br><span class="line">ns1     IN      A       192.168.247.108</span><br><span class="line">mail    IN      A       192.168.247.108</span><br></pre></td></tr></table></figure>
+<p>反向区域文件<code>/var/named/192.168.247.zone</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$TTL</span> 1D</span><br><span class="line">@       IN SOA  ns1.test.com. admin.test.com. (</span><br><span class="line">                                20160217        ; serial</span><br><span class="line">                                        1D      ; refresh</span><br><span class="line">                                        1H      ; retry</span><br><span class="line">                                        1W      ; expire</span><br><span class="line">                                        3H )    ; minimum</span><br><span class="line">        IN      NS      ns1.test.com.</span><br><span class="line">108       IN      PTR     ns1.test.com.</span><br><span class="line">108       IN      PTR     mail.test.com.</span><br></pre></td></tr></table></figure>
+<p>权限修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/named/</span><br><span class="line">chown named.named test.com.zone 192.168.247.zone </span><br><span class="line">chmod 640 test.com.zone 192.168.247.zone </span><br><span class="line"><span class="comment"># 语法检查</span></span><br><span class="line">named-checkzone <span class="string">"test.com"</span> test.com.zone </span><br><span class="line">named-checkzone <span class="string">"247.168.192.in-addr.arpa"</span> 192.168.247.zone</span><br></pre></td></tr></table></figure>
+<p><strong>软件包、服务、用户环境配置</strong></p>
+<p>依赖包安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y groupinstall <span class="string">"Development Libraries"</span> <span class="string">"Development Tools"</span></span><br><span class="line">yum -y install db*-devel  </span><br><span class="line">yum -y install cyrus-sasl*</span><br></pre></td></tr></table></figure>
+<p>如果系统有sendmail，需要把sendmail关掉</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service sendmail stop</span><br><span class="line">chkconfig sendmail off</span><br></pre></td></tr></table></figure>
+<p>为了更好的支持sasl，因此编译安装postfix；如果有rpm的postfix，要删除掉并且把postfix用户等信息也删除掉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rpm -e postfix --nodeps</span><br><span class="line">userdel -r postfix</span><br><span class="line">userdel -r postdrop</span><br><span class="line">groupdel postfix</span><br><span class="line">groupdel postdrop</span><br></pre></td></tr></table></figure>
+<h2 id="安装-postfix"><a href="#安装-postfix" class="headerlink" title="安装 postfix"></a>安装 postfix</h2><p>Postfix是一款由IBM出资研发的免费开源的邮局服务程序，兼容于Sendmail服务程序，即Sendmail用户可以很方便的迁移到Postfix程序，且收发件性能远超过Sendmail，能够自动增加减少进程的数量，保证邮局系统的高性能与稳定性，另外Postfix是由诸多的小模块组成，每个小模块完成特定的功能，使得管理员可以灵活的组合这些模块。</p>
+<p>单独使用Postfix服务程序并不能让用户完成收发邮件的操作，因为一个基础的电子邮局系统至少需要有SMTP服务器、POP3/IMAP服务器，为了能够部署一个基础的电子邮件系统，我们需要使用到下面的软件：</p>
+<ul>
+<li>Postfix：提供邮件发送服务，即SMTP。</li>
+<li>Dovecot：提供邮件收取服务，即POP3。</li>
+<li>OutLook Express：客户端收发邮件的工具。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户组，ID号最好大于1000</span></span><br><span class="line">groupadd -g 2828 postfix</span><br><span class="line">useradd -g postfix -u 2828 -s /sbin/nologin -M postfix</span><br><span class="line">groupadd -g 2829 postdrop</span><br><span class="line">useradd -g postdrop -u 2829 -s /sbin/nologin -M postdrop</span><br><span class="line"><span class="comment"># 编译安装</span></span><br><span class="line">tar xf postfix-3.2.0.tar.gz</span><br><span class="line"><span class="built_in">cd</span> postfix-3.2.0</span><br><span class="line">make tidy</span><br><span class="line">make makefiles <span class="string">'CCARGS=-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl'</span> <span class="string">'AUXLIBS=-L/usr/lib64/sasl2 -lsasl2'</span></span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建邮件别名库</span></span><br><span class="line">newaliases</span><br><span class="line">ll /etc/aliases*</span><br></pre></td></tr></table></figure>
+<h2 id="配置-postfix"><a href="#配置-postfix" class="headerlink" title="配置 postfix"></a>配置 postfix</h2><p>Postfix 邮局服务程序的配置文件：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/usr/sbin/postfix</td>
+<td>主服务程序</td>
+</tr>
+<tr>
+<td>/etc/postfix/master.cf</td>
+<td>master主程序的配置文件。</td>
+</tr>
+<tr>
+<td>/etc/postfix/main.cf</td>
+<td>postfix服务的配置文件。</td>
+</tr>
+<tr>
+<td>/var/log/maillog</td>
+<td>记录邮件传递过程的日志。</td>
+</tr>
+<tr>
+<td>/usr/libexec/postfix</td>
+<td>服务程序目录</td>
+</tr>
+<tr>
+<td>/var/spool/postfix</td>
+<td>邮件队列目录</td>
+</tr>
+</tbody>
+</table>
+<p>Postfix 服务程序主配置文件:</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>myhostname</td>
+<td>邮件系统的主机名。</td>
+</tr>
+<tr>
+<td>mydomain</td>
+<td>邮件系统的域名。</td>
+</tr>
+<tr>
+<td>myorigin</td>
+<td>从本机寄出邮件的域名名称。</td>
+</tr>
+<tr>
+<td>inet_interfaces</td>
+<td>监听的网卡接口。</td>
+</tr>
+<tr>
+<td>mydestination</td>
+<td>可接收邮件的主机名或域名。</td>
+</tr>
+<tr>
+<td>mynetworks</td>
+<td>设置可转发那些主机的邮件。</td>
+</tr>
+<tr>
+<td>relay_domains</td>
+<td>设置可转发那些网域的邮件</td>
+</tr>
+</tbody>
+</table>
+<p>编辑 Postfix 主配置文件，直接执行辅助配置工具 <code>postconf</code>，可列出 postfix 服务所支持的所有配置。结合 <code>-n</code> 选项可排除默认配置，只列出非默认的配置。结合 <code>-d</code> 选项可查看默认配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 备份main.cf文件，创建新的main.cf文件</span></span><br><span class="line">postconf -n &gt; tmp.file</span><br><span class="line">mv /etc/postfix/main.cf&#123;,.bak&#125;</span><br><span class="line">mv tmp.file /etc/postfix/main.cf</span><br><span class="line">vim /etc/postfix/main.cf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">command_directory = /usr/sbin</span><br><span class="line">compatibility_level = 2</span><br><span class="line">daemon_directory = /usr/libexec/postfix</span><br><span class="line">data_directory = /var/lib/postfix</span><br><span class="line">debug_peer_level = 2</span><br><span class="line">debugger_command = PATH=/bin:/usr/bin:/usr/<span class="built_in">local</span>/bin:/usr/X11R6/bin ddd <span class="variable">$daemon_directory</span>/<span class="variable">$process_name</span> <span class="variable">$process_id</span> &amp; sleep 5</span><br><span class="line">html_directory = no</span><br><span class="line">inet_protocols = ipv4</span><br><span class="line">mail_owner = postfix</span><br><span class="line">mailq_path = /usr/bin/mailq</span><br><span class="line">manpage_directory = /usr/<span class="built_in">local</span>/man</span><br><span class="line">meta_directory = /etc/postfix</span><br><span class="line">newaliases_path = /usr/bin/newaliases</span><br><span class="line">queue_directory = /var/spool/postfix</span><br><span class="line">readme_directory = no</span><br><span class="line">sample_directory = /etc/postfix</span><br><span class="line">sendmail_path = /usr/sbin/sendmail</span><br><span class="line">setgid_group = postdrop</span><br><span class="line">shlib_directory = no</span><br><span class="line">unknown_local_recipient_reject_code = 550</span><br><span class="line"></span><br><span class="line">myhostname = mail.test.com                </span><br><span class="line"><span class="comment"># 邮件服务器自己的主机名，应改和邮件服务器上hostname命令结果保持一致</span></span><br><span class="line">mydomain = test.com                        </span><br><span class="line"><span class="comment"># 邮件域</span></span><br><span class="line">myorigin = <span class="variable">$mydomain</span>                        </span><br><span class="line"><span class="comment"># 发件域：发件人所在的域名，即做发件地址伪装（a@mail.test.com=&gt;a@test.com）</span></span><br><span class="line">mydestination = <span class="variable">$myhostname</span>, localhost.<span class="variable">$mydomain</span>, localhost,<span class="variable">$mydomain</span></span><br><span class="line"><span class="comment"># 投递域</span></span><br><span class="line"><span class="comment">#home_mailbox = </span></span><br><span class="line"></span><br><span class="line">inet_interfaces = 192.168.247.108,127.0.0.1</span><br><span class="line"><span class="comment"># 指定postfix系统监听的网络接口</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>postfix服务器支持两种邮件存储方式：Mailbox和Maildir。当指定存储位置最后一位为“/”时，自动使用Maildir方式存储。Mailbox存储方式将同一用户的所有邮件内容存储在同一个文件中，通常对应为目录“/var/spool/mail”中以用户名命名的文件。Maildir存储方式使用目录结构来储存用户的邮件内容，每一个用户对应有一个文件夹，每一封邮件作为为一个独立的文件保存，通常位于用户的主目录下。</li>
+<li>为了不修改原有的邮件存放地址，这个地方需要把home_mailbox注释掉。</li>
+<li>在postfix的配置文件中，参数行和注释行是不能处在同一行中的；</li>
+<li>任何一个参数的值都不需要加引号，否则，引号将会被当作参数值的一部分来使用；</li>
+<li>每修改参数及其值后执行 postfix reload 即可令其生效；但若修改了inet_interfaces，则需重新启动postfix；</li>
+<li>如果一个参数的值有多个，可以将它们放在不同的行中，只需要在其后的每个行前多置一个空格即可；postfix会把第一个字符为空格或tab的文本行视为上一行的延续</li>
+</ul>
+<h2 id="postfix服务"><a href="#postfix服务" class="headerlink" title="postfix服务"></a>postfix服务</h2><p>创建 sysv 服务脚本：<code>/etc/rc.d/init.d/postfix</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># postfix      Postfix Mail Transfer Agent</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># chkconfig: 2345 80 30</span></span><br><span class="line"><span class="comment"># description: Postfix is a Mail Transport Agent, which is the program \</span></span><br><span class="line"><span class="comment">#              that moves mail from one machine to another.</span></span><br><span class="line"><span class="comment"># processname: master</span></span><br><span class="line"><span class="comment"># pidfile: /var/spool/postfix/pid/master.pid</span></span><br><span class="line"><span class="comment"># config: /etc/postfix/main.cf</span></span><br><span class="line"><span class="comment"># config: /etc/postfix/master.cf</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Source function library.</span></span><br><span class="line">. /etc/rc.d/init.d/<span class="built_in">functions</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># Source networking configuration.</span></span><br><span class="line">. /etc/sysconfig/network</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Check that networking is up.</span></span><br><span class="line">[ <span class="variable">$NETWORKING</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 3</span><br><span class="line"> </span><br><span class="line">[ -x /usr/sbin/postfix ] || <span class="built_in">exit</span> 4</span><br><span class="line">[ -d /etc/postfix ] || <span class="built_in">exit</span> 5</span><br><span class="line">[ -d /var/spool/postfix ] || <span class="built_in">exit</span> 6</span><br><span class="line"> </span><br><span class="line">RETVAL=0</span><br><span class="line">prog=<span class="string">"postfix"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123;</span><br><span class="line">	<span class="comment"># Start daemons.</span></span><br><span class="line">	<span class="built_in">echo</span> -n $<span class="string">"Starting postfix: "</span></span><br><span class="line">        /usr/bin/newaliases &gt;/dev/null 2&gt;&amp;1</span><br><span class="line">	/usr/sbin/postfix start 2&gt;/dev/null 1&gt;&amp;2 &amp;&amp; success || failure $<span class="string">"<span class="variable">$prog</span> start"</span></span><br><span class="line">	RETVAL=$?</span><br><span class="line">	[ <span class="variable">$RETVAL</span> -eq 0 ] &amp;&amp; touch /var/lock/subsys/postfix</span><br><span class="line">        <span class="built_in">echo</span></span><br><span class="line">	<span class="built_in">return</span> <span class="variable">$RETVAL</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123;</span><br><span class="line">  <span class="comment"># Stop daemons.</span></span><br><span class="line">	<span class="built_in">echo</span> -n $<span class="string">"Shutting down postfix: "</span></span><br><span class="line">	/usr/sbin/postfix stop 2&gt;/dev/null 1&gt;&amp;2 &amp;&amp; success || failure $<span class="string">"<span class="variable">$prog</span> stop"</span></span><br><span class="line">	RETVAL=$?</span><br><span class="line">	[ <span class="variable">$RETVAL</span> -eq 0 ] &amp;&amp; rm -f /var/lock/subsys/postfix</span><br><span class="line">	<span class="built_in">echo</span></span><br><span class="line">	<span class="built_in">return</span> <span class="variable">$RETVAL</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">reload</span></span>() &#123;</span><br><span class="line">	<span class="built_in">echo</span> -n $<span class="string">"Reloading postfix: "</span></span><br><span class="line">	/usr/sbin/postfix reload 2&gt;/dev/null 1&gt;&amp;2 &amp;&amp; success || failure $<span class="string">"<span class="variable">$prog</span> reload"</span></span><br><span class="line">	RETVAL=$?</span><br><span class="line">	<span class="built_in">echo</span></span><br><span class="line">	<span class="built_in">return</span> <span class="variable">$RETVAL</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">abort</span></span>() &#123;</span><br><span class="line">	/usr/sbin/postfix abort 2&gt;/dev/null 1&gt;&amp;2 &amp;&amp; success || failure $<span class="string">"<span class="variable">$prog</span> abort"</span></span><br><span class="line">	<span class="built_in">return</span> $?</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">flush</span></span>() &#123;</span><br><span class="line">	/usr/sbin/postfix flush 2&gt;/dev/null 1&gt;&amp;2 &amp;&amp; success || failure $<span class="string">"<span class="variable">$prog</span> flush"</span></span><br><span class="line">	<span class="built_in">return</span> $?</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">check</span></span>() &#123;</span><br><span class="line">	/usr/sbin/postfix check 2&gt;/dev/null 1&gt;&amp;2 &amp;&amp; success || failure $<span class="string">"<span class="variable">$prog</span> check"</span></span><br><span class="line">	<span class="built_in">return</span> $?</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="title">restart</span></span>() &#123;</span><br><span class="line">	stop</span><br><span class="line">	start</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># See how we were called.</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">  start)</span><br><span class="line">	start</span><br><span class="line">	;;</span><br><span class="line">  stop)</span><br><span class="line">	stop</span><br><span class="line">	;;</span><br><span class="line">  restart)</span><br><span class="line">	stop</span><br><span class="line">	start</span><br><span class="line">	;;</span><br><span class="line">  reload)</span><br><span class="line">	reload</span><br><span class="line">	;;</span><br><span class="line">  abort)</span><br><span class="line">	abort</span><br><span class="line">	;;</span><br><span class="line">  flush)</span><br><span class="line">	flush</span><br><span class="line">	;;</span><br><span class="line">  check)</span><br><span class="line">	check</span><br><span class="line">	;;</span><br><span class="line">  status)</span><br><span class="line">  	status master</span><br><span class="line">	;;</span><br><span class="line">  condrestart)</span><br><span class="line">	[ -f /var/lock/subsys/postfix ] &amp;&amp; restart || :</span><br><span class="line">	;;</span><br><span class="line">  *)</span><br><span class="line">	<span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|restart|reload|abort|flush|check|status|condrestart&#125;"</span></span><br><span class="line">	<span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">exit</span> $?</span><br></pre></td></tr></table></figure>
+<p>启动postfix服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /etc/rc.d/init.d/postfix </span><br><span class="line">postfix  check</span><br><span class="line">chkconfig postfix on</span><br><span class="line">service postfix start</span><br></pre></td></tr></table></figure>
+<h2 id="部署-Dovecot"><a href="#部署-Dovecot" class="headerlink" title="部署 Dovecot"></a>部署 Dovecot</h2><p>Dovecot 是一个开源的 IMAP 和 POP3 邮件服务器，支持 Linux/Unix 系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install openssl-devel pam-devel dovecot</span><br><span class="line">chkconfig --add dovecot</span><br><span class="line">chkconfig --level 2345 dovecot on</span><br></pre></td></tr></table></figure>
+<p>修改主配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/dovecot/dovecot.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改第24行的支持邮局协议。</span></span><br><span class="line">protocols = imap pop3 lmtp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改第26行监听选项，如果不支持IPv6使用*</span></span><br><span class="line">listen = *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许登陆网段地址，全部允许即为（0.0.0.0/0）</span></span><br><span class="line"><span class="comment">#login_trusted_networks = 192.168.247.0/24</span></span><br></pre></td></tr></table></figure>
+<p>允许明文认证 <code>/etc/dovecot/conf.d/10-auth.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">disable_plaintext_auth = no</span><br></pre></td></tr></table></figure>
+<p>配置邮件的格式与存储路径 <code>/etc/dovecot/conf.d/10-mail.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mail_location = mbox:~/mail:INBOX=/var/mail/%u</span><br><span class="line"><span class="comment"># 这里的路径一定要和postfix的保持一致（postconf | grep mail_spool_directory）</span></span><br></pre></td></tr></table></figure>
+<p>启动Dovecot服务程序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chkconfig dovecot on</span><br><span class="line">service dovecot restart</span><br></pre></td></tr></table></figure>
+<h2 id="部署Cyrus-SASL"><a href="#部署Cyrus-SASL" class="headerlink" title="部署Cyrus SASL"></a>部署Cyrus SASL</h2><p>在Postfix邮件系统中，可以使用Cyrus SASL（Cyrus Simple Authentication and Security Layer，Cyrus简单认证安全层）软件来实现基本的SMTP认证。Postfix通过连接Cyrus SASL的函数库，调用认证服务saslauthd来核对系统账号和密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install cyrus-sasl*</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置cyrus SASL 函数库</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">'pwcheck_method:saslauthd\nmech_list: PLAIN LOGIN'</span> &gt;&gt; /usr/lib64/sasl2/smtpd.conf</span><br><span class="line">cp /usr/lib64/sasl2/smtpd.conf /etc/sasl2/</span><br></pre></td></tr></table></figure>
+<p>配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/saslauthd</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MECH=shadow</span><br><span class="line"><span class="comment"># 认证方式改为帐号密码认证。</span></span><br><span class="line"><span class="comment"># saslauthd -v 可显示当前主机saslauthd服务支持的认证方式</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service saslauthd start</span><br><span class="line">chkconfig --level 2345 saslauthd on</span><br></pre></td></tr></table></figure>
+<p>修改postfix配置文件，加入配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#####################---CYRUS-SASL---#####################</span></span><br><span class="line">broken_sasl_auth_clients = yes</span><br><span class="line"><span class="comment"># 是否通过sasl来验证client</span></span><br><span class="line"></span><br><span class="line">smtpd_recipient_restrictions=permit_mynetworks,permit_sasl_authenticated,reject_invalid_hostname,reject_non_fqdn_hostname,reject_unknown_sender_domain,reject_non_fqdn_sender,reject_non_fqdn_recipient,reject_unknown_recipient_domain,reject_unauth_pipelining,reject_unauth_destination</span><br><span class="line"><span class="comment"># 收件人限定</span></span><br><span class="line"><span class="comment"># permit_mynetworks 允许本地网络</span></span><br><span class="line"><span class="comment"># permit_sasl_authenticated 允许sasl验证通过的用户</span></span><br><span class="line"><span class="comment"># reject_invalid_hostname 拒绝主机名不合法的主机来收发邮件</span></span><br><span class="line"><span class="comment"># reject_non_fqdn_hostname 拒绝非fqdn格式的主机来收发邮件</span></span><br><span class="line"><span class="comment"># reject_unknown_sender_domain 拒绝无法识别的发件人</span></span><br><span class="line"><span class="comment"># reject_non_fqdn_sender 拒绝非fqdn格式的发件人</span></span><br><span class="line"><span class="comment"># reject_non_fqdn_sender 拒绝非fqdn格式的收件人</span></span><br><span class="line"><span class="comment"># reject_unknown_recipient_domain 拒绝无法识别的收件人域</span></span><br><span class="line"><span class="comment"># reject_unauth_pipelining 拒绝无法验证的管道</span></span><br><span class="line"><span class="comment"># reject_unauth_destination 拒绝未认证的目标，此项必须放到最后</span></span><br><span class="line"></span><br><span class="line">smtpd_sasl_auth_enable = yes</span><br><span class="line"><span class="comment"># 启用sasl认证功能</span></span><br><span class="line"></span><br><span class="line">smtpd_sasl_local_domain = <span class="variable">$myhostname</span></span><br><span class="line"><span class="comment"># 基于sasl认证的时候，我们本地的域</span></span><br><span class="line"></span><br><span class="line">smtpd_sasl_security_options = noanonymous</span><br><span class="line"><span class="comment"># 禁止匿名发信</span></span><br><span class="line"></span><br><span class="line">smtpd_sasl_path = smtpd</span><br><span class="line"><span class="comment"># 指定要使用ssl功能的服务器程序 </span></span><br><span class="line"></span><br><span class="line">mynetworks = 127.0.0.0/8</span><br><span class="line"><span class="comment"># 只允许给本地中继（注意：上面的smtpd_recipient_restrictions明确规定了permit_sasl_authenticated，允许给通过sasl认证的用户做邮件中继）</span></span><br><span class="line"><span class="comment"># 设置内网和本地IP指定你所在的网络的网络地址</span></span><br><span class="line"><span class="comment"># postfix根据其值来区别用户是远程的还是本地的，如果是本地网络用户则允许其访问</span></span><br></pre></td></tr></table></figure>
+<p>帐号的添加和测试</p>
+<ul>
+<li>邮箱账号采用的是系统账号，属组应该为邮件组mail，所以邮箱开通的时候，实际上是创建了一个系统账号。</li>
+</ul>
+<p>命令要求</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">userdel -r test1</span><br><span class="line">userdel -r test2</span><br><span class="line">useradd -u 1300 -g mail -s /usr/bin/passwd test1</span><br><span class="line"><span class="built_in">echo</span> test1 | passwd --stdin test1</span><br><span class="line">useradd -u 1301 -g mail -s /usr/bin/passwd test2</span><br><span class="line"><span class="built_in">echo</span> test2 | passwd --stdin test2 </span><br><span class="line"></span><br><span class="line"><span class="comment"># -c  添加新账号说明，一般是账号名称，但是每个字的首字母大写。</span></span><br><span class="line"><span class="comment"># -u  uid编号，我们添加的时候，要先查看/etc/passwd的内容，看当前最后一个账号的uid，然后确定这里填写的数字。</span></span><br><span class="line"><span class="comment"># -g  gid编号，这个必须是mail组，否则会导致权限不足</span></span><br><span class="line"><span class="comment"># -s 的设置也是固定的，不可更改，邮箱用户将不应直接登录邮件服务器。</span></span><br><span class="line"><span class="comment"># test1  账号名称。</span></span><br><span class="line"></span><br><span class="line">testsaslauthd -u test1 -p test1</span><br><span class="line"><span class="comment"># 帐号认证测试</span></span><br></pre></td></tr></table></figure>
+<p>使用outlook进行两个用户之间邮件的发送接收测试</p>
+<p><strong>常见问题</strong></p>
+<p>映射表问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /var/log/mail/log中显示</span></span><br><span class="line">Recipient address rejected: User unknown <span class="keyword">in</span> <span class="built_in">local</span> recipient table</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改postfix主配置</span></span><br><span class="line">local_recipient_maps =</span><br></pre></td></tr></table></figure>
+<p>权限问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /var/log/mail/log中显示</span></span><br><span class="line">Mar 25 02:19:34 mail dovecot: pop3(test1): Couldn<span class="string">'t open INBOX top=0/0, retr=0/0, del=0/0, size=0</span></span><br><span class="line"><span class="string">Mar 25 02:19:34 mail dovecot: pop3-login: Login: user=&lt;test2&gt;, method=PLAIN, rip=192.168.247.1, lip=192.168.247.108, mpid=51169</span></span><br><span class="line"><span class="string">Mar 25 02:19:34 mail dovecot: pop3(test2): Error: chown(/home/test2/mail/.imap/INBOX, -1, 12(mail)) failed: Operation not permitted (egid=2831(test2), group based on /var/mail/test2)</span></span><br><span class="line"><span class="string"># 权限不足，添加邮件帐号时指定属组为mail即可</span></span><br></pre></td></tr></table></figure>
+<p>日志 <code>/var/log/mail/log</code> 被勿删</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># maillog日志是在syslog.conf文件中定义的，内容如下：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Log all the mail messages in one place.</span></span><br><span class="line">mail.*                                                  -/var/<span class="built_in">log</span>/maillog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启log服务即可：</span></span><br><span class="line">service rsyslog restart</span><br></pre></td></tr></table></figure>
+<p>邮件服务器收发正常但OE无法收信</p>
+<ul>
+<li>核对postfix中的邮箱路径 <code>postconf -d | grep mail_spool_directory</code> 与dovecot中的邮箱路径 <code>mail_location = mbox:~/mail:INBOX=/var/mail/%u</code> 是否一致</li>
+<li>客户端和服务器端时间是否正确及是否同步（执行<code>/usr/sbin/ntpdate time.nist.gov</code>进行时间同步）</li>
+</ul>
+<h2 id="为-postfix-开启基于hash的别名文件支持"><a href="#为-postfix-开启基于hash的别名文件支持" class="headerlink" title="为 postfix 开启基于hash的别名文件支持"></a>为 postfix 开启基于hash的别名文件支持</h2><p>在 <code>main.cf</code> 中添加如下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias_database = <span class="built_in">hash</span>:/etc/aliases</span><br><span class="line">alias_maps = <span class="built_in">hash</span>:/etc/aliases</span><br></pre></td></tr></table></figure>
+<p>在 <code>/etc/aliases</code> 文件中定义新的别名项，其格式通常为以冒号隔开的两个字段，前一个字段为初始目标邮件地址，后一个字段为实际发往的地址，如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net_operation :	zhangsan,lisi,wangwu</span><br><span class="line"><span class="comment"># 发送给net_operation@test.com的邮件将发送给张三、李四、王五</span></span><br></pre></td></tr></table></figure>
+<p>将 <code>/etc/aliases</code> 转换为 hash 格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">postalias  /etc/aliases</span><br><span class="line">service postfix reload</span><br></pre></td></tr></table></figure>
+<h2 id="postfix基于客户端的访问控制"><a href="#postfix基于客户端的访问控制" class="headerlink" title="postfix基于客户端的访问控制"></a>postfix基于客户端的访问控制</h2><p>postfix内置了多种反垃圾邮件的机制，其中就包括“客户端”发送邮件限制。</p>
+<p>客户端判别机制可以设定一系列客户信息的判别条件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">smtpd_client_restrictions：当客户端发起连接请求时，判别此客户端IP的访问权限</span><br><span class="line">smtpd_helo_restrictions ： 限定哪些客户端可以发送helo指令</span><br><span class="line">smtpd_sender_restrictions ：限定哪些客户端可以发送mail from指令</span><br><span class="line">smtpd_recipient_restrictions：限定哪些用户可以发送rctp to指令</span><br><span class="line">smtpd_data_restrictions：限定哪些用户可以发送data指令</span><br><span class="line">以上每一项参数分别用于检查SMTP会话过程中的特定阶段，即客户端提供相应信息的阶段。</span><br></pre></td></tr></table></figure>
+<p>如果DATA命令之前的所有内容都被接受，客户端接着就可以开始传送邮件内容了。邮件内容通常由两部分组成，前半部分是标题(header)，其可以由header_check过滤，后半部分是邮件正文(body)，其可以由check_body过滤。这两项实现的是邮件“内容检查”。</p>
+<p>postfix的默认配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">smtpd_client_restrictions =</span><br><span class="line">smtpd_data_restrictions =</span><br><span class="line">smtpd_end_of_data_restrictions =</span><br><span class="line">smtpd_etrn_restrictions =</span><br><span class="line">smtpd_helo_restrictions =</span><br><span class="line">smtpd_recipient_restrictions = permit_mynetworks, reject_unauth_destination</span><br><span class="line">smtpd_sender_restrictions =</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这限制了只有mynetworks参数中定义的本地网络中的客户端才能通过postfix转发邮件，</span></span><br><span class="line"><span class="comment"># 其它客户端则不被允许，从而关闭了开放式中继(open relay)的功能。</span></span><br></pre></td></tr></table></figure>
+<p>Postfix有多个内置的限制条件，如上面的 <code>permit_mynetworks</code> 和 <code>reject_unauth_destination</code>，但管理员也可以使用访问表(access map)来自定义限制条件。自定义访问表的条件通常使用 <code>check_client_access</code> ，<code>check_helo_access</code>， <code>check_sender_access</code>， <code>check_recipient_access</code>进行，它们后面通常跟上 <code>type:mapname</code> 格式的访问表类型和名称。其中，<code>check_sender_access</code> 和 <code>check_recipient_access</code> 用来检查客户端提供的邮件地址，因此其访问表中可以使用完整的邮件地址，如 <code>admin@test.com</code>；也可以只使用域名，<code>test.com</code>；还可以只有用户名的部分，如 <code>marion@</code>。</p>
+<p><strong>实现示例1</strong></p>
+<p>这里以禁止 172.16.100.200 这台主机通过工作在 172.16.100.1上 的 postfix 服务发送邮件为例演示说明其实现过程。访问表使用 hash 的格式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先，编辑/etc/postfix/access文件，以之作为客户端检查的控制文件，在里面定义如下一行：</span></span><br><span class="line">172.16.100.200		REJECT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其次，将此文件转换为hash格式</span></span><br><span class="line">postmap /etc/postfix/access</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后，配置postfix使用此文件对客户端进行检查</span></span><br><span class="line"><span class="comment"># 编辑/etc/postfix/main.cf文件，添加如下参数：</span></span><br><span class="line">smtpd_client_restrictions = check_client_access <span class="built_in">hash</span>:/etc/postfix/access</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后，让postfix重新载入配置文件即可进行发信控制的效果测试了。</span></span><br></pre></td></tr></table></figure>
+<p><strong>实现示例2</strong></p>
+<p>这里以禁止通过本服务器向 <code>microsoft.com</code> 域发送邮件为例演示其实现过程。访问表使用 hash 的格式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先，建立/etc/postfix/denydstdomains文件(文件名任取)，在里面定义如下一行：</span></span><br><span class="line">microsoft.com		REJECT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其次，将此文件转换为hash格式</span></span><br><span class="line">postmap /etc/postfix/denydstdomains</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后，配置postfix使用此文件对客户端进行检查</span></span><br><span class="line"><span class="comment"># 编辑/etc/postfix/main.cf文件，添加如下参数：</span></span><br><span class="line">smtpd_recipient_restrictions = check_recipient_access <span class="built_in">hash</span>:/etc/postfix/denydstdomains, permit_mynetworks, reject_unauth_destination</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后，让postfix重新载入配置文件即可进行发信控制的效果测试了。</span></span><br></pre></td></tr></table></figure>
+<p><strong>检查表格式的说明</strong></p>
+<p>hash类的检查表都使用类似如下的格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pattern   action</span><br><span class="line"><span class="comment"># 检查表文件中，空白行、仅包含空白字符的行和以#开头的行都会被忽略。</span></span><br><span class="line"><span class="comment"># 以空白字符开头后跟其它非空白字符的行会被认为是前一行的延续，是一行的组成部分。</span></span><br></pre></td></tr></table></figure>
+<p><strong>关于pattern</strong></p>
+<p>其 pattern 通常有两类地址：邮件地址和主机名称/地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">邮件地址的pattern格式如下：</span><br><span class="line">user@domain  用于匹配指定邮件地址；</span><br><span class="line">domain.tld   用于匹配以此域名作为邮件地址中的域名部分的所有邮件地址；</span><br><span class="line">user@ 			 用于匹配以此作为邮件地址中的用户名部分的所有邮件地址；</span><br><span class="line"></span><br><span class="line">主机名称/地址的pattern格式如下：</span><br><span class="line">domain.tld   用于匹配指定域及其子域内的所有主机；</span><br><span class="line">.domain.tld   用于匹配指定域的子域内的所有主机；</span><br><span class="line">net.work.addr.ess</span><br><span class="line">net.work.addr</span><br><span class="line">net.work</span><br><span class="line">net        用于匹配特定的IP地址或网络内的所有主机；</span><br><span class="line">network/mask  CIDR格式，匹配指定网络内的所有主机；</span><br></pre></td></tr></table></figure>
+<p><strong>关于 action</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">接受类的动作：</span><br><span class="line">OK   接受其pattern匹配的邮件地址或主机名称/地址；</span><br><span class="line">全部由数字组成的action   隐式表示OK；</span><br><span class="line"></span><br><span class="line">拒绝类的动作(部分)：</span><br><span class="line">4NN text </span><br><span class="line">5NN text </span><br><span class="line"><span class="comment"># 其中4NN类表示过一会儿重试；5NN类表示严重错误，将停止重试邮件发送；</span></span><br><span class="line"><span class="comment"># 421和521对于postfix来说有特殊意义，尽量不要自定义这两个代码；</span></span><br><span class="line">REJECT optional text...   拒绝；text为可选信息；</span><br><span class="line">DEFER optional text...    拒绝；text为可选信息；</span><br></pre></td></tr></table></figure>
+<h1 id="常见需求的配置"><a href="#常见需求的配置" class="headerlink" title="常见需求的配置"></a>常见需求的配置</h1><h2 id="特定人员发送特定邮件"><a href="#特定人员发送特定邮件" class="headerlink" title="特定人员发送特定邮件"></a>特定人员发送特定邮件</h2><p>公司需求只有公司高层才可以向全体员工发送邮件，除此之外均无权向全体员工发送邮件</p>
+<p>公司高层邮箱</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wanglujing@test.com</span><br><span class="line">renlina@test.com  </span><br><span class="line">caiyanyan@test.com</span><br><span class="line">qinwen@test.com   </span><br><span class="line">shiwanting@test.com</span><br></pre></td></tr></table></figure>
+<p>全体员工邮箱</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allemp@test.com</span><br></pre></td></tr></table></figure>
+<p><strong>用到的参数</strong></p>
+<p>主配置文件中需要用到的参数(具体的请参考《postfix权威指南》，在第十一章 反垃圾邮件)</p>
+<ul>
+<li>smtmpd_restriction_classes<br>自定义规范等级的名称,列出管理员自定义的所有规范等级，每一组规范等级，都是由一系列UBE（挡信）限制条件组成。</li>
+<li>check_client_access  客户端</li>
+<li>check_sender_access 发件人</li>
+<li>check_recipient_access 收件人 </li>
+<li>check_recipient_access maptype:mapname</li>
+<li>check_recipient_access<br>指向一个含有邮件地址、网域名称、人名的访问表，用于对比客户端在RCPT TO命令中提供的收件地址，如果发现相符的索引键，则postfix执行相对应的值所提定的动作。</li>
+<li>check_sender_access maptype:mapname<br>check_sender_access 指向一个含有邮件地址，网域名称,人名的访问表，用于对比客户端在MAIL FROM命令中提供的寄件人邮件地址，如果发现相符的索引键，则postfix执行相对应的值所指定的动作。</li>
+</ul>
+<p><strong>涉及的处理动作</strong></p>
+<ul>
+<li>OK    通过当前过滤规则的检查，postfix继续检查下一组过滤规则。</li>
+<li>REJECT    拒绝邮件，后面可以加上一段简短信息，说明拒绝的理由，这段信息会连同拒绝码一起返回给客户端，并且被记录在postfix日志文件中。</li>
+</ul>
+<p><strong>实现方法</strong></p>
+<p>定义规范等级，分别为 <code>local_sender_all</code>，<code>allow_to_all</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在postfix主配置文件中，末尾添加下列语句</span></span><br><span class="line">smtpd_restriction_classes = local_sender_all,allow_to_all</span><br><span class="line">local_sender_all = check_sender_access <span class="built_in">hash</span>:/etc/postfix/plugin/local_sender_all,reject</span><br><span class="line">allow_to_all = check_recipient_access <span class="built_in">hash</span>:/etc/postfix/plugin/allow_to_all,reject</span><br></pre></td></tr></table></figure>
+<p>创建限定的收件人文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">install -cdv /etc/postfix/plugin</span><br><span class="line">vim /etc/postfix/plugin/allow_to_all</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allemp@test.com      allow_to_all</span><br></pre></td></tr></table></figure>
+<p>创建限定的发件人文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/postfix/plugin/local_sender_all</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wanglujing@test.com OK </span><br><span class="line">renlina@test.com    OK </span><br><span class="line">caiyanyan@test.com  OK </span><br><span class="line">qinwen@test.com     OK </span><br><span class="line">shiwanting@test.com OK</span><br></pre></td></tr></table></figure>
+<p>使用 <code>postmap</code> 生成数据库文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">postmap /etc/postfix/plugin/allow_to_all </span><br><span class="line">postmap /etc/postfix/plugin/local_sender_all</span><br></pre></td></tr></table></figure>
+<h2 id="邮件发送控制"><a href="#邮件发送控制" class="headerlink" title="邮件发送控制"></a>邮件发送控制</h2><ul>
+<li>对于外域到本域的邮件，必须接收，否则，收不到任何来自外部的邮件</li>
+<li>对于本域到外域的邮件，只允许从本机发出，否则其他人通过伪造本域地址就可以向外域发信</li>
+<li>对于外域到外域的邮件，直接拒绝，否则我们的邮件服务器就是Open Relay，将被视为垃圾邮件服务器</li>
+</ul>
+<p>设置发件人的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smtpd_sender_restrictions = permit_mynetworks, check_sender_access <span class="built_in">hash</span>:/etc/postfix/plugin/sender_access, permit</span><br><span class="line"><span class="comment"># 以上规则先判断是否是本域地址，如果是则允许，然后再从sender_access文件里检查发件人是否存在，拒绝存在的发件人，最后允许其他发件人。</span></span><br></pre></td></tr></table></figure>
+<p>设置收件人的规则</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smtpd_recipient_restrictions = permit_mynetworks, check_recipient_access <span class="built_in">hash</span>:/etc/postfix/plugin/recipient_access, reject</span><br><span class="line"><span class="comment"># 以上规则先判断是否是本域地址，如果是则允许，然后再从recipient_access文件里检查收件人是否存在，允许存在的收件人，最后拒绝其他收件人。</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Silence
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/" title="基础邮件服务器">http://linuxgeeks.github.io/2016/04/27/194119-基础邮件服务/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Service/" rel="tag"><i class="fa fa-tag"></i> Service</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/23/214135-Samba服务/" rel="next" title="Samba服务">
+                <i class="fa fa-chevron-left"></i> Samba服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/01/092111-初识SElinux/" rel="prev" title="初识SElinux">
+                初识SElinux <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence" />
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">115</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="网络之路" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一封邮件的流程"><span class="nav-number">2.</span> <span class="nav-text">一封邮件的流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#邮件应用协议"><span class="nav-number">3.</span> <span class="nav-text">邮件应用协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建邮件服务器"><span class="nav-number">4.</span> <span class="nav-text">搭建邮件服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-postfix"><span class="nav-number">4.1.</span> <span class="nav-text">安装 postfix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-postfix"><span class="nav-number">4.2.</span> <span class="nav-text">配置 postfix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#postfix服务"><span class="nav-number">4.3.</span> <span class="nav-text">postfix服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-Dovecot"><span class="nav-number">4.4.</span> <span class="nav-text">部署 Dovecot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署Cyrus-SASL"><span class="nav-number">4.5.</span> <span class="nav-text">部署Cyrus SASL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为-postfix-开启基于hash的别名文件支持"><span class="nav-number">4.6.</span> <span class="nav-text">为 postfix 开启基于hash的别名文件支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#postfix基于客户端的访问控制"><span class="nav-number">4.7.</span> <span class="nav-text">postfix基于客户端的访问控制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见需求的配置"><span class="nav-number">5.</span> <span class="nav-text">常见需求的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特定人员发送特定邮件"><span class="nav-number">5.1.</span> <span class="nav-text">特定人员发送特定邮件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邮件发送控制"><span class="nav-number">5.2.</span> <span class="nav-text">邮件发送控制</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="true"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
