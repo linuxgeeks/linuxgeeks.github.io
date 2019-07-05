@@ -2,45 +2,34 @@
 
 
 
+
+
+
+
+
+
+
+
+
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
 
 
 
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2"/>
 
 
 
@@ -48,71 +37,54 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Python3," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml" />
 
 
 
 
 
 
-<meta name="description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种">
-<meta name="keywords" content="Python3">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Python的字符编码">
-<meta property="og:url" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/index.html">
-<meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/code1.png">
-<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/code2.png">
-<meta property="og:updated_time" content="2019-03-27T14:20:53.646Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python的字符编码">
-<meta name="twitter:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。 但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们">
-<meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/code1.png">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
     scheme: 'Muse',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
-    fancybox: true,
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -124,12 +96,53 @@
 </script>
 
 
+  
 
+
+
+
+  <meta name="description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信">
+<meta name="keywords" content="Python3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的字符编码">
+<meta property="og:url" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。 现在假设敌人有十万大军，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire1.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire2.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire3.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire4.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire5.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire6.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire7.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire8.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/02_encode1.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/02_encode2.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/02_encode3.png">
+<meta property="og:updated_time" content="2019-07-01T11:27:09.158Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的字符编码">
+<meta name="twitter:description" content="二进制与数字通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。 现在假设敌人有十万大军，">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml"/>
+
+
+
+  
+  
   <link rel="canonical" href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/"/>
 
 
 
-
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
 
   <title>Python的字符编码 | Just Do It</title>
   
@@ -141,9 +154,38 @@
 
 
 
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -152,28 +194,25 @@
 
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
-	
-	<a href="https://github.com/linuxgeeks"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+  <div class="site-meta">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Just Do It</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
+    
+    
   </div>
 
   <div class="site-nav-toggle">
-    <button>
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -181,56 +220,77 @@
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
+
+<nav class="site-nav">
   
     <ul id="menu" class="menu">
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
+          
+          <li class="menu-item menu-item-home">
 
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
       
         <li class="menu-item menu-item-search">
           
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            搜索
-          </a>
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
         </li>
       
     </ul>
+  
+
+  
+    
+
   
 
   
@@ -261,12 +321,27 @@
 
 
 
- </div>
+  
+
+
+
+</div>
     </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/linuxgeeks" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
 
@@ -279,21 +354,23 @@
   
   
 
+  
+
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Silence">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Silence"/>
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟"/>
+      <meta itemprop="image" content="/images/avatar.jpg"/>
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
+      <meta itemprop="name" content="Just Do It"/>
     </span>
 
     
@@ -301,70 +378,76 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python的字符编码</h1>
+          <h1 class="post-title" itemprop="name headline">Python的字符编码
+
+              
+            
+          </h1>
         
 
         <div class="post-meta">
-          <span class="post-time">
-            
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:04:10+08:00">
-                2019-03-02
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
               
                 
+              
+
+              <time title="创建时间：2019-03-02 20:04:10" itemprop="dateCreated datePublished" datetime="2019-03-02T20:04:10+08:00">2019-03-02</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
+                  <i class="fa fa-calendar-check-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">字数统计&#58;</span>
+                  <span class="post-meta-item-text">更新于</span>
                 
-                <span title="字数统计">
-                  4,198
-                </span>
-              
+                <time title="修改时间：2019-07-01 19:27:09" itemprop="dateModified" datetime="2019-07-01T19:27:09+08:00">2019-07-01</time>
+              </span>
+            
+          
 
-              
-                <span class="post-meta-divider">|</span>
-              
+          
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  16
-                </span>
-              
-            </div>
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon"
+              >
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br/>
+          
+
           
 
           
@@ -382,46 +465,31 @@
       
 
       
-        <h1 id="二进制与数字"><a href="#二进制与数字" class="headerlink" title="二进制与数字"></a>二进制与数字</h1><p>通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。</p>
-<p>但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。假设敌人有十万大军，我们该怎样向盟军传递信息呢？显然，我们用一根烟代表一个敌人没有办法在短时间内表示十万。于是我们可以使用这种方法：点燃第一根则代表敌人规模是1-100，点燃第二根则代表敌人规模是101-1000，以此类推</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1-100	  101-1000 		1001-5000</span><br><span class="line">第一根		第二根   		第三根</span><br><span class="line"><span class="comment"># 如果我们需要精确的传递敌人的个数，这种方法就不可行了</span></span><br></pre></td></tr></table></figure>
-<p>烟只有两种状态，那么如何才能表示精确的数字呢？一根烟可以表示两个状态，两根烟便可以表示四个状态。那么我们就可以约定，第一根烟代表1，第二根代表2，第三根代表4…..</p>
-<ul>
-<li>来了一个敌人</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">0 1   <span class="comment"># 代表的敌人：0+1=1</span></span><br><span class="line">-----------------------------------</span><br><span class="line">0 1   <span class="comment"># 第一根亮，第二根灭</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>来了两个敌人</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">2 0   <span class="comment"># 代表的敌人：2+0=2</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 0   <span class="comment"># 第一根灭，第二根亮</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>来了三个敌人</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">2 1   <span class="comment"># 代表的敌人：2+1=3</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 1   <span class="comment"># 第一根亮，第二根亮</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>来了四个敌人</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">4 0 0   <span class="comment"># 代表的敌人：4+0=4</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 0 0   <span class="comment"># 第三根亮，第二根第一根都灭</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>来了五个敌人</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">4 0 1   <span class="comment"># 代表的敌人：4+1=5</span></span><br><span class="line">-----------------------------------</span><br><span class="line">1 0 1   <span class="comment"># 第三根亮，第二根灭，第一根亮</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>借位<ul>
-<li>利用前三位我们可以表示的数字有1、2、3、4、5、6、7，最多能表示7</li>
-<li>如果想要表示8，我们可以借一位，用这个位加上前面的三个位最大表示8</li>
-<li>每一个位最大能表示的数都是前面的位所能表示的最大数的和加1，并且依次是2的0次幂、1次幂、…..</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从左往右表示</span></span><br><span class="line">16  8   4   2   1   </span><br><span class="line">1   1   1   1   1</span><br><span class="line">-----------------------------------</span><br><span class="line">16 = 8 + 4 + 2 + 1 +1</span><br><span class="line">8 = 4 + 2 + 1 +1</span><br></pre></td></tr></table></figure>
-<p>利用这种表示方法，我们就可以根据使用0和1的不同序列来表示不同的数字。</p>
-<p>计算机必须在通电情况下工作，它在物理层面上只能表示两种状态：低电压和高电压，或者我们可以简单的理解为电路的通电和不通电。通电用1表示，不同电则用0表示。</p>
-<p>在拆开的硬盘盘片上我们看不到所谓的 0 和 1 ，但是如果使用足够大的放大镜能看到磁盘的表面有着无数的凹凸不平的元件，凹下去的代表0，凸出的代表1，这就是计算机用来表现二进制的方式。计算机中的所有数据，不论是文字、图片、视频、还是音频文件，本质上最终都是按照类似 <code>01010101</code> 的二进制存储的。</p>
-<h1 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h1><p>通过二进制的1和0的不同序列边可以表示我们平常说的十进制数字了，但是每个国家都有各自的语言，相比在计算机上去读很难读懂的不同序列的0101二进制，我们更愿意在计算机上使用人类自己的语言。</p>
-<p>计算机诞生在美国，为了让计算机表示不同的英文字母、数字和特殊符号，美国人便在计算机上使用了字符编码。字符编码是如何让二进制来表示字母的呢？字符编码规定了哪些数字表示哪些字母，只要计算机用二进制能表示出这些数字，便可以通过编码来表示字母了。最早的编码便是ASCII码对照表，全称是American Standard Code for Information Interchange , 美国信息交换标准代码。</p>
-<p>ASCII 码使用指定的 7 位或 8 位二进制数组合来表示128 或 256 种可能的字符，但是最早的时候只用了 7 位二进制，已经完全能够来表示所有的大写和小写字母，数字0 到9、标点符号， 以及在美式英语中使用的特殊控制字符。</p>
-<p>后来为了将拉丁文也编码进了ASCII表，将最高位也占用了，这就是扩展ASCII码。</p>
+        <h1 id="二进制与数字"><a href="#二进制与数字" class="headerlink" title="二进制与数字"></a>二进制与数字</h1><p>通过烽火戏诸侯的历史典故，我们能知道在古代的曾经使用的通信方式是使用烽火台，如果出现战事有敌人来了则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确的传递敌人的规模。</p>
+<p>现在假设敌人有十万大军，我们该怎样向盟军传递信息呢？如果我们点燃一根火把来代表一个敌人，则没有办法在短时间内表示十万；于是我们可以点燃一根火把代表敌人规模是1-100，再点燃第二根则代表敌人规模是 101-1000，以此类推：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1-100	  101-1000 		1001-5000</span><br><span class="line">第一根		第二根   		第三根</span><br></pre></td></tr></table></figure>
+<p>如果我们需要精确的传递敌人的个数，这种方法就不可行了。火把只有两种状态，那么如何才能表示精确的数字呢？既然一根火把可以表示两个状态，那么两根火把便可以表示四个状态。三根火把便可以表示八个状态。因此我们就可以约定，第一根火把亮了代表 1（2 的 0 次幂），第二根火把亮了代表2（2 的 1 次幂），第三根火把亮了代表 4（2 的 2 次幂），不亮的位置代表的就是 0 。那么对于位置 n 的火把，他亮了就代表 <code>2^(n-1)</code> ，即：</p>
+<p>从右向左，第一根火把亮，第二根火把灭。代表的敌人数量就是 <code>0 + 2^(1-1) = 1</code>。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire1.png" alt=""></p>
+<p>从右向左，第一根火把灭，第二根火把亮。代表的敌人数量就是 <code>0 + 2^(2-1) = 2</code>。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire2.png" alt=""></p>
+<p>从右向左，第一根火把亮，第二根火把亮。代表的敌人数量就是 <code>2^(1-1) + 2^(2-1) = 3</code>。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire3.png" alt=""></p>
+<p>从右向左，第一、二根火把灭，第三根火把亮。代表的敌人数量就是 <code>0 + 0 + 2^(3-1) = 4</code>。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire4.png" alt=""></p>
+<p>从右向左，第一根火把亮，第二根火把灭，第三根火把亮。代表的敌人数量就是 <code>2^(1-1) + 0 + 2^(3-1) = 5</code>。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire5.png" alt=""></p>
+<p>按照这样的方式来表示，我们发现利用前三位可以表示的数字有 0、1、2、3、4、5、6、7，最多能表示 7 。如果想要表示 8，我们可以再借一个位置，即第四个位，用这个位加上前面的三个位来表示 <code>0 + 0 + 0 + 2^(4-1)  = 8</code> 。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire6.png" alt=""></p>
+<p>利用这种表示方法，我们就可以根据使用 <code>0</code> 代表火把灭，使用 <code>1</code> 代表火把亮，从而就会有不同序列，来表示不同的数字。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire7.png" alt=""></p>
+<p>上图中用  <code>0</code> 和 <code>1</code> 表示出来的序列就是 <code>1010110</code>，那么他所表示的数字就是 <code>0 + 2^1 + 2^2 + 0 + 2^4 +0 + 2^6</code> 即 <code>0 + 2 + 4 + 0+ 16 + 0 + 64 = 86</code>。</p>
+<p>我们知道，计算机必须在通电情况下工作，它在物理层面上只能表示两种状态：低电压和高电压，或者我们可以简单地理解为电路的通电和不通电。通电用 1 表示，不通电则用 0 表示。在拆开的硬盘盘片上我们看不到所谓的 0 和 1 ，但是如果使用足够大的放大镜能看到磁盘的表面有着无数的凹凸不平的元件，凹下去的代表 0 ，凸出的代表 1，这就是计算机用来表现二进制的方式。计算机中的所有数据，不论是文字、图片、视频、还是音频文件，本质上最终都是按照类似 <code>01010101</code> 的二进制存储的。</p>
+<h1 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h1><p>通过二进制的 1 和 0 的不同序列边可以表示我们平常说的十进制数字了，但是每个国家都有各自的语言，相比在计算机上去读很难读懂的不同序列的 0101 二进制，我们更愿意在计算机上使用人类自己的语言。</p>
+<p>计算机诞生在美国，为了让计算机表示不同的英文字母、数字和特殊符号，美国人便在计算机上使用了字符编码。字符编码是如何让二进制来表示字母的呢？字符编码规定了哪些数字表示哪些字母，只要计算机用二进制能表示出这些数字，便可以通过编码来表示字母了。</p>
+<p>比如计算机中是用二进制 <code>01000001</code> 表示的数字是 65，那么人就规定数字 65 代表大写字母 <code>A</code>。</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/01_fire8.png" alt=""></p>
+<p>以此类推就形成了一张对照表，最早的编码便是 ASCII 码对照表，全称是 American Standard Code for Information Interchange , 美国信息交换标准代码。ASCII 码使用指定的 7 位或 8 位二进制数组合来表示128 或 256 种可能的字符，但是最早的时候只用了 7 位二进制，已经完全能够来表示所有的大写和小写字母，数字 0 到 9、标点符号， 以及在美式英语中使用的特殊控制字符。后来为了将拉丁文也编码进了 ASCII 表，将最高位也占用了，这就是扩展 ASCII 码。</p>
 <table>
 <thead>
 <tr>
@@ -890,15 +958,14 @@
 </tr>
 </tbody>
 </table>
-<h1 id="字符编码的发展史"><a href="#字符编码的发展史" class="headerlink" title="字符编码的发展史"></a>字符编码的发展史</h1><p>计算机开始普遍在其他国家开始使用，但是ASCII只能表示英文，无法表示中文、日文、韩文等。一个字节是8个比特，这意味着1个比特并没有被使用，也就是从128到255的编码并没有被制定ASCII标准的人所规定。其它国家的人趁这个机会开始使用128到255范围内的编码来表达自己语言中的字符。例如，144在阿拉伯人的ASCII码中是گ，而在俄罗斯的ASCII码中是ђ。ASCII码的问题在于尽管所有人都在0-127号字符的使用上达成了一致，但对于128-255号字符却有很多很多不同的解释。你必须告诉计算机使用哪种风格的ASCII码才能正确显示128-255号的字符。</p>
-<h2 id="关于中文"><a href="#关于中文" class="headerlink" title="关于中文"></a>关于中文</h2><p>为了处理汉字，程序员设计了用于简体中文的GB2312和用于繁体中文的big5</p>
-<p>GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。</p>
-<p>GB2312 支持的汉字太少。1995年的汉字扩展规范GBK1.0收录了21886个符号，它分为汉字区和图形符号区。汉字区包括21003个字符。2000年的 GB18030 是取代GBK1.0的正式国家标准。该标准收录了27484个汉字，同时还收录了藏文、蒙文、维吾尔文等主要的少数民族文字。现在的PC平台必须支持 GB18030，对嵌入式产品暂不作要求。所以手机、MP3一般只支持GB2312。</p>
-<p>从ASCII、GB2312、GBK 到 GB18030，这些编码方法是向下兼容的，即同一个字符在这些方案中总是有相同的编码，后面的标准支持更多的字符。在这些编码中，英文和中文可以统一地处理。区分中文编码的方法是高字节的最高位不为0。按照程序员的称呼，GB2312、GBK到GB18030都属于双字节字符集 (DBCS)。</p>
-<p>有的中文Windows的缺省内码还是GBK，可以通过GB18030升级包升级到GB18030。不过GB18030相对GBK增加的字符，普通人是很难用到的，通常我们还是用GBK指代中文Windows内码。</p>
-<h2 id="unicode"><a href="#unicode" class="headerlink" title="unicode"></a>unicode</h2><p>全世界有上百种语言，日本把日文编到Shift_JIS里，韩国把韩文编到Euc-kr里，各国有各国的标准，就会不可避免地出现冲突，结果就是，在多语言混合的文本中，显示出来会有乱码。比如如果中国的软件出口到美国，在美国人的电脑上就会显示乱码，因为他们没有gbk编码。</p>
-<p>因此，Unicode（统一码、万国码、单一码）应运而生。Unicode把所有语言都统一到一套编码里，这样就不会再有乱码问题了。规定所有的字符和符号统一最少由 16 位(2Bytes)代表一个字符，2**16-1=65535，可代表6万多个字符，因而兼容万国语言。</p>
-<h2 id="utf-8"><a href="#utf-8" class="headerlink" title="utf-8"></a>utf-8</h2><p>但对于通篇都是英文的文本来说，本来用一个字节就可以表示的内容，用unicode这种编码方式无疑是多了一倍的存储空间。本着节约的精神，于是产生了UTF-8，对英文字符只用1Bytes表示，对中文字符用3Bytes。如果你要传输的文本包含大量英文字符，用UTF-8编码就能节省空间：</p>
+<h1 id="字符编码的发展史"><a href="#字符编码的发展史" class="headerlink" title="字符编码的发展史"></a>字符编码的发展史</h1><p>计算机开始普遍在其他国家开始使用，但是 ASCII 只能表示英文，无法表示中文、日文、韩文等。一个字节是 8 个比特，这意味着 1 个比特并没有被使用，也就是从 128 到 255 的编码并没有被制定 ASCII 标准的人所规定。其它国家的人趁这个机会开始使用 128 到 255 范围内的编码来表达自己语言中的字符。例如，144 在阿拉伯人的 ASCII 码中是 <code>گ</code>，而在俄罗斯的 ASCII 码中是 <code>ђ</code>。ASCII 码的问题在于尽管所有人都在 0-127 号字符的使用上达成了一致，但对于 128-255 号字符却有很多很多不同的解释。你必须告诉计算机使用哪种风格的 ASCII 码才能正确显示 128-255 号的字符。</p>
+<h2 id="中文编码"><a href="#中文编码" class="headerlink" title="中文编码"></a>中文编码</h2><p>为了处理汉字，程序员设计了用于简体中文的 GB2312 和用于繁体中文的 big5 。GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。</p>
+<p>GB2312 支持的汉字太少。1995年的汉字扩展规范 GBK1.0 收录了 21886 个符号，它分为汉字区和图形符号区。汉字区包括 21003 个字符。2000年的 GB18030 是取代 GBK1.0 的正式国家标准。该标准收录了 27484 个汉字，同时还收录了藏文、蒙文、维吾尔文等主要的少数民族文字。现在的PC平台必须支持 GB18030，对嵌入式产品暂不作要求。所以手机、MP3一般只支持 GB2312。</p>
+<p>从 ASCII、GB2312、GBK 到 GB18030，这些编码方法是向下兼容的，即同一个字符在这些方案中总是有相同的编码，后面的标准支持更多的字符。在这些编码中，英文和中文可以统一地处理。区分中文编码的方法是高字节的最高位不为0。按照程序员的称呼，GB2312、GBK到GB18030都属于双字节字符集 (DBCS)。</p>
+<p>有的中文Windows的缺省内码还是 GBK，可以通过 GB18030 升级包升级到 GB18030。不过 GB18030 相对 GBK 增加的字符，普通人是很难用到的，通常我们还是用 GBK 指代中文Windows内码。</p>
+<h2 id="unicode"><a href="#unicode" class="headerlink" title="unicode"></a>unicode</h2><p>全世界有上百种语言，日本把日文编到 Shift_JIS 里，韩国把韩文编到 Euc-kr 里，各国有各国的标准，就会不可避免地出现冲突，结果就是，在多语言混合的文本中，显示出来会有乱码。比如如果中国的软件出口到美国，在美国人的电脑上就会显示乱码，因为他们没有 gbk 编码。</p>
+<p>因此，Unicode（统一码、万国码、单一码）应运而生。Unicode 把所有语言都统一到一套编码里，这样就不会再有乱码问题了。规定所有的字符和符号统一最少由 16 位(2Bytes)代表一个字符，2**16-1=65535，可代表6万多个字符，因而兼容万国语言。</p>
+<h2 id="utf-8"><a href="#utf-8" class="headerlink" title="utf-8"></a>utf-8</h2><p>但对于通篇都是英文的文本来说，本来用一个字节就可以表示的内容，用 unicode 这种编码方式无疑是多了一倍的存储空间。本着节约的精神，于是产生了 UTF-8，对英文字符只用 1Bytes 表示，对中文字符用 3Bytes 。如果你要传输的文本包含大量英文字符，用 UTF-8 编码就能节省空间：</p>
 <table>
 <thead>
 <tr>
@@ -910,139 +977,132 @@
 </thead>
 <tbody>
 <tr>
-<td>A</td>
+<td>‘A’</td>
 <td>01000001</td>
 <td>00000000 01000001</td>
 <td>01000001</td>
 </tr>
 <tr>
-<td>中</td>
+<td>‘中’</td>
 <td>无法表示</td>
 <td>01001110 00101101</td>
 <td>11100100 10111000 10101101</td>
 </tr>
 </tbody>
 </table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>为了处理英文字符，产生了ASCII码<br>为了处理中文字符，产生了GB2312<br>为了处理各国字符，产生了Unicode<br>为了提高Unicode存储和传输性能，产生了UTF-8，它是Unicode的一种实现形式</p>
-</blockquote>
-<ul>
-<li><p>unicode</p>
-<ul>
-<li>所有字符都是2Bytes，兼容所有语言字符，优点是字符-&gt;数字的转换速度快，缺点是占用空间大</li>
-</ul>
-</li>
-<li><p>utf-8</p>
-<ul>
-<li>精准，对不同的字符用不同的长度表示，优点是节省空间，缺点是：字符-&gt;数字的转换速度慢，因为每次都需要计算出字符需要多长的Bytes才能够准确表示</li>
-</ul>
-</li>
-<li><p>内存中使用的编码是unicode</p>
-<ul>
-<li>用空间换时间（程序都需要加载到内存才能运行，因而内存应该是尽可能的保证快）</li>
-</ul>
-</li>
-<li>硬盘中或者网络传输用 utf-8<ul>
-<li>网络I/O延迟或磁盘I/O延迟要远大与utf-8的转换延迟，而且I/O应该是尽可能地节省带宽，保证数据传输的稳定性。</li>
-</ul>
-</li>
-</ul>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>为了处理英文字符，产生了 ASCII 码。为了处理中文字符，产生了 GB2312。</p>
+<p>为了处理各国字符，产生了Unicode。在 Unicode 中所有字符都是 2 Bytes，兼容所有语言字符，优点是字符 =&gt;数字的转换速度快，缺点是占用空间大。</p>
+<p>为了提高 Unicode 存储和传输性能，产生了 UTF-8，它是 Unicode 的一种实现形式，对于不同的字符用不同的长度表示，优点是节省空间，缺点是：字符 =&gt; 数字的转换速度慢，因为每次都需要计算出字符需要多长的 Bytes 才能够准确表示。</p>
+<p><strong>内存中使用的编码是 unicode</strong>：用空间换时间（程序都需要加载到内存才能运行，因而内存应该是尽可能的保证快）。</p>
+<p><strong>硬盘中或者网络传输用 utf-8</strong>：网络I/O延迟或磁盘I/O延迟要远大与 utf-8 的转换延迟，而且I/O应该是尽可能地节省带宽，保证数据传输的稳定性。</p>
 <h1 id="编码的使用"><a href="#编码的使用" class="headerlink" title="编码的使用"></a>编码的使用</h1><p>计算机中所有程序的运行都是在内存中进行的。内存 ( Memory ) 也被称为内存储器，其作用是用于暂时存放CPU中的运算数据，以及与硬盘等外部存储器交换的数据。只要计算机在运行中，CPU就会把需要运算的数据调到内存中进行运算，当运算完成后CPU再将结果传送出来。</p>
 <p>当我们在计算机上打开一个文本编辑器的时候，计算机实际上就是在内存中启动了一个相应的进程，所以我们所有编辑的内容也都在内存中存放，只有当我们点击保存的时候才会将数据写入硬盘，没有保存之前一旦断电，内存中未保存的数据就会丢失。</p>
-<p>在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就转换为UTF-8编码。需要注意的是 <strong>文件以什么编码保存的，就以什么编码方式打开</strong></p>
-<h1 id="Python的编码"><a href="#Python的编码" class="headerlink" title="Python的编码"></a>Python的编码</h1><h2 id="存取过程"><a href="#存取过程" class="headerlink" title="存取过程"></a>存取过程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test.py</span><br></pre></td></tr></table></figure>
-<p>上面是一个在命令行使用python解释器来执行写好的 python 程序，这个过程大致可以分成三个步骤：</p>
+<p>在计算机内存中，统一使用 Unicode 编码，当需要保存到硬盘或者需要传输的时候，就转换为 UTF-8 编码。需要注意的是 <strong>文件以什么编码方式保存的，就以什么编码方式打开</strong>。</p>
+<h1 id="Python的编码"><a href="#Python的编码" class="headerlink" title="Python的编码"></a>Python的编码</h1><h2 id="普通文件的编码"><a href="#普通文件的编码" class="headerlink" title="普通文件的编码"></a>普通文件的编码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test.py</span><br></pre></td></tr></table></figure>
+<p>如上所示的，一个在命令行使用 Python 解释器来执行写好的 Python 程序，整个过程大致可以分成三个步骤：</p>
 <ul>
-<li>启动解释器，进程运行在内存中</li>
-<li>解释器将 <code>test.py</code> 从硬盘读入内存</li>
-<li>解释器执行内存中的代码</li>
+<li>启动解释器，进程运行在内存中。</li>
+<li>解释器将 <code>test.py</code> 从硬盘读入内存，读入文件内容到内存时用的编码方式和文件保存时用到的编码是一样的。</li>
+<li>解释器执行内存中的代码。</li>
 </ul>
-<p><img src="/2019/03/02/200410-Python的字符编码/code1.png" alt=""></p>
-<p>python 中关于编码出现的问题:</p>
-<ul>
-<li>如果不在 python 文件指定头信息 <code>＃-*-coding:utf-8-*-</code> ，在 python2 中就默认使用 ascii 读取文件，python3 中默认使用 utf-8 读取文件。我们使用以下代码做个演示</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.getdefaultencoding())</span><br><span class="line"></span><br><span class="line">s=<span class="string">"你好"</span></span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
-<p>python2的运行结果</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  File <span class="string">"encode.py"</span>, line 4</span><br><span class="line">SyntaxError: Non-ASCII character <span class="string">'\xe4'</span> <span class="keyword">in</span> file encode.py on line 4, but no encoding declared; see http://www.python.org/peps/pep-0263.html <span class="keyword">for</span> details</span><br></pre></td></tr></table></figure>
-<p>python3的运行结果</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">utf-8</span><br><span class="line">你好</span><br></pre></td></tr></table></figure>
-<p>在 python 文件中使用utf-8编码进行存取</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.getdefaultencoding())</span><br><span class="line"></span><br><span class="line">s=<span class="string">"你好"</span></span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
-<p>python2的运行结果</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ascii</span><br><span class="line">你好</span><br></pre></td></tr></table></figure>
-<p>python3的运行结果</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">utf-8</span><br><span class="line">你好</span><br></pre></td></tr></table></figure>
-<h2 id="内存中的执行"><a href="#内存中的执行" class="headerlink" title="内存中的执行"></a>内存中的执行</h2><p>python 读取已经加载到内存的代码（unicode 编码的二进制），然后执行，执行过程中可能会开辟新的内存空间，比如 <code>x=&quot;hello&quot;</code></p>
-<p>内存的编码使用 unicode，不代表内存中全都是 unicode 编码的二进制，在程序执行之前，内存中确实都是 unicode 编码的二进制，比如从文件中读取了一行<code>x=&quot;hello&quot;</code>，其中的x，等号，引号，地位都一样，都是普通字符而已，都是以unicode编码的二进制形式存放与内存中的。但是程序在执行过程中，会申请内存（与程序代码所存在的内存是两个空间），可以存放任意编码格式的数据，比如<code>x=&quot;hello&quot;</code>，会被python解释器识别为字符串，会申请内存空间来存放<code>hello</code>，然后让<code>x</code>指向该内存地址，此时新申请的该内存地址保存也是unicode编码的<code>hello</code>，如果代码换成<code>x=&quot;hello&quot;.encode(&#39;utf-8&#39;)</code>，那么新申请的内存空间里存放的就是utf-8编码的字符串<code>hello</code>了.</p>
-<p><img src="/2019/03/02/200410-Python的字符编码/code2.png" alt=""></p>
-<h2 id="Python2与python3编码区别"><a href="#Python2与python3编码区别" class="headerlink" title="Python2与python3编码区别"></a>Python2与python3编码区别</h2><h3 id="Python2"><a href="#Python2" class="headerlink" title="Python2"></a>Python2</h3><p>在 python2 中有两种字符串类型 str 和 unicode</p>
-<ul>
-<li>str类型</li>
-</ul>
-<p>当 python 解释器执行到产生字符串的代码时（例如 <code>s = &#39;好&#39;</code>），会申请新的内存地址，然后将 <code>&#39;好&#39;</code> 编码成文件开头指定的编码格式，这已经是encode(编码)之后的结果了，所以 <code>s</code> 只能 decode(解码)。再次 encode 就会报错。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">"好"</span></span><br><span class="line"><span class="comment"># print s.encode("utf-8")  # 报错</span></span><br><span class="line"><span class="keyword">print</span> s.decode(<span class="string">"utf-8"</span>)   <span class="comment"># 结果：好</span></span><br></pre></td></tr></table></figure>
-<p>在 python2 中，str 就是编码后的结果 bytes，str=bytes，所以在 python2 中，unicode 字符编码的结果是 str/bytes</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 在执行时,'好'会被以conding:utf-8的形式保存到新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> repr(s)  <span class="comment">#'\xe5\xa5\xbd' 三个Bytes,证明确实是utf-8</span></span><br><span class="line"><span class="keyword">print</span> type(s)  <span class="comment"># &lt;type 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">s.decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="comment"># s.encode('utf-8')  # 报错，s为编码后的结果bytes，所以只能decode</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>unicode类型</li>
-</ul>
-<p>当 python 解释器执行到产生字符串的代码时（例如 <code>s = u&#39;好&#39;</code>），会申请新的内存地址，然后将 <code>&#39;好&#39;</code> 以 unicode 的格式存放到新的内存空间中，所以 s 只能 encode ，不能 decode.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">u'好'</span></span><br><span class="line"><span class="keyword">print</span> repr(s)  <span class="comment"># u'\u597d'</span></span><br><span class="line"><span class="keyword">print</span> type(s)  <span class="comment"># &lt;type 'unicode'&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># s.decode('utf-8')  # 报错，s为unicode，所以只能encode</span></span><br><span class="line">s.encode(<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="Python3"><a href="#Python3" class="headerlink" title="Python3"></a>Python3</h3><p>在 python3 中也有两种字符串类型 str 和 bytes </p>
-<ul>
-<li>python3中，str 类型在内存中默认以 unicode 编码保存到新的内存空间中</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 当程序执行时，无需加 u，默认以 unicode 形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># s可以直接 encode 成任意编码格式</span></span><br><span class="line">s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>bytes类型</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 当程序执行时，无需加 u，默认以 unicode 形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># s可以直接 encode 成任意编码格式</span></span><br><span class="line">s1 = s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">s2 = s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">print(s)  <span class="comment"># 好</span></span><br><span class="line">print(s1)  <span class="comment"># b'\xe6\x9e\x97' 在 python3 中，是什么就打印什么</span></span><br><span class="line">print(s2)  <span class="comment"># b'\xc1\xd6' 同上</span></span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line">print(type(s1))  <span class="comment"># &lt;class 'bytes'&gt;</span></span><br><span class="line">print(type(s2))  <span class="comment"># &lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p><strong>当数据要打印到终端时，要注意一些问题.</strong></p>
-<ul>
-<li>当程序执行时，比如: <code>x = &#39;好&#39;;print(x)</code> ，这一步是将 <code>x</code> 指向的那块新的内存空间（非代码所在的内存空间）中的内存，打印到终端，而终端仍然是运行于内存中的，所以这打印可以理解为从内存打印到内存，即内存-&gt;内存，unicode -&gt; unicode，对于 unicode 格式的数据来说，无论怎么打印都不会乱码。</li>
-<li>python3 中的字符串与 python2 中的 u’字符串’，都是 unicode，所以无论如何打印都不会乱码。</li>
-<li>在 windows 终端（终端编码为gbk，文件编码为 utf-8，乱码产生）</li>
-</ul>
-<h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>在ASCII中一个中文字符占用几个字节？答：ASCII无法表示中文字符</li>
-<li>Python2 的默认文件编码是 ascii</li>
-<li>Python3 的默认文件编码是 utf-8，所有字符串都是 unicode</li>
-<li>unicode 中一个中文占用两个字节空间，utf-8 中一个中文占用三个字节</li>
-</ul>
+<p><img src="/2019/03/02/200410-Python的字符编码/02_encode1.png" alt=""></p>
+<p>当我们在 windows 创建一个记事本文件 <code>notepad.txt</code>，写入以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Python是一种计算机程序设计语言。是一种面向对象的动态类型语言，最初被设计用于编写自动化脚本(shell)，随着版本的不断更新和语言新功能的添加，越来越多被用于独立的、大型项目的开发。</span><br><span class="line"></span><br><span class="line">Python在设计上坚持了清晰划一的风格，这使得Python成为一门易读、易维护，并且被大量用户所欢迎的、用途广泛的语言。</span><br></pre></td></tr></table></figure>
+<p>保存后传到一台系统编码格式为 UTF-8 的 Linux 服务器上。使用 <code>cat</code> 命令查看文件时出现了乱码，得到的是如下结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Pythonһhell)Խ</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Pythonһthonһ</span><br></pre></td></tr></table></figure>
+<p>这是因为，在 Linux 中常见例如 <code>cat</code>、<code>head</code> 、<code>vim</code> 等命令在读取硬盘中的文件、往硬盘上写入文件时默认用的是系统环境的 UTF-8 编码。而从 Windows 下拷贝过来的文件是以 gbk 编码的二进制，编码不一致导致出现乱码。</p>
+<h2 id="Python代码文件头部的编码"><a href="#Python代码文件头部的编码" class="headerlink" title="Python代码文件头部的编码"></a>Python代码文件头部的编码</h2><p>默认情况下，Python 源码文件是以 UTF-8 编码方式来处理的。在这种编码方式中，世界上绝大多数语言的字符都可以同时用于字符串字面值、变量或函数名称以及注释中。</p>
+<p>如果不使用默认编码，要对 Python 解释器声明处理源码文件时所使用的编码，文件第一行或第二行要写成特殊的注释。语法如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br></pre></td></tr></table></figure>
+<p>这一行就告诉了 Python 解释器以 utf-8 的编码处理当前文件的代码。通常情况下我们要想让 Python 脚本可以直接执行，就像 shell 脚本一样，第一行添加：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br></pre></td></tr></table></figure>
+<p>这种情况下，编码声明就要写在文件的第二行。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br></pre></td></tr></table></figure>
+<p>当我们在 Python 源码文件中用了中文字符作为字面值时，如果文件头部声明的是日文的字符编码 <code>Shift_JIS</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: Shift_JIS -*-</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">'你好'</span></span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+<p>当 Python 解释器处理代码时就会因为无法识别中文的编码就会出现编码问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ python3 test.py</span><br><span class="line">  File <span class="string">"test.py"</span>, line 2</span><br><span class="line">SyntaxError: encoding problem: Shift_JIS</span><br></pre></td></tr></table></figure>
+<p>为了说明问题，我们在 Python 代码中使用中文字符作为函数名、参数，如果文件头部声明的是西欧字符编码 <code>Windows-1252</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: Windows-1252 -*- </span></span><br><span class="line"></span><br><span class="line">字符串<span class="number">1</span> = <span class="string">'你好'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> 加法<span class="params">(数字一,数字二)</span>:</span></span><br><span class="line">    print(<span class="string">'数字一 加 数字二 等于 %d'</span> %(数字一+数字二))</span><br><span class="line"></span><br><span class="line">加法(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>当 Python 解释器处理代码时就会因为无法识别中文的编码出现乱码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3  test.py</span><br><span class="line">  File <span class="string">"test.py"</span>, line 4</span><br><span class="line">    å­—ç¬¦ä¸²1 = <span class="string">'ä½ å¥½'</span></span><br><span class="line">             ^</span><br><span class="line">SyntaxError: invalid character <span class="keyword">in</span> identifier</span><br></pre></td></tr></table></figure>
+<p>将源码文件中的 <code>Windows-125</code> 改为 <code>utf-8</code> 后，Python 解释器便可以成功处理代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3  test.py</span><br><span class="line">数字一 加 数字二 等于 3</span><br></pre></td></tr></table></figure>
+<p>由此可见，在 Python 源码文件首部的编码声明对 Python 解释器起着至关重要的作用。在 Python 标准库中只用常规的 ASCII 字符作为变量或函数名，对于编写任何可移植的代码，我们都应该遵守此约定。要正确显示这些字符，你的编辑器必须能识别 UTF-8 编码，而且必须使用能支持打开文件中所有字符的字体。</p>
+<h2 id="Python内置方法的编码"><a href="#Python内置方法的编码" class="headerlink" title="Python内置方法的编码"></a>Python内置方法的编码</h2><p>在 Python 代码中对于内置方法 <code>open()</code> 操作文件时，在文本模式下，如果 <code>encoding</code> 没有指定，则根据操作系统的平台来决定使用的编码，如果要读取和写入原始字节，请使用二进制模式并且不要指定 <code>encoding</code>。</p>
+<p>对于字符串类型的 <code>encode()</code> 方法和 bytes 类型的 <code>decode()</code> 方法，处理标准流（标准输出、标准输入、标准错误输出）等，默认都使用 UTF-8 作为编码。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'你好'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode()</span><br><span class="line"><span class="string">b'\xe4\xbd\xa0\xe5\xa5\xbd'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">b'\xe4\xbd\xa0\xe5\xa5\xbd'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"><span class="string">b'\xc4\xe3\xba\xc3'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode(<span class="string">'utf-8'</span>).decode()</span><br><span class="line"><span class="string">'你好'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="string">'你好'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>请一定要注意，这里说的编码和 Python 源码文件首部的编码不是一回事，一个是内置方法用什么样的编码处理对象，而另一个说的是 Python 解释器是以什么样的编码执行代码。</p>
+<p>对于在上面说到的在 windows 下创建的记事本文件 <code>notepad.txt</code>，如果在 Python 中使用 <code>open()</code> 方法不指定 <code>encoding</code> 则默认使用 Linux 系统的 UTF-8 作为编码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'notepad.txt'</span>, <span class="string">'rt'</span>) <span class="keyword">as</span> frd:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> frd:</span><br><span class="line">        print(line)</span><br></pre></td></tr></table></figure>
+<p>执行后报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UnicodeDecodeError: &apos;utf-8&apos; codec can&apos;t decode byte 0xca in position 6: invalid continuation byte</span><br></pre></td></tr></table></figure>
+<p>这是因为在 Windows 中是以 GBK 编码编辑文件和保存的，到了 Linux 上用 UTF-8 无法打开 GBK 编码的文件，必须使用 GBK 才能正确打开，所以应该为 <code>open()</code> 方法指定 GBK 作为编码方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'notepad.txt'</span>, <span class="string">'rt'</span>, encoding=<span class="string">'gbk'</span>) <span class="keyword">as</span> frd:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> frd:</span><br><span class="line">        print(line)</span><br></pre></td></tr></table></figure>
+<p>为了彻底解决这个乱码的问题，我们应该将正确读到的文件再以 UTF-8 的编码方式写入硬盘：</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/02_encode2.png" alt=""></p>
+<p>由于不能同时对一个文件对象进行又读又写的操作，所以应将读入内存的内容重新写到另外一个新的文件，最后对文件重命名即可。具体操作代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'notepad.txt'</span>, <span class="string">'rt'</span>, encoding=<span class="string">'gbk'</span>) <span class="keyword">as</span> frd, \</span><br><span class="line">        open(<span class="string">'notepad2.txt'</span>, <span class="string">'wt'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fwt:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> frd:</span><br><span class="line">        fwt.write(line)</span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">'notepad2.txt'</span>, <span class="string">'notepad.txt'</span>)</span><br></pre></td></tr></table></figure>
+<p>这时再使用 <code>cat</code> 查看文件内容就不会再有乱码了。</p>
+<p>而对于原本在 Windows 上创建的记事本文件 <code>notepad.txt</code>，在 Windows 下使用 Python 解释器来处理也是用的 utf-8 ，为什么没有出现乱码呢？ 这其实是 Windows 里的某个程序帮你处理了，而 Linux 下你没有使用其他程序进行处理，所以会出现乱码问题。</p>
+<h2 id="内存中的执行"><a href="#内存中的执行" class="headerlink" title="内存中的执行"></a>内存中的执行</h2><p>Python 读取已经加载到内存的代码（unicode 编码的二进制），然后执行，在执行过程中可能会开辟新的内存空间，比如 <code>x=&quot;hello&quot;</code></p>
+<p>内存的编码使用 unicode，不代表内存中全都是 unicode 编码的二进制，在程序执行之前，内存中确实都是 unicode 编码的二进制，比如从文件中读取了一行 <code>x=&quot;hello&quot;</code> ，其中的 x，等号，引号，地位都一样，都是普通字符而已，都是以 unicode 编码的二进制形式存放于内存中的。但是程序在执行过程中，会申请内存（与程序代码所存在的内存是两个空间），可以存放任意编码格式的数据，比如 <code>x=&quot;hello&quot;</code> ，会被 Python 解释器识别为字符串，会申请内存空间来存放字符串 <code>hello</code>，然后让 <code>x</code> 指向该内存地址，此时新申请的该内存地址保存也是 unicode 编码的 <code>hello</code> ，如果代码换成 <code>x=&quot;hello&quot;.encode(&#39;utf-8&#39;)</code>，那么新申请的内存空间里存放的就是 utf-8 编码的字符串 <code>hello</code> 了.</p>
+<p><img src="/2019/03/02/200410-Python的字符编码/02_encode3.png" alt=""></p>
+<h1 id="str-与-bytes"><a href="#str-与-bytes" class="headerlink" title="str 与 bytes"></a>str 与 bytes</h1><p>在 Python3 中有两种字符类型 str 和 bytes ，并且在 Python3 以后，这两种类型彻底分开了。</p>
+<p><strong>str 类型</strong>以字符为单位进行处理，在内存中默认以 unicode 编码保存到新的内存空间中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 当程序执行时，无需加 u，默认以 unicode 形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># s 可以直接 encode 成任意编码格式</span></span><br><span class="line">s.encode(<span class="string">'utf-8'</span>)</span><br><span class="line">s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>bytes 类型</strong>是以字节为单位处理，在所有的操作和使用甚至内置方法上和字符串数据类型基本一样，也是不可变的序列对象。</p>
+<p>bytes 对象只负责以二进制字节序列的形式记录所需记录的对象，至于该对象到底表示什么（比如到底是什么字符）则由相应的编码格式解码所决定。Python3 中 bytes 通常用于网络数据传输、二进制图片和文件的保存等等。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'好'</span>  <span class="comment"># 当程序执行时，无需加 u，默认以 unicode 形式保存新的内存空间中</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># s 可以直接 encode 成任意编码格式</span></span><br><span class="line">s1 = s.encode()</span><br><span class="line"><span class="comment"># 等同于 s1 = s.encode(‘utf-8')，encode、decode方法默认使用 utf-8 作为编码格式</span></span><br><span class="line">s2 = s.encode(<span class="string">'gbk'</span>)</span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line"></span><br><span class="line">print(s)  <span class="comment"># 好</span></span><br><span class="line">print(s1)  <span class="comment"># b'\xe6\x9e\x97' 用 utf-8 编码后的 bytes 类型，在 Python3 中，是什么就打印什么</span></span><br><span class="line">print(s2)  <span class="comment"># b'\xc1\xd6'  用 gbk 编码后的 bytes 类型。</span></span><br><span class="line"></span><br><span class="line">print(type(s))  <span class="comment"># &lt;class 'str'&gt;</span></span><br><span class="line">print(type(s1))  <span class="comment"># &lt;class 'bytes'&gt;</span></span><br><span class="line">print(type(s2))  <span class="comment"># &lt;class 'bytes'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们可以通过调用内置的方法 <code>bytes()</code> 生成 bytes 实例，其值的形式为 <code>b&#39;xxxxx&#39;</code>，其中 <code>&#39;xxxxx&#39;</code> 为一到多个转义的十六进制字符串（单个 <code>x</code> 的形式为 <code>\x12</code>，其中 <code>\x</code> 为小写的十六进制转义字符，<code>12</code> 为二位十六进制数）组成的序列，每个十六进制数代表一个字节（八位二进制数，取值范围 0-255），对于同一个字符串如果采用不同的编码方式生成 bytes 对象，就会形成不同的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">b1 = <span class="string">b''</span>  <span class="comment"># 创建一个空的 bytes</span></span><br><span class="line">b2 = bytes()  <span class="comment"># 创建一个空的 bytes</span></span><br><span class="line">b3 = <span class="string">b'hello'</span>  <span class="comment"># 直接指定字符串为 bytes 类型</span></span><br><span class="line">b4 = bytes(<span class="string">'hello'</span>, encoding=<span class="string">'utf-8'</span>)  <span class="comment"># 利用内置的 bytes() 方法将字符串转为指定编码类型的 bytes</span></span><br><span class="line">b5 = <span class="string">'hello'</span>.encode()  <span class="comment"># 利用字符串的 encode 方法编码成 bytes，默认使用 utf-8 编码</span></span><br><span class="line">b6 = b3.decode()  <span class="comment"># 将 bytes 对象解码成字符串，默认使用 utf-8 进行解码。</span></span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在 ASCII 中一个中文字符占用几个字节？答：ASCII无法表示中文字符。</p>
+<p>Python2 的默认文件编码是 ascii。Python3 的默认文件编码是 utf-8，所有字符串都是 unicode。unicode 中一个中文占用两个字节空间，utf-8 中一个中文占用三个字节</p>
+<p><strong>当数据要打印到终端时，要注意的问题：</strong> 当程序执行时，比如: <code>x = &#39;好&#39;;print(x)</code> ，这一步是将 <code>x</code> 指向的那块新的内存空间（非代码所在的内存空间）中的内容打印到终端，而终端仍然是运行于内存中的，所以这打印可以理解为从内存打印到内存，即内存 =&gt; 内存，unicode =&gt; unicode，对于 unicode 格式的数据来说，无论怎么打印都不会乱码。</p>
 <p>参考链接：<br><a href="https://www.cnblogs.com/vipchenwei/p/6993788.html" target="_blank" rel="noopener">https://www.cnblogs.com/vipchenwei/p/6993788.html</a><br><a href="http://blog.csdn.net/apache0554/article/details/53889253" target="_blank" rel="noopener">http://blog.csdn.net/apache0554/article/details/53889253</a></p>
 
       
     </div>
+
+    
+
     
     
     
 
     
 
+    
+      
+    
     
       <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+        <div id="reward-container">
   <div>有钱任性，请我吃包辣条</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
   </button>
-  <div id="QR" style="display: none;">
+  <div id="qr" style="display: none;">
 
     
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
         <p>微信支付</p>
       </div>
     
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.jpg" alt="Silence 支付宝"/>
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Silence 支付宝"/>
         <p>支付宝</p>
       </div>
-    
-
     
 
   </div>
@@ -1052,27 +1112,12 @@
     
 
     
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者：</strong>
-    Silence
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/" title="Python的字符编码">http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>
-    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-
-      </div>
-    
 
     <footer class="post-footer">
       
+        
+          
+        
         <div class="post-tags">
           
             <a href="/tags/Python3/" rel="tag"><i class="fa fa-tag"></i> Python3</a>
@@ -1088,8 +1133,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/01/105110-Python初识/" rel="next" title="Python初识">
-                <i class="fa fa-chevron-left"></i> Python初识
+              <a href="/2019/03/02/132127-在Linux上编译安装Python3/" rel="next" title="在Linux上编译安装Python3">
+                <i class="fa fa-chevron-left"></i> 在Linux上编译安装Python3
               </a>
             
           </div>
@@ -1116,57 +1161,14 @@
   </article>
 
 
-
-    <div class="post-spread">
-      
-        
-  <div class="bdsharebuttonbox">
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
-    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
-    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
-    <a href="#" class="bds_more" data-cmd="more"></a>
-    <a class="bds_count" data-cmd="count"></a>
-  </div>
-  <script>
-    window._bd_share_config = {
-      "common": {
-        "bdText": "",
-        "bdMini": "2",
-        "bdMiniList": false,
-        "bdPic": ""
-      },
-      "share": {
-        "bdSize": "16",
-        "bdStyle": "0"
-      },
-      "image": {
-        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
-        "viewText": "分享到：",
-        "viewSize": "16"
-      }
-    }
-  </script>
-
-<script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-
-      
-    </div>
   </div>
 
 
           </div>
           
 
-
-          
   
+
 
 
         </div>
@@ -1182,9 +1184,6 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
-    
-      <div id="sidebar-dimmer"></div>
-    
     <div class="sidebar-inner">
 
       
@@ -1200,54 +1199,107 @@
         </ul>
       
 
-      <section class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
                 src="/images/avatar.jpg"
-                alt="Silence" />
+                alt="Silence"/>
             
               <p class="site-author-name" itemprop="name">Silence</p>
-              <p class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</p>
+              <div class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</div>
           </div>
 
-          <nav class="site-state motion-element">
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">123</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
 
-            
-              <div class="site-state-item site-state-posts">
               
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">118</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
 
-            
               
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
+            </nav>
+          
 
           
             <div class="feed-link motion-element">
@@ -1258,122 +1310,133 @@
             </div>
           
 
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/linuxgeeks" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
-          </div>
+          
 
           
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/linuxgeeks" title="GitHub &rarr; https://github.com/linuxgeeks" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
           
 
           
           
             <div class="links-of-blogroll motion-element links-of-blogroll-inline">
               <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-globe"></i>
+                <i class="fa  fa-fw fa-link"></i>
                 友情链接
               </div>
               <ul class="links-of-blogroll-list">
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://www.ibm.com/developerworks/cn/" title="IBM developerWorks" target="_blank">IBM developerWorks</a>
+                    <a href="https://www.ibm.com/developerworks/cn/" title="https://www.ibm.com/developerworks/cn/" rel="noopener" target="_blank">IBM developerWorks</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://iissnan.com/progit/" title="Pro Git" target="_blank">Pro Git</a>
+                    <a href="http://iissnan.com/progit/" title="http://iissnan.com/progit/" rel="noopener" target="_blank">Pro Git</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.freeoa.net/index/" title="freeOA" target="_blank">freeOA</a>
+                    <a href="http://www.freeoa.net/index/" title="http://www.freeoa.net/index/" rel="noopener" target="_blank">freeOA</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.ttlsa.com/" title="运维生存时间" target="_blank">运维生存时间</a>
+                    <a href="http://www.ttlsa.com/" title="http://www.ttlsa.com/" rel="noopener" target="_blank">运维生存时间</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.361way.com/" title="运维之路" target="_blank">运维之路</a>
+                    <a href="http://www.361way.com/" title="http://www.361way.com/" rel="noopener" target="_blank">运维之路</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.ipcpu.com" title="网络之路" target="_blank">网络之路</a>
+                    <a href="http://www.ipcpu.com" title="http://www.ipcpu.com" rel="noopener" target="_blank">网络之路</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.yiibai.com/" title="易百教程" target="_blank">易百教程</a>
+                    <a href="http://www.yiibai.com/" title="http://www.yiibai.com/" rel="noopener" target="_blank">易百教程</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.centoscn.com/" title="CentOS中文站" target="_blank">CentOS中文站</a>
+                    <a href="http://www.centoscn.com/" title="http://www.centoscn.com/" rel="noopener" target="_blank">CentOS中文站</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.linuxprobe.com/" title="Linux就该这么学" target="_blank">Linux就该这么学</a>
+                    <a href="http://www.linuxprobe.com/" title="http://www.linuxprobe.com/" rel="noopener" target="_blank">Linux就该这么学</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.netingcn.com/" title="网络进行时" target="_blank">网络进行时</a>
+                    <a href="http://www.netingcn.com/" title="http://www.netingcn.com/" rel="noopener" target="_blank">网络进行时</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰的网络日志" target="_blank">阮一峰的网络日志</a>
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://www.liaoxuefeng.com" title="廖雪峰的官方网站" target="_blank">廖雪峰的官方网站</a>
+                    <a href="https://www.liaoxuefeng.com" title="https://www.liaoxuefeng.com" rel="noopener" target="_blank">廖雪峰的官方网站</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://yihui.name/cn/" title="谢益辉的博客" target="_blank">谢益辉的博客</a>
+                    <a href="https://yihui.name/cn/" title="https://yihui.name/cn/" rel="noopener" target="_blank">谢益辉的博客</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://coolshell.cn" title="酷壳" target="_blank">酷壳</a>
+                    <a href="https://coolshell.cn" title="https://coolshell.cn" rel="noopener" target="_blank">酷壳</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://zhangguanzhang.github.io" title="张馆长的博客" target="_blank">张馆长的博客</a>
+                    <a href="https://zhangguanzhang.github.io" title="https://zhangguanzhang.github.io" rel="noopener" target="_blank">张馆长的博客</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://kuops.com" title="kuops" target="_blank">kuops</a>
+                    <a href="https://kuops.com" title="https://kuops.com" rel="noopener" target="_blank">kuops</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.jinbuguo.com/" title="金步国作品集" target="_blank">金步国作品集</a>
+                    <a href="http://www.jinbuguo.com/" title="http://www.jinbuguo.com/" rel="noopener" target="_blank">金步国作品集</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://www.sa-log.com" title="王帅的博客" target="_blank">王帅的博客</a>
+                    <a href="http://www.sa-log.com" title="http://www.sa-log.com" rel="noopener" target="_blank">王帅的博客</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://thief.one" title="nMask" target="_blank">nMask</a>
+                    <a href="https://thief.one" title="https://thief.one" rel="noopener" target="_blank">nMask</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://arvon.top" title="Arvon" target="_blank">Arvon</a>
+                    <a href="https://arvon.top" title="https://arvon.top" rel="noopener" target="_blank">Arvon</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://kionf.com" title="Kionf" target="_blank">Kionf</a>
+                    <a href="https://kionf.com" title="https://kionf.com" rel="noopener" target="_blank">Kionf</a>
                   </li>
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://www.the5fire.com" title="the5fire" target="_blank">the5fire</a>
+                    <a href="https://www.the5fire.com" title="https://www.the5fire.com" rel="noopener" target="_blank">the5fire</a>
                   </li>
                 
               </ul>
@@ -1381,25 +1444,29 @@
           
 
           
+            
+          
+          
 
         </div>
-      </section>
+      </div>
 
       
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
 
             
-              
+            
+            
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二进制与数字"><span class="nav-number">1.</span> <span class="nav-text">二进制与数字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASCII码"><span class="nav-number">2.</span> <span class="nav-text">ASCII码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符编码的发展史"><span class="nav-number">3.</span> <span class="nav-text">字符编码的发展史</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于中文"><span class="nav-number">3.1.</span> <span class="nav-text">关于中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode"><span class="nav-number">3.2.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utf-8"><span class="nav-number">3.3.</span> <span class="nav-text">utf-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码的使用"><span class="nav-number">4.</span> <span class="nav-text">编码的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python的编码"><span class="nav-number">5.</span> <span class="nav-text">Python的编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#存取过程"><span class="nav-number">5.1.</span> <span class="nav-text">存取过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存中的执行"><span class="nav-number">5.2.</span> <span class="nav-text">内存中的执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python2与python3编码区别"><span class="nav-number">5.3.</span> <span class="nav-text">Python2与python3编码区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python2"><span class="nav-number">5.3.1.</span> <span class="nav-text">Python2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python3"><span class="nav-number">5.3.2.</span> <span class="nav-text">Python3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注意事项"><span class="nav-number">6.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结-1"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二进制与数字"><span class="nav-number">1.</span> <span class="nav-text">二进制与数字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASCII码"><span class="nav-number">2.</span> <span class="nav-text">ASCII码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符编码的发展史"><span class="nav-number">3.</span> <span class="nav-text">字符编码的发展史</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中文编码"><span class="nav-number">3.1.</span> <span class="nav-text">中文编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unicode"><span class="nav-number">3.2.</span> <span class="nav-text">unicode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utf-8"><span class="nav-number">3.3.</span> <span class="nav-text">utf-8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结："><span class="nav-number">3.4.</span> <span class="nav-text">总结：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码的使用"><span class="nav-number">4.</span> <span class="nav-text">编码的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python的编码"><span class="nav-number">5.</span> <span class="nav-text">Python的编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#普通文件的编码"><span class="nav-number">5.1.</span> <span class="nav-text">普通文件的编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python代码文件头部的编码"><span class="nav-number">5.2.</span> <span class="nav-text">Python代码文件头部的编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python内置方法的编码"><span class="nav-number">5.3.</span> <span class="nav-text">Python内置方法的编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存中的执行"><span class="nav-number">5.4.</span> <span class="nav-text">内存中的执行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#str-与-bytes"><span class="nav-number">6.</span> <span class="nav-text">str 与 bytes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
-        </section>
+        </div>
       <!--/noindex-->
       
 
@@ -1407,6 +1474,7 @@
 
     </div>
   </aside>
+  
 
 
         
@@ -1415,24 +1483,59 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
 
   
 </div>
 
 
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.4.2</div>
 
 
 
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
 
 
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
 
 
 
@@ -1451,11 +1554,16 @@
       </div>
     
 
+    
+
+    
+
+    
   </div>
 
   
 
-<script type="text/javascript">
+<script>
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
@@ -1469,10 +1577,6 @@
 
 
 
-  
-
-
-  
 
 
 
@@ -1482,76 +1586,6 @@
 
 
 
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script type="text/javascript" src="true"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
 
 
 
@@ -1561,8 +1595,58 @@
 
 
   
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
 
-  <script type="text/javascript">
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
     // Popup Window;
     var isfetched = false;
     var isXml = true;
@@ -1611,6 +1695,8 @@
         .css('overflow', 'hidden');
       $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
 
+      
+
       $.ajax({
         url: path,
         dataType: isXml ? "xml" : "json",
@@ -1644,8 +1730,9 @@
                 var title = data.title.trim();
                 var titleInLowerCase = title.toLowerCase();
                 var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
                 var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
                 var indexOfTitle = [];
                 var indexOfContent = [];
                 // only match articles with not empty titles
@@ -1814,9 +1901,9 @@
               })
             };
             if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
             } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
             } else {
               resultItems.sort(function (resultLeft, resultRight) {
                 if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
@@ -1886,25 +1973,67 @@
   
 
   
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
 </script>
 
-
-  
-
-  
 
   
 
