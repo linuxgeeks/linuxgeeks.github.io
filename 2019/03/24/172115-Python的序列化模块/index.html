@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="什么是序列化在程序运行的过程中，所有的变量存储的数据都是加载在内存中，一旦程序结束，数据所占用的内存就被操作系统全部回收。各种类型的数据从内存中变成可存储或传输的过程称之为序列化，序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。反过来，把数据内容从序列化的对象重新读到内存里称之为反序列化。 序">
+<meta name="keywords" content="Python3,Python Modules">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的序列化模块">
+<meta property="og:url" content="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="什么是序列化在程序运行的过程中，所有的变量存储的数据都是加载在内存中，一旦程序结束，数据所占用的内存就被操作系统全部回收。各种类型的数据从内存中变成可存储或传输的过程称之为序列化，序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。反过来，把数据内容从序列化的对象重新读到内存里称之为反序列化。 序列化的目的：  以某种存储形式使自定义对象持久化； 将对象可以从一个地方传递到另">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/01serialization.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/02_json_object.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/03_json_value.png">
+<meta property="og:updated_time" content="2019-07-11T06:30:47.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的序列化模块">
+<meta name="twitter:description" content="什么是序列化在程序运行的过程中，所有的变量存储的数据都是加载在内存中，一旦程序结束，数据所占用的内存就被操作系统全部回收。各种类型的数据从内存中变成可存储或传输的过程称之为序列化，序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。反过来，把数据内容从序列化的对象重新读到内存里称之为反序列化。 序列化的目的：  以某种存储形式使自定义对象持久化； 将对象可以从一个地方传递到另">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/01serialization.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python的序列化模块 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/linuxgeeks" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2019/03/24/172115-Python的序列化模块/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence"/>
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟"/>
+      <meta itemprop="image" content="/images/avatar.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的序列化模块
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-24 17:21:15" itemprop="dateCreated datePublished" datetime="2019-03-24T17:21:15+08:00">2019-03-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-11 14:30:47" itemprop="dateModified" datetime="2019-07-11T14:30:47+08:00">2019-07-11</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon"
+              >
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="什么是序列化"><a href="#什么是序列化" class="headerlink" title="什么是序列化"></a>什么是序列化</h1><p>在程序运行的过程中，所有的变量存储的数据都是加载在内存中，一旦程序结束，数据所占用的内存就被操作系统全部回收。各种类型的数据从内存中变成可存储或传输的过程称之为序列化，序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。反过来，把数据内容从序列化的对象重新读到内存里称之为反序列化。</p>
+<p>序列化的目的：</p>
+<ul>
+<li>以某种存储形式使自定义对象持久化；</li>
+<li>将对象可以从一个地方传递到另一个地方；</li>
+<li>使程序更具有维护性。</li>
+</ul>
+<p><img src="/2019/03/24/172115-Python的序列化模块/01serialization.png" alt=""></p>
+<p>在 Python 中，序列化其实就是从其他数据类型转向一个字符串数据类型的过程，而反序列化是从字符串数据类型反向转换成其他数据类型的过程，这里所说的序列其实可以理解为字符串。</p>
+<h1 id="在-Python-中为什么要使用序列化模块"><a href="#在-Python-中为什么要使用序列化模块" class="headerlink" title="在 Python 中为什么要使用序列化模块"></a>在 Python 中为什么要使用序列化模块</h1><p>当我们在 Python 代码中计算的一个数据需要给另外一段程序使用，那我们怎么给？现在我们能想到的方法就是存在文件里，然后另一个 Python 程序再从文件里读出来。但是我们都知道，对于文件来说是没有字典这个概念的，所以我们只能将数据转换成字典放到文件中。你一定会问，将字典转换成一个字符串很简单，用 <code>str(dic)</code> 就可以办到了，为什么我们还要学习序列化模块呢？</p>
+<p>序列化的过程就是从 dic  变成 <code>str(dic)</code> 的过程。现在你可以通过 <code>str(dic)</code> 将一个名为 <code>dic</code> 的字典转换成一个字符串，但是你要怎么把一个字符串转换成字典呢？聪明的你肯定想到了 <code>eval()</code>，如果我们将一个字符串类型的字典 <code>str_dic</code> 传给 <code>eval()</code>，就会得到一个返回的字典类型了。<code>eval()</code> 函数十分强大，但是 <code>eval()</code> 的官方 demo 解释为：将字符串 str 当成有效的表达式来求值并返回计算结果。但是强大的函数有代价，安全性是其最大的缺点。想象一下，如果我们从文件中读出的不是一个数据结构，而是一句类似于 <code>os.remove()</code> 类似的破坏性语句，那么后果将不堪设想。所以，我们并不推荐用 <code>eva()</code> l方法来进行反序列化操作(将 str 转换成 python 中的数据结构)。</p>
+<p>Python 中提供了  <code>pickle</code>、<code>json</code> 、 <code>shelve</code> 模块来实现序列化和反序列化。</p>
+<h1 id="pickle-模块"><a href="#pickle-模块" class="headerlink" title="pickle 模块"></a>pickle 模块</h1><p>使用 pickle 模块可以对所有的 Python 中的数据类型进行序列化和反序列化操作，并且 pickle 序列化的内容只能使用 Python 才能操作，且反序列化依赖代码。</p>
+<p>在写入文件时由于 <strong>pickle 写入的是二进制数据</strong>，所以文件对象打开方式需要用 <code>wb</code> 和 <code>rb</code> 的模式 。下面是 pickle 模块中常用的方法：</p>
+<h2 id="dump"><a href="#dump" class="headerlink" title="dump"></a>dump</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pickle.dump(obj, file, protocol=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>必备参数 obj 表示将要封装的对象，必备参数 file 表示 obj 要写入的文件对象，file 必须以二进制可写模式打开，即 <code>wb</code>。可选参数 protocol 表示告知 pickler 使用的协议，支持的协议有 0,1,2,3，默认的协议是添加在 Python 3 中的协议 3。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">data = [<span class="string">'1a'</span>, <span class="string">'2b'</span>, <span class="string">'3c'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'test.pickle'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> fwt:</span><br><span class="line">    pickle.dump(data, fwt)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">将数据通过特殊的形式转换为只有 Python 语言认识的字符串，并写入文件</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="load"><a href="#load" class="headerlink" title="load"></a>load</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pickle.load(file, *, fix_imports=<span class="keyword">True</span>, encoding=<span class="string">"utf-8"</span>, errors=<span class="string">"strict"</span>)</span><br></pre></td></tr></table></figure>
+<p>必备参数 file 必须以二进制可读模式打开，即 <code>rb</code>，其他都为可选参数。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'test.pickle'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> frd:</span><br><span class="line">    data = pickle.load(frd, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">print(data)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">load 从数据文件中读取数据，并转换为 Python 的数据结构</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="dumps"><a href="#dumps" class="headerlink" title="dumps"></a>dumps</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pickle.dumps(obj, protocol=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>以字节对象形式返回封装的对象，不需要写入文件中。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">data = [<span class="string">'1a'</span>, <span class="string">'2b'</span>, <span class="string">'3c'</span>]</span><br><span class="line"></span><br><span class="line">pkle_str = pickle.dumps(data)</span><br><span class="line">print(pkle_str)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">dumps 将数据通过特殊的形式转换为只有 Python 语言认识的字符串</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">b'\x80\x03]q\x00(X\x02\x00\x00\x001aq\x01X\x02\x00\x00\x002bq\x02X\x02\x00\x00\x003cq\x03e.'</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="loads"><a href="#loads" class="headerlink" title="loads"></a>loads</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pickle.loads(bytes_object, fix_imports=<span class="keyword">True</span>, encoding=<span class="string">"utf-8"</span>, errors=<span class="string">"strict"</span>)</span><br></pre></td></tr></table></figure>
+<p>从字节对象中读取被封装的对象并返回。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">data = [<span class="string">'1a'</span>, <span class="string">'2b'</span>, <span class="string">'3c'</span>]</span><br><span class="line">pkle_str = pickle.dumps(data)</span><br><span class="line"></span><br><span class="line">mess = pickle.loads(pkle_str)</span><br><span class="line">print(mess)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">loads 将 pickle 数据转换为 Python 的数据结构</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">['1a', '2b', '3c']</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h1 id="json-模块"><a href="#json-模块" class="headerlink" title="json 模块"></a>json 模块</h1><p><a href="http://www.json.org" target="_blank" rel="noopener">json</a> 是一种轻量级的数据交换格式，JSON 数据的书写格式是：名称/值对。名称/值对包括字段名称（在双引号中），然后着是一个冒号(<code>:</code>)，最后是值。比如 <code>{ &quot;name&quot; : &quot;Python&quot; }</code>，类似于Python中的字典。</p>
+<p><img src="/2019/03/24/172115-Python的序列化模块/02_json_object.png" alt=""></p>
+<p>JSON值可以是数字（整数或浮点数），字符串（在双引号中），逻辑值（True 或 False），数组（在中括号中，Python 中是列表），对象（在大括号中）和 null。例如 <code>{ &quot;age&quot;: 21，&quot;graduated &quot;:true }</code>。JSON值的基本格式如下图所示。</p>
+<p><img src="/2019/03/24/172115-Python的序列化模块/03_json_value.png" alt=""></p>
+<p>json 作为一种通用的序列化格式具有更好的可读性和跨平台性，但是在 Python 中只有很少一部分数据类型能够通过 json 转化成字符串，不过这已经能能够满足大多数的需求。</p>
+<p>json 模块提供了四个方法： dumps、dump、loads、load<br>在 Python 中其实就是字典格式，里面可以包含方括号括起来的数组，也就是 Python 里面的列表。</p>
+<h2 id="dumps-和-loads"><a href="#dumps-和-loads" class="headerlink" title="dumps 和 loads"></a>dumps 和 loads</h2><p>dumps 和 loads 都是对内存中的数据进行操作。注意，要用 json 的 loads 功能来处理的 字符串类型的 字典中的字符串必须由 <code>&quot;&quot;</code> 表示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> json</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dic = &#123;<span class="string">'k1'</span>:<span class="string">'v1'</span>,<span class="string">'k2'</span>:<span class="string">'v2'</span>,<span class="string">'k3'</span>:<span class="string">'v3'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str_dic = json.dumps(dic)  <span class="comment"># 序列化：将一个字典转换成一个字符串</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str_dic</span><br><span class="line"><span class="string">'&#123;"k1": "v1", "k2": "v2", "k3": "v3"&#125;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(str_dic))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; </span></span><br><span class="line">&gt;&gt;&gt; dic2 = json.loads(str_dic)  # 反序列化：将一个字符串格式的字典转换成一个字典</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dic2</span><br><span class="line">&#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>, <span class="string">'k3'</span>: <span class="string">'v3'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(dic2))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">dict</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于嵌套的数据类型也是同样适用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> json</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list_dic = [<span class="number">1</span>, [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>], <span class="number">3</span>, &#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>&#125;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str_dic = json.dumps(list_dic)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str_dic</span><br><span class="line"><span class="string">'[1, ["a", "b", "c"], 3, &#123;"k1": "v1", "k2": "v2"&#125;]'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(str_dic))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line">&gt;&gt;&gt; list_dic2 = json.loads(str_dic)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list_dic2</span><br><span class="line">[<span class="number">1</span>, [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>], <span class="number">3</span>, &#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>&#125;]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(type(list_dic2))</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">list</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="dump-和-load"><a href="#dump-和-load" class="headerlink" title="dump 和 load"></a>dump 和 load</h2><p>dump 和 load 是对文件对象中的数据进行操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="string">'k1'</span>: <span class="string">'v1'</span>, <span class="string">'k2'</span>: <span class="string">'v2'</span>, <span class="string">'k3'</span>: <span class="string">'v3'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'json_file'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fwt:</span><br><span class="line">    json.dump(dic, fwt)</span><br><span class="line">    <span class="comment"># dump方法接收一个文件句柄，直接将字典转换成json字符串写入文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'json_file'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> frd:</span><br><span class="line">    dic2 = json.load(frd)</span><br><span class="line">    <span class="comment"># load方法接收一个文件句柄，直接将文件中的json字符串转换成数据结构返回</span></span><br><span class="line"></span><br><span class="line">print(type(dic2), dic2)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出结果：</span></span><br><span class="line"><span class="string">&lt;class 'dict'&gt; &#123;'k1': 'v1', 'k2': 'v2', 'k3': 'v3'&#125;</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他参数"><a href="#其他参数" class="headerlink" title="其他参数"></a>其他参数</h2><p>这里的其他参数是针对 dump 和 dumps 方法而言的。</p>
+<p><strong>ensure_ascii</strong>：当它为 True 的时候，所有非 ASCII 码字符显示为 <code>\uXXXX</code> 序列，只需在 dump 时将 <code>ensure_ascii</code> 设置为 False 即可，此时存入 json 的字符就会原样输出，包括中文字符。</p>
+<p><strong>indent</strong>：如果 indent 是一个非负整数或者字符串，那么 JSON 数组元素和对象成员会被美化输出为该值指定的缩进等级。如果缩进等级为零、负数或者 <code>&quot;&quot;</code>，则只会添加换行符。如果不设置 indent 则使用默认值 <code>None</code> 以最紧凑的形式来显示。使用一个正整数会让每一层缩进同样数量的空格。如果 <code>indent</code> 的值是一个字符串（比如 <code>&quot;\t&quot;</code>），那么这个字符串会被用于每一层的缩进。</p>
+<p><strong>separators</strong>：分隔符，实际上是 <code>(item_separator, dict_separator)</code> 的一个元组。当 indent 为 <code>None</code> 时，默认值取 <code>(&#39;, &#39;, &#39;: &#39;)</code>，否则取 <code>(&#39;,&#39;, &#39;: &#39;)</code>。为了得到最紧凑的 json 格式的数据，应该指定其为 <code>(&#39;,&#39;, &#39;:&#39;)</code> 以消除空白字符。</p>
+<p>默认的就是 <code>(&#39;,&#39;,&#39;:&#39;)</code> ；这表示 dictionary 内 keys 之间用 <code>,</code> 隔开，而 key 和 value之间用 <code>:</code> 隔开。 </p>
+<p><strong>sort_keys</strong>：默认为 False，如果设置其值是 true ，那么字典的输出会以键的顺序排序。</p>
+<p><strong>Skipkeys</strong>：默认值是 False，如果字典的键不是 Python 的基本类型（包括 str, int、float、bool、None），在设置为 <code>Skipkeys=False</code>  时，就会报 <code>TypeError</code> 的错误。此时设置成 True，则会跳过这类 key 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">province_city = &#123;</span><br><span class="line">    <span class="string">'山西'</span>: &#123;</span><br><span class="line">        <span class="string">'太原'</span>: [<span class="string">'小店区'</span>, <span class="string">'迎泽区'</span>, <span class="string">'杏花岭区'</span>, <span class="string">'古交市'</span>, <span class="string">'其他'</span>],</span><br><span class="line">        <span class="string">'大同'</span>: [<span class="string">'城区'</span>, <span class="string">'矿区'</span>, <span class="string">'南郊区'</span>, <span class="string">'灵丘县'</span>, <span class="string">'浑源县'</span>, <span class="string">'左云县'</span>, <span class="string">'大同县'</span>, <span class="string">'其他'</span>],</span><br><span class="line">        <span class="string">'吕梁'</span>: [<span class="string">'离石区'</span>, <span class="string">'文水县'</span>, <span class="string">'岚县'</span>, <span class="string">'方山县'</span>, <span class="string">'孝义市'</span>, <span class="string">'汾阳市'</span>, <span class="string">'其他'</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">json_dic2 = json.dumps(province_city,</span><br><span class="line">                       ensure_ascii=<span class="keyword">False</span>, sort_keys=<span class="keyword">True</span>, indent=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">print(json_dic2)</span><br></pre></td></tr></table></figure>
+<p>输出格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"山西"</span>: &#123;</span><br><span class="line">        <span class="string">"吕梁"</span>: [</span><br><span class="line">            <span class="string">"离石区"</span>,</span><br><span class="line">            <span class="string">"文水县"</span>,</span><br><span class="line">            <span class="string">"岚县"</span>,</span><br><span class="line">            <span class="string">"方山县"</span>,</span><br><span class="line">            <span class="string">"孝义市"</span>,</span><br><span class="line">            <span class="string">"汾阳市"</span>,</span><br><span class="line">            <span class="string">"其他"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"大同"</span>: [</span><br><span class="line">            <span class="string">"城区"</span>,</span><br><span class="line">            <span class="string">"矿区"</span>,</span><br><span class="line">            <span class="string">"南郊区"</span>,</span><br><span class="line">            <span class="string">"灵丘县"</span>,</span><br><span class="line">            <span class="string">"浑源县"</span>,</span><br><span class="line">            <span class="string">"左云县"</span>,</span><br><span class="line">            <span class="string">"大同县"</span>,</span><br><span class="line">            <span class="string">"其他"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"太原"</span>: [</span><br><span class="line">            <span class="string">"小店区"</span>,</span><br><span class="line">            <span class="string">"迎泽区"</span>,</span><br><span class="line">            <span class="string">"杏花岭区"</span>,</span><br><span class="line">            <span class="string">"古交市"</span>,</span><br><span class="line">            <span class="string">"其他"</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>JSON 中的键-值对中的键永远是 str 类型的。当一个对象被转化为 JSON 时，字典中所有的键都会被强制转换为字符串。这所造成的结果是字典被转换为 JSON 然后转换回字典时可能和原来的不相等。换句话说，如果 x 具有非字符串的键，则有 <code>loads(dumps(x)) != x</code> 。</p>
+<h2 id="json-和-pickle-的区别"><a href="#json-和-pickle-的区别" class="headerlink" title="json 和 pickle 的区别"></a>json 和 pickle 的区别</h2><p> json 和 picle 模块都有  dumps、dump、loads、load 四种方法，而且用法一样。二者不同之处是 json 模块序列化出来的是通用格式，其它编程语言都认识，就是普通的字符串，而 pickle 模块序列化出来的只有 Python 可以认识，其他编程语言无法识别，表现为乱码。</p>
+<h1 id="shelve-模块"><a href="#shelve-模块" class="headerlink" title="shelve 模块"></a>shelve 模块</h1><p>shelve 模块是 Python3 新出现的方式，特点是操作简单，使用序列化句柄直接操作，非常方便。缺点是目前不太常用。使用 shelve 模块时，通常使用一个 <code>open</code> 方法即可，shelve 以键值对的形式存储数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> shelve</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> shelve.open(<span class="string">'aa'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f[<span class="string">'person'</span>] = &#123;<span class="string">'age'</span>: <span class="number">23</span>, <span class="string">'job'</span>: <span class="string">'student'</span>&#125;</span><br><span class="line">    f[<span class="string">'person'</span>][<span class="string">'age'</span>] = <span class="number">44</span>  <span class="comment"># 这里试图改变原来的年龄23</span></span><br><span class="line">    f[<span class="string">'numbers'</span>] = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> shelve.open(<span class="string">'aa'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    person = f[<span class="string">'person'</span>]</span><br><span class="line">    print(person)  <span class="comment"># &#123;'age': 23, 'job': 'student'&#125;</span></span><br><span class="line">    nums = f[<span class="string">'numbers'</span>]</span><br><span class="line">    print(nums)  <span class="comment"># [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span></span><br></pre></td></tr></table></figure>
+<p>使用 shelve 模块操作文件时 <strong>文件最好不要有后缀名</strong>，因为 shelve 会生成独有的三个文件。其中以 bak 和 dir 为后缀的文件是可以查看的。</p>
+<p>而且 shelve 模块有一个特点就是允许写回（writeback）。在上面的代码中有个细节，我们读取键 <code>person</code> 时候，发现 <code>age</code> 还是 23 岁，<code>f[&#39;person&#39;][&#39;age&#39;] = 44</code> 后并没有变成 44 。默认情况下直接使用 <code>f[&#39;person&#39;]</code> 改变其中的值之后，不会更新已存储的值，也就是没有把更新写回到文件，即使是文件被 close 后。</p>
+<p>如果有改变值的需要，在 open 函数中添加一个参数 <code>writeback=True</code> ，再次运行下即可看到 <code>age</code> 的值已经发生了改变。</p>
+<p>另外要注意，shelve 模块是有 close 函数的，因此如果不是用 <code>with</code> 方法打开的文件，关闭时需要主动 close 。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python3/" rel="tag"><i class="fa fa-tag"></i> Python3</a>
+          
+            <a href="/tags/Python-Modules/" rel="tag"><i class="fa fa-tag"></i> Python Modules</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/23/090143-Python的os和sys模块/" rel="next" title="Python的os和sys模块">
+                <i class="fa fa-chevron-left"></i> Python的os和sys模块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/18/190143-Python中的必考问题1/" rel="prev" title="Python中的必考问题1">
+                Python中的必考问题1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence"/>
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <div class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">130</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/linuxgeeks" title="GitHub &rarr; https://github.com/linuxgeeks" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="https://www.ibm.com/developerworks/cn/" rel="noopener" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="http://iissnan.com/progit/" rel="noopener" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="http://www.freeoa.net/index/" rel="noopener" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="http://www.ttlsa.com/" rel="noopener" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="http://www.361way.com/" rel="noopener" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="http://www.ipcpu.com" rel="noopener" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="http://www.yiibai.com/" rel="noopener" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="http://www.centoscn.com/" rel="noopener" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="http://www.linuxprobe.com/" rel="noopener" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="http://www.netingcn.com/" rel="noopener" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="https://www.liaoxuefeng.com" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="https://yihui.name/cn/" rel="noopener" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="https://coolshell.cn" rel="noopener" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="https://zhangguanzhang.github.io" rel="noopener" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="https://kuops.com" rel="noopener" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="http://www.jinbuguo.com/" rel="noopener" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="http://www.sa-log.com" rel="noopener" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="https://thief.one" rel="noopener" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="https://arvon.top" rel="noopener" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="https://kionf.com" rel="noopener" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="https://www.the5fire.com" rel="noopener" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是序列化"><span class="nav-number">1.</span> <span class="nav-text">什么是序列化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在-Python-中为什么要使用序列化模块"><span class="nav-number">2.</span> <span class="nav-text">在 Python 中为什么要使用序列化模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pickle-模块"><span class="nav-number">3.</span> <span class="nav-text">pickle 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dump"><span class="nav-number">3.1.</span> <span class="nav-text">dump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#load"><span class="nav-number">3.2.</span> <span class="nav-text">load</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dumps"><span class="nav-number">3.3.</span> <span class="nav-text">dumps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loads"><span class="nav-number">3.4.</span> <span class="nav-text">loads</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#json-模块"><span class="nav-number">4.</span> <span class="nav-text">json 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dumps-和-loads"><span class="nav-number">4.1.</span> <span class="nav-text">dumps 和 loads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dump-和-load"><span class="nav-number">4.2.</span> <span class="nav-text">dump 和 load</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他参数"><span class="nav-number">4.3.</span> <span class="nav-text">其他参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">4.4.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#json-和-pickle-的区别"><span class="nav-number">4.5.</span> <span class="nav-text">json 和 pickle 的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shelve-模块"><span class="nav-number">5.</span> <span class="nav-text">shelve 模块</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.4.2</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

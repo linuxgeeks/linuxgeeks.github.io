@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="时间术语解释epoch 假设我们要将时间表示成毫秒数，比方说1000000毫秒，那有一个问题必须解决，这个1000000毫秒的起点是什么时间，也就是我们的时间基准点是什么时间？好比身高1.8米，是指相对于站立的地面来说的。这个时间基准点就是 epoch，在 Unix 系统中，这个基准点就是1970年1月1日0点整那个时">
+<meta name="keywords" content="Python3,Python Modules">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的时间模块">
+<meta property="og:url" content="http://linuxgeeks.github.io/2019/03/21/150115-Python的时间模块/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="时间术语解释epoch 假设我们要将时间表示成毫秒数，比方说1000000毫秒，那有一个问题必须解决，这个1000000毫秒的起点是什么时间，也就是我们的时间基准点是什么时间？好比身高1.8米，是指相对于站立的地面来说的。这个时间基准点就是 epoch，在 Unix 系统中，这个基准点就是1970年1月1日0点整那个时间点。 格林威治标准时间 GMT 十七世纪，格林威治皇家天文台为了海上霸权的扩张">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://linuxgeeks.github.io/2019/03/21/150115-Python的时间模块/01time_01.png">
+<meta property="og:updated_time" content="2019-07-11T06:17:35.201Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的时间模块">
+<meta name="twitter:description" content="时间术语解释epoch 假设我们要将时间表示成毫秒数，比方说1000000毫秒，那有一个问题必须解决，这个1000000毫秒的起点是什么时间，也就是我们的时间基准点是什么时间？好比身高1.8米，是指相对于站立的地面来说的。这个时间基准点就是 epoch，在 Unix 系统中，这个基准点就是1970年1月1日0点整那个时间点。 格林威治标准时间 GMT 十七世纪，格林威治皇家天文台为了海上霸权的扩张">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/21/150115-Python的时间模块/01time_01.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="http://linuxgeeks.github.io/2019/03/21/150115-Python的时间模块/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Python的时间模块 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/linuxgeeks" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2019/03/21/150115-Python的时间模块/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence"/>
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟"/>
+      <meta itemprop="image" content="/images/avatar.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python的时间模块
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-21 15:01:15" itemprop="dateCreated datePublished" datetime="2019-03-21T15:01:15+08:00">2019-03-21</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-11 14:17:35" itemprop="dateModified" datetime="2019-07-11T14:17:35+08:00">2019-07-11</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon"
+              >
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="时间术语解释"><a href="#时间术语解释" class="headerlink" title="时间术语解释"></a>时间术语解释</h1><p><strong>epoch</strong></p>
+<p>假设我们要将时间表示成毫秒数，比方说1000000毫秒，那有一个问题必须解决，这个1000000毫秒的起点是什么时间，也就是我们的时间基准点是什么时间？好比身高1.8米，是指相对于站立的地面来说的。这个时间基准点就是 epoch，在 Unix 系统中，这个基准点就是1970年1月1日0点整那个时间点。</p>
+<p><strong>格林威治标准时间 GMT</strong></p>
+<p>十七世纪，格林威治皇家天文台为了海上霸权的扩张计划而进行天体观测。1675年旧皇家观测所(Old Royal Observatory) 正式成立，到了1884年决定以通过格林威治的子午线作为划分地球东西两半球的经度零度。观测所门口墙上有一个标志 24 小时的时钟，显示当下的时间。</p>
+<p>对全球而言，这里所设定的时间是世界时间的参考点，全球都以格林威治的时间作为标准来设定时间，这就是我们耳熟能详的「格林威治标准时间」(Greenwich Mean Time，简称G.M.T.)的由来。如果标示在手表上，则代表此表具有两地时间功能，也就是同时可以显示原居地和另一个国度的时间。</p>
+<p><strong>世界协调时间 UTC</strong></p>
+<p>多数的两地时间表都以GMT来表示，但也有些两地时间表上看不到GMT字样，出现的反而是UTC这3个英文字母，究竟何谓UTC？事实上，UTC指的是 Coordinated Universal Time－ 世界协调时间（又称世界标准时间、世界统一时间），是经过平均太阳时(以格林威治时间GMT为准)、地轴运动修正后的新时标以及以「秒」为单位的国际原子时所综合精算而成的时间，计算过程相当严谨精密，因此若以「世界标准时间」的角度来说，UTC比GMT来得更加精准。其误差值必须保持在0.9秒以内，若大于0.9秒则由位于巴黎的国际地球自转事务中央局发布闰秒，使UTC与地球自转周期一致。所以基本上UTC的本质强调的是比GMT更为精确的世界时间标准，不过对于现行表款来说，GMT与UTC的功能与精确度是没有差别的。</p>
+<p><strong>夏日节约时间 DST</strong></p>
+<p>所谓「夏日节约时间」Daylight Saving Time（简称D.S.T.），是指在夏天太阳升起的比较早时，将时钟拨快一小时，以提早日光的使用，在英国则称为夏令时间(Summer Time)。这个构想于1784年由美国班杰明·富兰克林提出来，1915年德国成为第一个正式实施夏令日光节约时间的国家，以削减灯光照明和耗电开支。 自此以后，全球以欧洲和北美为主的约70个国家都引用这个做法。</p>
+<p><strong>系统时间</strong></p>
+<p>一般说来就是我们在 Linux 系统上执行 <code>date</code> 命令看到的时间，系统下所有的时间调用（除了直接访问硬件时间的命令）都是使用的这个时间。</p>
+<p><strong>硬件时间</strong></p>
+<p>主板上BIOS中的时间，由主板电池供电来维持运行，系统开机时要读取这个时间，并根据它来设定系统时间（注意：系统启动时根据硬件时间设定系统时间的过程可能存在时区换算，这要视具体的系统及相关设置而定）。</p>
+<p><strong>世界时间</strong></p>
+<p>（Universal Time）世界标准时间即UTC。</p>
+<p><strong>地方时间</strong></p>
+<p>（本地时间，Local Time）由于处在不同的时区，本地时间一般与UTC是不同的，换算方法就是：<br>本地时间 = UTC + 时区 或 UTC = 本地时间 – 时区。</p>
+<h1 id="time-模块"><a href="#time-模块" class="headerlink" title="time 模块"></a>time 模块</h1><p>time 模块中时间表现的格式主要有三种：timestamp、struct_time、format time。</p>
+<h2 id="timestamp"><a href="#timestamp" class="headerlink" title="timestamp"></a>timestamp</h2><p>time 模块中获取时间的基本方法是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> time</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.time()</span><br><span class="line"><span class="number">1562824183.531237</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>它返回的是从 epoch 到现在的秒数（即：表示的是从1970年1月1日 00:00:00 开始到现在经历了多少秒），也就是时间戳，用的是 UTC 时间。</p>
+<h2 id="struct-time-元组元素结构"><a href="#struct-time-元组元素结构" class="headerlink" title="struct_time 元组元素结构"></a>struct_time 元组元素结构</h2><p>time 模块给我们提供了两个方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">time.gmtime(t)</span><br><span class="line">time.localtime(t)</span><br></pre></td></tr></table></figure>
+<p>两种方法都返回一个 struct_time 的时间元组，该元组包含九个元素：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tm_year（年）</td>
+<td>比如 2011</td>
+</tr>
+<tr>
+<td>tm_mon（月）</td>
+<td>1 - 12</td>
+</tr>
+<tr>
+<td>tm_mday（日）</td>
+<td>1 - 31</td>
+</tr>
+<tr>
+<td>tm_hour（时）</td>
+<td>0 - 23</td>
+</tr>
+<tr>
+<td>tm_min（分）</td>
+<td>0 - 59</td>
+</tr>
+<tr>
+<td>tm_sec（秒）</td>
+<td>0 - 61</td>
+</tr>
+<tr>
+<td>tm_wday（weekday）</td>
+<td>0 - 6（0表示周一）</td>
+</tr>
+<tr>
+<td>tm_yday（一年中的第几天）</td>
+<td>1 - 366</td>
+</tr>
+<tr>
+<td>tm_isdst（是否是夏令时）</td>
+<td>默认为-1</td>
+</tr>
+</tbody>
+</table>
+<p>相比用秒数表示的时间，这样的表示更适合我们理解。这两个函数如果调用时不传参数，它们内部会调用 <code>time.time()</code>，并用返回的秒数做转换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> time</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.gmtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">7</span>, tm_mday=<span class="number">11</span>, tm_hour=<span class="number">5</span>, tm_min=<span class="number">56</span>, tm_sec=<span class="number">19</span>, tm_wday=<span class="number">3</span>, tm_yday=<span class="number">192</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>time.localtime()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">7</span>, tm_mday=<span class="number">11</span>, tm_hour=<span class="number">13</span>, tm_min=<span class="number">56</span>, tm_sec=<span class="number">26</span>, tm_wday=<span class="number">3</span>, tm_yday=<span class="number">192</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>python 同样也提供了将这种 struct_time 转为秒数的方法。<code>time.mktime()</code> 用来把时间元组 struct_time 转为时间戳 timestamp。也就是说 mktime 方法会先找到系统中的时区和 DST 信息，并利用这个信息对 struct_time 进行调整后再换算成秒数。</p>
+<h2 id="format-time-格式化时间"><a href="#format-time-格式化时间" class="headerlink" title="format time 格式化时间"></a>format time 格式化时间</h2><p>格式化时间指的是已格式化的结构，使时间更具可读性，包括自定义格式和固定格式。time 模块中提供了两个方法专门处理时间元组与格式化时间的互相转换：</p>
+<ul>
+<li>strftime 即 string format time，用来将时间格式化成字符串。</li>
+<li>strptime 即 Parse a string to a time tuple ，用来将字符串解析成时间元组。</li>
+</ul>
+<p>对于格式化的时间有如下表示格式：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%a</td>
+<td>本地（locale）简化星期名称</td>
+</tr>
+<tr>
+<td>%A</td>
+<td>本地完整星期名称</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>本地简化月份名称</td>
+</tr>
+<tr>
+<td>%B</td>
+<td>本地完整月份名称</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>本地相应的日期和时间表示</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>一个月中的第几天（01 - 31）</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>一天中的第几个小时（24小时制，00 - 23）</td>
+</tr>
+<tr>
+<td>%I</td>
+<td>第几个小时（12小时制，01 - 12）</td>
+</tr>
+<tr>
+<td>%j</td>
+<td>一年中的第几天（001 - 366）</td>
+</tr>
+<tr>
+<td>%m</td>
+<td>月份（01 - 12）</td>
+</tr>
+<tr>
+<td>%M</td>
+<td>分钟数（00 - 59）</td>
+</tr>
+<tr>
+<td>%p</td>
+<td>本地am或者pm的相应符</td>
+</tr>
+<tr>
+<td>%S</td>
+<td>秒（01 - 61）</td>
+</tr>
+<tr>
+<td>%U</td>
+<td>一年中的星期数。（00 - 53星期天是一个星期的开始。）第一个星期天之前的所有天数都放在第0周</td>
+</tr>
+<tr>
+<td>%w</td>
+<td>一个星期中的第几天（0 - 6，0是星期天）</td>
+</tr>
+<tr>
+<td>%W</td>
+<td>和%U基本相同，不同的是%W以星期一为一个星期的开始</td>
+</tr>
+<tr>
+<td>%x</td>
+<td>本地相应日期</td>
+</tr>
+<tr>
+<td>%X</td>
+<td>本地相应时间</td>
+</tr>
+<tr>
+<td>%y</td>
+<td>去掉世纪的年份（00 - 99）</td>
+</tr>
+<tr>
+<td>%Y</td>
+<td>完整的年份</td>
+</tr>
+<tr>
+<td>%Z</td>
+<td>时区的名字（如果不存在为空字符）</td>
+</tr>
+<tr>
+<td>%%</td>
+<td>% 字符本身</td>
+</tr>
+</tbody>
+</table>
+<h2 id="时间格式转换"><a href="#时间格式转换" class="headerlink" title="时间格式转换"></a>时间格式转换</h2><p>为了便于记忆，这里画了一张图来说明三种时间格式的转换关系：</p>
+<p><img src="/2019/03/21/150115-Python的时间模块/01time_01.png" alt=""></p>
+<p>下面列出了时间格式之间的转换示例以及一些其他的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 timestamp</span></span><br><span class="line">print(time.time())</span><br><span class="line"><span class="comment"># 1521117670.6779785</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 struct_time 本地时间</span></span><br><span class="line">print(time.localtime())</span><br><span class="line"><span class="comment"># time.struct_time(tm_year=2018, tm_mon=3, tm_mday=15, tm_hour=20, tm_min=41, tm_sec=10, tm_wday=3, tm_yday=74, tm_isdst=0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 struct_time 格林威治时间</span></span><br><span class="line">print(time.gmtime())</span><br><span class="line"><span class="comment"># time.struct_time(tm_year=2018, tm_mon=3, tm_mday=15, tm_hour=12, tm_min=41, tm_sec=10, tm_wday=3, tm_yday=74, tm_isdst=0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># timestamp to struct_time 本地时间</span></span><br><span class="line">print(time.localtime(time.time()))</span><br><span class="line"><span class="comment"># time.struct_time(tm_year=2018, tm_mon=3, tm_mday=15, tm_hour=20, tm_min=41, tm_sec=10, tm_wday=3, tm_yday=74, tm_isdst=0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># timestamp to struct_time 格林威治时间</span></span><br><span class="line">print(time.gmtime(time.time()))</span><br><span class="line"><span class="comment"># time.struct_time(tm_year=2018, tm_mon=3, tm_mday=15, tm_hour=12, tm_min=41, tm_sec=10, tm_wday=3, tm_yday=74, tm_isdst=0)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># struct_time to timestamp</span></span><br><span class="line">print(time.mktime(time.localtime()))</span><br><span class="line"><span class="comment"># 1521117670.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># format_time to struct_time</span></span><br><span class="line">print(time.strptime(<span class="string">'2011-05-05 16:37:06'</span>, <span class="string">'%Y-%m-%d %X'</span>))</span><br><span class="line"><span class="comment"># time.struct_time(tm_year=2011, tm_mon=5, tm_mday=5, tm_hour=16, tm_min=37, tm_sec=6, tm_wday=3, tm_yday=125, tm_isdst=-1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成format_time</span></span><br><span class="line">print(time.strftime(<span class="string">"%Y-%m-%d %X"</span>))</span><br><span class="line">print(time.strftime(<span class="string">'%F %T'</span>))</span><br><span class="line"><span class="comment"># 2018-03-15 20:46:24</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># struct_time to format_time</span></span><br><span class="line">print(time.strftime(<span class="string">"%Y-%m-%d %X"</span>, time.localtime()))</span><br><span class="line"><span class="comment"># 2018-03-15 20:46:24</span></span><br><span class="line"></span><br><span class="line">time.sleep(t)</span><br><span class="line"><span class="comment"># t 推迟执行的秒数，表示进程挂起的时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成固定格式的时间表示格式</span></span><br><span class="line">time.asctime(time.localtime())</span><br><span class="line">time.ctime(time.time())</span><br><span class="line"><span class="comment"># Thu Mar 15 20:46:24 2018</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回处理器时间,3.3开始已废弃 , 改成了time.process_time()测量处理器运算时间,不包括sleep时间,不稳定</span></span><br><span class="line">print(time.clock())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回与utc时间的时间差,以秒计算</span></span><br><span class="line">print(time.altzone)</span><br></pre></td></tr></table></figure>
+<h1 id="datetime"><a href="#datetime" class="headerlink" title="datetime"></a>datetime</h1><p>datatime 模块重新封装了 time 模块，提供更多接口，提供的类有：date，time，datetime，timedelta，tzinfo 。</p>
+<h2 id="date-类"><a href="#date-类" class="headerlink" title="date 类"></a>date 类</h2><p>语法格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.date(year, month, day)</span><br></pre></td></tr></table></figure>
+<p>静态方法和字段 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.date.max: '</span>, datetime.date.max)</span><br><span class="line"><span class="comment"># date 对象所能表示的最大日期</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.date.min: '</span>, datetime.date.min)</span><br><span class="line"><span class="comment"># date对象所能表示的最小日期</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.date.today(): '</span>, datetime.date.today())</span><br><span class="line"><span class="comment"># 返回一个表示当前本地日期的date对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(<span class="string">'datetime.date.fromtimestamp(): '</span>, datetime.date.fromtimestamp(time.time()))</span><br><span class="line"><span class="comment"># 根据给定的时间戮，返回一个date对象</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">datetime.date.max:  9999-12-31</span></span><br><span class="line"><span class="string">datetime.date.min:  0001-01-01</span></span><br><span class="line"><span class="string">datetime.date.today():  2018-03-18</span></span><br><span class="line"><span class="string">datetime.date.fromtimestamp():  2018-03-18</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>方法和属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">now = datetime.date(<span class="number">2018</span>, <span class="number">3</span>, <span class="number">18</span>)  <span class="comment"># date 对象</span></span><br><span class="line">tomorrow = now.replace(day=<span class="number">19</span>)</span><br><span class="line"><span class="comment"># 生成一个新的日期对象，用参数指定的年，月，日代替原有对象中的属性，原有对象仍保持不变</span></span><br><span class="line"></span><br><span class="line">print(now.year, now.month, now.day)  <span class="comment"># 年 月 日</span></span><br><span class="line">print(<span class="string">'now: '</span>, now)</span><br><span class="line">print(<span class="string">'tomorrow: '</span>, tomorrow)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">2018 3 18</span></span><br><span class="line"><span class="string">now:  2018-03-18</span></span><br><span class="line"><span class="string">tomorrow:  2018-03-19</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'timetuple():'</span>, now.timetuple())</span><br><span class="line"><span class="comment"># 返回日期对应的time.struct_time对象</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">timetuple(): time.struct_time(tm_year=2018, tm_mon=3, tm_mday=18, tm_hour=0, tm_min=0, tm_sec=0, # tm_wday=6, tm_yday=77, tm_isdst=-1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'weekday():'</span>, now.weekday())</span><br><span class="line"><span class="comment"># 返回weekday，如果是星期一，返回0；如果是星期2，返回1，以此类推；</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">weekday(): 6</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'isoweekday():'</span>, now.isoweekday())</span><br><span class="line"><span class="comment"># 返回weekday，如果是星期一，返回1；如果是星期2，返回2，以此类推；</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">isoweekday(): 7</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'isocalendar():'</span>, now.isocalendar())</span><br><span class="line"><span class="comment"># 返回格式如(year，month，day)的元组；</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">isocalendar(): (2018, 11, 7)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'isoformat():'</span>, now.isoformat())</span><br><span class="line"><span class="comment"># 返回格式如'YYYY-MM-DD’的字符串；</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">isoformat(): 2018-03-18</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'strftime():'</span>, now.strftime(<span class="string">"%Y-%m-%d"</span>))</span><br><span class="line"><span class="comment"># 和time模块的format相同</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">strftime(): 2018-03-18</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="time-类"><a href="#time-类" class="headerlink" title="time 类"></a>time 类</h2><p>语法格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.time(hour[ , minute[ , second[ , microsecond[ , tzinfo] ] ] ] )</span><br></pre></td></tr></table></figure>
+<p>静态方法和字段 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.time.max: '</span>, datetime.time.max)</span><br><span class="line"><span class="comment"># time 对象所能表示的最大时间</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.time.min: '</span>, datetime.time.min)</span><br><span class="line"><span class="comment"># time 对象所能表示的最小时间</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.time.resolution: '</span>, datetime.time.resolution)</span><br><span class="line"><span class="comment"># time 对象的最小单位，这里是1微秒</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出</span></span><br><span class="line"><span class="string">datetime.time.max:  23:59:59.999999</span></span><br><span class="line"><span class="string">datetime.time.min:  00:00:00</span></span><br><span class="line"><span class="string">datetime.time.resolution:  0:00:00.000001</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>方法和属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">tm = datetime.time(<span class="number">23</span>, <span class="number">46</span>, <span class="number">10</span>)  <span class="comment"># time 对象</span></span><br><span class="line">print(<span class="string">'tm:'</span>, tm)</span><br><span class="line">print(<span class="string">'time zone: '</span>, tm.tzinfo)</span><br><span class="line"><span class="comment"># 时区信息</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'hour: %d, minute: %d, second: %d, microsecond: %d'</span> % (tm.hour, tm.minute, tm.second, tm.microsecond))</span><br><span class="line"><span class="comment"># 时 分 秒 微秒</span></span><br><span class="line"></span><br><span class="line">tm1 = tm.replace(hour=<span class="number">20</span>)</span><br><span class="line"><span class="comment"># 创建一个新的时间对象，用参数指定的时、分、秒、微秒代替原有对象中的属性,原有对象仍保持不变</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'tm1:'</span>, tm1)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'isoformat(): '</span>, tm.isoformat())</span><br><span class="line"><span class="comment"># 返回型如"HH:MM:SS"格式的字符串表示</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'strftime(): '</span>, tm.strftime(<span class="string">"%X"</span>))</span><br><span class="line"><span class="comment"># 和time模块的format相同</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出</span></span><br><span class="line"><span class="string">tm: 23:46:10</span></span><br><span class="line"><span class="string">time zone:  None</span></span><br><span class="line"><span class="string">hour: 23, minute: 46, second: 10, microsecond: 0</span></span><br><span class="line"><span class="string">tm1: 20:46:10</span></span><br><span class="line"><span class="string">isoformat():  23:46:10</span></span><br><span class="line"><span class="string">strftime():  23:46:10</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<h2 id="datetime-类"><a href="#datetime-类" class="headerlink" title="datetime 类"></a>datetime 类</h2><p>datetime 相当于 date 和 time 结合起来。语法格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.datetime(year, month, day[ , hour[ , minute[ , second[ , microsecond[, tzinfo]]]]])</span><br></pre></td></tr></table></figure>
+<p>静态方法和字段</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">print(<span class="string">'datetime.max: '</span>, datetime.datetime.max)</span><br><span class="line">print(<span class="string">'datetime.min: '</span>, datetime.datetime.min)</span><br><span class="line">print(<span class="string">'datetime.resolution: '</span>, datetime.datetime.resolution)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'today(): '</span>, datetime.datetime.today())</span><br><span class="line"><span class="comment"># 返回一个表示当前本地时间的datetime对象</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'now(): '</span>, datetime.datetime.now())</span><br><span class="line"><span class="comment"># 返回一个表示当前本地时间的datetime对象，如果提供了参数tz，则获取tz参数所指时区的本地时间</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'utcnow(): '</span>, datetime.datetime.utcnow())</span><br><span class="line"><span class="comment"># 返回一个当前utc时间的datetime对象；格林威治时间</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'fromtimestamp(tmstmp): '</span>, datetime.datetime.fromtimestamp(time.time()))</span><br><span class="line"><span class="comment"># 根据时间戮创建一个datetime对象，参数tz指定时区信息</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">'utcfromtimestamp(tmstmp): '</span>, datetime.datetime.utcfromtimestamp(time.time()))</span><br><span class="line"><span class="comment"># 根据时间戮创建一个datetime对象</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">输出</span></span><br><span class="line"><span class="string">datetime.max:  9999-12-31 23:59:59.999999</span></span><br><span class="line"><span class="string">datetime.min:  0001-01-01 00:00:00</span></span><br><span class="line"><span class="string">datetime.resolution:  0:00:00.000001</span></span><br><span class="line"><span class="string">today():  2018-10-24 11:42:26.772787</span></span><br><span class="line"><span class="string">now():  2018-10-24 11:42:26.772817</span></span><br><span class="line"><span class="string">utcnow():  2018-10-24 03:42:26.772829</span></span><br><span class="line"><span class="string">fromtimestamp(tmstmp):  2018-03-18 08:24:10</span></span><br><span class="line"><span class="string">utcfromtimestamp(tmstmp):  2018-03-18 00:24:10</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>方法和属性 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> time</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> datetime</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt = datetime.datetime.now()  <span class="comment"># datetime对象</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.year</span><br><span class="line"><span class="number">2019</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.month</span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.day</span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.hour</span><br><span class="line"><span class="number">21</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.minute</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.second</span><br><span class="line"><span class="number">35</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.microsecond</span><br><span class="line"><span class="number">348424</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.date()  <span class="comment"># 获取date对象；</span></span><br><span class="line">datetime.date(<span class="number">2019</span>, <span class="number">7</span>, <span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.time()  <span class="comment"># 获取time对象；</span></span><br><span class="line">datetime.time(<span class="number">21</span>, <span class="number">13</span>, <span class="number">35</span>, <span class="number">348424</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.timetuple()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">7</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">21</span>, tm_min=<span class="number">13</span>, tm_sec=<span class="number">35</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">188</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt. utctimetuple ()</span><br><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">7</span>, tm_mday=<span class="number">7</span>, tm_hour=<span class="number">21</span>, tm_min=<span class="number">13</span>, tm_sec=<span class="number">35</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">188</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt. weekday ()</span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt. isocalendar ()</span><br><span class="line">(<span class="number">2019</span>, <span class="number">27</span>, <span class="number">7</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt. isoformat ()  <span class="comment"># 返回格式如'YYYY-MM-DD’的字符串；</span></span><br><span class="line"><span class="string">'2019-07-07T21:13:35.348424'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt. ctime ()  <span class="comment"># 返回一个日期时间的C格式字符串，等效于time.ctime(time.mktime(dt.timetuple()))；</span></span><br><span class="line"><span class="string">'Sun Jul  7 21:13:35 2019'</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dt.strftime(<span class="string">'%F %T'</span>)</span><br><span class="line"><span class="string">'2019-07-07 21:13:35'</span></span><br></pre></td></tr></table></figure>
+<h2 id="timedelta-类-时间加减"><a href="#timedelta-类-时间加减" class="headerlink" title="timedelta 类 时间加减"></a>timedelta 类 时间加减</h2><p>使用 timedelta 可以很方便的在日期上做天 day，小时，分钟，秒，毫秒，微秒的时间计算，如果要计算月份则需要另外的办法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">print(datetime.datetime.now()) </span><br><span class="line"><span class="comment"># 返回 2018-03-20 23:33:04.677979</span></span><br><span class="line"></span><br><span class="line">print(datetime.date.fromtimestamp(time.time()) )  </span><br><span class="line"><span class="comment"># 时间戳直接转成日期格式 2018-03-20 23:33:04.677979</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间加减</span></span><br><span class="line">print(datetime.datetime.now() + datetime.timedelta(<span class="number">3</span>)) <span class="comment"># 当前时间+3天</span></span><br><span class="line">print(datetime.datetime.now() + datetime.timedelta(<span class="number">-3</span>)) <span class="comment"># 当前时间-3天</span></span><br><span class="line">print(datetime.datetime.now() + datetime.timedelta(hours=<span class="number">3</span>)) <span class="comment"># 当前时间+3小时</span></span><br><span class="line">print(datetime.datetime.now() + datetime.timedelta(minutes=<span class="number">30</span>)) <span class="comment"># 当前时间+30分</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间替换</span></span><br><span class="line">c_time  = datetime.datetime.now()</span><br><span class="line">print(c_time.replace(minute=<span class="number">3</span>,hour=<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Silence 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Silence 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Python3/" rel="tag"><i class="fa fa-tag"></i> Python3</a>
+          
+            <a href="/tags/Python-Modules/" rel="tag"><i class="fa fa-tag"></i> Python Modules</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/20/154147-Python的collections模块/" rel="next" title="Python的collections模块">
+                <i class="fa fa-chevron-left"></i> Python的collections模块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/22/112119-Python的random模块/" rel="prev" title="Python的random模块">
+                Python的random模块 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Silence"/>
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <div class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">130</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/linuxgeeks" title="GitHub &rarr; https://github.com/linuxgeeks" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="https://www.ibm.com/developerworks/cn/" rel="noopener" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="http://iissnan.com/progit/" rel="noopener" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="http://www.freeoa.net/index/" rel="noopener" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="http://www.ttlsa.com/" rel="noopener" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="http://www.361way.com/" rel="noopener" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="http://www.ipcpu.com" rel="noopener" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="http://www.yiibai.com/" rel="noopener" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="http://www.centoscn.com/" rel="noopener" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="http://www.linuxprobe.com/" rel="noopener" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="http://www.netingcn.com/" rel="noopener" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="https://www.liaoxuefeng.com" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="https://yihui.name/cn/" rel="noopener" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="https://coolshell.cn" rel="noopener" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="https://zhangguanzhang.github.io" rel="noopener" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="https://kuops.com" rel="noopener" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="http://www.jinbuguo.com/" rel="noopener" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="http://www.sa-log.com" rel="noopener" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="https://thief.one" rel="noopener" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="https://arvon.top" rel="noopener" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="https://kionf.com" rel="noopener" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="https://www.the5fire.com" rel="noopener" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#时间术语解释"><span class="nav-number">1.</span> <span class="nav-text">时间术语解释</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#time-模块"><span class="nav-number">2.</span> <span class="nav-text">time 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#timestamp"><span class="nav-number">2.1.</span> <span class="nav-text">timestamp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#struct-time-元组元素结构"><span class="nav-number">2.2.</span> <span class="nav-text">struct_time 元组元素结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#format-time-格式化时间"><span class="nav-number">2.3.</span> <span class="nav-text">format time 格式化时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间格式转换"><span class="nav-number">2.4.</span> <span class="nav-text">时间格式转换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#datetime"><span class="nav-number">3.</span> <span class="nav-text">datetime</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#date-类"><span class="nav-number">3.1.</span> <span class="nav-text">date 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#time-类"><span class="nav-number">3.2.</span> <span class="nav-text">time 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#datetime-类"><span class="nav-number">3.3.</span> <span class="nav-text">datetime 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#timedelta-类-时间加减"><span class="nav-number">3.4.</span> <span class="nav-text">timedelta 类 时间加减</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.4.2</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
