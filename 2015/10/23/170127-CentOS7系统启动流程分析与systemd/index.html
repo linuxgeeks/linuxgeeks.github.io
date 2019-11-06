@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在开机的过程中，要用到开机管理程序（Bootl Loader）。目前各大主流的 Linux 发行版使用的是 grub2，但是在早期 Linux 预设的是 grub1 或者 LILO。以 Linux 主机为例，按下电源后计算机的硬件会主动读取 BIOS 或 UEFI BIOS 来加载硬件信息以及进行硬件系统的自我检测，之后系统会主动读取第一个可开机的装置（由 BIOS 决定），此时就可以读入开机管理">
+<meta name="keywords" content="grub2,Kernel,Systemd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7系统启动流程分析与systemd">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="在开机的过程中，要用到开机管理程序（Bootl Loader）。目前各大主流的 Linux 发行版使用的是 grub2，但是在早期 Linux 预设的是 grub1 或者 LILO。以 Linux 主机为例，按下电源后计算机的硬件会主动读取 BIOS 或 UEFI BIOS 来加载硬件信息以及进行硬件系统的自我检测，之后系统会主动读取第一个可开机的装置（由 BIOS 决定），此时就可以读入开机管理">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/01_BootLoader_MBR_01.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/01_BootLoader_MBR_02.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/02_BIOS_BootLoader_Kernel.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/03_systemd_sysinit_basic_multi-user.png">
+<meta property="og:updated_time" content="2019-10-24T08:11:39.946Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS7系统启动流程分析与systemd">
+<meta name="twitter:description" content="在开机的过程中，要用到开机管理程序（Bootl Loader）。目前各大主流的 Linux 发行版使用的是 grub2，但是在早期 Linux 预设的是 grub1 或者 LILO。以 Linux 主机为例，按下电源后计算机的硬件会主动读取 BIOS 或 UEFI BIOS 来加载硬件信息以及进行硬件系统的自我检测，之后系统会主动读取第一个可开机的装置（由 BIOS 决定），此时就可以读入开机管理">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/01_BootLoader_MBR_01.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CentOS7系统启动流程分析与systemd | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/linuxgeeks" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/10/23/170127-CentOS7系统启动流程分析与systemd/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS7系统启动流程分析与systemd
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-10-23 17:01:27" itemprop="dateCreated datePublished" datetime="2015-10-23T17:01:27+08:00">2015-10-23</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-24 16:11:39" itemprop="dateModified" datetime="2019-10-24T16:11:39+08:00">2019-10-24</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在开机的过程中，要用到开机管理程序（Bootl Loader）。目前各大主流的 Linux 发行版使用的是 grub2，但是在早期 Linux 预设的是 grub1 或者 LILO。以 Linux 主机为例，按下电源后计算机的硬件会主动读取 BIOS 或 UEFI BIOS 来加载硬件信息以及进行硬件系统的自我检测，之后系统会主动读取第一个可开机的装置（由 BIOS 决定），此时就可以读入开机管理程序了。</p>
+<p>开机管理程序可以指定使用哪个内核文件来开机，并实际加载内核到内存当中解压缩与执行， 此时内核就能够开始在内存中活动，并侦测所有硬件信息、加载适当的驱动程序来使整个主机开始运作， 等到内核侦测硬件并加载完驱动程序之后，操作系统就跑起来了。</p>
+<p>系统开始运行后，此时 Linux 才会呼叫外部程序开始准备软件执行的环境，并且加载系统运行所需要的软件程序。 最后系统就会开始等待用户的登录和操作了。</p>
+<p>简单来说，系统开机的经过可以总结为下面的流程：</p>
+<ul>
+<li><p>首先，加载 BIOS 的硬件信息与进行自我检测，并依据设定取得第一个可开机的装置；</p>
+</li>
+<li><p>其次，读取并执行第一个开机装置内 MBR 的 Boot Loader (也就是 grub2, spfdisk 等程序)；</p>
+</li>
+<li><p>然后，根据 Boot Loader 的设定加载 Kernel ，Kernel 会开始侦测硬件并加载驱动程序；</p>
+</li>
+<li><p>在硬件驱动成功后，Kernel 会主动呼叫 systemd 程序，并以 default.target 流程开机；</p>
+<ul>
+<li><p>systemd 执行 sysinit.target 初始化系统及 basic.target 准备操作系统； </p>
+</li>
+<li><p>systemd 启动 multi-user.target 下的各种服务；</p>
+</li>
+<li><p>systemd 执行 multi-user.target 下的 <code>/etc/rc.d/rc.local</code> 文件 </p>
+</li>
+<li><p>systemd 执行 multi-user.target 下的 getty.target 及登入服务； </p>
+</li>
+<li><p>systemd 执行 graphical 需要的服务</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>下面简单说一下对于每一步操作，具体都做了什么。</p>
+<h1 id="BIOS-Boot-Loader-与-Kernel-的载入"><a href="#BIOS-Boot-Loader-与-Kernel-的载入" class="headerlink" title="BIOS, Boot Loader 与 Kernel 的载入"></a>BIOS, Boot Loader 与 Kernel 的载入</h1><h2 id="BIOS-开机自我检测与-MBR-GPT"><a href="#BIOS-开机自我检测与-MBR-GPT" class="headerlink" title="BIOS, 开机自我检测与 MBR/GPT"></a>BIOS, 开机自我检测与 MBR/GPT</h2><p>在个人计算机上，要想启动整个操作系统首先就要让机器加载 BIOS (Basic Input Output System)，并通过 BIOS 程序去加载 CMOS 的信息，并且由 CMOS 内的设定值取得主机的各项硬件配置， 例如 CPU 与接口设备的沟通频率、 开机装置的搜寻顺序、硬盘的大小与类型、 系统时间、各周边总线的是否启动 Plug and Play (PnP, 即插即用装置) 、 各接口设备的 I/O 地址、以及与 CPU 沟通的 IRQ 中断等信息。</p>
+<p>在取得这些信息后，BIOS 还会进行开机自我检测 (Power-on Self Test, POST) 。 然后开始执行硬件侦测的初始化，并设定 PnP 装置，之后再定义出可开机的装置顺序，接下来就会开始进行开机装置的数据读取了。</p>
+<p>由于我们的系统软件大多放置到硬盘中，所以 BIOS 会指定开机的装置好让我们可以读取磁盘中的操作系统核心文件。 但由于不同的操作系统的文件系统格式不相同，因此我们必须要以一个开机管理程序来处理核心文件加载 (load) 的问题， 因此这个开机管理程序就被称为 Boot Loader 了。 Boot Loader 程序安装在开机装置的第一个扇区 (sector) 内，也就是 MBR (Master Boot Record, 主引导启动记录区)。</p>
+<p> BIOS 是通过硬件的 INT 13 中断功能来读取 MBR 的，也就是说，只要 BIOS 能够侦测的到磁盘 (不论该磁盘是 SATA 还是 SAS 接口)，那它就有办法通过 INT 13 这条信道来读取该磁盘的第一个扇区内的 MBR 软件，这样以来 Boot Loader 也就能够被执行了。</p>
+<h2 id="Boot-Loader-的功能"><a href="#Boot-Loader-的功能" class="headerlink" title="Boot Loader 的功能"></a>Boot Loader 的功能</h2><p>Boot Loader 的最主要功能是要认识操作系统的文件格式并加载核心到主存储器中去执行。 由于不同操作系统的文件格式不一致，因此每种操作系统都有自己的 Boot Loader。但是对于一个多系统的主机来说，必须要使用每个操作系统自己的 Boot Loader 才能够加载属于自己的操作系统核心，而系统的 MBR 只有一个，那么如何同时在一个主机上安装 Windows 与 Linux 呢？</p>
+<p>其实每个文件系统 (filesystem, 或者是 partition) 都会保留一块启动扇区 (boot sector) 提供操作系统安装 Boot Loader， 而通常操作系统默认都会安装一份 Boot Loader 到他根目录所在的文件系统的 boot sector 上。如果我们在一个主机上面安装 Windows 与 Linux 后，该 boot sector, boot loader 与 MBR 的相关性会有点像下图所示：</p>
+<p><img src="/2015/10/23/170127-CentOS7系统启动流程分析与systemd/01_BootLoader_MBR_01.png" alt=""></p>
+<p>如上图所示，每个操作系统默认是会安装一套 Boot loader 到他自己的文件系统中 (就是每个 filesystem 左下角的方框)，而在 Linux 系统安装时，可以选择将 boot loader 安装到 MBR 去，也可以选择不安装。 如果选择安装到 MBR 的话，那理论上在 MBR 与 boot sector 都会保有一份 boot loader 程序。 至于 Windows 安装时，他预设会主动的将 MBR 与 boot sector 都装上一份 Boot loader。所以在安装多操作系统时，MBR 常常会被不同的操作系统的 Boot Loader 所覆盖。</p>
+<p>虽然各个操作系统都可以安装一份 Boot loader 到他们的 boot sector 中， 这样操作系统可以通过自己的 Boot Loader 来加载内核了。而问题在于，系统的 MBR 只有一个，应该如何去执行 boot sector 里面的 loader 呢？Boot Loader 主要的功能如下：</p>
+<ul>
+<li><strong>提供选择菜单</strong>：用户可以选择不同的开机项目，这也是多重引导的重要功能。</li>
+<li><strong>载入核心文件</strong>：直接指向可开机的程序区段来开启操作系统；</li>
+<li><strong>转交其他 loader</strong>：将开机管理功能转交给其他 loader 负责。</li>
+</ul>
+<p>由于具有选择菜单功能，因此可以选择不同的核心来开机。而由于具有控制权转交的功能，因此就可以加载其他 boot sector 内的 loader 了。不过 Windows 的 loader 预设不具有控制权转交的功能， 因此不能使用 Windows 的 loader 来加载 Linux 的 loader 。这也是为什么在多重引导时，强调先装 Windows 再装 Linux 的缘故。 </p>
+<p><img src="/2015/10/23/170127-CentOS7系统启动流程分析与systemd/01_BootLoader_MBR_02.png" alt=""></p>
+<p>如上图所示，笔者的 MBR 使用 Linux 的 grub2 这个开机管理程序，并且里面假设已经有了三个选单， 第一个选单可以直接指向 Linux 的核心文件并且直接加载内核来开机；第二个选单可以将开机管理程控权交给 Windows 来管理，此时 Windows 的 loader 会接管开机流程，这个时候他就能够启动 windows 了。第三个选单则是使用 Linux 在 boot sector 内的开机管理程序，此时就会跳出另一个 grub2 的选择菜单了。</p>
+<ul>
+<li><p>菜单一：MBR(grub2) ==&gt; kernel file ==&gt; booting</p>
+</li>
+<li><p>菜单二：MBR(grub2) ==&gt; boot sector(Windows loader) ==&gt; Windows kernel ==&gt; booting </p>
+</li>
+<li><p>菜单三：MBR(grub2) ==&gt; boot sector(grub2) ==&gt; kernel file ==&gt; booting</p>
+</li>
+</ul>
+<p>而最终 boot loader 的功能就是 <strong>加载 kernel 文件</strong> 。</p>
+<h2 id="加载-Kernel、侦测硬件、-initramfs-的功能"><a href="#加载-Kernel、侦测硬件、-initramfs-的功能" class="headerlink" title="加载 Kernel、侦测硬件、 initramfs 的功能"></a>加载 Kernel、侦测硬件、 initramfs 的功能</h2><p>由 Boot Loader 的管理程序开始读取核心文件后，接下来 Linux 就会将核心文件解压缩到主存储器当中， 并且利用内核的功能，开始测试与驱动各个周边装置，包括储存装置、CPU、网卡、声卡等等。 此时内核会以自己的功能重新侦测一次硬件，但是不一定会使用 BIOS 侦测到的硬件信息。也就是说，内核此时才开始接管 BIOS 后的工作了。 </p>
+<p>核心文件一般来会被放置到 <code>/boot</code> 里面，并且取名为 <code>/boot/vmlinuz</code> 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]$ ls -F --format=single-column  /boot</span><br><span class="line">config-3.10.0-1062.el7.x86_64                               <span class="comment"># &lt;== 此版本 Kernel 被编译时选择的功能与模块配置文件</span></span><br><span class="line">grub/                                                       <span class="comment"># &lt;== 旧版 grub1 ，可以忽略不看</span></span><br><span class="line">grub2/                                                      <span class="comment"># &lt;== 开机管理程序(Boot Loader) grub2 相关数据目录</span></span><br><span class="line">initramfs-0-rescue-e5279c0ecc4740cbb7b4e6dcc22ddc9e.img     <span class="comment"># &lt;== 当前目录下存放了几个虚拟文件, 这一个虚拟文件是用来救援的</span></span><br><span class="line">initramfs-3.10.0-1062.el7.x86_64.img                        <span class="comment"># &lt;== 正常开机会用到的虚拟文件系统</span></span><br><span class="line">initramfs-3.10.0-1062.el7.x86_64kdump.img                   <span class="comment"># &lt;== 核心出问题时会用到的虚拟文件系统</span></span><br><span class="line">System.map-3.10.0-1062.el7.x86_64                           <span class="comment"># &lt;== 核心功能放置到内存地址的对应表 </span></span><br><span class="line">vmlinuz-0-rescue-e5279c0ecc4740cbb7b4e6dcc22ddc9e*          <span class="comment"># &lt;== 救援模式要用到的核心文件</span></span><br><span class="line">vmlinuz-3.10.0-1062.el7.x86_64*                             <span class="comment"># &lt;== 核心文件,非常重要！</span></span><br><span class="line">[root@localhost ~]$</span><br></pre></td></tr></table></figure>
+<p>从上述命令的结果中，我们可以知道当前的 CentOS 7 的 Linux 内核为 3.10.0-1062.el7.x86_64 这个版本！ 为了硬件开发商与其他核心功能开发者的便利， 因此 Linux 内核是可以通过态加载核心模块的 (可以把它理解为驱动程序)，这些核心模块就放置在 <code>/lib/modules/</code> 目录内。 由于模块放在了到根目录内 (注意：<code>/lib</code> 不可以与 <code>/</code> 分别放在不同的分区 )， 因此，在开机的过程中内核必须要挂载根目录才能够读取核心模块提供加载驱动程序的功能。 而且为了担心影响到磁盘内的文件系统，开机过程中根目录是以只读的方式来挂载的。</p>
+<p>一般来说，非必要的功能且可以编译成为模块，目前的 Linux 发行版都会将其编译成模块。 因此 USB, SATA, SCSI… 等磁盘设备的驱动程序通常都是以模块的方式来存在的。 现在我们来思考一种情况，假设 linux 是安装在 SATA 磁盘上面的，可以通过 BIOS 的 INT 13 取得 Boot Loader 与 Kernel 文件来开机，然后 Kernel 会开始接管系统并且侦测硬件及尝试挂载根目录来取得额外的驱动程序。</p>
+<p>问题是，Kernel 根本不认识 SATA 磁盘，所以需要先挂载 SATA 磁盘的驱动程序， 否则根本就无法挂载根目录。但是 SATA 的驱动程序在 <code>/lib/modules</code> 内，根本无法挂载根目录，又怎么读取到 <code>/lib/modules/</code> 内的驱动程序？实际上，这个问题可以通过虚拟文件系统来处理。</p>
+<p>虚拟文件系统 (Initial RAM Disk 或 Initial RAM Filesystem) 一般使用的文件名为 <code>/boot/initrd</code> 或 <code>/boot/initramfs</code> ，这个文件的特色是，它也能够通过 Boot Loader 来加载到内存中，然后这个文件会被解压缩且在内存当中仿真成一个根目录， 这个仿真目录在内存当中的文件系统能够提供一个可执行的程序，通过该程序来加载开机过程中所最需要的核心模块， 通常这些模块就是 USB, RAID, LVM, SCSI 等文件系统与磁盘接口的驱动程序。等到载入完成后， 会帮助 Kernel 重新呼叫 systemd 来开始后续的正常开机流程。</p>
+<p><img src="/2015/10/23/170127-CentOS7系统启动流程分析与systemd/02_BIOS_BootLoader_Kernel.png" alt=""></p>
+<p>如上图所示，Boot Loader 可以加载 Kernel 与 initramfs ，然后在内存中让 initramfs 解压缩成为根目录， Kernel 就能够以此来加载适当的驱动程序，最终释放虚拟文件系统，并挂载实际的根目录文件系统，就能够开始后续的正常开机流程。 更详细的 initramfs 说明，可以使用 <code>man initrd</code> 查阅。 </p>
+<p>使用 lsinitrd 命令来看一下 initramfs 里面的内容包含了哪些数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lsinitrd /boot/initramfs-3.10.0-1062.el7.x86_64.img </span></span><br><span class="line"><span class="comment"># 首先会呼叫出 initramfs 最前面文件头的许多数据介绍，这部份会占用一些空间</span></span><br><span class="line">Image: /boot/initramfs-3.10.0-1062.el7.x86_64.img: 19M</span><br><span class="line">========================================================================</span><br><span class="line">Early CPIO image</span><br><span class="line">========================================================================</span><br><span class="line">drwxr-xr-x   3 root     root            0 Oct 18 17:41 .</span><br><span class="line">-rw-r--r--   1 root     root            2 Oct 18 17:41 early_cpio</span><br><span class="line">drwxr-xr-x   3 root     root            0 Oct 18 17:41 kernel</span><br><span class="line">drwxr-xr-x   3 root     root            0 Oct 18 17:41 kernel/x86</span><br><span class="line">drwxr-xr-x   2 root     root            0 Oct 18 17:41 kernel/x86/microcode</span><br><span class="line">-rw-r--r--   1 root     root        23552 Oct 18 17:41 kernel/x86/microcode/GenuineIntel.bin</span><br><span class="line">========================================================================</span><br><span class="line">Version: dracut-033-564.el7</span><br><span class="line"></span><br><span class="line">Arguments: -f</span><br><span class="line"></span><br><span class="line">dracut modules:    <span class="comment"># 开始一堆模块的加载行为</span></span><br><span class="line">bash</span><br><span class="line">nss-softokn</span><br><span class="line">i18n</span><br><span class="line">network</span><br><span class="line">ifcfg</span><br><span class="line">drm</span><br><span class="line">plymouth</span><br><span class="line">kernel-modules</span><br><span class="line"><span class="comment"># ..... 中间内容省略 ......</span></span><br><span class="line">========================================================================</span><br><span class="line">drwxr-xr-x  12 root     root            0 Oct 18 17:41 .</span><br><span class="line">crw-r--r--   1 root     root       5,   1 Oct 18 17:41 dev/console</span><br><span class="line">crw-r--r--   1 root     root       1,  11 Oct 18 17:41 dev/kmsg</span><br><span class="line">crw-r--r--   1 root     root       1,   3 Oct 18 17:41 dev/null</span><br><span class="line"><span class="comment"># ..... 中间内容省略 ......</span></span><br><span class="line">lrwxrwxrwx   1 root     root           22 Oct 18 17:41 usr/sbin/init -&gt; ../lib/systemd/systemd</span><br><span class="line"><span class="comment"># ..... 中间内容省略 ......</span></span><br><span class="line">drwxr-xr-x   2 root     root            0 Oct 18 17:41 var</span><br><span class="line">lrwxrwxrwx   1 root     root           11 Oct 18 17:41 var/lock -&gt; ../run/lock</span><br><span class="line">lrwxrwxrwx   1 root     root            6 Oct 18 17:41 var/run -&gt; ../run</span><br><span class="line">========================================================================</span><br><span class="line"><span class="comment"># 最后则会列出这个 initramfs 里头的所有文件！也就是说，这个 initramfs 文件大概存着两部份，</span></span><br><span class="line"><span class="comment"># 先是首部声明的许多文件部份，再来才是真的会被核心取用的全部附加的文件数据！</span></span><br></pre></td></tr></table></figure>
+<p>从上面可以知道， 在 initramfs 文件当中含有两大区块，一个是事先声明的一些数据，包括 <code>kernel/x86/microcode/GenuineIntel.bin</code> 。 在这些数据后面，才是内核真正会去读取的重要文件，如果仔细看一下文件的内容，会看到 init 程序已经被 systemd 所取代了。</p>
+<p>CentOS7 内核默认的 initramfs 与原生 Linux 不一致，包含一个 cpio 格式的 ealry_cpio 头，和一个 gzip 压缩的 cpio 格式的 initramfs rootfs。前面的 ealry_cpio 头就是 CentOS7 内核独有的。使用 <code>file</code> 命令查看 <code>/boot/</code> 目录下的 img 文件，如果显示 ASCII cpio archive 就代表是 CentOS7 原生内核的格式，如果显示 gzip compressed data 就代表是 linux 内核不带 ealry_cpio 头的标准 gzip 压缩的格式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># file /boot/initramfs-$(uname -r).img</span></span><br><span class="line">/boot/initramfs-3.10.0-1062.el7.x86_64.img: ASCII cpio archive (SVR4 with no CRC)</span><br></pre></td></tr></table></figure>
+<p>如果想要进一步将这个文件解开的话，需要这样进行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost rootfs_cpio]<span class="comment"># initramfs=$(cd /boot;ls initramfs-$(uname -r).img)</span></span><br><span class="line">[root@localhost rootfs_cpio]<span class="comment"># mkdir -pv /tmp/initramfs/&#123;early,rootfs&#125;_cpio</span></span><br><span class="line">mkdir: created directory ‘/tmp/initramfs’</span><br><span class="line">mkdir: created directory ‘/tmp/initramfs/early_cpio’</span><br><span class="line">mkdir: created directory ‘/tmp/initramfs/rootfs_cpio’</span><br><span class="line">[root@localhost ~]<span class="comment"># cp /boot/$&#123;initramfs&#125; /tmp/initramfs/</span></span><br><span class="line">[root@localhost ~]<span class="comment"># cd /tmp/initramfs/early_cpio/</span></span><br><span class="line">[root@localhost early_cpio]<span class="comment"># cpio -idm &lt; ../$&#123;initramfs&#125;</span></span><br><span class="line">48 blocks</span><br><span class="line">[root@localhost early_cpio]<span class="comment"># cd /tmp/initramfs/rootfs_cpio/</span></span><br><span class="line">[root@localhost rootfs_cpio]<span class="comment"># /usr/lib/dracut/skipcpio ../$&#123;initramfs&#125; | zcat | cpio -id</span></span><br><span class="line">76361 blocks</span><br><span class="line">[root@localhost rootfs_cpio]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>这样就把 CentOS7 原生内核的 initramfs 解包成了两个文件夹，early_cpio 和 rootfs_cpio。在 rootfs_cpio 目录下就是实际的虚拟文件系统了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost rootfs_cpio]<span class="comment"># ll</span></span><br><span class="line">total 8</span><br><span class="line">lrwxrwxrwx.  1 root root    7 Oct 20 17:49 bin -&gt; usr/bin</span><br><span class="line">drwxr-xr-x.  2 root root   45 Oct 20 17:49 dev</span><br><span class="line">drwxr-xr-x. 11 root root 4096 Oct 20 17:49 etc</span><br><span class="line">lrwxrwxrwx.  1 root root   23 Oct 20 17:49 init -&gt; usr/lib/systemd/systemd</span><br><span class="line">lrwxrwxrwx.  1 root root    7 Oct 20 17:49 lib -&gt; usr/lib</span><br><span class="line">lrwxrwxrwx.  1 root root    9 Oct 20 17:49 lib64 -&gt; usr/lib64</span><br><span class="line">drwxr-xr-x.  2 root root    6 Oct 20 17:49 proc</span><br><span class="line">drwxr-xr-x.  2 root root    6 Oct 20 17:49 root</span><br><span class="line">drwxr-xr-x.  2 root root    6 Oct 20 17:49 run</span><br><span class="line">lrwxrwxrwx.  1 root root    8 Oct 20 17:49 sbin -&gt; usr/sbin</span><br><span class="line">-rwxr-xr-x.  1 root root 3117 Oct 20 17:49 shutdown</span><br><span class="line">drwxr-xr-x.  2 root root    6 Oct 20 17:49 sys</span><br><span class="line">drwxr-xr-x.  2 root root    6 Oct 20 17:49 sysroot</span><br><span class="line">drwxr-xr-x.  2 root root    6 Oct 20 17:49 tmp</span><br><span class="line">drwxr-xr-x.  7 root root   66 Oct 20 17:49 usr</span><br><span class="line">drwxr-xr-x.  2 root root   29 Oct 20 17:49 var</span><br><span class="line">[root@localhost rootfs_cpio]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>上面的命令结果几乎就像是一个小型的文件系统根目录，这样就能让 kernel 去挂载了。那么这个小型的文件系统中，systemd 是要以哪个 target 来执行开机呢？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost rootfs_cpio]<span class="comment"># ll usr/lib/systemd/system/default.target </span></span><br><span class="line">lrwxrwxrwx. 1 root root 13 Oct 20 17:49 usr/lib/systemd/system/default.target -&gt; initrd.target</span><br><span class="line">[root@localhost rootfs_cpio]<span class="comment"># systemctl list-dependencies initrd.target </span></span><br><span class="line">initrd.target</span><br><span class="line">● ├─dracut-cmdline.service</span><br><span class="line">● ├─dracut-initqueue.service</span><br><span class="line">● ├─dracut-mount.service</span><br><span class="line">● ├─dracut-pre-mount.service</span><br><span class="line"><span class="comment"># ..... 中间内容省略 ......</span></span><br><span class="line">● │ │ ├─sys-kernel-config.mount</span><br><span class="line">● │ │ ├─sys-kernel-debug.mount</span><br><span class="line">● │ │ ├─systemd-ask-password-console.path</span><br></pre></td></tr></table></figure>
+<p>通过上面解开 initramfs 的结果，我们已经知道其实 initramfs 就是一个小型的根目录，这个小型根目录里面也是通过 systemd 来进行管理，同时观察 default.target 的链接，会发现其实这个小型系统就是通过 initrd.target 来开机，而 initrd.target 也是需要读入一堆例如 basic.target, sysinit.target 等等的硬件侦测、核心功能启用的流程， 然后开始让系统顺利运作。最终才又卸除 initramfs 的小型文件系统，然后去挂载系统实际的根目录。</p>
+<p>另外，需要注意的是 initramfs 并没有囊括了所有东西，它仅仅包含了是开机过程会用到的核心模块而已。所以如果在 initramfs 里面去找 modules 这个关键词的话， 就可以发现主要的核心模块大概就是 SCSI、virtio 、 RAID 等等跟磁盘相关性比较高的模块。现在由于磁盘大部分都是使用 SATA ， 并没有 IDE 的格式了，所以没有 initramfs 就无法顺利启动 Linux 系统，除非是将 SATA 的模块直接编译到内核。</p>
+<p>在内核完成加载后，主机就开始正确地运行了，接下来就要开始执行系统的第一个程序，也就是 systemd。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment"># pstree</span></span><br><span class="line">init─┬─anacron</span><br><span class="line">     ├─auditd───&#123;auditd&#125;</span><br><span class="line">     ├─crond</span><br><span class="line">     ├─metricbeat-god───metricbeat───10*[&#123;metricbeat&#125;]</span><br><span class="line">     ├─6*[mingetty]</span><br><span class="line">     ├─nat_log</span><br><span class="line">     ├─4*[netpas_relay]</span><br><span class="line">     ├─nperfping───11*[&#123;nperfping&#125;]</span><br><span class="line">     ├─nrpe</span><br><span class="line">     ├─ntpd</span><br><span class="line">     ├─portreserve</span><br><span class="line">     ├─rsyslogd───3*[&#123;rsyslogd&#125;]</span><br><span class="line">     ├─snmpd</span><br><span class="line">     ├─sshd───sshd───bash───pstree</span><br><span class="line">     └─udevd───2*[udevd]</span><br></pre></td></tr></table></figure>
+<p>对比 CentOS6 和 CentOS7 的 <code>pstree</code> 命令的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># pstree</span></span><br><span class="line">systemd─┬─NetworkManager───2*[&#123;NetworkManager&#125;]</span><br><span class="line">        ├─VGAuthService</span><br><span class="line">        ├─agetty</span><br><span class="line">        ├─auditd───&#123;auditd&#125;</span><br><span class="line">        ├─crond</span><br><span class="line">        ├─dbus-daemon───&#123;dbus-daemon&#125;</span><br><span class="line">        ├─firewalld───&#123;firewalld&#125;</span><br><span class="line">        ├─master─┬─pickup</span><br><span class="line">        │        └─qmgr</span><br><span class="line">        ├─polkitd───6*[&#123;polkitd&#125;]</span><br><span class="line">        ├─rsyslogd───2*[&#123;rsyslogd&#125;]</span><br><span class="line">        ├─sshd───sshd─┬─bash───pstree</span><br><span class="line">        │             └─2*[bash]</span><br><span class="line">        ├─systemd-journal</span><br><span class="line">        ├─systemd-logind</span><br><span class="line">        ├─systemd-udevd</span><br><span class="line">        ├─tuned───4*[&#123;tuned&#125;]</span><br><span class="line">        └─vmtoolsd───&#123;vmtoolsd&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的命令结果我们可以看到 systemd 已经完全替代了 init 。实际上在不同版本 Linux 上的 init 各不相同：</p>
+<ul>
+<li>CentOS 5: SysV init</li>
+<li>CentOS 6: Upstart</li>
+<li>CentOS 7: Systemd</li>
+</ul>
+<h1 id="systemd-及使用-default-target-进入开机程序分析"><a href="#systemd-及使用-default-target-进入开机程序分析" class="headerlink" title="systemd 及使用 default.target 进入开机程序分析"></a>systemd 及使用 default.target 进入开机程序分析</h1><p>systemd 最主要的功能就是准备软件执行的环境，包括系统的主机名、网络设定、语系处理、文件系统格式及其他服务的启动等。 而所有的动作都会通过 systemd 的默认启动服务集合，也就是是 <code>/etc/systemd/system/default.target</code> 来规划 。另外， systemd 已经舍弃沿用多年的 system V 的 runlevel 。</p>
+<h2 id="常见的操作环境-target-与兼容于-runlevel-的等级"><a href="#常见的操作环境-target-与兼容于-runlevel-的等级" class="headerlink" title="常见的操作环境 target 与兼容于 runlevel 的等级"></a>常见的操作环境 target 与兼容于 runlevel 的等级</h2><p>可以作为预设的操作环境 (default.target) 的主要项目有： multi-user.target 以及 graphical.target 这两个。当然还有某些比较特殊的操作环境， 包括 rescue.target, emergency.target, shutdown.target 等等，以及在 initramfs 里面谈到的 initrd.target 。</p>
+<p>过去的 systemV 使用的是一个称为 runlevel (执行等级) 的概念来启动系统的，systemd 为了兼容于旧式的 systemV 操作行为， 所以也将 runlevel 与操作环境做了结合。如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ll -d /usr/lib/systemd/system/runlevel*.target</span></span><br><span class="line">lrwxrwxrwx. 1 root root 15 Oct 18 17:37 /usr/lib/systemd/system/runlevel0.target -&gt; poweroff.target</span><br><span class="line">lrwxrwxrwx. 1 root root 13 Oct 18 17:37 /usr/lib/systemd/system/runlevel1.target -&gt; rescue.target</span><br><span class="line">lrwxrwxrwx. 1 root root 17 Oct 18 17:37 /usr/lib/systemd/system/runlevel2.target -&gt; multi-user.target</span><br><span class="line">lrwxrwxrwx. 1 root root 17 Oct 18 17:37 /usr/lib/systemd/system/runlevel3.target -&gt; multi-user.target</span><br><span class="line">lrwxrwxrwx. 1 root root 17 Oct 18 17:37 /usr/lib/systemd/system/runlevel4.target -&gt; multi-user.target</span><br><span class="line">lrwxrwxrwx. 1 root root 16 Oct 18 17:37 /usr/lib/systemd/system/runlevel5.target -&gt; graphical.target</span><br><span class="line">lrwxrwxrwx. 1 root root 13 Oct 18 17:37 /usr/lib/systemd/system/runlevel6.target -&gt; reboot.target</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>使用过 systemV 的方式来管理系统，我们知道知道切换执行等级可以使用<code>init 3</code> 转成文字界面，<code>init 5</code>  转成图形界面。 这个 init 程序依旧是保留下来的，只是 <code>init 3</code> 会相当于执行 <code>systemctl isolate multi-user.target</code> 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># file /usr/sbin/init </span></span><br><span class="line">/usr/sbin/init: symbolic link to `../lib/systemd/systemd<span class="string">'</span></span><br></pre></td></tr></table></figure>
+<p>如果做个完整的迭代，这两个东西的对应关系为：</p>
+<table>
+<thead>
+<tr>
+<th>SystemV</th>
+<th>systemd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>init 0</td>
+<td>systemctl poweroff</td>
+</tr>
+<tr>
+<td>init 1</td>
+<td>systemctl rescue</td>
+</tr>
+<tr>
+<td>init 2</td>
+<td>systemctl isolate multi-user.target</td>
+</tr>
+<tr>
+<td>init 3</td>
+<td>systemctl isolate multi-user.target</td>
+</tr>
+<tr>
+<td>init 4</td>
+<td>systemctl isolate multi-user.target</td>
+</tr>
+<tr>
+<td>init 5</td>
+<td>systemctl isolate graphical.target</td>
+</tr>
+<tr>
+<td>init 6</td>
+<td>systemctl reboot</td>
+</tr>
+</tbody>
+</table>
+<h2 id="systemd-的处理流程"><a href="#systemd-的处理流程" class="headerlink" title="systemd 的处理流程"></a>systemd 的处理流程</h2><p>当进行了 <code>/etc/systemd/system/default.target</code> 这一个预设操作的设定之后，接下来系统做了什么呢？ 首先，它会链接到 <code>/usr/lib/systemd/system/</code> 这个目录下去取得 <code>multi-user.target</code> 或 <code>graphical.target</code> 这两个其中的一。假设使用的是 graphical.target ，接下来 systemd 会去找两个地方的设定：</p>
+<ul>
+<li><code>/etc/systemd/system/graphical.target.wants/</code>：使用者设定加载的 unit </li>
+<li><code>/usr/lib/systemd/system/graphical.target.wants/</code>：系统默认加载的 unit</li>
+</ul>
+<p>使用 <code>systemctl cat graphical.target</code> 命令查看对应的配置文件：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># /usr/lib/systemd/system/graphical.target</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=Graphical Interface</span><br><span class="line">Documentation=man:systemd.special(7)</span><br><span class="line">Requires=multi-user.target</span><br><span class="line">Wants=display-manager.service</span><br><span class="line">Conflicts=rescue.service rescue.target</span><br><span class="line">After=multi-user.target rescue.service rescue.target display-manager.service</span><br><span class="line">AllowIsolate=yes</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>这表示 graphical.target 必须要完成 multi-user.target 之后才能够进行，而进行完 graphical.target 之后，还需要启动 display-manager.service 。 </p>
+<p>再查看 multi-user.target  的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl cat multi-user.target </span></span><br><span class="line"><span class="comment"># /lib/systemd/system/multi-user.target</span></span><br><span class="line"><span class="comment">#  This file is part of systemd.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  systemd is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment">#  under the terms of the GNU Lesser General Public License as published by</span></span><br><span class="line"><span class="comment">#  the Free Software Foundation; either version 2.1 of the License, or</span></span><br><span class="line"><span class="comment">#  (at your option) any later version.</span></span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=Multi-User System</span><br><span class="line">Documentation=man:systemd.special(7)</span><br><span class="line">Requires=basic.target</span><br><span class="line">Conflicts=rescue.service rescue.target</span><br><span class="line">After=basic.target rescue.service rescue.target</span><br><span class="line">AllowIsolate=yes</span><br></pre></td></tr></table></figure>
+<p>查看系统默认要加载的 unit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls /usr/lib/systemd/system/multi-user.target.wants/</span></span><br><span class="line">dbus.service           plymouth-quit-wait.service      systemd-update-utmp-runlevel.service</span><br><span class="line">getty.target           systemd-ask-password-wall.path  systemd-user-sessions.service</span><br><span class="line">plymouth-quit.service  systemd-logind.service</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>使用者自定义要加载的 unit 又有哪些呢</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls /etc/systemd/system/multi-user.target.wants/</span></span><br><span class="line">auditd.service     irqbalance.service      postfix.service         rsyslog.service  vmtoolsd.service</span><br><span class="line">crond.service      kdump.service           remote-fs.target        sshd.service</span><br><span class="line">firewalld.service  NetworkManager.service  rhel-configure.service  tuned.service</span><br></pre></td></tr></table></figure>
+<p>通过上面的结果，我们知道 multi-usre.target 需要在 basic.target 运作完成后才能够载入上述的许多 unit 。然后再去 basic.target 里头寻找数据， 最终这些数据就可以通过 <code>systemctl list-dependencies graphical.target</code> 命令来列出所有的相关性的服务。这就是 systemd 呼叫所需要的服务的流程。</p>
+<p>要想知道系统服务的启动流程，最简单的办法就是通过 <code>systemctl list-dependencies graphical.target</code> 命令。如果想要知道想要知道对应的配置文件意义， 应该分别去查看 <code>/etc/systemd/system/</code> 与 <code>/usr/lib/systemd/system/</code> 目录下的 <code>graphical.target.wants/</code> 目录下的配置文件数据。当然，配置文件脚本里面的 Requires 这个设定值所代表的服务， 也需要先加载。</p>
+<p>粗略分析一下 <code>systemctl list-dependencies graphical.target</code> 所输出的想依赖的服务，基本上 CentOS 7.x 的 systemd 开机流程大约是这样：</p>
+<p>1、local-fs.target + swap.target：这两个 target 主要在挂载本机 <code>/etc/fstab</code> 里面所规范的文件系统与相关的内存交换空间。<br>2、sysinit.target：这个 target 主要在侦测硬件，加载所需要的核心模块（驱动程序）等动作。<br>3、basic.target：加载主要的外围硬件驱动程序与防火墙相关任务<br>4、multi-user.target 其它一般系统或网络服务的加载<br>5、图形界面相关服务的加载</p>
+<p>下图是 systemd 大致的开机工作流程图：</p>
+<p><img src="/2015/10/23/170127-CentOS7系统启动流程分析与systemd/03_systemd_sysinit_basic_multi-user.png" alt=""></p>
+<p>除了第一步 local-fs.target, swap.target 是通过 <code>/etc/fstab</code> 来进行挂载的行为之外，那其他的 target 做了什么动作呢？</p>
+<h1 id="systemd-执行-sysinit-target-初始化系统、basic-target-准备系统"><a href="#systemd-执行-sysinit-target-初始化系统、basic-target-准备系统" class="headerlink" title="systemd 执行 sysinit.target 初始化系统、basic.target 准备系统"></a>systemd 执行 sysinit.target 初始化系统、basic.target 准备系统</h1><p>使用 <code>systemctl list-dependencies sysinit.target</code> 会看到很多相依赖的服务，这些服务如果一个一个去查询脚本设定的内容， 就能够大致理解每个服务的意义。基本上，可以将这些服务归类成几个大项：</p>
+<ul>
+<li><p>特殊文件系统装置的挂载：包括 dev-hugepages.mount、 dev-mqueue.mount 等挂载服务，主要挂载 巨量内存分页 与 消息队列 的功能。 挂载成功后，会在 <code>/dev</code> 下建立 <code>/dev/hugepages/</code>, <code>/dev/mqueue/</code> 等目录；</p>
+</li>
+<li><p>特殊文件系统的启用：包括磁盘阵列、网络驱动器 (iscsi)、LVM 文件系统、文件系统对照服务 (multipath) 等等，也会在这里被侦测与使用到。</p>
+</li>
+<li><p>开机过程的信息传递与动画执行：使用 plymouthd 服务搭配 plymouth 指令来传递动画与信息。</p>
+</li>
+<li><p>日志式登录文件的使用：也就是 systemd-journald 这个服务的启用。</p>
+</li>
+<li><p>加载额外的核心模块：通过 <code>/etc/modules-load.d/*.conf</code> 文件的设定，让内核额外加载管理员所需要的核心模块。</p>
+</li>
+<li><p>加载额外的核心参数设定：包括 <code>/etc/sysctl.conf</code> 以及 <code>/etc/sysctl.d/*.conf</code> 内的参数设置。</p>
+</li>
+<li><p>启动系统的随机数生成器：随机数生成器可以帮助系统进行一些密码加密演算的功能</p>
+</li>
+<li><p>设定控制台 (console) 字形</p>
+</li>
+<li><p>启动动态设备管理器：也就是 udevd 。用在动态对应实际装置存取与装置文件名对应的一个服务。</p>
+</li>
+</ul>
+<p>不论即将使用哪种操作环境来使用系统，这个 sysinit.target 几乎都是必要的工作！从上面也可以看出，基本的核心功能、文件系统、文件系统装置的驱动等等， 都在这个时刻处理完的。所以，sysinit.target 的阶段是至关重要的！</p>
+<p>执行完 sysinit.target 之后，再来则是 basic.target 了。  basic.target 的阶段主要启动的服务大概有这些：</p>
+<ul>
+<li><p>加载 alsa 音效驱动程序：alsa 是个音效相关的驱动程序，会让系统有音效产生；</p>
+</li>
+<li><p>载入 firewalld 防火墙：CentOS 7.x 以后使用 firewalld 取代 iptables 的防火墙设定，虽然最终都是使用 iptables 的架构， 不过在设定上面差很多。</p>
+</li>
+<li><p>加载 CPU 的微指令功能；</p>
+</li>
+<li><p>启动与设定 SELinux 的安全本文：如果由 disable 的状态改成 enable 的状态，或者是管理员设定强制重新设定一次 SELinux 的安全本文， 也在这个阶段处理。</p>
+</li>
+<li><p>将目前的开机过程所产生的开机信息写入到 <code>/var/log/dmesg</code> 当中。</p>
+</li>
+<li><p>由 <code>/etc/sysconfig/modules/*.modules</code> 及 <code>/etc/rc.modules</code> 加载管理员指定的模块。</p>
+</li>
+<li><p>加载 systemd 支持的 timer 功能；</p>
+</li>
+</ul>
+<p>在这个阶段完成之后，系统就可以正常运行了。但是还差一些所需要的登入服务、网络服务、本机认证服务等类似的 service ，于是就进入下个服务启动的阶段了。</p>
+<h1 id="systemd-启动-multi-user-target-下的服务"><a href="#systemd-启动-multi-user-target-下的服务" class="headerlink" title="systemd 启动 multi-user.target 下的服务"></a>systemd 启动 multi-user.target 下的服务</h1><p>在加载核心驱动硬件后，经过 sysinit.target 的初始化流程让系统可以存取之后，加上 basic.target 让系统成为操作系统的基础， 之后就是服务器要顺利运作时，需要的各种主机服务以及提供服务器功能的网络服务的启动了。这些服务的启动则大多是附挂在 multi-user.target 这个操作环境底下， 可以在 <code>/etc/systemd/system/multi-user.target.wants/</code> 里看到预设要被启动的服务。</p>
+<p>也就是说，一般来说服务的启动脚本设定都是放在下面的目录内：</p>
+<ul>
+<li>/usr/lib/systemd/system (系统默认的服务启动脚本设定) </li>
+<li>/etc/systemd/system (管理员自己开发与设定的脚本设定)</li>
+</ul>
+<p>而用户想要让主机的本地服务和网络服务的各项 unit 开机自启的话，其实就是将它在 <code>/etc/systemd/system/multi-user.target.wants/</code> 这个目录底下做个链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl disable postfix</span></span><br><span class="line">Removed symlink /etc/systemd/system/multi-user.target.wants/postfix.service.</span><br><span class="line">[root@localhost ~]<span class="comment"># </span></span><br><span class="line">[root@localhost ~]<span class="comment"># </span></span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl enable postfix </span></span><br><span class="line">Created symlink from /etc/systemd/system/multi-user.target.wants/postfix.service to /usr/lib/systemd/system/postfix.service.</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>另外， 这些程序如果在脚本设定里面原本就有规范服务的相互依赖关系， 服务就会有顺序地启动。但是大多数的服务不会设定依赖关系，所以会同时启动，这就是 systemd 的多任务。</p>
+<h2 id="相兼容的-SystemV-的-rc-local-service"><a href="#相兼容的-SystemV-的-rc-local-service" class="headerlink" title="相兼容的 SystemV 的 rc-local.service"></a>相兼容的 SystemV 的 rc-local.service</h2><p>对于 SystemV 的系统，在完成开机后要想让系统额外执行某些程序的话，可以将该程序指令或脚本的绝对路径名称写入到 <code>/etc/rc.d/rc.local</code> 文件中。而在新的 systemd 机制中，它建议直接写一个 systemd 的启动脚本配置文件到 <code>/etc/systemd/system/</code> 目录下，然后使用 <code>systemctl enable</code> 的方式来设定启用它，而不是直接使用 rc.local 这个文件。</p>
+<p>如果是处于运维的习惯，就想要将开机后要立刻执行的许多管理员自己的脚本，将它写入到 <code>/etc/rc.d/rc.local</code>，新版的 systemd 对此也有支持。 它使用 rc-local.service 这个服务，并且这个服务并不需要启动，它会自己判断 <code>/etc/rc.d/rc.local</code> 是否具有可执行的权限，然后来判断要不要启动这个服务。可以通过如下方法来检查：</p>
+<p>1、查看 <code>/etc/rc.d/rc.local</code> 是否有可执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ll /etc/rc.d/rc.local </span></span><br><span class="line">-rw-r--r--. 1 root root 473 Aug  8 19:58 /etc/rc.d/rc.local</span><br></pre></td></tr></table></figure>
+<p>2、查看 rc-local.service 的服务状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl status rc-local.service </span></span><br><span class="line">● rc-local.service - /etc/rc.d/rc.local Compatibility</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/rc-local.service; static; vendor preset: disabled)</span><br><span class="line">   Active: inactive (dead)</span><br></pre></td></tr></table></figure>
+<p>3、查看 multi-user.target 下是否有这个服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl list-dependencies multi-user.target | grep rc-local</span></span><br><span class="line">[root@localhost ~]<span class="comment"># # 系统本身是有这个服务的，但是 rc.local 不具有可执行 (x) 的权限，因此这个服务不会被执行</span></span><br></pre></td></tr></table></figure>
+<p>4、加入可执行权限，再次查看 rc-local.service 是否可被启用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># chmod a+x /etc/rc.d/rc.local </span></span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl daemon-reload </span></span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl list-dependencies multi-user.target | grep rc-local</span></span><br><span class="line">● ├─rc-local.service</span><br><span class="line">[root@localhost ~]<span class="comment">#  # 这个服务确实被记录到启动的环境下了</span></span><br></pre></td></tr></table></figure>
+<p>通过 <code>chmod a+x /etc/rc.d/rc.local</code> 的步骤，就可以将许多脚本就可以放在 <code>/etc/rc.d/rc.local</code> 这个文件内， 系统在每次开机都会去执行这文件内的指令。</p>
+<h2 id="提供-tty-界面与登录的服务"><a href="#提供-tty-界面与登录的服务" class="headerlink" title="提供 tty 界面与登录的服务"></a>提供 tty 界面与登录的服务</h2><p>在 multi-user.target 下还有个 getty.target 的操作界面项目。能不能提供适当的登录服务也是 multi-user.target 底下的内容！ 包括 systemd-logind.service, systemd-user-sessions.service 等服务。</p>
+<p>由于服务都是同步启动，所以不能确定哪个服务先启动完成。如果 getty 服务先启动完成时，会发现有可用的终端机尝试让我们登录系统。 而如果 systemd-logind.service 或 systemd-user-sessions.service 服务尚未启动完成的话，还是无法登录到系统的。</p>
+<h1 id="开机过程会用到的主要配置文件"><a href="#开机过程会用到的主要配置文件" class="headerlink" title="开机过程会用到的主要配置文件"></a>开机过程会用到的主要配置文件</h1><p>基本上， systemd 有自己的配置文件处理方式，不过为了兼容于 systemV ，其实很多的服务脚本设定还是会读取位于 <code>/etc/sysconfig/</code> 目录下的环境配置文件。 </p>
+<h2 id="自定义模块相关的配置"><a href="#自定义模块相关的配置" class="headerlink" title="自定义模块相关的配置"></a>自定义模块相关的配置</h2><p>在 sysinit.target 系统初始化的过程中会加载用户自定义模块，有两个地方可以处理模块加载的问题，包括：</p>
+<ul>
+<li><code>/etc/modprobe.d/*.conf</code> ：单纯要让内核从哪些位置加载模块</li>
+<li><code>/etc/modules-load.d/*.conf</code>：对内核模块做参数设置</li>
+</ul>
+<p>基本上 systemd 已经将开机会用到的驱动程序全部加载了，因此，在一般情况下，这个部份应该无需变动。不过， 如果有某些特定的参数要处理时，就可以在这里做配置。比如，我们要做网络链接追踪，就需要在开机启动流程中加载相对应的内核模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/modules-load.d/netfilter.conf </span></span><br><span class="line"><span class="comment"># Load nf_conntrack.ko at boot</span></span><br><span class="line">nf_conntrack</span><br><span class="line">nf_conntrack_ipv4</span><br><span class="line">nf_defrag_ipv4</span><br></pre></td></tr></table></figure>
+<p>再比如自定义了 vsftpd 服务的监听端口为 555，这时就需要修改防火墙设定，其中一个针对 FTP 很重要的防火墙模块为 nf_conntrack_ftp， 因此可以将这个模块写入到系统开机流程中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/modules-load.d/vbird.conf</span></span><br><span class="line">nf_conntrack_ftp</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>按照配置标准，应该一个模块 (驱动程序) 写一行。如果要对这些内核模块做参数设定，应该在 <code>/etc/modules-load.d/</code> 目录下做配置。比如要对链接追踪模块的哈希表做参数设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/modprobe.d/netfilter.conf </span></span><br><span class="line">options nf_conntrack hashsize=65536</span><br></pre></td></tr></table></figure>
+<p>当然，如果只是让内核加载模块，没有指定自己定义的参数，就会以默认值加载并运行。所以对于修改了服务端口的 vsftpd 来说，如果不设置参数，模块就默认处理 21 号端口，这时候我们需要将其调整到自定义的 555 号端口才能正常工作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/modprobe.d/vbird.conf</span></span><br><span class="line">options nf_conntrack_ftp ports=555</span><br></pre></td></tr></table></figure>
+<p>之后重新启动就能够顺利的载入并且处理好些模块了。如果不想重启，可以使用下面的方式来处理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lsmod | grep nf_conntrack_ftp</span></span><br><span class="line">[root@localhost ~]<span class="comment"># # 因为没有加载这个模块，所以不会有任何信息输出</span></span><br><span class="line">[root@localhost ~]<span class="comment"># </span></span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl restart systemd-modules-load.service </span></span><br><span class="line">[root@localhost ~]<span class="comment"># </span></span><br><span class="line">[root@localhost ~]<span class="comment"># lsmod | grep nf_conntrack_ftp                  </span></span><br><span class="line">nf_conntrack_ftp       18478  0 </span><br><span class="line">nf_conntrack          139224  7 nf_nat,nf_nat_ipv4,nf_nat_ipv6,xt_conntrack,nf_conntrack_ftp,nf_conntrack_ipv4,nf_conntrack_ipv6</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>通过上述的方式，就可以在开机的时候将所需要的驱动程序加载或者是调整这些模块的外加参数了。</p>
+<h2 id="etc-sysconfig"><a href="#etc-sysconfig" class="headerlink" title="/etc/sysconfig/"></a>/etc/sysconfig/</h2><p>在 <code>/etc/sysconfig/</code> 目录下有很多常见的环境配置文件，下面列举几个比较重要的：</p>
+<ul>
+<li><p><strong>authconfig</strong>：这个文件主要在规范使用者的身份认证的机制，包括是否使用本机的 <code>/etc/passwd</code>， <code>/etc/shadow</code> 等， 以及 <code>/etc/shadow</code> 密码记录使用哪种加密算法，还有是否使用外部密码服务器提供的账号验证 (NIS, LDAP) 等。 系统默认使用 SHA512 加密算法，并且不使用外部的身份验证机制；另外，不建议手动修改这个文件，建议最好是使用 <code>authconfig-tui</code> 命令来做这方面的配置指令。</p>
+</li>
+<li><p><strong>cpupower</strong>：如果系统中有启动 cpupower.service 服务时，它就会读取这个配置文件。主要是用来配置 Linux 内核如何操作 CPU 的。 一般来说，启动 cpupower.service 之后，系统会让 CPU 以最大效能的方式来运作，否则预设就是用多少算多少的模式来处理的。</p>
+</li>
+<li><p><strong>firewalld, iptables-config, iptables-config, ebtables-config</strong>：与防火墙服务的启动外带的参数有关</p>
+</li>
+<li><p><strong>network-scripts/</strong>：这个目录下面的文件，则是主要用在设定网络卡，配置 IP 地址的方式等。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Silence 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Silence 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/grub2/" rel="tag"><i class="fa fa-tag"></i> grub2</a>
+          
+            <a href="/tags/Kernel/" rel="tag"><i class="fa fa-tag"></i> Kernel</a>
+          
+            <a href="/tags/Systemd/" rel="tag"><i class="fa fa-tag"></i> Systemd</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/22/192115-Linux的1号PID和systemd/" rel="next" title="Linux的1号PID和systemd">
+                <i class="fa fa-chevron-left"></i> Linux的1号PID和systemd
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/24/132143-认识并管理systemd服务和单元/" rel="prev" title="认识并管理systemd服务和单元">
+                认识并管理systemd服务和单元 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Silence">
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <div class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">136</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/linuxgeeks" title="GitHub &rarr; https://github.com/linuxgeeks" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="https://www.ibm.com/developerworks/cn/" rel="noopener" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="http://iissnan.com/progit/" rel="noopener" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="http://www.freeoa.net/index/" rel="noopener" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="http://www.ttlsa.com/" rel="noopener" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="http://www.361way.com/" rel="noopener" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="http://www.ipcpu.com" rel="noopener" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="http://www.yiibai.com/" rel="noopener" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="http://www.centoscn.com/" rel="noopener" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="http://www.linuxprobe.com/" rel="noopener" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="http://www.netingcn.com/" rel="noopener" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="https://www.liaoxuefeng.com" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="https://yihui.name/cn/" rel="noopener" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="https://coolshell.cn" rel="noopener" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="https://zhangguanzhang.github.io" rel="noopener" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="https://kuops.com" rel="noopener" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="http://www.jinbuguo.com/" rel="noopener" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="http://www.sa-log.com" rel="noopener" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="https://thief.one" rel="noopener" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="https://arvon.top" rel="noopener" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="https://kionf.com" rel="noopener" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="https://www.the5fire.com" rel="noopener" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BIOS-Boot-Loader-与-Kernel-的载入"><span class="nav-number">1.</span> <span class="nav-text">BIOS, Boot Loader 与 Kernel 的载入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BIOS-开机自我检测与-MBR-GPT"><span class="nav-number">1.1.</span> <span class="nav-text">BIOS, 开机自我检测与 MBR/GPT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boot-Loader-的功能"><span class="nav-number">1.2.</span> <span class="nav-text">Boot Loader 的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载-Kernel、侦测硬件、-initramfs-的功能"><span class="nav-number">1.3.</span> <span class="nav-text">加载 Kernel、侦测硬件、 initramfs 的功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemd-及使用-default-target-进入开机程序分析"><span class="nav-number">2.</span> <span class="nav-text">systemd 及使用 default.target 进入开机程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的操作环境-target-与兼容于-runlevel-的等级"><span class="nav-number">2.1.</span> <span class="nav-text">常见的操作环境 target 与兼容于 runlevel 的等级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#systemd-的处理流程"><span class="nav-number">2.2.</span> <span class="nav-text">systemd 的处理流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemd-执行-sysinit-target-初始化系统、basic-target-准备系统"><span class="nav-number">3.</span> <span class="nav-text">systemd 执行 sysinit.target 初始化系统、basic.target 准备系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemd-启动-multi-user-target-下的服务"><span class="nav-number">4.</span> <span class="nav-text">systemd 启动 multi-user.target 下的服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相兼容的-SystemV-的-rc-local-service"><span class="nav-number">4.1.</span> <span class="nav-text">相兼容的 SystemV 的 rc-local.service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提供-tty-界面与登录的服务"><span class="nav-number">4.2.</span> <span class="nav-text">提供 tty 界面与登录的服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开机过程会用到的主要配置文件"><span class="nav-number">5.</span> <span class="nav-text">开机过程会用到的主要配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义模块相关的配置"><span class="nav-number">5.1.</span> <span class="nav-text">自定义模块相关的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc-sysconfig"><span class="nav-number">5.2.</span> <span class="nav-text">/etc/sysconfig/</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

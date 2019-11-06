@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Systemd 简介Systemd 是一系列工具的集合，其作用也远远不仅是启动操作系统，它还接管了后台服务、结束、状态查询，以及日志归档、设备管理、电源管理、定时任务等许多职责，并支持通过特定事件（如插入特定 USB 设备）和特定端口数据触发的 On-demand（按需）任务。 根据 Linux 惯例，字母 d 是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系">
+<meta name="keywords" content="Service,Systemd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="认识并管理systemd服务和单元">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/10/24/132143-认识并管理systemd服务和单元/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="Systemd 简介Systemd 是一系列工具的集合，其作用也远远不仅是启动操作系统，它还接管了后台服务、结束、状态查询，以及日志归档、设备管理、电源管理、定时任务等许多职责，并支持通过特定事件（如插入特定 USB 设备）和特定端口数据触发的 On-demand（按需）任务。 根据 Linux 惯例，字母 d 是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/24/132143-认识并管理systemd服务和单元/systemd.png">
+<meta property="og:updated_time" content="2019-11-05T11:58:22.656Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="认识并管理systemd服务和单元">
+<meta name="twitter:description" content="Systemd 简介Systemd 是一系列工具的集合，其作用也远远不仅是启动操作系统，它还接管了后台服务、结束、状态查询，以及日志归档、设备管理、电源管理、定时任务等许多职责，并支持通过特定事件（如插入特定 USB 设备）和特定端口数据触发的 On-demand（按需）任务。 根据 Linux 惯例，字母 d 是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2015/10/24/132143-认识并管理systemd服务和单元/systemd.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/10/24/132143-认识并管理systemd服务和单元/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>认识并管理systemd服务和单元 | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/linuxgeeks" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/10/24/132143-认识并管理systemd服务和单元/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">认识并管理systemd服务和单元
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-10-24 13:21:43" itemprop="dateCreated datePublished" datetime="2015-10-24T13:21:43+08:00">2015-10-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-05 19:58:22" itemprop="dateModified" datetime="2019-11-05T19:58:22+08:00">2019-11-05</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Systemd-简介"><a href="#Systemd-简介" class="headerlink" title="Systemd 简介"></a>Systemd 简介</h1><p>Systemd 是一系列工具的集合，其作用也远远不仅是启动操作系统，它还接管了后台服务、结束、状态查询，以及日志归档、设备管理、电源管理、定时任务等许多职责，并支持通过特定事件（如插入特定 USB 设备）和特定端口数据触发的 On-demand（按需）任务。</p>
+<p>根据 Linux 惯例，字母 <code>d</code> 是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系统。</p>
+<p>Systemd 的后台服务还有一个特殊的身份——它是系统中 PID 值为 1 的进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pstree</span></span><br><span class="line"></span><br><span class="line">systemd─┬─VGAuthService</span><br><span class="line">        ├─agetty</span><br><span class="line">        ├─auditd───&#123;auditd&#125;</span><br><span class="line">        ├─chronyd</span><br><span class="line">        ├─crond</span><br><span class="line">        ├─dbus-daemon</span><br><span class="line">        ├─polkitd───6*[&#123;polkitd&#125;]</span><br><span class="line">        ├─rsyslogd───2*[&#123;rsyslogd&#125;]</span><br><span class="line">        ├─sshd─┬─sshd───2*[sftp-server]</span><br><span class="line">        │      └─sshd───bash───pstree</span><br><span class="line">        ├─systemd-journal</span><br><span class="line">        ├─systemd-logind</span><br><span class="line">        ├─systemd-udevd</span><br><span class="line">        ├─tuned───4*[&#123;tuned&#125;]</span><br><span class="line">        └─vmtoolsd───&#123;vmtoolsd&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Systemd-的功能和特性"><a href="#Systemd-的功能和特性" class="headerlink" title="Systemd 的功能和特性"></a>Systemd 的功能和特性</h1><p>1、<strong>更少的进程。</strong></p>
+<p>Systemd 提供了 服务按需启动 的能力，使得特定的服务只有在真正被请求时才启动。</p>
+<p>2、<strong>允许更多的进程并行启动。</strong></p>
+<p>在 SysV-init 时代，将每个服务项目编号依次执行启动脚本。Ubuntu 的 Upstart 解决了没有直接依赖的启动之间的并行启动。而 Systemd 通过 Socket 缓存、DBus 缓存和建立临时挂载点等方法进一步解决了启动进程之间的依赖，做到了所有系统服务并发启动。对于用户自定义的服务，Systemd 允许配置其启动依赖项目，从而确保服务按必要的顺序运行。</p>
+<p>3、<strong>使用 CGroup 跟踪、监控和管理进程的生命周期。</strong></p>
+<p>在 Systemd 之间的主流应用管理服务都是使用 进程树 来跟踪应用的继承关系的，而进程的父子关系很容易通过 两次 fork 的方法脱离。</p>
+<p>而 Systemd 则提供通过 CGroup 跟踪进程关系，引补了这个缺漏。通过 CGroup 不仅能够实现服务之间访问隔离，限制特定应用程序对系统资源的访问配额，还能更精确地管理服务的生命周期。</p>
+<p>4、<strong>同时采用基于 socket 与 D-Bus 总线式激活服务。</strong></p>
+<p>基于 socket 的激活机制中，socket 与服务程序分离，并且 socket 由 Systemd 代为监听，服务程序不用马上启动，当 systemd 探测到有其他进程访问这个套接字的时候，才临时按需激活对应服务程序。所以，任何一个依赖于这个服务的其他服务想启动的话，Systemd 只需要把套接字监听起来，其他服务就会都认为依赖的这个服务已经启动了，但实际上服务程序并没有启动，从而实现了服务的并行启动。</p>
+<p>在 Linux 上使用 D-Bus 完成进程间通信的服务，可以在第一次被访问的时候，按需激活。</p>
+<p>5、<strong>基于device的激活机制。</strong></p>
+<p>在 Linux 上支持基于 device 激活的系统服务，可以在特定类型的硬件接入到系统上来的时候被激活。比如当机器插入 U 盘时，系统就会把挂载服务激活起来，这个服务就能实现硬件设备的挂载等操作。</p>
+<p>6、<strong>基于 path 的激活机制。</strong></p>
+<p>基于文件的路径进行激活，某个文件路径，变得可用或里面有新文件时，比如某个目录下有文件出现，或者文件发生了变动，这时候就能激活某个服务程序，让某个服务程序工作起来。Systemd 可以监控着管理员所指定的文件路径，一旦文件或目录发生了变化就立即激活相关的服务。</p>
+<p>7、<strong>支持快照和系统恢复。</strong></p>
+<p>Systemd 能够保存各个 unit 的当前状态信息到持久存储设备（如硬盘）中，必要时可以自动载入。随后启动时还可以从保存快照的状态开始继续向后运行。比如我们将机器关机了，所有的服务就停止了，下一次启动的时候只能从头开始。很多服务在内存中会运行是会有很多临时数据，比如客户端对服务端的访问状态信息，这些数据在服务停止后就消失了。如果我们用了快照，可以在下次重启机器之前，先让 Systemd 把每一个运行的 unit 的当前状态信息和相关数据都保存到磁盘上，在重启完机器后再把快照重新载入，这样，所有的临时数据都不会丢失。</p>
+<p>8、<strong>向后兼容 sysv init 脚本。</strong></p>
+<p>Systemd 只支持有限的运行级别，不支持早先的 0-6 的 runlevel，Systemd 对这些级别的模拟是有限的。Systemd 是不支持级别的，它也用不到级别，只是出于兼容的目的，而设计了一些 target 的 unit ，用来映射和实现级别。</p>
+<p>另外， Systemd 并不是完全兼容 sysv 的 int 脚本， Systemd 服务由 systemctl 命令固定不变来管理的，这个命令固定不变，不可进行扩展。如果服务不是由 Systemd 启动的，那么 systemctl 无法与之通信。Systemd 不会从任何用户那里继承环境变量，因此建议在使用时都用绝对路径。每一个 unit 的操作都会受到 5 分钟超时时间限制，如果任何一个服务在 5 分钟内未能正常执行，都会在超时后退出运行。</p>
+<p>9、<strong>统一管理服务日志。</strong></p>
+<p>Systemd 是一系列工具的集合， 包括了一个专用的系统日志管理服务：Journald 。这个服务的设计初衷是克服现有 Syslog 服务的日志内容易伪造和日志格式不统一等缺点，Journald 用 二进制格式 保存所有的日志信息，因而日志内容很难被手工伪造。Journald 还提供了一个 <code>journalctl</code> 命令来查看日志信息，这样就使得不同服务输出的日志具有相同的排版格式， 便于数据的二次处理。</p>
+<p>除此之外，功能还包括控制基础系统配置，设置并维护登陆用户列表以及系统账户、运行时目录，可以运行容器和虚拟机，可以简单地管理网络配置、网络时间同步、日志转发和名称解析等。</p>
+<h1 id="Systemd-架构"><a href="#Systemd-架构" class="headerlink" title="Systemd 架构"></a>Systemd 架构</h1><p>相比于之前的版本，Systemd 最关键的特性是：</p>
+<ul>
+<li><p>延迟启动某些服务和系统功能，等到需要他们的时候才开启</p>
+</li>
+<li><p>完全并行启动</p>
+</li>
+</ul>
+<p><img src="/2015/10/24/132143-认识并管理systemd服务和单元/systemd.png" alt=""></p>
+<p>上图是 Systemd 的架构图。</p>
+<h1 id="Systemd-的-Unit-文件"><a href="#Systemd-的-Unit-文件" class="headerlink" title="Systemd 的 Unit 文件"></a>Systemd 的 Unit 文件</h1><p>Systemd 可以管理所有系统资源，不同的资源统称为 Unit（单元）。</p>
+<p>在 Systemd 的生态圈中，Unit 文件统一了过去各种不同系统资源配置格式，例如服务的启/停、定时任务、设备自动挂载、网络配置、虚拟内存配置等。而 Systemd 通过不同的文件后缀来区分这些配置文件。</p>
+<h2 id="Systemd-支持的-12-种-Unit-文件类型"><a href="#Systemd-支持的-12-种-Unit-文件类型" class="headerlink" title="Systemd 支持的 12 种 Unit 文件类型"></a>Systemd 支持的 12 种 Unit 文件类型</h2><ul>
+<li><p><code>.automount</code>：用于控制自动挂载文件系统，相当于 SysV-init 的 autofs 服务</p>
+</li>
+<li><p><code>.device</code>：对于 <code>/dev</code> 目录下的设备，主要用于定义设备之间的依赖关系</p>
+</li>
+<li><p><code>.mount</code>：定义系统结构层次中的一个挂载点，可以替代过去的 <code>/etc/fstab</code> 配置文件</p>
+</li>
+<li><p><code>.path</code>：用于监控指定目录或文件的变化，并触发其它 Unit 运行</p>
+</li>
+<li><p><code>.scope</code>：这种 Unit 文件不是用户创建的，而是 Systemd 运行时产生的，描述一些系统服务的分组信息</p>
+</li>
+<li><p><code>.service</code>：封装守护进程的启动、停止、重启和重载操作，是最常见的一种 Unit 文件</p>
+</li>
+<li><p><code>.slice</code>：用于表示一个 CGroup 的树，通常用户不会自己创建这样的 Unit 文件</p>
+</li>
+<li><p><code>.snapshot</code>：用于表示一个由 <code>systemctl snapshot</code> 命令创建的 Systemd Units 运行状态快照</p>
+</li>
+<li><p><code>.socket</code>：监控来自于系统或网络的数据消息，用于实现基于数据自动触发服务启动</p>
+</li>
+<li><p><code>.swap</code>：定义一个用户做虚拟内存的交换分区</p>
+</li>
+<li><p><code>.target</code>：用于对 Unit 文件进行逻辑分组，引导其它 Unit 的执行。它替代了 SysV-init 运行级别的作用，并提供更灵活的基于特定设备事件的启动方式</p>
+</li>
+<li><p><code>.timer</code>：用于配置在特定时间触发的任务，替代了 Crontab 的功能</p>
+</li>
+</ul>
+<h2 id="Systemd-相关的目录"><a href="#Systemd-相关的目录" class="headerlink" title="Systemd 相关的目录"></a>Systemd 相关的目录</h2><p>Unit 文件按照 Systemd 约定，应该被放置指定的三个系统目录之一中。这三个目录是有优先级的，如下所示，越靠上的优先级越高。因此，在三个目录中有同名文件的时候，只有优先级最高的目录里的那个文件会被使用。</p>
+<ul>
+<li><p><code>/etc/systemd/system</code>：用户或系统在本地配置的 unit 文件。</p>
+</li>
+<li><p><code>/run/systemd/system</code>：运行时生成的的 unit 文件。</p>
+</li>
+<li><p><code>/usr/lib/systemd/system</code>：系统或第三方软件包安装时生成的 unit 文件。</p>
+</li>
+</ul>
+<p>Systemd 默认从目录 <code>/etc/systemd/system/</code> 读取配置文件。但是，这个目录下存放的大部分文件都是符号链接，指向目录 <code>/usr/lib/systemd/system/</code>，真正的配置文件存放在那个目录。</p>
+<p>可以通过下面的指令查询配置目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pkg-config systemd --variable=systemdsystemunitdir <span class="comment">#单元目录</span></span><br><span class="line">pkg-config systemd --variable=systemdsystemconfdir <span class="comment">#配置目录</span></span><br></pre></td></tr></table></figure>
+<h2 id="Unit-和-Target"><a href="#Unit-和-Target" class="headerlink" title="Unit 和 Target"></a>Unit 和 Target</h2><p>Unit 是 Systemd 管理系统资源的基本单元，可以认为每个系统资源就是一个 Unit ，并使用一个 Unit 文件定义。在 Unit 文件中需要包含相应服务的描述、属性以及需要运行的命令。</p>
+<p>Target 是 Systemd 中用于指定系统资源启动组的方式，相当于 SysV-init 中的运行级别。</p>
+<p>简单说，Target 就是一个 Unit 组，包含许多相关的 Unit 。启动某个 Target 的时候，Systemd 就会启动里面所有的 Unit。从这个意义上说，Target 这个概念类似于 ”状态点”，启动某个 Target 就好比启动到某种状态。</p>
+<h1 id="Systemd-Service-Unit"><a href="#Systemd-Service-Unit" class="headerlink" title="Systemd Service Unit"></a>Systemd Service Unit</h1><h2 id="Unit-文件结构"><a href="#Unit-文件结构" class="headerlink" title="Unit 文件结构"></a>Unit 文件结构</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /usr/lib/systemd/system/chronyd.service </span></span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=NTP client/server</span><br><span class="line">Documentation=man:chronyd(8) man:chrony.conf(5)</span><br><span class="line">After=ntpdate.service sntp.service ntpd.service</span><br><span class="line">Conflicts=ntpd.service systemd-timesyncd.service</span><br><span class="line">ConditionCapability=CAP_SYS_TIME</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/var/run/chronyd.pid</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/chronyd</span><br><span class="line">ExecStart=/usr/sbin/chronyd <span class="variable">$OPTIONS</span></span><br><span class="line">ExecStartPost=/usr/libexec/chrony-helper update-daemon</span><br><span class="line">PrivateTmp=yes</span><br><span class="line">ProtectHome=yes</span><br><span class="line">ProtectSystem=full</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>Systemd 服务的 Unit 文件可以分为三个配置区段：</p>
+<ul>
+<li><p>Unit 和 Install 段：所有 Unit 文件通用，用于配置服务（或其它系统资源）的描述、依赖和随系统启动的方式。</p>
+</li>
+<li><p>Service 段：服务（Service）类型的 Unit 文件（后缀为 .service）特有的，用于定义服务的具体管理和操作方法。</p>
+</li>
+</ul>
+<h3 id="Unit-段"><a href="#Unit-段" class="headerlink" title="Unit 段"></a>Unit 段</h3><p>这个区段包含的选项，与单元的类型无关，属于通用的配置。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Description=</span><br></pre></td></tr></table></figure>
+<p>描述这个 Unit 文件的信息。用于 UI 中紧跟单元名称之后要显示的简要描述。 例如 “The Apache HTTP Server” 就是一个好例子。 不好的例子： “high-performance light-weight HTTP server”(太通用) 或 “Apache2”(信息太少)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Documentation=</span><br></pre></td></tr></table></figure>
+<p>当前单元的文档，也可以设置一个空格分隔的文档列表。这些文档是对此单元的详细说明， 可接受 “http://“, “https://“, “file:”, “info:”, “man:” 五种URI类型。这些URI应该按照相关性由高到低列出。 比如，将解释该单元作用的文档放在第一个， 最好再紧跟单元的配置说明， 最后再附上其他文档。 可以多次使用此选项， 依次向文档列表尾部添加新文档。 但是，如果为此选项设置一个空字符串， 那么表示清空先前已存在的列表。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Requires=</span><br></pre></td></tr></table></figure>
+<p>设置此单元所必须依赖的其他单元的列表，当此单元被启动时，所有这里列出的其他单元也将被启动。 如果此处列出的某个单元被停用或启动失败，那么此单元将被停用。 想要添加多个单元，可以多次使用此选项，也可以设置一个空格分隔的单元列表。 注意，此选项并不影响单元之间的启动或停止顺序。 要想调整单元之间的启动或停止顺序，请使用 <code>After=</code> 或 <code>Before=</code> 选项。 例如，在 <code>foo.service</code> 中设置了 <code>Requires=bar.service</code> ， 但是并未使用 <code>After=</code> 或 <code>Before=</code> 设定两者的启动顺序， 那么，当需要启动 <code>foo.service</code> 的时候，这两个单元会被并行地同时启动。 建议使用 <code>Wants=</code> 代替 <code>Requires=</code> 来设置单元之间的非致命依赖关系， 从而有助于获得更好的健壮性，特别是在某些单元启动失败的时候。</p>
+<p>注意，设置了此依赖并不意味着当本单元处于运行状态时，被依赖的其他单元也必须总是处于运行状态。 例如：</p>
+<p>(1) 失败的条件检查(例如后文的 <code>ConditionPathExists=</code>, <code>ConditionPathIsSymbolicLink=</code>, …)只会导致被依赖的单元跳过启动，而不会导致被依赖的单元启动失败(也就是进入”<code>failed</code>“状态)。 </p>
+<p>(2) 某些被依赖的单元可能会自己主动停止(例如有的服务进程可能会主动干净的退出、有的设备可能被用户拔出)， 而不会导致本单元自身也跟着一起停止。 要想达到这样的效果，可以同时联合使用 <code>BindsTo=</code> 与 <code>After=</code> 依赖，这样就可以确保：在被依赖的其他单元没有处于运行状态时， 本单元自身永远不会启动成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Requisite=</span><br></pre></td></tr></table></figure>
+<p>与 <code>Requires=</code> 类似。 不同之处在于：当单元启动时，这里列出的单元必须已经全部处于启动成功的状态， 否则，将不会启动此单元(也就是直接返回此单元启动失败的消息)， 并且同时也不会启动那些尚未成功启动的单元。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Wants=</span><br></pre></td></tr></table></figure>
+<p>此选项是 <code>Requires=</code> 的弱化版。 当此单元被启动时，所有这里列出的其他单元只是尽可能被启动。 但是，即使某些单元不存在或者未能启动成功， 也不会影响此单元的启动。 推荐使用此选项来设置单元之间的依赖关系。</p>
+<p>注意，此种依赖关系也可以在单元文件之外通过向 <code>.wants/</code> 目录中添加软连接来设置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BindsTo=</span><br></pre></td></tr></table></figure>
+<p>与 <code>Requires=</code> 类似，但是依赖性更强： 如果这里列出的任意一个单元停止运行或者崩溃，那么也会连带导致该单元自身被停止。 这就意味着该单元可能因为这里列出的任意一个单元的主动退出、某个设备被拔出、某个挂载点被卸载， 而被强行停止。</p>
+<p>如果将某个被依赖的单元同时放到 <code>After=</code> 与 <code>BindsTo=</code> 选项中，那么效果将会更加强烈：被依赖的单元必须严格的先于本单元启动成功之后， 本单元才能开始启动。这就意味着，不但在被依赖的单元意外停止时，该单元必须停止， 而且在被依赖的单元由于条件检查失败(例如后文的 <code>ConditionPathExists=</code>, <code>ConditionPathIsSymbolicLink=</code>, …)而被跳过时， 该单元也将无法启动。正因为如此，在很多场景下，需要同时使用 <code>BindsTo=</code> 与 <code>After=</code> 选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PartOf=</span><br></pre></td></tr></table></figure>
+<p>与 <code>Requires=</code> 类似， 不同之处在于：仅作用于单元的停止或重启。 其含义是，当停止或重启这里列出的某个单元时， 也会同时停止或重启该单元自身。 注意，这个依赖是单向的， 该单元自身的停止或重启并不影响这里列出的单元。</p>
+<p>可以认为是一个 <code>BindTo</code> 作用的子集，仅在列出的任务模块失败或重启时，终止或重启当前服务，而不会随列出模板的启动而启动。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Conflicts=</span><br></pre></td></tr></table></figure>
+<p>指定单元之间的冲突关系。 接受一个空格分隔的单元列表，表明该单元不能与列表中的任何单元共存， 也就是说：</p>
+<p>(1) 当此单元启动的时候，列表中的所有单元都将被停止；<br>(2) 当列表中的某个单元启动的时候，该单元同样也将被停止。 </p>
+<p>注意，此选项与 <code>After</code>= 和 <code>Before=</code> 选项没有任何关系。</p>
+<p>如果两个相互冲突的单元 A 与  B需要在同一个事务内作为 B 启动， 那么这个事务要么会失败( A 与 B 都是事务中的必要部分[<code>Requires</code>])， 要么就是必须被修改( A 与B 中至少有一个是事务中的非必要部分)。 在后一种情况下， 将会剔除一个非必要的单元 (若两个都是非必要的单元，则优先剔除 A)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Before=</span><br><span class="line">After=</span><br></pre></td></tr></table></figure>
+<p>强制指定单元之间的先后顺序，接受一个空格分隔的单元列表。 假定 <code>foo.service</code> 单元包含 <code>Before=bar.service</code> 设置， 那么当两个单元都需要启动的时候， <code>bar.service</code> 将会一直延迟到 <code>foo.service</code> 启动完毕之后再启动。 注意，停止顺序与启动顺序正好相反，也就是说， 只有当 <code>bar.service</code> 完全停止后，才会停止 <code>foo.service</code> 单元。</p>
+<p><code>After=</code> 的含义与 <code>Before=</code> 正好相反。 假定 <code>foo.service</code> 单元包含 <code>After=bar.service</code> 设置， 那么当两个单元都需要启动的时候， <code>foo.service</code> 将会一直延迟到 <code>bar.service</code> 启动完毕之后再启动。 注意，停止顺序与启动顺序正好相反，也就是说， 只有当 <code>foo.service</code> 完全停止后，才会停止 <code>bar.service</code> 单元。 </p>
+<p>注意，这两个选项仅用于指定先后顺序， 而与 <code>Requires=</code>, <code>Wants=</code>, <code>BindsTo=</code> 这些选项没有任何关系。 不过在实践中也经常遇见将某个单元同时设置到 <code>After=</code> 与 <code>Requires=</code> 选项中的情形。 可以多次使用此二选项，以将多个单元添加到列表中。 假定两个单元之间存在先后顺序(无论谁先谁后)，并且一个要停止而另一个要启动，那么永远是”先停止后启动”的顺序。 但如果两个单元之间没有先后顺序，那么它们的停止和启动就都是相互独立的，并且是并行的。 对于不同类型的单元来说，判断启动是否已经完成的标准并不完全相同。 特别的是对于设置在 <code>Before=</code>/<code>After=</code> 中的服务单元来说， 只有在服务单元内配置的所有启动命令全部都已经被调用，并且对于每一个被调用的命令， 要么确认已经调用失败、要么确认已经成功运行的情况下， 才能认为已经完成启动。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OnFailure=</span><br></pre></td></tr></table></figure>
+<p>接受一个空格分隔的单元列表。 当该单元进入失败(“<code>failed</code>“)状态时， 将会启动列表中的单元。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PropagatesReloadTo=</span><br><span class="line">ReloadPropagatedFrom=</span><br></pre></td></tr></table></figure>
+<p>接受一个空格分隔的单元列表。 <code>PropagatesReloadTo=</code> 表示 在 reload 该单元时，也同时 reload 所有列表中的单元。 <code>ReloadPropagatedFrom=</code> 表示 在 reload 列表中的某个单元时，也同时 reload 该单元。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IgnoreOnIsolate=</span><br></pre></td></tr></table></figure>
+<p>接受一个布尔值。设为 yes 表示在执行 <code>systemctl isolate ...</code> 命令时，此单元不会被停止。 对于 service, target, socket, timer, path 单元来说，默认值是 false ； 对于 slice, scope, device, swap, mount, automount 单元来说，默认值是 true 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StopWhenUnneeded=</span><br></pre></td></tr></table></figure>
+<p>如果设为 yes ， 那么当此单元不再被任何已启动的单元依赖时， 将会被自动停止。 默认值 no 的含义是， 除非此单元与其他即将启动的单元冲突， 否则即使此单元已不再被任何已启动的单元依赖， 也不会自动停止它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RefuseManualStart=</span><br><span class="line">RefuseManualStop=</span><br></pre></td></tr></table></figure>
+<p>如果设为 yes ， 那么此单元将拒绝被手动启动(<code>RefuseManualStart=</code>) 或拒绝被手动停止(<code>RefuseManualStop=</code>)。 也就是说， 此单元只能作为其他单元的依赖条件而存在， 只能因为依赖关系而被间接启动或者间接停止， 不能由用户以手动方式直接启动或者直接停止。 设置此选项是为了 禁止用户意外的启动或者停止某些特定的单元。 默认值是 no</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AllowIsolate=</span><br></pre></td></tr></table></figure>
+<p>如果设为 yes ， 那么此单元将允许被 <code>systemctl isolate</code> 命令操作， 否则将会被拒绝。 唯一一个将此选项设为 yes 的理由，大概是为了兼容SysV初始化系统。 此时应该仅考虑对 target 单元进行设置， 以防止系统进入不可用状态。 建议保持默认值 no</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DefaultDependencies=</span><br></pre></td></tr></table></figure>
+<p>默认值 yes 表示为此单元隐式地创建默认依赖。 不同类型的单元，其默认依赖也不同，详见各自的手册页。 例如对于 service 单元来说， 默认的依赖关系是指：</p>
+<p>(1) 开机时，必须在基础系统初始化完成之后才能启动该服务； </p>
+<p>(2) 关机时，必须在该服务完全停止后才能关闭基础系统。 </p>
+<p>通常，只有那些在系统启动的早期就必须启动的单元， 以及那些必须在系统关闭的末尾才能关闭的单元， 才可以将此选项设为 no 。 注意，设为 no 并不表示取消所有的默认依赖， 只是表示取消非关键的默认依赖。 强烈建议对绝大多数普通单元保持此选项的默认值 yes 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RebootArgument=</span><br></pre></td></tr></table></figure>
+<p>当 <code>StartLimitAction</code>= 或 <code>FailureAction=</code> 触发关机动作时， 此选项的值就是传递给 reboot 系统调用的字符串参数。 相当于 <code>systemctl reboot</code> 命令接收的可选参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ConditionFirstBoot=</span><br><span class="line">ConditionPathExists=</span><br><span class="line">ConditionPathExistsGlob=</span><br><span class="line">ConditionPathIsDirectory=</span><br><span class="line">ConditionPathIsSymbolicLink=</span><br><span class="line">ConditionPathIsMountPoint=</span><br><span class="line">ConditionPathIsReadWrite=</span><br><span class="line">ConditionDirectoryNotEmpty=</span><br><span class="line">ConditionFileNotEmpty=</span><br><span class="line">ConditionFileIsExecutable=</span><br><span class="line">ConditionUser=</span><br><span class="line">ConditionGroup=</span><br></pre></td></tr></table></figure>
+<p>这组选项用于在启动单元之前，首先测试特定的条件是否为真。 若为真则开始启动，否则将会(悄无声息地)跳过此单元(仅是跳过，而不是进入”failed”状态)。 注意，即使某单元由于测试条件为假而被跳过，那些由于依赖关系而必须先于此单元启动的单元并不会受到影响(也就是会照常启动)。 可以使用条件表达式来跳过那些对于本机系统无用的单元， 比如那些对于本机内核或运行环境没有用处的功能。 如果想要单元在测试条件为假时进入”failed”状态(而不是跳过)， 可以使用对应的另一组 <code>AssertXXX=</code> 选项(见后文)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionFirstBoot=</span><br></pre></td></tr></table></figure>
+<p>可设为 yes 或 no 。 用于检测 <code>/etc</code> 目录是否处于未初始化的原始状态(重点是 <code>/etc/machine-id</code> 文件是否存在)。 此选项可用于系统出厂后(或者恢复出厂设置之后)，首次开机时执行必要的初始化操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionPathExists=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在， 必须使用绝对路径。 可以在路径前面加上感叹号(!)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionPathExistsGlob=</span><br></pre></td></tr></table></figure>
+<p>与 <code>ConditionPathExists=</code> 类似， 唯一的不同是支持通配符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionPathIsDirectory=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且是一个目录，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionPathIsSymbolicLink=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且是一个软连接，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionPathIsMountPoint=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且是一个挂载点，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionPathIsReadWrite=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且可读写(rw)，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionDirectoryNotEmpty=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且是一个非空的目录，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionFileNotEmpty=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且是一个非空的普通文件，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionFileIsExecutable=</span><br></pre></td></tr></table></figure>
+<p>检测指定的路径是否存在并且是一个可执行文件，必须使用绝对路径。 可以在路径前面加上感叹号(<code>!</code>)前缀表示逻辑反转。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionUser=</span><br></pre></td></tr></table></figure>
+<p>检测 systemd 是否以给定的用户身份运行。 参数可以是数字形式的 “UID” 、 或者字符串形式的UNIX用户名、 或者特殊值 “<code>@system</code>“(表示属于系统用户范围内) 。 此选项对于系统服务无效， 因为管理系统服务的 systemd 进程总是以 root 用户身份运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConditionGroup=</span><br></pre></td></tr></table></figure>
+<p>检测 systemd 是否以给定的用户组身份运行。 参数可以是数字形式的 “GID” 或者字符串形式的UNIX组名。 注意：</p>
+<p>(1) 这里所说的”组”可以是”主组”(Primary Group)、”有效组”(Effective Group)、”辅助组”(Auxiliary Group)； </p>
+<p>(2) 此选项不存在特殊值 <code>@system</code></p>
+<p>如果在条件之前加上管道符(<code>|</code>)，那么这个条件就是”触发条件”， 其含义是只要满足一个触发条件，该单元就会被启动； 如果在条件之前没有管道符(<code>|</code>)，那么这个条件就是”普通条件”， 其含义是必须满足全部普通条件，该单元才会被启动。 如果在某个单元文件内， 同时存在”触发条件”与”普通条件”，那么必须满足全部普通条件， 并且至少满足一个触发条件，该单元才会被启动。 如果需要对某个条件同时使用”<code>|</code>“与”<code>!</code>“， 那么”<code>|</code>“必须位于”<code>!</code>“之前。 除 <code>ConditionPathIsSymbolicLink=</code> 之外， 其他路径检测选项都会追踪软连接。 如果将上述某个检测选项设为空字符串， 那么表示重置该选项先前的所有设置， 也就是清空该选项先前的设置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">AssertFirstBoot=</span><br><span class="line">AssertPathExists=</span><br><span class="line">AssertPathExistsGlob=</span><br><span class="line">AssertPathIsDirectory=</span><br><span class="line">AssertPathIsSymbolicLink=</span><br><span class="line">AssertPathIsMountPoint=</span><br><span class="line">AssertPathIsReadWrite=</span><br><span class="line">AssertDirectoryNotEmpty=</span><br><span class="line">AssertFileNotEmpty=</span><br><span class="line">AssertFileIsExecutable=</span><br><span class="line">AssertUser=</span><br><span class="line">AssertGroup=</span><br></pre></td></tr></table></figure>
+<p>与前一组 <code>ConditionXXX=</code> 测试选项类似， 这一组选项用于在单元启动之前，首先进行相应的断言检查。 不同之处在于，任意一个断言的失败， 都会导致该单元启动失败(也就是进入”failed”状态，并突出记录在日志中)。 如果用户希望清晰的看到某些单元因为特定的条件未能满足而导致无法正常启动， 那么可以使用断言表达式。</p>
+<h3 id="Install-段"><a href="#Install-段" class="headerlink" title="Install 段"></a>Install 段</h3><p>这个区段定义如何安装这个配置文件，即怎样做到开机启动。包含的是单元的启用信息。 </p>
+<p>这部分配置的目标模块通常是特定运行目标的 <code>.target</code> 文件，用来使得服务在系统启动时自动运行。事实上，systemd 在运行时并不使用此区段。 只有 <code>systemctl</code> 的 <code>enable</code> 与 <code>disable</code> 命令在启用/停用单元时才会使用此区段。 </p>
+<p>“启用”一个单元在多数情况下，效果上相当于将这个单元设为”开机时自动启动”或”插入某个硬件时自动启动”； “停用”一个单元多数时候在效果上相当于撤销该单元的”开机时自动启动”或”插入某个硬件时自动启动”。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Alias=</span><br></pre></td></tr></table></figure>
+<p>启用时使用的别名，可以设为一个空格分隔的别名列表。 每个别名的后缀(也就是单元类型)都必须与该单元自身的后缀相同。 如果多次使用此选项，那么每个选项所设置的别名都会被添加到别名列表中。 在启用此单元时，<code>systemctl enable</code> 命令将会为每个别名创建一个指向该单元文件的软连接。 注意，因为 mount, slice, swap, automount 单元不支持别名，所以不要在这些类型的单元中使用此选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WantedBy=</span><br><span class="line">RequiredBy=</span><br></pre></td></tr></table></figure>
+<p>接受一个空格分隔的单元列表， 表示在使用 <code>systemctl enable</code> 启用此单元时， 将会在每个列表单元的 <code>.wants/</code> 或 <code>.requires/</code> 目录中创建一个指向该单元文件的软连接。 这相当于为每个列表中的单元文件添加了 <code>Wants=此单元</code> 或 <code>Requires=此单元</code> 选项。 这样当列表中的任意一个单元启动时，该单元都会被启动。 有关 <code>Wants=</code> 与 <code>Requires=</code> 的详细说明， 参见前面 <code>[Unit]</code> 区段的说明。 如果多次使用此选项，那么每个选项的单元列表都会合并在一起。</p>
+<p>在普通的 <code>bar.service</code> 单元内设置 <code>WantedBy=foo.service</code> 选项与设置 <code>Alias=foo.service.wants/bar.service</code> 选项基本上是等价的。 但是对于模板单元来说，情况则有所不同。 虽然必须使用实例名称调用 <code>systemctl enable</code> 命令， 但是实际上添加到 <code>.wants/</code> 或 <code>.requires/</code> 目录中的软连接， 指向的却是模板单元(因为并不存在真正的实例单元文件)。</p>
+<p>假设 <code>getty@.service</code> 文件中存在 <code>WantedBy=getty.target</code> 选项， 那么 <code>systemctl enable getty@tty2.service</code> 命令将会创建指向 <code>getty@.service</code> 的软连接  <code>getty.target.wants/getty</code>@<code>tty2.service</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Also=</span><br></pre></td></tr></table></figure>
+<p>设置此单元的附属单元，可以设为一个空格分隔的单元列表。 表示当使用 <code>systemctl enable</code> 启用 或 <code>systemctl disable</code> 停用 此单元时， 也同时自动的启用或停用附属单元。</p>
+<p>如果多次使用此选项， 那么每个选项所设置的附属单元列表都会合并在一起。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DefaultInstance=</span><br></pre></td></tr></table></figure>
+<p>仅对模板单元有意义， 用于指定默认的实例名称。 如果启用此单元时没有指定实例名称， 那么将使用这里设置的名称。</p>
+<h3 id="Service-段"><a href="#Service-段" class="headerlink" title="Service 段"></a>Service 段</h3><p>用来做 Service 的配置，只有 Service 类型的 Unit 才有这个区块。</p>
+<h4 id="服务生命周期控制相关"><a href="#服务生命周期控制相关" class="headerlink" title="服务生命周期控制相关"></a>服务生命周期控制相关</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Type=</span><br></pre></td></tr></table></figure>
+<p>设置进程的启动类型。必须设为 simple, exec, forking, oneshot, dbus, notify, idle 之一：</p>
+<ul>
+<li><p><code>Type=simple</code>：当设置了 <code>ExecStart=</code>、 但是没有设置 <code>Type=</code> 与 <code>BusName=</code> 时，simple 就是默认值。如果设为 simple ， 那么此时 <code>ExecStart=</code> 进程就是该服务的主进程， 并且 systemd 会认为在创建了该服务的主服务进程之后，该服务就已经启动完成。 如果此进程需要为系统中的其他进程提供服务， 那么必须在该服务启动之前先建立好通信渠道(例如套接字)， 这样，在创建主服务进程之后、执行主服务进程之前，即可启动后续单元， 从而加快了后续单元的启动速度。 这就意味着对于 simple 类型的服务来说， 即使不能成功调用主服务进程(例如 <code>User=</code> 不存在、或者二进制可执行文件不存在)， <code>systemctl start</code> 也仍然会执行成功。</p>
+</li>
+<li><p><code>Type=exec</code>：与 simple 类似，不同之处在于， 只有在该服务的主服务进程执行完成之后，systemd 才会认为该服务启动完成。 其他后继单元必须一直阻塞到这个时间点之后才能继续启动。换句话说， simple 表示当 <code>fork()</code> 函数返回时，即算是启动完成，而 <code>exec</code> 则表示仅在 <code>fork()</code> 与 <code>execve()</code> 函数都执行成功时，才算是启动完成。 这就意味着对于 exec 类型的服务来说， 如果不能成功调用主服务进程(例如 <code>User=</code> 不存在、或者二进制可执行文件不存在)， 那么 <code>systemctl start</code> 将会执行失败。</p>
+</li>
+<li><p><code>Type=forking</code>：表示 <code>ExecStart=</code> 进程将会在启动过程中使用 <code>fork()</code> 系统调用。 也就是当所有通信渠道都已建好、也已经启动成功之后，父进程将会退出，而子进程将作为主服务进程继续运行。 这是传统UNIX守护进程的经典做法。 在这种情况下，systemd 会认为在父进程退出之后，该服务就已经启动完成。 如果使用了此种类型，那么建议同时设置 <code>PIDFile=</code> 选项，以帮助 systemd 准确可靠的定位该服务的主进程。 systemd 将会在父进程退出之后立即开始启动后续单元。</p>
+</li>
+<li><p><code>Type=oneshot</code>：一次性进程，只运行第一次。 只有在该服务的主服务进程退出之后，systemd 才会认为该服务启动完成，才会开始启动后续单元。 此种类型的服务通常需要设置 <code>RemainAfterExit=</code> 选项。 当 <code>Type=</code> 与 <code>ExecStart=</code> 都没有设置时， <code>Type=oneshot</code> 就是默认值。</p>
+</li>
+</ul>
+<ul>
+<li><p><code>Type=dbus</code>：该服务只有获得了 <code>BusName=</code> 指定的 D-Bus 名称之后，systemd 才会认为该服务启动完成，才会开始启动后继单元。 设为此类型相当于隐含的依赖于 <code>dbus.socket</code> 单元。 当设置了 <code>BusName=</code> 时， 此类型就是默认值。</p>
+</li>
+<li><p><code>Type=notify</code>：与 exec 类似，不同之处在于， 该服务将会在启动完成之后通过 <code>sd_notify(3)</code> 之类的接口发送一个通知消息。systemd 将会在启动后续单元之前， 首先确保该进程已经成功的发送了这个消息。如果设为此类型，那么下文的 <code>NotifyAccess=</code> 将只能设为非 none 值。如果未设置 <code>NotifyAccess=</code> 选项、或者已经被明确设为 none ，那么将会被自动强制修改为 main 。注意，目前 <code>Type=notify</code> 尚不能与 <code>PrivateNetwork=ye</code>s 一起使用。</p>
+</li>
+<li><p><code>Type=idle</code>：服务进程将会被延迟到所有活动任务都完成之后再执行。 这样可以避免控制台上的状态信息与 shell 脚本的输出混杂在一起。 注意：(1) 仅可用于改善控制台输出，切勿将其用于不同单元之间的排序工具； (2) 延迟最多不超过5秒， 超时后将无条件的启动服务进程。</p>
+</li>
+</ul>
+<p>建议对长时间持续运行的服务尽可能使用 <code>Type=simple</code> (这是最简单和速度最快的选择)。 注意，因为 simple 类型的服务无法报告启动失败、也无法在服务完成初始化后对其他单元进行排序， 所以，当客户端需要通过仅由该服务本身创建的IPC通道(而非由 systemd 创建的套接字或 D-bus 之类)连接到该服务的时候， simple 类型并不是最佳选择。在这种情况下， notify 或 dbus(该服务必须提供 D-Bus 接口) 才是最佳选择， 因为这两种类型都允许服务进程精确地安排何时算是服务启动成功、何时可以继续启动后继单元。 notify 类型需要服务进程明确使用 <code>sd_notify()</code> 函数或类似的API， 否则，可以使用 forking 作为替代(它支持传统的UNIX服务启动协议)。 最后，如果能够确保服务进程调用成功、服务进程自身不做或只做很少的初始化工作(且不大可能初始化失败)， 那么 exec 将是最佳选择。 注意，因为使用任何 simple 之外的类型都需要等待服务完成初始化，所以可能会减慢系统启动速度。 因此，应该尽可能避免使用 simple 之外的类型(除非必须)。另外，也不建议对长时间持续运行的服务使用 idle 或 oneshot 类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RemainAfterExit=</span><br></pre></td></tr></table></figure>
+<p>值为 true 或 false（默认）。当该服务的所有进程全部退出之后， 是否依然将此服务视为活动(active)状态。当配置为 true 时，Systemd 只会负责启动服务进程，之后即便服务进程退出了，Systemd 也仍然会认为这个服务还在运行中。这个配置主要是提供给一些并非常驻内存，而是启动注册后立即退出，然后等待消息按需启动的特殊类型服务使用的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GuessMainPID=</span><br></pre></td></tr></table></figure>
+<p>在无法明确定位 该服务主进程的情况下， systemd 是否应该猜测主进程的PID(可能不正确)。 该选项仅在设置了 <code>Type=forking</code> 但未设置 <code>PIDFile=</code> 的情况下有意义。 如果PID猜测错误， 那么该服务的失败检测与自动重启功能将失效。 默认值为 yes</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PIDFile=</span><br></pre></td></tr></table></figure>
+<p>该服务PID文件的路径(一般位于 <code>/run/</code> 目录下)。 强烈建议在 <code>Type=forking</code> 的情况下明确设置此选项。 如果设为相对路径，那么表示相对于 <code>/run/</code> 目录。 systemd 将会在此服务启动完成之后，从此文件中读取主服务进程的PID 。 systemd 不会写入此文件，但会在此服务停止后删除它(若仍然存在)。 PID文件的拥有者不必是特权用户， 但是如果拥有者是非特权用户，那么必须施加如下安全限制： </p>
+<p>(1) 不能是一个指向其他拥有者文件的软连接(无论直接还是间接)； </p>
+<p>(2) 其中的PID必须指向一个属于该服务的进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=</span><br></pre></td></tr></table></figure>
+<p>在启动该服务时需要执行的命令行(命令+参数)。 </p>
+<p>除非 <code>Type=oneshot</code> ，否则必须且只能设置一个命令行。 仅在 <code>Type=oneshot</code> 的情况下，才可以设置任意个命令行(包括零个)， 多个命令行既可以在同一个 <code>ExecStart=</code> 中设置，也可以通过设置多个 <code>ExecStart=</code> 来达到相同的效果。 如果设为一个空字符串，那么先前设置的所有命令行都将被清空。 如果不设置任何 <code>ExecStart=</code> 指令， 那么必须确保设置了 <code>RemainAfterExit=yes</code> 指令，并且至少设置一个 <code>ExecStop=</code> 指令。 同时缺少 <code>ExecStart=</code> 与 <code>ExecStop=</code> 的服务单元是非法的(也就是必须至少明确设置其中之一)。</p>
+<p>命令行必须以一个可执行文件(要么是绝对路径、要么是不含任何斜线的文件名)开始， 并且其后的那些参数将依次作为”argv[1] argv[2] …”传递给被执行的进程。 可选的，可以在绝对路径前面加上各种不同的前缀表示不同的含义：</p>
+<p>可执行文件前的特殊前缀:</p>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“@”</td>
+<td>如果在绝对路径前加上可选的 “@” 前缀，那么其后的那些参数将依次作为”argv[0] argv[1] argv[2] …”传递给被执行的进程(注意，argv[0] 是可执行文件本身)。</td>
+</tr>
+<tr>
+<td>“-“</td>
+<td>如果在绝对路径前加上可选的 “-“ 前缀，那么即使该进程以失败状态(例如非零的返回值或者出现异常)退出，也会被视为成功退出，但同时会留下错误日志。</td>
+</tr>
+<tr>
+<td>“+”</td>
+<td>如果在绝对路径前加上可选的 “+” 前缀，那么进程将拥有完全的权限(超级用户的特权)，并且 User=, Group=, CapabilityBoundingSet= 选项所设置的权限限制以及 PrivateDevices=, PrivateTmp= 等文件系统名字空间的配置将被该命令行启动的进程忽略(但仍然对其他 ExecStart=, ExecStop= 有效)。</td>
+</tr>
+<tr>
+<td>“!”</td>
+<td>与 “+” 类似(进程仍然拥有超级用户的身份)，不同之处在于仅忽略 User=, Group=, SupplementaryGroups= 选项的设置，而例如名字空间之类的其他限制依然有效。注意，当与 DynamicUser= 一起使用时，将会在执行该命令之前先动态分配一对 user/group ，然后将身份凭证的切换操作留给进程自己去执行。</td>
+</tr>
+<tr>
+<td>“!!”</td>
+<td>与 “!” 极其相似，仅用于让利用 ambient capability 限制进程权限的单元兼容不支持 ambient capability 的系统(也就是不支持 AmbientCapabilities= 选项)。如果在不支持 ambient capability 的系统上使用此前缀，那么 SystemCallFilter= 与 CapabilityBoundingSet= 将被隐含的自动修改为允许进程自己丢弃 capability 与特权用户的身份(即使原来被配置为禁止这么做)，并且 AmbientCapabilities= 选项将会被忽略。此前缀在支持 ambient capability 的系统上完全没有任何效果。</td>
+</tr>
+</tbody>
+</table>
+<p><code>@</code>, <code>-</code> 以及 <code>+</code> / <code>!</code> / <code>!!</code> 之一，可以按任意顺序同时混合使用。 注意，对于 <code>+</code>, <code>!</code>, <code>!!</code> 前缀来说，仅能单独使用三者之一，不可混合使用多个。 注意，这些前缀同样也可以用于 <code>ExecStartPre=</code>, <code>ExecStartPost=</code>, <code>ExecReload=</code>, <code>ExecStop=</code>, <code>ExecStopPost=</code> 这些接受命令行的选项。</p>
+<p>如果设置了多个命令行， 那么这些命令行将以其在单元文件中出现的顺序依次执行。 如果某个无 <code>-</code> 前缀的命令行执行失败， 那么剩余的命令行将不会被继续执行， 同时该单元将变为失败(failed)状态。</p>
+<p>当未设置 Type=forking 时， 这里设置的命令行所启动的进程 将被视为该服务的主守护进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ExecStartPre=</span><br><span class="line">ExecStartPost=</span><br></pre></td></tr></table></figure>
+<p>设置在执行 <code>ExecStart=</code> 之前/后执行的命令行。 语法规则与 <code>ExecStart=</code> 完全相同。 如果设置了多个命令行， 那么这些命令行将以其在单元文件中出现的顺序依次执行。</p>
+<p>如果某个无 <code>-</code> 前缀的命令行执行失败， 那么剩余的命令行将不会被继续执行， 同时该单元将变为失败(failed)状态。</p>
+<p>仅在所有无 <code>-</code> 前缀的 <code>ExecStartPre=</code> 命令全部执行成功的前提下， 才会继续执行 <code>ExecStart=</code> 命令。</p>
+<p><code>ExecStartPost=</code> 命令仅在 <code>ExecStart=</code> 中的命令已经全部执行成功之后才会运行， 判断的标准基于 <code>Type=</code> 选项。 具体说来：</p>
+<ul>
+<li>对于 <code>Type=simple</code> 或 <code>Type=idle</code> 就是主进程已经成功启动； </li>
+<li>对于 <code>Type=oneshot</code> 来说就是最后一个 <code>ExecStart=</code> 进程已经成功退出； </li>
+<li>对于 <code>Type=forking</code> 来说就是初始进程已经成功退出； </li>
+<li>对于 <code>Type=notify</code> 来说就是已经发送了 “READY=1” ； </li>
+<li>对于 <code>Type=dbus</code> 来说就是已经取得了 <code>BusName=</code> 中设置的总线名称。</li>
+</ul>
+<p>注意，不可将 <code>ExecStartPre=</code> 用于 需要长时间执行的进程。 因为所有由 <code>ExecStartPre=</code> 派生的子进程都会在启动 <code>ExecStart=</code> 服务进程之前被杀死。</p>
+<p>注意，如果在服务启动完成之前，任意一个 <code>ExecStartPre=</code>, <code>ExecStart=</code>, <code>ExecStartPost=</code> 中无 <code>-</code> 前缀的命令执行失败或超时， 那么，<code>ExecStopPost=</code> 将会被继续执行，而 <code>ExecStop=</code> 则会被跳过。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecReload=</span><br></pre></td></tr></table></figure>
+<p>这是一个可选的指令， 用于设置当该服务被要求重新载入配置时 所执行的命令行。 语法规则与 <code>ExecStart=</code> 完全相同。</p>
+<p>另外，还有一个特殊的环境变量 <code>$MAINPID</code> 可用于表示主进程的PID， 例如可以这样使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/<span class="built_in">kill</span> -HUP <span class="variable">$MAINPID</span></span><br></pre></td></tr></table></figure>
+<p>注意，像上例那样，通过向守护进程发送复位信号， 强制其重新加载配置文件，并不是一个好习惯。 因为这是一个异步操作， 所以不适用于需要按照特定顺序重新加载配置文件的服务。 我们强烈建议将 <code>ExecReload=</code> 设为一个能够确保重新加载配置文件的操作同步完成的命令行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStop=</span><br></pre></td></tr></table></figure>
+<p>这是一个可选的指令， 用于设置当该服务被要求停止时所执行的命令行。 语法规则与 <code>ExecStart=</code> 完全相同。 执行完此处设置的所有命令行之后，该服务将被视为已经停止， 此时，该服务所有剩余的进程将会根据 <code>KillMode=</code> 的设置被杀死(参见 systemd.kill(5))。 如果未设置此选项，那么当此服务被停止时， 该服务的所有进程都将会根据 <code>KillSignal=</code> 的设置被立即全部杀死。 与 <code>ExecReload=</code> 一样， 也有一个特殊的环境变量 <code>$MAINPID</code> 可用于表示主进程的PID 。</p>
+<p>一般来说，不应该仅仅设置一个结束服务的命令而不等待其完成。 因为当此处设置的命令执行完之后， 剩余的进程会被按照 <code>KillMode=</code> 与 <code>KillSignal=</code> 的设置立即杀死， 这可能会导致数据丢失。 因此，这里设置的命令必须是同步操作，而不能是异步操作。</p>
+<p>注意，仅在服务确实启动成功的前提下，才会执行 <code>ExecStop=</code> 中设置的命令。 如果服务从未启动或启动失败(例如，任意一个 <code>ExecStart=</code>, <code>ExecStartPre=</code>, <code>ExecStartPost=</code> 中无 <code>-</code> 前缀的命令执行失败或超时)， 那么 <code>ExecStop=</code> 将会被跳过。 如果想要无条件的在服务停止后执行特定的动作，那么应该使用 <code>ExecStopPost=</code> 选项。 如果服务启动成功，那么即使主服务进程已经终止(无论是主动退出还是被杀死)，也会继续执行停止操作。 因此停止命令必须正确处理这种场景，如果 systemd 发现在调用停止命令时主服务进程已经终止，那么将会撤销 <code>$MAINPID</code> 变量。</p>
+<p>重启服务的动作被实现为”先停止、再启动”。所以在重启期间，将会执行 <code>ExecStop=</code> 与 <code>ExecStopPost=</code> 命令。 推荐将此选项用于那些必须在服务干净退出之前执行的命令(例如还需要继续与主服务进程通信)。当此选项设置的命令被执行的时候，应该假定服务正处于完全正常的运行状态，可以正常的与其通信。 如果想要无条件的在服务停止后”清理尸体”，那么应该使用 <code>ExecStopPost=</code> 选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStopPost=</span><br></pre></td></tr></table></figure>
+<p>这是一个可选的指令， 用于设置在该服务停止之后所执行的命令行。 语法规则与 <code>ExecStart=</code> 完全相同。 注意，与 <code>ExecStop=</code> 不同，无论服务是否启动成功， 此选项中设置的命令都会在服务停止后被无条件的执行。</p>
+<p>应该将此选项用于设置那些无论服务是否启动成功， 都必须在服务停止后无条件执行的清理操作。 此选项设置的命令必须能够正确处理由于服务启动失败而造成的各种残缺不全以及数据不一致的场景。 由于此选项设置的命令在执行时，整个服务的所有进程都已经全部结束， 所以无法与服务进行任何通信。</p>
+<p>注意，此处设置的所有命令在被调用之后都可以读取如下环境变量： <code>$SERVICE_RESULT</code>(服务的最终结果), <code>$EXIT_CODE</code>(服务主进程的退出码), <code>$EXIT_STATUS</code>(服务主进程的退出状态)。 详见 systemd.exec(5) 手册。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RestartSec=</span><br></pre></td></tr></table></figure>
+<p>设置在重启服务(<code>Restart=</code>)前暂停多长时间。 默认值是100毫秒(100ms)。 如果未指定时间单位，那么将视为以秒为单位。 例如设为”20”等价于设为”20s”。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TimeoutStartSec=</span><br></pre></td></tr></table></figure>
+<p>设置该服务允许的最大启动时长。 如果守护进程未能在限定的时长内发出”启动完毕”的信号，那么该服务将被视为启动失败，并会被关闭。 如果未指定时间单位，那么将视为以秒为单位。 例如设为”20”等价于设为”20s”。 设为 “infinity” 则表示永不超时。 当 <code>Type=oneshot</code> 时， 默认值为 “infinity” (永不超时)， 否则默认值等于 <code>DefaultTimeoutStartSec=</code> 的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TimeoutStopSec=</span><br></pre></td></tr></table></figure>
+<p>此选项有两个用途： </p>
+<p>(1) 设置每个 <code>ExecStop=</code> 的超时时长。如果其中之一超时， 那么所有后继的 <code>ExecStop=</code> 都会被取消，并且该服务也会被 SIGTERM 信号强制关闭。 如果该服务没有设置 <code>ExecStop=</code> ，那么该服务将会立即被 SIGTERM 信号强制关闭。 </p>
+<p>(2) 设置该服务自身停止的超时时长。如果超时，那么该服务将会立即被 SIGTERM 信号强制关闭(参见 systemd.kill(5) 手册中的 <code>KillMode=</code> 选项)。 如果未指定时间单位，那么将视为以秒为单位。 例如设为”20”等价于设为”20s”。 设为 “infinity” 则表示永不超时。 默认值等于 <code>DefaultTimeoutStopSec</code>= 的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TimeoutSec=</span><br></pre></td></tr></table></figure>
+<p>一个同时设置 <code>TimeoutStartSec=</code> 与 <code>TimeoutStopSec=</code> 的快捷方式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RuntimeMaxSec=</span><br></pre></td></tr></table></figure>
+<p>允许服务持续运行的最大时长。 如果服务持续运行超过了此处限制的时长，那么该服务将会被强制终止，同时将该服务变为失败(failed)状态。 注意，此选项对 <code>Type=oneshot</code> 类型的服务无效，因为它们会在启动完成后立即终止。 默认值为 “infinity” (不限时长)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Restart=</span><br></pre></td></tr></table></figure>
+<p>当服务进程 正常退出、异常退出、被杀死、超时的时候， 是否重新启动该服务。 所谓”服务进程” 是指 <code>ExecStartPre=</code>, <code>ExecStartPost=</code>, <code>ExecStop=</code>, <code>ExecStopPost=</code>, <code>ExecReload=</code> 中设置的进程。 当进程是由于 systemd 的正常操作(例如 <code>systemctl stop|restart</code>)而被停止时， 该服务不会被重新启动。 所谓”超时”可以是看门狗的”keep-alive ping”超时， 也可以是 <code>systemctl start|reload|stop</code> 操作超时。</p>
+<p>该选项的值可以取 no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, always 之一。 no(默认值) 表示不会被重启。 always 表示会被无条件的重启。 on-success 表示仅在服务进程正常退出时重启， 所谓”正常退出”是指：退出码为”0”， 或者进程收到 SIGHUP, SIGINT, SIGTERM, SIGPIPE 信号之一， 并且 退出码符合 <code>SuccessExitStatus=</code> 的设置。 on-failure 表示 仅在服务进程异常退出时重启， 所谓”异常退出” 是指： 退出码不为”0”， 或者 进程被强制杀死(包括 “core dump”以及收到 SIGHUP, SIGINT, SIGTERM, SIGPIPE 之外的其他信号)， 或者进程由于 看门狗超时 或者 systemd 的操作超时 而被杀死。</p>
+<p>表 2. Restart= 的设置分别对应于哪些退出原因</p>
+<table>
+<thead>
+<tr>
+<th>退出原因(↓)  Restart= (→)</th>
+<th>no</th>
+<th>always</th>
+<th>on-success</th>
+<th>on-failure</th>
+<th>on-abnormal</th>
+<th>on-abort</th>
+<th>on-watchdog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正常退出</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>退出码不为”0”</td>
+<td></td>
+<td>√</td>
+<td></td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>进程被强制杀死</td>
+<td></td>
+<td>√</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>systemd 操作超时</td>
+<td></td>
+<td>√</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>看门狗超时</td>
+<td></td>
+<td>√</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td>√</td>
+</tr>
+</tbody>
+</table>
+<p>注意如下例外情况： </p>
+<p>(1) <code>RestartPreventExitStatus=</code> 中列出的退出码或信号永远不会导致该服务被重启。<br>(2) 被 <code>systemctl stop</code> 命令或等价的操作停止的服务永远不会被重启。<br>(3) <code>RestartForceExitStatus=</code> 中列出的退出码或信号将会无条件的导致该服务被重启。</p>
+<p>注意，服务的重启频率仍然会受到由 <code>StartLimitIntervalSec</code>= 与 <code>StartLimitBurst=</code> 定义的启动频率的制约。只有在达到启动频率限制之后， 重新启动的服务才会进入失败状态。</p>
+<p>对于需要长期持续运行的守护进程， 推荐设为 on-failure 以增强可用性。 对于自身可以自主选择何时退出的服务， 推荐设为 on-abnormal</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SuccessExitStatus=</span><br></pre></td></tr></table></figure>
+<p>额外定义其他的进程”正常退出”状态。 也就是，在退出码”0”、以及表示”正常退出”的 SIGHUP, SIGINT, SIGTERM, SIGPIPE 信号之外， 再额外添加一组表示”正常退出”的退出码或信号。 可以设为一系列 以空格分隔的数字退出码或者信号名称， 例如：<code>SuccessExitStatus=1 2 8 SIGKILL</code> 表示当进程的退出码是 1, 2, 8 或被 SIGKILL 信号终止时， 都可以视为”正常退出”。</p>
+<p>如果多次使用此选项， 那么最终的结果将是多个列表的合并。 如果将此选项设为空， 那么先前设置的列表 将被清空。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RestartPreventExitStatus=</span><br></pre></td></tr></table></figure>
+<p>可以设为一系列 以空格分隔的数字退出码或信号名称， 当进程的退出码或收到的信号与此处的设置匹配时， 无论 <code>Restart=</code> 选项 是如何设置的， 该服务都将无条件的禁止重新启动。 例如：<code>RestartPreventExitStatus=1 6 SIGABRT</code> 可以确保退出码 1, 6 与 SIGABRT 信号 不会导致该服务被自动重启。 默认值为空， 表示完全遵守 Restart= 的设置。 如果多次使用此选项，那么最终的结果将是多个列表的合并。 如果将此选项设为空，那么先前设置的列表将被清空。</p>
+<h4 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h4><p>主要说明 <code>ExecStart=</code>, <code>ExecStartPre=</code>, <code>ExecStartPost=</code>, <code>ExecReload=</code>, <code>ExecStop=</code>, <code>ExecStopPost=</code> 选项的命令行解析规则。</p>
+<p>如果要一次设置多个命令，那么可以使用分号 <code>;</code> 将多个命令行连接起来。 注意，仅在设置了 <code>Type=oneshot</code> 的前提下，才可以一次设置多个命令。 分号自身必须用 <code>\;</code> 表示。</p>
+<p>每个命令行的内部都以空格分隔， 第一项是要运行的命令， 随后的各项则是命令的参数。 每一项的边界都可以用单引号或双引号界定， 但引号自身最终将会被剥离。 还可以使用C语言风格的转义序列， 但仅可使用下文表格中的转义序列。 最后，行尾的反斜杠( <code>\</code> ) 将被视作续行符(借鉴了 bash 续行语法)。</p>
+<p>命令行的语法刻意借鉴了 shell 中的转义字符与变量展开语法， 但两者并不完全相同。 特别是， 重定向(<code>&lt;</code>, <code>&lt;&lt;</code>, <code>&gt;</code>, <code>&gt;&gt;</code>)、 管道(<code>|</code>)、 后台运行(<code>&amp;</code>)， 以及其他下文未明确提及的符号都不被支持。</p>
+<p>要运行的命令(第一项)可以包含空格，但是不能包含控制字符。</p>
+<p>可以在各项命令参数中使用 “%” 占位符系列替换标记。</p>
+<p>支持 <code>${FOO}</code> 与 <code>$FOO</code> 两种不同的环境变量替换方式。 具体说来就是： <code>${FOO}</code> 的内容将原封不动的转化为一个单独的命令行参数， 无论其中是否包含空格与引号，也无论它是否为空。 <code>$FOO</code> 的内容将被原封不动的插入命令行中， 但对插入内容的解释却遵守一般的命令行解析规则。 后文的两个例子， 将能清晰的体现两者的差别。</p>
+<p>如果要运行的命令(第一项)不是一个绝对路径， 那么将会在编译时设定的可执行文件搜索目录中查找。 因为默认包括 <code>/usr/local/bin/</code>, <code>/usr/bin/</code>, <code>/bin/</code>, <code>/usr/local/sbin/</code>, <code>/usr/sbin/</code>, <code>/sbin/</code> 目录， 所以可以安全的直接使用”标准目录”中的可执行程序名称(没必要再使用绝对路径)， 而对于非标准目录中的可执行程序，则必须使用绝对路径。建议始终使用绝对路径以避免歧义。 </p>
+<p>例(1)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Environment=<span class="string">"ONE=one"</span> <span class="string">'TWO=two two'</span></span><br><span class="line">ExecStart=<span class="built_in">echo</span> <span class="variable">$ONE</span> <span class="variable">$TWO</span> <span class="variable">$&#123;TWO&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这将给 <code>/bin/echo</code> 命令依次传递如下四个参数: “one”, “two”, “two”, “two two”</p>
+<p>例(2)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Environment=ONE=<span class="string">'one'</span> <span class="string">"TWO='two two' too"</span> THREE=</span><br><span class="line">ExecStart=/bin/<span class="built_in">echo</span> <span class="variable">$&#123;ONE&#125;</span> <span class="variable">$&#123;TWO&#125;</span> <span class="variable">$&#123;THREE&#125;</span></span><br><span class="line">ExecStart=/bin/<span class="built_in">echo</span> <span class="variable">$ONE</span> <span class="variable">$TWO</span> <span class="variable">$THREE</span></span><br></pre></td></tr></table></figure>
+<p>这将导致<code>/bin/echo</code> 被执行两次。 第一次被依次传递如下三个参数： “‘one’”, “‘two two’ too”, “” ； 第二次被依次传递如下三个参数： “one”, “two two”, “too” 。</p>
+<p>此外，如果想要传递美元符号<code>$</code>自身， 则必须使用 <code>$$</code> 。 而那些无法在替换时确定内容的变量将被当做空字符串。 注意，不可以在第一项(也就是命令的绝对路径)中使用变量替换。</p>
+<p>注意，这里使用的变量必须已经在 <code>Environment=</code> 或 <code>EnvironmentFile=</code> 中定义。 此外，在 <code>systemd.exec(5)</code> 手册的”环境变量”小节中列出的”静态变量”也可以使用。 例如 <code>$USER</code> 就是一个”静态变量”， 而 <code>$TERM</code> 则不是。</p>
+<p>注意， 这里的命令行并不直接支持 shell 命令， 但是可以通过模仿下面这个变通的方法来实现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=sh -c <span class="string">'dmesg | tac'</span></span><br></pre></td></tr></table></figure>
+<p>例一</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=<span class="built_in">echo</span> one ; <span class="built_in">echo</span> <span class="string">"two two"</span></span><br></pre></td></tr></table></figure>
+<p>这将导致 echo 被执行两次。 第一次被传递了单独一个 “one” 参数； 第二次被传递了单独一个 “two two” 参数。 因为一次设置了多个命令，所以仅能用于 <code>Type=oneshot</code> 类型。</p>
+<p>例二</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=<span class="built_in">echo</span> / &gt;/dev/null &amp; \; \</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<p>这表示向 echo 命令传递五个参数： <code>/</code>, <code>&gt;/dev/null</code>, <code>&amp;</code>, <code>;</code>, <code>ls</code></p>
+<p>可以在命令行与环境变量中使用的C语言风格的转义符</p>
+<table>
+<thead>
+<tr>
+<th>转义符</th>
+<th>实际含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\a</code></td>
+<td>响铃</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>退格</td>
+</tr>
+<tr>
+<td><code>\f</code></td>
+<td>换页</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>换行</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>回车</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>制表符</td>
+</tr>
+<tr>
+<td><code>\v</code></td>
+<td>纵向制表符</td>
+</tr>
+<tr>
+<td><code>\\</code></td>
+<td>反斜线</td>
+</tr>
+<tr>
+<td><code>\&quot;</code></td>
+<td>双引号</td>
+</tr>
+<tr>
+<td><code>\&#39;</code></td>
+<td>单引号</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>空白</td>
+</tr>
+<tr>
+<td><code>\xxx</code></td>
+<td>十六进制数 xx 所对应的字符</td>
+</tr>
+<tr>
+<td><code>\nnn</code></td>
+<td>八进制数 nnn 所对应的字符</td>
+</tr>
+</tbody>
+</table>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p><strong>简单服务</strong></p>
+<p>下面的单元文件创建了一个运行 <code>/usr/sbin/foo-daemon</code> 守护进程的服务。 未设置 <code>Type=</code> 等价于 <code>Type=simple</code> 默认设置。 systemd 执行守护进程之后， 即认为该单元已经启动成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=简单的Foo服务</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/sbin/foo-daemon</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>注意，本例中的 <code>/usr/sbin/foo-daemon</code> 必须在启动后持续运行到服务被停止。 如果该进程只是为了派生守护进程，那么应该使用 <code>Type=forking</code></p>
+<p>因为没有设置 <code>ExecStop=</code> 选项， 所以在停止服务时，systemd 将会直接向该服务启动的所有进程发送 SIGTERM 信号。 若超过指定时间依然存在未被杀死的进程，那么将会继续发送 SIGKILL 信号。</p>
+<p>默认的 <code>Type=simple</code> 并不包含任何通知机制(例如通知”服务启动成功”)。 要想使用通知机制，应该将 <code>Type=</code> 设为其他非默认值： <code>Type=notify</code> 可用于能够理解 systemd 通知协议的服务； <code>Type=forking</code> 可用于能将自身切换到后台的服务； <code>Type=dbus</code> 可用于能够在完成初始化之后 获得一个 D-Bus 名称的单元。</p>
+<p><strong>一次性服务</strong></p>
+<p><code>Type=oneshot</code> 用于那些只需要执行一次性动作而不需要持久运行的单元， 例如文件系统检查或者清理临时文件。 此类单元， 将会在启动后一直等待指定的动作完成， 然后再回到停止状态。 下面是一个执行清理动作的单元：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=清理老旧的 Foo 数据</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=/usr/sbin/foo-cleanup</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>注意，在 <code>/usr/sbin/foo-cleanup</code> 执行结束前， 该服务一直处于”启动中”(activating)状态，而一旦执行结束，该服务又立即变为”停止”(inactive)状态。 也就是说，对于 <code>Type=oneshot</code> 类型的服务，不存在”活动”(active)状态。 这意味着，如果再一次启动该服务，将会再一次执行该服务定义的动作。 注意，在先后顺序上晚于该服务的单元， 将会一直等到该服务变成”停止”(inactive)状态后， 才会开始启动。</p>
+<p><code>Type=oneshot</code> 是唯一可以设置多个 <code>ExecStart=</code> 指令的服务类型。 多个 <code>ExecStart=</code> 指令将按照它们出现的顺序依次执行， 一旦遇到错误，就会立即停止，不再继续执行， 同时该服务也将进入”失败”(failed)状态。</p>
+<p><strong>可停止的一次性服务</strong></p>
+<p>有时候， 单元需要执行一个程序以完成某个设置(启动)， 然后又需要再执行另一个程序以撤消先前的设置(停止)， 而在设置持续有效的时段中，该单元应该视为处于”活动”(active)状态， 但实际上并无任何程序在持续运行。 网络配置服务就是一个典型的例子。 此外，只能启动一次(不可多次启动)的一次性服务， 也是一个例子。</p>
+<p>可以通过设置 <code>RemainAfterExit=yes</code> 来满足这种需求。 在这种情况下，systemd 将会在启动成功后将该单元视为处于”活动”(active)状态(而不是”停止”(inactive)状态)。 <code>RemainAfterExit=yes</code> 虽然可以用于所有 <code>Type=</code> 类型， 但是在实践中主要用于 <code>Type=oneshot</code> 和 <code>Type=simple</code> 类型。 对于 <code>Type=oneshot</code> 类型， systemd 一直等到服务启动成功之后，才会将该服务置于”活动”(active)状态。 所以，依赖于该服务的其他单元必须等待该服务启动成功之后，才能启动。 但是对于 <code>Type=simple</code> 类型， 依赖于该服务的其他单元无需等待， 将会和该服务同时并行启动。 下面的类似展示了一个简单的静态防火墙服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=简单的静态防火墙</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line">ExecStart=/usr/<span class="built_in">local</span>/sbin/simple-firewall-start</span><br><span class="line">ExecStop=/usr/<span class="built_in">local</span>/sbin/simple-firewall-stop</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>因为服务启动成功后一直处于”活动”(active)状态， 所以再次执行 systemctl start 命令不会有任何效果。</p>
+<p><strong>传统的服务</strong></p>
+<p>多数传统的守护进程(服务)在启动时会转入后台运行。 systemd 通过 <code>Type=forking</code> 来支持这种工作方式。 对于这种类型的服务，如果最初启动的进程尚未退出， 那么该单元将依然处于”启动中”(activating)状态。 当最初的进程成功退出， 并且至少有一个进程仍然在运行(并且 <code>RemainAfterExit=no</code>)， 该服务才会被视为处于”活动”(active)状态。</p>
+<p>对于单进程的传统服务，当最初的进程成功退出后， 将会只剩单独一个进程仍然在持续运行， systemd 将会把这个唯一剩余的进程视为该服务的主进程。 仅在这种情况下，才将可以在 <code>ExecReload=</code>, <code>ExecStop=</code>… 之类的选项中使用 <code>$MAINPID</code> 变量。</p>
+<p>对于多进程的传统服务，当最初的进程成功退出后，将会剩余多个进程在持续运行， 因此，systemd 无法确定哪一个进程才是该服务的主进程。 在这种情况下，不可以使用 <code>$MAINPID</code> 变量。 然而，如果主进程会创建传统的PID文件， 那么应该将 <code>PIDFile=</code> 设为此PID文件的绝对路径， 以帮助 systemd 从该PID文件中读取主进程的PID，从而帮助确定该服务的主进程。 注意，守护进程必须在完成初始化之前写入PID文件， 否则可能会导致 systemd 读取失败 (读取时文件不存在)。</p>
+<p>下面是一个 单进程传统服务的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Berkeley Internet Name Domain (DNS)</span><br><span class="line">Wants=nss-lookup.target</span><br><span class="line">Wants=named-setup-rndc.service</span><br><span class="line">Before=nss-lookup.target</span><br><span class="line">After=network.target</span><br><span class="line">After=named-setup-rndc.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">Environment=NAMEDCONF=/etc/named.conf</span><br><span class="line">PIDFile=/run/named/named.pid</span><br><span class="line"></span><br><span class="line">ExecStartPre=/bin/bash -c <span class="string">'if [ ! "$DISABLE_ZONE_CHECKING" == "yes" ]; then /usr/sbin/named-checkconf -z "$NAMEDCONF"; else echo "Checking of zone files is disabled"; fi'</span></span><br><span class="line">ExecStart=/usr/sbin/named -u named -c <span class="variable">$&#123;NAMEDCONF&#125;</span> <span class="variable">$OPTIONS</span></span><br><span class="line"></span><br><span class="line">ExecReload=/bin/sh -c <span class="string">'/usr/sbin/rndc reload &gt; /dev/null 2&gt;&amp;1 || /bin/kill -HUP $MAINPID'</span></span><br><span class="line"></span><br><span class="line">ExecStop=/bin/sh -c <span class="string">'/usr/sbin/rndc stop &gt; /dev/null 2&gt;&amp;1 || /bin/kill -TERM $MAINPID'</span></span><br><span class="line"></span><br><span class="line">PrivateTmp=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="服务上下文配置相关"><a href="#服务上下文配置相关" class="headerlink" title="服务上下文配置相关"></a>服务上下文配置相关</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WorkingDirectory=</span><br></pre></td></tr></table></figure>
+<p>设置进程的工作目录。 既可以设为特殊值 <code>~</code> 表示 <code>User=</code> 用户的家目录，也可以设为一个以 <code>RootDirectory=</code> 为基准的绝对路径。 例如当 <code>RootDirectory=/sysroot</code> 并且 <code>WorkingDirectory=/work/dir</code> 时，实际的工作目录将是 <code>/sysroot/work/dir</code> 。 当 systemd 作为系统实例运行时，此选项的默认值是 <code>/</code> ； 当 systemd 作为用户实例运行时，此选项的默认值是对应用户的家目录。 如果给目录加上 <code>-</code> 前缀，那么表示即使此目录不存在，也不算致命错误。 如果未设置 <code>RootDirectory=</code>/<code>RootImage=</code> 选项，那么为 <code>WorkingDirectory=</code> 设置的绝对路径将以主机(或容器)的根目录(也就是运行 systemd 的系统根目录)为基准。 注意，设置此选项将会导致自动添加额外的依赖关系(见上文)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RootDirectory=</span><br></pre></td></tr></table></figure>
+<p>此选项仅可用于系统单元(不适用于用户单元)。 设置以 chroot 方式执行进程时的根目录。 必须设为一个以主机(或容器)的根目录(也就是运行 systemd 的系统根目录)为基准的绝对路径。 如果设置了此选项，必须确保进程及其辅助文件在 chroot() 监狱中确实可用。 注意，设置此选项将会导致自动添加额外的依赖关系(见上文)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RootImage=</span><br></pre></td></tr></table></figure>
+<p>可设为一个块设备节点或者一个普通文件。 此设置的含义与 RootDirectory= 相同，不同之处在于是从块设备或回环文件挂载一个文件系统(而不是直接使用一个现成的目录)。 需要注意的是，块设备或回环文件中必须包含合法的文件系统，同时还需要满足以下条件之一：<br>(1) 不包含任何分区表；<br>(2) 仅包含单独一个 Linux 能够识别的 MBR/MS-DOS 或 GPT 分区；<br>(3) 包含一组完全遵守 Discoverable Partitions Specification 规范的 GPT 分区。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Environment=</span><br></pre></td></tr></table></figure>
+<p>设置进程的环境变量， 接受一个空格分隔的 <code>VAR=VALUE</code> 列表。 可以多次使用此选项以增加新的变量或者修改已有的变量(同一个变量以最后一次设置为准)。 设为空表示清空先前所有已设置的变量。 注意：<br>(1) 不会在字符串内部进行变量展开(也就是<code>$</code> 没有特殊含义)；<br>(2) 如果值中包含空格或者等号，那么必须在字符串两边使用双引号<code>&quot;</code>界定。</p>
+<p>例如：<code>Environment=&quot;VAR1=word1 word2&quot; VAR2=word3 &quot;VAR3=$word 5 6&quot;</code><br>设置了 <code>VAR1</code>, <code>VAR2</code>, <code>VAR3</code> 三个变量，其值分别为 <code>word1 word2</code>, <code>word3</code>, <code>$word 5 6</code></p>
+<p>注意，不要使用环境变量向单元中的进程传递机密信息(例如密码与口令之类)。 一方面，环境变量会通过 D-Bus IPC 暴露给其他非特权客户端； 另一方面，环境变量在概念上也不属于需要保护的机密数据。 此外，因为环境变量能够沿进程树传播，并且能够跨越安全边界(例如 setuid/setgid 程序)， 所以可能会将机密数据泄漏给不应访问的进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EnvironmentFile=</span><br></pre></td></tr></table></figure>
+<p>与 <code>Environment=</code> 类似，不同之处在于此选项是从文本文件中读取环境变量的设置。 文件中的空行以及以分号<code>;</code>或井号<code>#</code>开头的行会被忽略， 其他行的格式必须符合 <code>VAR=VALUE</code> 的shell变量赋值语法。 行尾的反斜杠<code>\</code>将被视为续行符，这与 shell 语法类似。 若想在变量值中包含空格， 则必须在值的两端加上双引号<code>&quot;</code>界定。</p>
+<p>文件必须用绝对路径表示(可以包含通配符)。 但可在路径前加上 <code>-</code> 前缀表示忽略不存在的文件。 可以多次使用此选项，以从多个不同的文件中读取设置。 若设为空，则表示清空所有先前已经从文件中读取的环境变量。</p>
+<p>这里列出的文件将在进程启动前的瞬间被读取， 因此可以由前一个单元生成配置文件， 再由后一个单元去读取它。</p>
+<p>从文件中读取的环境变量会覆盖 <code>Environment=</code> 中设置的同名变量。 文件的读取顺序就是它们出现在单元文件中的顺序， 并且对于同一个变量，以最后读取的文件中的设置为准。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PassEnvironment=</span><br></pre></td></tr></table></figure>
+<p>将某些 systemd 系统服务管理器进程(PID=1)所持有的环境变量传递给该单元中的进程。 接受一个空格分隔的变量名列表。可以多次使用此选项以传递更多变量。 若设为空，则表示清空先前已设置的所有变量。 如果此处设置的变量并不是系统服务管理器进程(PID=1)所持有的环境变量，那么将会被悄无声息的忽略掉。 注意，此选项仅可用于传递PID=1的 systemd 系统服务管理器进程所持有的环境变量， 因为系统服务单元默认并不自动继承PID=1进程所持有的环境变量。 又因为用户服务单元默认就会自动继承PID≠1的 systemd 用户服务管理器进程的所有环境变量， 所以此选项对于用户服务管理器没有意义。</p>
+<p>注意，通过此选项传递过来的环境变量的值会被 <code>Environment=</code> 或 <code>EnvironmentFile=</code> 选项中的同名变量所覆盖。例如：<code>PassEnvironment=VAR1 VAR2 VAR3</code> 传递了 “VAR1”, “VAR2”, “VAR3” 三个变量，其值等于PID=1进程所持有的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User=</span><br><span class="line">Group=</span><br></pre></td></tr></table></figure>
+<p>设置进程在执行时使用的用户与组。 既可以设为一个数字形式的 UID/GID 也可以设为一个字符串形式的名称。 对于系统服务(由 PID=1 的 systemd 系统实例管理)以及由 root 运行的用户服务(由 root 用户启动的 systemd –user 用户实例管理)， <code>User=</code> 的默认值是 “root” ，同时亦可明确将 <code>User=</code> 设为其他用户。 对于普通用户运行的用户服务，<code>User=</code> 的默认值就是该用户自身，并且禁止将 <code>User=</code> 切换为其他用户。 如果没有明确设置 <code>Group=</code> 选项，则使用 <code>User=</code> 所属的默认组。 此选项不影响 带有 “+” 前缀的命令。</p>
+<p>注意， 为了避免歧义以及确保在不同 Linux 系统之间的兼容性， 用户与组的名称必须满足以下规则： </p>
+<p>(1) 仅可包含 <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code>, <code>-</code> 字符；<br>(2) 首字母只能是 <code>a-z</code>, <code>A-Z</code>, <code>_</code> 之一(也就是禁止使用数字与 “-“ 字符)；<br>(3) 字符串长度必须介于 <code>1~31</code> 之间。</p>
+<blockquote>
+<p><strong>注意</strong>：如果在 <code>ExecStart</code>、<code>ExecStop</code> 等属性中使用了 Linux 命令，则必须要写出完整的绝对路径。对于 <code>ExecStartPre</code> 和 <code>ExecStartPost</code> 辅助命令，若前面有个 “-” 符号，表示忽略这些命令的出错。因为有些 “辅助” 命令本来就不一定成功，比如尝试清空一个文件，但文件可能不存在。</p>
+</blockquote>
+<h2 id="Unit-文件占位符和模板"><a href="#Unit-文件占位符和模板" class="headerlink" title="Unit 文件占位符和模板"></a>Unit 文件占位符和模板</h2><h3 id="Unit-文件占位符"><a href="#Unit-文件占位符" class="headerlink" title="Unit 文件占位符"></a>Unit 文件占位符</h3><p>在 Unit 文件中，有时会需要使用到一些与运行环境有关的信息，例如节点 ID、运行服务的用户等。这些信息可以使用占位符来表示，然后在实际运行被动态地替换实际的值。</p>
+<ul>
+<li><p><code>%n</code>：完整的 Unit 文件名字，包括 .service 后缀名</p>
+</li>
+<li><p><code>%p</code>：Unit 模板文件名中 @ 符号之前的部分，不包括 @ 符号</p>
+</li>
+<li><p><code>%i</code>：Unit 模板文件名中 @ 符号之后的部分，不包括 @ 符号和 .service 后缀名</p>
+</li>
+<li><p><code>%t</code>：存放系统运行文件的目录，通常是 “run”</p>
+</li>
+<li><p><code>%u</code>：运行服务的用户，如果 Unit 文件中没有指定，则默认为 root</p>
+</li>
+<li><p><code>%U</code>：运行服务的用户 ID</p>
+</li>
+<li><p><code>%h</code>：运行服务的用户 Home 目录，即 %{HOME} 环境变量的值</p>
+</li>
+<li><p><code>%s</code>：运行服务的用户默认 Shell 类型，即 %{SHELL} 环境变量的值</p>
+</li>
+<li><p><code>%m</code>：实际运行节点的 Machine ID，对于运行位置每个的服务比较有用</p>
+</li>
+<li><p><code>%b</code>：Boot ID，这是一个随机数，每个节点各不相同，并且每次节点重启时都会改变</p>
+</li>
+<li><p><code>%H</code>：实际运行节点的主机名</p>
+</li>
+<li><p><code>%v</code>：内核版本，即 “uname -r” 命令输出的内容</p>
+</li>
+<li><p><code>%%</code>：在 Unit 模板文件中表示一个普通的百分号</p>
+</li>
+</ul>
+<h3 id="Unit-模板"><a href="#Unit-模板" class="headerlink" title="Unit 模板"></a>Unit 模板</h3><p>在现实中，往往有一些应用需要被复制多份运行。例如，用于同一个负载均衡器分流的多个服务实例，或者为每个 SSH 连接建立一个独立的 sshd 服务进程。</p>
+<p>Unit 模板文件的写法与普通的服务 Unit 文件基本相同，不过 Unit 模板的文件名是以 <code>@</code> 符号结尾的。通过模板启动服务实例时，需要在其文件名的 <code>@</code> 字符后面附加一个参数字符串。</p>
+<p>示例：<code>apache@.service</code></p>
+<h4 id="apache-service-模板"><a href="#apache-service-模板" class="headerlink" title="apache@.service 模板"></a>apache@.service 模板</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=My Advanced Service Template</span><br><span class="line">After=etcd.service docker.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">TimeoutStartSec=0</span><br><span class="line">ExecStartPre=-/usr/bin/docker <span class="built_in">kill</span> apache%i</span><br><span class="line">ExecStartPre=-/usr/bin/docker rm apache%i</span><br><span class="line">ExecStartPre=/usr/bin/docker pull coreos/apache</span><br><span class="line">ExecStart=/usr/bin/docker run --name apache%i -p %i:80 coreos/apache /usr/sbin/apache2ctl -D FOREGROUND</span><br><span class="line">ExecStartPost=/usr/bin/etcdctl <span class="built_in">set</span> /domains/example.com/%H:%i running</span><br><span class="line">ExecStop=/usr/bin/docker stop apache1</span><br><span class="line">ExecStopPost=/usr/bin/docker rm apache1</span><br><span class="line">ExecStopPost=/usr/bin/etcdctl rm /domains/example.com/%H:%i</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="启动-Unit-模板的服务实例"><a href="#启动-Unit-模板的服务实例" class="headerlink" title="启动 Unit 模板的服务实例"></a>启动 Unit 模板的服务实例</h4><p>在服务启动时需要在 <code>@</code> 后面放置一个用于区分服务实例的附加字符参数，通常这个参数用于监控的端口号或控制台 TTY 编译号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># systemctl start apache@8080.service</span></span><br></pre></td></tr></table></figure>
+<p>Systemd 在运行服务时，总是会先尝试找到一个完整匹配的 Unit 文件，如果没有找到，才会尝试选择匹配模板。例如上面的命令，System 首先会在约定的目录下寻找名为 <a href="mailto:`apache@8080.service" target="_blank" rel="noopener">`apache@8080.service</a><code>的文件，如果没有找到，而文件名中包含</code>@<code>字符，它就会尝试去掉后缀参数匹配模板文件。对于</code><a href="mailto:apache@8080.service" target="_blank" rel="noopener">apache@8080.service</a><code>，systemd 会找到</code>apache@.service` 模板文件，并通过这个模板文件将服务实例化。</p>
+<h1 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h1><h2 id="允许单元被启用"><a href="#允许单元被启用" class="headerlink" title="允许单元被启用"></a>允许单元被启用</h2><p>下面这个 foo.service 单元中的 [Install] 小节表明该单元可以通过 systemctl enable 命令启用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Foo</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/sbin/foo-daemon</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>执行 systemctl enable 启用命令之后， 将会建立一个指向该单元文件的软链接 <code>/etc/systemd/system/multi-user.target.wants/foo.service</code> ， 表示将 foo.service 包含到 multi-user.target 目标中， 这样，当启动 multi-user.target 目标时， 将会自动起动 foo.service 服务。 同时，systemctl disable 命令 将会删除这个软连接。</p>
+<h2 id="覆盖软件包的默认设置"><a href="#覆盖软件包的默认设置" class="headerlink" title="覆盖软件包的默认设置"></a>覆盖软件包的默认设置</h2><p>以例如 foo.type 这样的系统单元为例， 有两种修改单元文件的方法：</p>
+<p>(1) 将单元文件从 <code>/usr/lib/systemd/system</code> 目录复制到 <code>/etc/systemd/system</code> 目录中， 然后直接修改复制后的副本。 (2) 创建 <code>/etc/systemd/system/foo.type.d</code>/ 目录， 并在其中创建一些 name.conf 文件， 然后仅针对性的修改某些个别选项。</p>
+<p>第一种方法的优点是易于修改整个单元， 因为原有的单元文件会被完全忽略。 但此种方法的缺点是， 当原有的单元文件被更新时， 变更不能在修改后的副本上自动体现出来。</p>
+<p>第二种方法的优点是仅需修改个别选项， 并且原有单元文件的更新能够自动生效。 因为 <code>.conf</code> 文件只会按照其文件名的字典顺序，被依次追加到原有单元文件的尾部。 但此种方法的缺点是原有单元文件的更新有可能导致与 <code>.conf</code> 文件中的设置不兼容。</p>
+<p>这同样适用于 systemd 用户实例， 只是用户单元文件的文件系统位置不同而已。 </p>
+<p>下面是一个实例，假定原有的单元文件 <code>/usr/lib/systemd/system/httpd.service</code> 包含以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Some HTTP server</span><br><span class="line">After=remote-fs.target sqldb.service</span><br><span class="line">Requires=sqldb.service</span><br><span class="line">AssertPathExists=/srv/webserver</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">ExecStart=/usr/sbin/some-fancy-httpd-server</span><br><span class="line">Nice=5</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>假定系统管理员想要修改几个设置：</p>
+<p>(1) 本地并不存在 /<code>srv/webserver</code> 目录，需要修改为 <code>/srv/www</code> 目录。<br>(2) 让此服务依赖于本地已经存在的 <code>memcached.service</code> 服务(<code>Requires=</code>)， 且在其后启动(<code>After=</code>)。<br>(3) 为了加固此服务， 添加一个 <code>PrivateTmp=</code> 设置(参见 <code>systemd.exec(5)</code> 手册)。<br>(4) 将此服务的进程谦让值重置为默认值”0”。</p>
+<p>第一种方法，将原有的单元文件复制到 <code>/etc/systemd/system/httpd.service</code> 并做相应的修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Some HTTP server</span><br><span class="line">After=remote-fs.target sqldb.service memcached.service</span><br><span class="line">Requires=sqldb.service memcached.service</span><br><span class="line">AssertPathExists=/srv/www</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">ExecStart=/usr/sbin/some-fancy-httpd-server</span><br><span class="line">Nice=0</span><br><span class="line">PrivateTmp=yes</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>第二种方法， 创建配置片段 <code>/etc/systemd/system/httpd.service.d/local.conf</code> 并在其中填入如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">After=memcached.service</span><br><span class="line">Requires=memcached.service</span><br><span class="line"><span class="comment"># 重置所有断言，接着重新加入想要的条件</span></span><br><span class="line">AssertPathExists=</span><br><span class="line">AssertPathExists=/srv/www</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Nice=0</span><br><span class="line">PrivateTmp=yes</span><br></pre></td></tr></table></figure>
+<p>注意， 对于单元配置片段， 如果想要移除列表选项(例如 <code>AssertPathExists=</code> 或 <code>ExecStart=</code>)中的某些项， 那么必须首先清空列表(设为空)，然后才能添加(剔除掉某些项之后)剩余的列表项。 注意，因为依赖关系列表(<code>After=</code> 之类)不能被重置为空，所以：<br>(1) 在配置片段(<code>.conf</code>)中只能添加依赖关系；<br>(2) 如果你想移除现有的依赖关系，并重新设定， 那么只能用第一种方法(先复制，然后直接修改复制后的副本)。</p>
+<h1 id="使用-systemctl-命令管理-systemd-资源"><a href="#使用-systemctl-命令管理-systemd-资源" class="headerlink" title="使用 systemctl 命令管理 systemd 资源"></a>使用 systemctl 命令管理 systemd 资源</h1><h2 id="电源管理"><a href="#电源管理" class="headerlink" title="电源管理"></a>电源管理</h2><p>主要涉及关机、系统重启、急救模式等</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">systemctl reboot     <span class="comment"># 重启</span></span><br><span class="line">systemctl poweroff   <span class="comment"># 关机</span></span><br><span class="line">systemctl halt       <span class="comment"># 关机</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">suspend</span>    </span><br><span class="line"><span class="comment"># 挂起，处于待机状态，这将会存储系统状态到内存中，如果关机则会导致数据丢失</span></span><br><span class="line"></span><br><span class="line">systemctl hibernate  </span><br><span class="line"><span class="comment"># 休眠，这将会创建系统快照</span></span><br><span class="line"></span><br><span class="line">systemctl hybrid-sleep</span><br><span class="line"><span class="comment"># 创建快照并挂起</span></span><br><span class="line"></span><br><span class="line">systemctl rescue     <span class="comment"># 切换至修复模式</span></span><br><span class="line">systemctl emergency  </span><br><span class="line"><span class="comment"># 进入紧急救援模式，比rescue更彻底，rescue模式在启动时仅仅是大多数服务没启动，但驱动可以加载。</span></span><br><span class="line"><span class="comment"># 而 emergency  则是驱动也不加载，系统也不做初始化，服务也不会启动，</span></span><br><span class="line"></span><br><span class="line">systemctl default     <span class="comment"># 切换至系统的默认模式</span></span><br></pre></td></tr></table></figure>
+<h2 id="分析系统状态"><a href="#分析系统状态" class="headerlink" title="分析系统状态"></a>分析系统状态</h2><p>主要用来查看系统中纳入systemd管理的服务的状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">systemctl status      <span class="comment"># 系统状态</span></span><br><span class="line">systemctl list-units  <span class="comment"># 所有激活单元列表</span></span><br><span class="line">systemctl --failed    <span class="comment"># 运行失败单元列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有配置文件</span></span><br><span class="line">systemctl list-unit-files</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出指定类型的配置文件</span></span><br><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 系统启动时间统计</span></span><br><span class="line">systemd-analyze </span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有服务启动时间列表，blame 就能看出，这是要等一个背锅位</span></span><br><span class="line">systemd-analyze blame </span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示瀑布状的启动过程流，如下所示</span></span><br><span class="line">systemd-analyze critical-chain</span><br><span class="line"></span><br><span class="line"><span class="comment"># multi-user.target @1min 31.548s</span></span><br><span class="line"><span class="comment"># └─getty.target @1min 31.546s</span></span><br><span class="line"><span class="comment">#   └─getty@tty1.service @1min 31.546s</span></span><br><span class="line"><span class="comment">#     └─rc-local.service @1min 20.105s +11.398s</span></span><br><span class="line"><span class="comment">#       └─network-online.target @1min 20.104s</span></span><br><span class="line"><span class="comment">#         └─network.target @1min 20.057s</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定服务的启动流</span></span><br><span class="line">systemd-analyze critical-chain sshd.service</span><br></pre></td></tr></table></figure>
+<h2 id="Unit-管理"><a href="#Unit-管理" class="headerlink" title="Unit 管理"></a>Unit 管理</h2><p>查看当前系统的所有 Unit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出正在运行的 Unit</span></span><br><span class="line">systemctl list-units</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有Unit，包括没有找到配置文件的或者启动失败的</span></span><br><span class="line">systemctl list-units --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有没有运行的 Unit</span></span><br><span class="line">systemctl list-units --all --state=inactive</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有加载失败的 Unit</span></span><br><span class="line">systemctl list-units --failed</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有正在运行的、类型为 service 的 Unit</span></span><br><span class="line">systemctl list-units --<span class="built_in">type</span>=service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看 Unit 配置文件的内容</span></span><br><span class="line">systemctl cat docker.service</span><br></pre></td></tr></table></figure>
+<h2 id="查看-Unit-的依赖关系"><a href="#查看-Unit-的依赖关系" class="headerlink" title="查看 Unit 的依赖关系"></a>查看 Unit 的依赖关系</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出一个 Unit 的所有依赖，默认不会列出 target 类型</span></span><br><span class="line">systemctl list-dependencies nginx.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出一个 Unit 的所有依赖，包括 target 类型</span></span><br><span class="line">systemctl list-dependencies --all nginx.service</span><br></pre></td></tr></table></figure>
+<h2 id="查看-Unit-的状态"><a href="#查看-Unit-的状态" class="headerlink" title="查看 Unit 的状态"></a>查看 Unit 的状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示系统状态</span></span><br><span class="line">systemctl status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示单个 Unit 的状态</span></span><br><span class="line">systemctl status bluetooth.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示远程主机的某个 Unit 的状态</span></span><br><span class="line">systemctl -H root@rhel7.example.com status httpd.service</span><br></pre></td></tr></table></figure>
+<p>输出信息说明：</p>
+<p>在彩色终端上，前导点(“●”)使用不同的颜色来标记单元的不同状态。 白色表示 “inactive” 或 “deactivating” 状态； 红色表示 “failed” 或 “error” 状态； 绿色表示 “active” 或 “reloading” 或 “activating” 状态。</p>
+<p>以”Loaded:”开头的行显示了单元的加载状态： “loaded” 表示已经被载到内存中； “error” 表示加载失败； “not-found” 表示未找到单元文件； “bad-setting” 表示无法解析单元文件中的关键设置； “masked” 表示已被屏蔽。 同时还包含了单元文件的路径、开机自启状态、预设的启用状态。 </p>
+<p>以”Active:”开头的行显示了单元的启动状态： “active” 表示已启动成功； “inactive” 表示尚未启动； “activating” 表示正在启动中； “deactivating” 表示正在停止中； “failed” 表示启动失败(崩溃、超时、退出码不为零……)。 对于启动失败的单元，将会在日志中记录下导致启动失败的原因， 以方便事后查找故障原因。</p>
+<h2 id="服务的管理"><a href="#服务的管理" class="headerlink" title="服务的管理"></a>服务的管理</h2><p>查看系统中的所有服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl list-units --<span class="built_in">type</span> service --all</span><br></pre></td></tr></table></figure>
+<p>查看服务的运行状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status apache.service</span><br></pre></td></tr></table></figure>
+<p>查看服务当前激活与否的状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl is-active apache.service</span><br></pre></td></tr></table></figure>
+<p>立即启动一个服务，这会依次启动定义在 Unit 文件中的 ExecStartPre、ExecStart 和 ExecStartPost 命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start apache.service</span><br></pre></td></tr></table></figure>
+<p>立即停止一个服务，这会依次停止定义在 Unit 文件中的 ExecStopPre、ExecStop 和 ExecStopPost 命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop apache.service</span><br></pre></td></tr></table></figure>
+<p>重启一个服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart apache.service</span><br></pre></td></tr></table></figure>
+<p>条件式重启，如果某个服务在此前已经启动了才把它重启，如果服务没有启动，就不做任何操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl try-restart apache.service</span><br></pre></td></tr></table></figure>
+<p>重载或重启服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl reload-or-restart name.service</span><br></pre></td></tr></table></figure>
+<p>重载或条件式重启服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">systemctl reload-or-try-restart name.service</span><br><span class="line">```		</span><br><span class="line"></span><br><span class="line">将服务设置为开机自启，这会在 `/etc/systemd/system/` 建立服务的符号链接，指向 `/usr/lib/systemd/system/` 中。同时使用 `--now` 则在设置开机自启时立即启动服务。</span><br><span class="line"></span><br><span class="line">``` bash</span><br><span class="line">systemctl <span class="built_in">enable</span> apache.service</span><br><span class="line">systemctl <span class="built_in">enable</span> --now apache.service</span><br></pre></td></tr></table></figure>
+<p>将服务取消设置开机自启，这会删除在 <code>/etc/systemd/system/</code> 建立服务的指向 <code>/usr/lib/systemd/system/</code> 中的符号链接。同时使用 <code>--now</code> 则在取消设置开机自启时立即停止服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> apache.service</span><br></pre></td></tr></table></figure>
+<p>将服务重新设置为开机自启，先 disable 再 enable 。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl reenable</span><br></pre></td></tr></table></figure>
+<p>查看服务是否设置了开机自启。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl is-enabled apache.service</span><br></pre></td></tr></table></figure>
+<p>查看所有服务的开机自启状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl list-unit-files --<span class="built_in">type</span> service</span><br></pre></td></tr></table></figure>
+<p>禁止设定为开机自启，此操作将会把 unit 链接至 <code>/dev/null</code> ，使得它们不可能被启动，这是 <code>disable</code> 的加强版。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl mask apache.services</span><br></pre></td></tr></table></figure>
+<p>取消禁止设定为开机自启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl unmask apache.service</span><br></pre></td></tr></table></figure>
+<p>systemd 会将 Unit 文件的内容写到缓存中，因此当 Unit 文件被更新时，需要告诉 Systemd 重新读取所有的 Unit 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重载所有修改过的配置文件</span></span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+<p>在删除 Unit 文件后，由于缓存的关系，即使通过 <code>daemon-reload</code> 更新了缓存，在 <code>list-units</code> 中依然会显示标记为 <code>not-found</code> 的 Unit，使用 <code>reset-failed</code> 可解决这个问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 移除的 unit 标记为丢失的</span></span><br><span class="line">systemctl reset-failed</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 杀死一个服务的所有子进程</span></span><br><span class="line">systemctl <span class="built_in">kill</span> apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新加载一个服务的配置文件</span></span><br><span class="line">systemctl reload apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个 Unit 的所有底层参数</span></span><br><span class="line">systemctl show httpd.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个 Unit 的指定属性的值</span></span><br><span class="line">systemctl show -p CPUShares httpd.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置某个 Unit 的指定属性</span></span><br><span class="line">systemctl <span class="built_in">set</span>-property httpd.service CPUShares=500</span><br></pre></td></tr></table></figure>
+<h2 id="Target-管理"><a href="#Target-管理" class="headerlink" title="Target 管理"></a>Target 管理</h2><p>Target 就是一个 Unit 组，包含许多相关的 Unit 。启动某个 Target 的时候，Systemd 就会启动里面所有的 Unit。</p>
+<p>在传统的 SysV-init 启动模式里面，有 RunLevel 的概念，跟 Target 的作用很类似。不同的是，RunLevel 是互斥的，不可能多个 RunLevel 同时启动，但是多个 Target 可以同时启动。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前系统的所有 Target</span></span><br><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看一个 Target 包含的所有 Unit</span></span><br><span class="line">systemctl list-dependencies multi-user.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看启动时的默认 Target</span></span><br><span class="line">systemctl get-default</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置启动时的默认 Target</span></span><br><span class="line">systemctl <span class="built_in">set</span>-default multi-user.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换 Target 时，默认不关闭前一个 Target 启动的进程，systemctl isolate 命令会改变这种行为，关闭前一个 Target 里面所有不属于后一个 Target 的进程</span></span><br><span class="line">systemctl isolate multi-user.target</span><br></pre></td></tr></table></figure>
+<p>Target 与 SysV-init 进程的主要区别：</p>
+<ul>
+<li><p>默认的 RunLevel（在 /etc/inittab 文件设置）现在被默认的 Target 取代，位置是 <code>/etc/systemd/system/default.target</code>，通常符号链接到 graphical.target（图形界面）或者multi-user.target（多用户命令行）。</p>
+</li>
+<li><p>启动脚本的位置，以前是<code>/etc/init.d</code> 目录，符号链接到不同的 RunLevel 目录 （比如 <code>/etc/rc3.d</code>、<code>/etc/rc5.d</code> 等），现在则存放在 <code>/lib/systemd/system</code> 和 <code>/etc/systemd/system</code> 目录。</p>
+</li>
+<li><p>配置文件的位置，以前 init 进程的配置文件是 /etc/inittab，各种服务的配置文件存放在 /etc/sysconfig 目录。现在的配置文件主要存放在 <code>/lib/systemd</code> 目录，在 <code>/etc/systemd</code> 目录里面的修改可以覆盖原始设置。</p>
+</li>
+</ul>
+<h1 id="使用-journalctl-命令管理-systemd-日志"><a href="#使用-journalctl-命令管理-systemd-日志" class="headerlink" title="使用 journalctl 命令管理 systemd 日志"></a>使用 journalctl 命令管理 systemd 日志</h1><p>Systemd 通过其标准日志服务 Journald 提供的配套程序 journalctl 将其管理的所有后台进程打印到 stdout（即控制台）的输出重定向到了日志文件。</p>
+<p>Systemd 的日志文件是二进制格式的，必须使用 Journald 提供的 journalctl 来查看，默认不带任何参数时会输出系统和所有后台进程的混合日志。</p>
+<p>默认日志最大限制为所在文件系统容量的 10%，可以修改 <code>/etc/systemd/journald.conf</code> 中的 <code>SystemMaxUse</code> 来指定该最大限制。</p>
+<h2 id="选项说明"><a href="#选项说明" class="headerlink" title="选项说明"></a>选项说明</h2><p><code>journalctl</code>：不加任何参数，则查看所有日志（默认情况下 ，只保存本次启动的日志）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl</span><br></pre></td></tr></table></figure>
+<p><code>-f</code>, <code>--follow</code>：只显示最新的日志项， 并且不断显示新生成的日志项。 此选项隐含了 <code>-n</code> 选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 实时滚动显示某个 Unit 的最新日志</span></span><br><span class="line">journalctl -u nginx.service -f</span><br></pre></td></tr></table></figure>
+<p><code>-e</code>, <code>--pager-end</code></p>
+<p>在分页工具内立即跳转到日志的尾部。 此选项隐含了 <code>-n1000</code> 以确保分页工具不必缓存太多的日志行。 不过这个隐含的行数可以被明确设置的 <code>-n</code> 选项覆盖。 注意，此选项仅可用于 less 分页器。</p>
+<p><code>-n</code>, <code>--lines=</code>：显示尾部的最新 x 行日志，此选项的参数：若为正整数则表示最大行数； 若为 “all” 则表示不限制行数； 若不设参数则表示默认值10行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">journalctl -n</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示尾部指定行数的日志</span></span><br><span class="line">journalctl -n 20</span><br></pre></td></tr></table></figure>
+<p><code>--no-tail</code>：显示所有日志行， 也就是用于撤销已有的 <code>--lines=</code> 选项(即使与 <code>-f</code> 连用)。</p>
+<p><code>-r</code>, <code>--reverse</code>：反转日志行的输出顺序， 也就是将最新的日志显示在前面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -r -u crond.service</span><br></pre></td></tr></table></figure>
+<p><code>-o</code>, <code>--output=</code>：</p>
+<p>控制日志的 输出格式。 可以使用如下选项：</p>
+<ul>
+<li><p><code>short</code> ：这是默认值， 其输出格式与传统的 syslog 文件的格式相似， 每条日志一行。</p>
+</li>
+<li><p><code>short-full</code>：与 short 类似，只是将时间戳字段 按照 <code>--since=</code> 与 <code>--until=</code> 接受的格式显示。 与 short 的不同之处在于， 输出的时间戳中还包含星期、年份、时区信息，并且与系统的本地化设置无关。</p>
+</li>
+<li><p><code>short-iso</code>：与 short 类似，只是将时间戳字段以 ISO 8601 格式 显示。</p>
+</li>
+<li><p><code>short-iso-precise</code>：与 short-iso 类似，只是将时间戳字段的秒数精确到了微秒级别(百万分之一秒)。</p>
+</li>
+<li><p><code>short-precise</code>：与 short 类似，只是将时间戳字段的秒数精确到了微秒级别(百万分之一秒)。</p>
+</li>
+<li><p><code>short-monotonic</code>：与 short 类似，只是将时间戳字段的零值 从内核启动时开始计算。</p>
+</li>
+<li><p><code>short-unix</code>：与 short 类似，只是将时间戳字段显示为从”UNIX时间原点”(1970-1-1 00:00:00 UTC)以来的秒数。 精确到微秒级别。</p>
+</li>
+<li><p><code>verbose</code>：以结构化的格式显示每条日志的所有字段。</p>
+</li>
+<li><p><code>export</code>：将日志序列化为二进制字节流 (大部分依然是文本)， 以适用于备份与网络传输(详见 <a href="https://www.freedesktop.org/wiki/Software/systemd/export" target="_blank" rel="noopener">Journal Export Format</a> 文档)。亦可使用 <a href="http://www.jinbuguo.com/systemd/systemd-journal-remote.service.html#" target="_blank" rel="noopener">systemd-journal-remote.service(8)</a> 工具将二进制字节流转换为本地 journald 格式。</p>
+</li>
+<li><p><code>json</code>：将日志项格式化为 JSON 对象，并用换行符分隔(也就是每条日志一行，详见 <a href="https://www.freedesktop.org/wiki/Software/systemd/json" target="_blank" rel="noopener">Journal JSON Format</a> 文档)。 字段值通常按照 JSON 字符串规范进行编码，但是如下三种情况例外：</p>
+<ul>
+<li><p>大于4096字节的字段将被编码为 null 值(可以使用 <code>--all</code> 选项关闭此特性，但是这样做会导致生成又大又长的 JSON 对象)。</p>
+</li>
+<li><p>日志中允许存在同名字段，但是在 JSON 对象中不允许。 因此，同名字段的多个值在 JSON 对象中将会被 编码为一个数组。</p>
+</li>
+<li><p>包含非打印字符或非UTF8字符的字段， 将被编码为包含原始二进制字节的数组(其中的每个字节都视为一个无符号整数)。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>注意，这种编码方式是可逆的(存在空间大小的限制)。</p>
+<ul>
+<li><p><code>json-pretty</code>：将日志项按照JSON数据结构格式化， 但是每个字段一行， 以便于人类阅读。</p>
+</li>
+<li><p><code>json-sse</code>：将日志项按照JSON结构格式化，每条日志一行，但是用大括号包围， 以符合 <a href="https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events" target="_blank" rel="noopener">Server-Sent Events</a> 的要求。</p>
+</li>
+<li><p><code>json-seq</code>：将日志项按照JSON结构格式化， 同时为每条日志加上一个ASCII记录分隔符(0x1E)前缀以及一个ASCII换行符(0x0A)后缀，以符合 <a href="https://tools.ietf.org/html/rfc7464" target="_blank" rel="noopener">JavaScript Object Notation (JSON) Text Sequences</a> (“application/json-seq”) 的要求。</p>
+</li>
+<li><p><code>cat</code>：仅显示日志的实际内容， 而不显示与此日志相关的 任何元数据(包括时间戳)。</p>
+</li>
+<li><p><code>with-unit</code>：与 short-full 类似， 但是在日志项前缀中使用单元名称代替传统的 syslog 标识。 这对于从模板实例化而来的单元比较有意义， 因为会在单元名称中包含实例化参数。</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">journalctl -b -o short-full --no-hostname -u sshd.service </span><br><span class="line"></span><br><span class="line"><span class="comment"># 以 JSON 格式（单行）输出</span></span><br><span class="line">journalctl -b -o json -u nginx.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以 JSON 格式（多行）输出，可读性更好</span></span><br><span class="line">journalctl -b -o json-pretty -u nginx.service</span><br></pre></td></tr></table></figure>
+<p><code>--output-fields=</code>：一个逗号分隔的字段名称列表，表示仅输出列表中的字段。 仅影响默认输出全部字段的输出格式(verbose, export, json, json-pretty, json-sse, json-seq)。注意， <code>&quot;__CURSOR&quot;</code>, <code>&quot;__REALTIME_TIMESTAMP&quot;</code>, <code>&quot;__MONOTONIC_TIMESTAMP&quot;</code>, <code>&quot;_BOOT_ID&quot;</code> 字段永远输出， 不能被排除。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -o json-pretty --no-hostname -u sshd.service  --output-fields MESSAGE</span><br></pre></td></tr></table></figure>
+<p><code>--utc</code>：以世界统一时间(UTC) 表示时间</p>
+<p><code>--no-hostname</code>：不显示来源于本机的日志消息的主机名字段。 此选项仅对 short 系列输出格式(见上文)有效。</p>
+<p><code>-x</code>, <code>--catalog</code>：</p>
+<p>在日志的输出中增加一些解释性的短文本， 以帮助进一步说明 日志的含义、 问题的解决方案、支持论坛、 开发文档、以及其他任何内容。 并非所有日志都有这些额外的帮助文本， 详见 <a href="https://www.freedesktop.org/wiki/Software/systemd/catalog" target="_blank" rel="noopener">Message Catalog Developer Documentation</a> 文档。</p>
+<p>注意，如果要将日志输出用于 bug 报告， 请不要使用此选项。</p>
+<p><code>-q</code>, <code>--quiet</code>：安静模式， 也就是当以普通用户身份运行时， 不显示任何警告信息与提示信息。 例如： “– Logs begin at …”, “– Reboot –”</p>
+<p><code>-b</code>：查看系统本次启动的日志（其中包括了内核日志和各类系统服务的控制台输出）：，如果不加参数则表示仅显示本次启动的日志。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -b</span><br></pre></td></tr></table></figure>
+<p>不过，一般更关心的不是本次启动后的日志，而是上次启动时的（例如刚刚系统崩溃的情况）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">journalctl -b -0 <span class="comment"># 显示本次启动的信息</span></span><br><span class="line">journalctl -b -1 <span class="comment"># 显示上次启动的信息</span></span><br><span class="line">journalctl -b -2 <span class="comment"># 显示上上次启动的信息</span></span><br></pre></td></tr></table></figure>
+<p><code>--list-boots</code>： 列出每次启动的序号(也就是相对于本次启动的偏移量)、32字符的ID、 第一条日志的时间戳、最后一条日志的时间戳。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journactl --list-boots</span><br></pre></td></tr></table></figure>
+<p><code>-k</code>, <code>--dmesg</code>：仅显示内核日志(不显示应用日志)。隐含了 <code>-b</code> 选项以及 <code>_TRANSPORT=kernel</code> 匹配项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -k</span><br></pre></td></tr></table></figure>
+<p><code>--unit</code> 或 <code>-u</code>：查看指定服务的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">journalctl -u docker.servcie</span><br><span class="line">journalctl /usr/lib/systemd/systemd</span><br></pre></td></tr></table></figure>
+<p><code>-p</code>, <code>--priority=</code>：</p>
+<p>根据 日志等级(包括等级范围) 过滤输出结果。 日志等级数字与其名称之间的 对应关系如下： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 0: emerg</span></span><br><span class="line"><span class="comment"># 1: alert</span></span><br><span class="line"><span class="comment"># 2: crit</span></span><br><span class="line"><span class="comment"># 3: err</span></span><br><span class="line"><span class="comment"># 4: warning</span></span><br><span class="line"><span class="comment"># 5: notice</span></span><br><span class="line"><span class="comment"># 6: info</span></span><br><span class="line"><span class="comment"># 7: debug</span></span><br></pre></td></tr></table></figure>
+<p>若设为一个单独的数字或日志等级名称， 则表示仅显示小于或等于此等级的日志(也就是重要程度等于或高于此等级的日志)。 若使用 FROM..TO.. 设置一个范围， 则表示仅显示指定的等级范围内(含两端)的日志。 此选项相当于添加了 “PRIORITY=” 匹配条件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看指定优先级（及其以上级别）的日志</span></span><br><span class="line">journalctl -p err -b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只显示错误、冲突和重要告警信息</span></span><br><span class="line">journalctl -p err..alert</span><br><span class="line"><span class="comment"># 也可以使用数字</span></span><br><span class="line">journalctl -p 3..1</span><br></pre></td></tr></table></figure>
+<p><code>-g</code>, <code>--grep=</code>：</p>
+<p>使用指定的正则表达式对 <code>MESSAGE=</code> 字段进行过滤，仅输出匹配的日志项。 必须使用 PERL 兼容的正则表达式。</p>
+<p>如果正则表达式中仅含小写字母，那么将自动进行大小写无关的匹配， 否则将使用大小写敏感的匹配。是否大小写敏感可以使用下面的 <code>--case-sensitive</code> 选项强制指定。</p>
+<p><code>--case-sensitive[=BOOLEAN]</code>：是否对正则表达式进行大小写敏感的匹配。</p>
+<p><code>-S</code>, <code>--since=</code>, <code>-U</code>, <code>--until=</code>：</p>
+<p>显示晚于指定时间(<code>--since=</code>)的日志、显示早于指定时间(<code>--until=</code>)的日志。 参数的格式类似 “2012-10-30 18:17:16” 这样。 如果省略了”时:分:秒”部分，则相当于设为 “00:00:00” 。 如果仅省略了”秒”的部分则相当于设为 “:00” 。 如果省略了”年-月-日”部分，则相当于设为当前日期。 除了”年-月-日 时:分:秒”格式，参数还可以进行如下设置： </p>
+<p>(1) 设为 “yesterday”, “today”, “tomorrow” 以表示那一天的零点(00:00:00)。<br>(2) 设为 “now” 以表示当前时间。<br>(3) 可以在”年-月-日 时:分:秒”前加上 “-“(前移) 或 “+”(后移) 前缀以表示相对于当前时间的偏移。<code>--output=short-full</code> 将会严格按照上述格式输出时间戳。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">journalctl --since=<span class="string">"2012-10-30 18:17:16"</span></span><br><span class="line">journalctl --since <span class="string">"20 min ago"</span></span><br><span class="line">journalctl --since yesterday</span><br><span class="line">journalctl --since <span class="string">"2015-01-10"</span> --until <span class="string">"2015-01-11 03:00"</span></span><br><span class="line">journalctl --since 09:00 --until <span class="string">"1 hour ago"</span></span><br></pre></td></tr></table></figure>
+<p><code>--disk-usage</code>：此选项并不用于显示日志内容， 而是用于显示所有日志文件(归档文件与活动文件)的磁盘占用总量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示日志占据的硬盘空间</span></span><br><span class="line">journalctl --disk-usage</span><br></pre></td></tr></table></figure>
+<p><code>--vacuum-size=</code>, <code>--vacuum-time=</code>, <code>--vacuum-files=</code>：</p>
+<p>这些选项并不用于显示日志内容，而是用于清理过期的日志归档文件(并不清理活动的日志文件)，以释放磁盘空间。</p>
+<ul>
+<li><code>--vacuum-size=</code> 可用于限制归档文件的最大磁盘使用量(可以使用 “K”, “M”, “G”, “T” 后缀)；</li>
+<li><code>--vacuum-time=</code> 可用于清除指定时间之前的归档(可以使用 “s”, “m”, “h”, “days”, “weeks”, “months”, “years” 后缀)；</li>
+<li><code>--vacuum-files=</code> 可用于限制日志归档文件的最大数量。 </li>
+</ul>
+<p>注意，<code>--vacuum-size=</code> 对 <code>--disk-usage</code> 的输出仅有间接效果， 因为 <code>--disk-usage</code> 输出的是归档日志与活动日志的总量。 同样，<code>--vacuum-files=</code> 也未必一定会减少日志文件的总数， 因为它同样仅作用于归档文件而不会删除活动的日志文件。</p>
+<p>此三个选项可以同时使用， 以同时从三个维度去限制归档文件。 若将某选项设为零， 则表示取消此选项的限制。</p>
+<p>此三个选项还可以和 <code>--rotate</code> 一起使用， 表示首先滚动所有日志归档， 然后再执行清理操作。 这样可以确保首先完成所有活动日志的归档， 进而使得清理操作变得非常高效。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清理日志使总大小小于 1G（指定日志文件占据的最大空间）</span></span><br><span class="line">journalctl --vacuum-size=1G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理最早两周前的日志（指定日志文件保存多久）</span></span><br><span class="line">journalctl --vacuum-time=2weeks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理最早一年前的日志</span></span><br><span class="line">journalctl --vacuum-time=1years</span><br></pre></td></tr></table></figure>
+<p><code>--no-pager</code>：日志默认分页输出，使用此项后将改为正常的标准输出，而不将程序的输出内容管道(pipe)给分页程序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl --no-pager</span><br></pre></td></tr></table></figure>
+<h2 id="例子-2"><a href="#例子-2" class="headerlink" title="例子"></a>例子</h2><p>不带任何选项与参数， 表示显示全部日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl</span><br></pre></td></tr></table></figure>
+<p>显示上一次启动所产生的所有内核日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -k -b -1</span><br></pre></td></tr></table></figure>
+<p>合并显示多个 Unit 的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -u nginx.service -u php-fpm.service --since today</span><br></pre></td></tr></table></figure>
+<p>查看指定进程的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl _PID=1</span><br></pre></td></tr></table></figure>
+<p>查看指定用户的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl _UID=33 --since today</span><br></pre></td></tr></table></figure>
+<p>仅指定一个匹配条件， 显示所有符合该匹配条件的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">journalctl _SYSTEMD_UNIT=avahi-daemon.service</span><br><span class="line">journalctl _SYSTEMD_CGROUP=/user.slice/user-42.slice/session-c1.scope</span><br></pre></td></tr></table></figure>
+<p>指定了两个不同字段的匹配条件， 显示同时满足两个匹配条件的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl _SYSTEMD_UNIT=avahi-daemon.service _PID=28097</span><br></pre></td></tr></table></figure>
+<p>指定了同一个字段的两个不同匹配条件， 显示满足其中任意一个条件的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl _SYSTEMD_UNIT=avahi-daemon.service _SYSTEMD_UNIT=dbus.service</span><br></pre></td></tr></table></figure>
+<p>使用 “+” 连接 两组匹配条件， 相当于 逻辑”OR”连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl _SYSTEMD_UNIT=avahi-daemon.service _PID=28097 + _SYSTEMD_UNIT=dbus.service</span><br></pre></td></tr></table></figure>
+<p>要显示由特定单元产生的、关于特定单元的日志， 可使用 <code>-u/--unit=</code> 选项。 <code>journalctl -u name</code> 将被展开为类似于如下过滤器：(参见 <a href="http://www.jinbuguo.com/systemd/systemd.journal-fields.html#" target="_blank" rel="noopener">systemd.journal-fields(5)</a> 手册以了解对下述日志字段的解释)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_SYSTEMD_UNIT=name.service</span><br><span class="line">  + UNIT=name.service _PID=1</span><br><span class="line">  + OBJECT_SYSTEMD_UNIT=name.service _UID=0</span><br><span class="line">  + COREDUMP_UNIT=name.service _UID=0 MESSAGE_ID=fc2e22bc6ee647b6b90729ab34a250b1</span><br></pre></td></tr></table></figure>
+<p>显示所有 D-Bus 进程产生的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl /usr/bin/dbus-daemon</span><br></pre></td></tr></table></figure>
+<p>查看某个路径的脚本的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl /usr/bin/bash</span><br></pre></td></tr></table></figure>
+<h1 id="错误诊断"><a href="#错误诊断" class="headerlink" title="错误诊断"></a>错误诊断</h1><p>这个例子中的失败的服务是 nginx.service :</p>
+<p>1、通过 systemd 寻找启动失败的服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bongon ~]<span class="comment"># systemctl --state failed</span></span><br></pre></td></tr></table></figure>
+<p>或者使用 systemd 日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bongon ~]<span class="comment"># journalctl --follow --priority err</span></span><br></pre></td></tr></table></figure>
+<p>2、发现了启动失败的 nginx.service 服务，输出更多信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@bongon ~]<span class="comment"># systemctl status nginx   </span></span><br><span class="line">----------------------------------------------------------</span><br><span class="line">● nginx.service - The nginx HTTP and reverse proxy server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: failed (Result: <span class="built_in">exit</span>-code) since Tue 2019-11-05 06:48:49 EST; 4s ago</span><br><span class="line">  Process: 2270 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)</span><br><span class="line">  Process: 2301 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=1/FAILURE)</span><br><span class="line">  Process: 2299 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 2272 (code=exited, status=0/SUCCESS)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Nov 05 06:48:49 bogon systemd[1]: Starting The nginx HTTP and reverse proxy server...</span><br><span class="line">Nov 05 06:48:49 bogon nginx[2301]: nginx: [emerg] invalid number of arguments <span class="keyword">in</span> <span class="string">"proxy_pass"</span> directive <span class="keyword">in</span> /etc/nginx/nginx.conf:60</span><br><span class="line">Nov 05 06:48:49 bogon nginx[2301]: nginx: configuration file /etc/nginx/nginx.conf <span class="built_in">test</span> failed</span><br><span class="line">Nov 05 06:48:49 bogon systemd[1]: nginx.service: Control process exited, code=exited status=1</span><br><span class="line">Nov 05 06:48:49 bogon systemd[1]: nginx.service: Failed with result <span class="string">'exit-code'</span>.</span><br><span class="line">Nov 05 06:48:49 bogon systemd[1]: Failed to start The nginx HTTP and reverse proxy server.</span><br></pre></td></tr></table></figure>
+<p>3、通过输出信息可以看到执行失败的进程信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Process: 4047 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=1/FAILURE)</span><br></pre></td></tr></table></figure>
+<p>得到 PID 就可以进一步探查错误的详细信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bongon ~]<span class="comment"># journalctl -b _PID=2301</span></span><br><span class="line">-- Logs begin at Tue 2019-11-05 04:06:03 EST, end at Tue 2019-11-05 06:48:49 EST. --</span><br><span class="line">Nov 05 06:48:49 bogon nginx[2301]: nginx: [emerg] invalid number of arguments <span class="keyword">in</span> <span class="string">"proxy_pass"</span> directive <span class="keyword">in</span> /etc/nginx/nginx.conf:60</span><br><span class="line">Nov 05 06:48:49 bogon nginx[2301]: nginx: configuration file /etc/nginx/nginx.conf <span class="built_in">test</span> failed</span><br></pre></td></tr></table></figure>
+<p>4、我们发现配置文件不正确，导致 nginx 检查失败。因此根据提示信息在 <code>/etc/nginx/nginx.conf</code> 的第 60 行左右检查一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_pass         https://192.168.123.3</span><br></pre></td></tr></table></figure>
+<p>5、错误原因是这一行的末尾没有加分号(<code>;</code>)。修正后重新启动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon ~]<span class="comment"># systemctl start nginx.service</span></span><br><span class="line">[root@bogon ~]<span class="comment"># systemctl status nginx.service</span></span><br><span class="line">● nginx.service - The nginx HTTP and reverse proxy server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Tue 2019-11-05 06:55:57 EST; 5s ago</span><br><span class="line">  Process: 2513 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)</span><br><span class="line">  Process: 2511 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)</span><br><span class="line">  Process: 2510 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 2515 (nginx)</span><br><span class="line">    Tasks: 3 (<span class="built_in">limit</span>: 4925)</span><br><span class="line">   Memory: 28.9M</span><br><span class="line">   CGroup: /system.slice/nginx.service</span><br><span class="line">           ├─2515 nginx: master process /usr/sbin/nginx</span><br><span class="line">           ├─2516 nginx: worker process</span><br><span class="line">           └─2517 nginx: worker process</span><br><span class="line"></span><br><span class="line">Nov 05 06:55:57 bogon systemd[1]: Starting The nginx HTTP and reverse proxy server...</span><br><span class="line">Nov 05 06:55:57 bogon nginx[2511]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">Nov 05 06:55:57 bogon nginx[2511]: nginx: configuration file /etc/nginx/nginx.conf <span class="built_in">test</span> is successful</span><br><span class="line">Nov 05 06:55:57 bogon systemd[1]: nginx.service: Failed to parse PID from file /run/nginx.pid: Invalid argument</span><br><span class="line">Nov 05 06:55:57 bogon systemd[1]: Started The nginx HTTP and reverse proxy server.</span><br></pre></td></tr></table></figure>
+<h1 id="Systemd-工具集"><a href="#Systemd-工具集" class="headerlink" title="Systemd 工具集"></a>Systemd 工具集</h1><ul>
+<li><p><code>systemctl</code>：用于检查和控制各种系统服务和资源的状态</p>
+</li>
+<li><p><code>bootctl</code>：用于查看和管理系统启动分区</p>
+</li>
+<li><p><code>hostnamectl</code>：用于查看和修改系统的主机名和主机信息</p>
+</li>
+<li><p><code>journalctl</code>：用于查看系统日志和各类应用服务日志</p>
+</li>
+<li><p><code>localectl</code>：用于查看和管理系统的地区信息</p>
+</li>
+<li><p><code>loginctl</code>：用于管理系统已登录用户和 Session 的信息</p>
+</li>
+<li><p><code>machinectl</code>：用于操作 Systemd 容器</p>
+</li>
+<li><p><code>timedatectl</code>：用于查看和管理系统的时间和时区信息</p>
+</li>
+<li><p><code>systemd-analyze</code> 显示此次系统启动时运行每个服务所消耗的时间，可以用于分析系统启动过程中的性能瓶颈</p>
+</li>
+<li><p><code>systemd-ask-password</code>：辅助性工具，用星号屏蔽用户的任意输入，然后返回实际输入的内容</p>
+</li>
+<li><p><code>systemd-cat</code>：用于将其他命令的输出重定向到系统日志</p>
+</li>
+<li><p><code>systemd-cgls</code>：递归地显示指定 CGroup 的继承链</p>
+</li>
+<li><p><code>systemd-cgtop</code>：显示系统当前最耗资源的 CGroup 单元</p>
+</li>
+<li><p><code>systemd-escape</code>：辅助性工具，用于去除指定字符串中不能作为 Unit 文件名的字符</p>
+</li>
+<li><p><code>systemd-hwdb</code>：Systemd 的内部工具，用于更新硬件数据库</p>
+</li>
+<li><p><code>systemd-delta</code>：对比当前系统配置与默认系统配置的差异</p>
+</li>
+<li><p><code>systemd-detect-virt</code>：显示主机的虚拟化类型</p>
+</li>
+<li><p><code>systemd-inhibit</code>：用于强制延迟或禁止系统的关闭、睡眠和待机事件</p>
+</li>
+<li><p><code>systemd-machine-id-setup</code>：Systemd 的内部工具，用于给 Systemd 容器生成 ID</p>
+</li>
+<li><p><code>systemd-notify</code>：Systemd 的内部工具，用于通知服务的状态变化</p>
+</li>
+<li><p><code>systemd-nspawn</code>：用于创建 Systemd 容器</p>
+</li>
+<li><p><code>systemd-path</code>：Systemd 的内部工具，用于显示系统上下文中的各种路径配置</p>
+</li>
+<li><p><code>systemd-run</code>：用于将任意指定的命令包装成一个临时的后台服务运行</p>
+</li>
+<li><p><code>systemd-stdio- bridge</code>：Systemd 的内部 工具，用于将程序的标准输入输出重定向到系统总线</p>
+</li>
+<li><p><code>systemd-tmpfiles</code>：Systemd 的内部工具，用于创建和管理临时文件目录</p>
+</li>
+<li><p><code>systemd-tty-ask-password-agent</code>：用于响应后台服务进程发出的输入密码请求</p>
+</li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li>金步国翻译的 <a href="http://www.jinbuguo.com/systemd/systemctl.html#" target="_blank" rel="noopener">systemctl 中文手册</a></li>
+<li>金步国翻译的 <a href="http://www.jinbuguo.com/systemd/systemd.service.html#" target="_blank" rel="noopener">systemd.service 中文手册</a></li>
+<li>金步国翻译的 <a href="http://www.jinbuguo.com/systemd/systemd.exec.html#" target="_blank" rel="noopener">systemd.exec 中文手册</a></li>
+<li>金步国翻译的 <a href="http://www.jinbuguo.com/systemd/journalctl.html#" target="_blank" rel="noopener">journalctl 中文手册</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Silence 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Silence 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Service/" rel="tag"><i class="fa fa-tag"></i> Service</a>
+          
+            <a href="/tags/Systemd/" rel="tag"><i class="fa fa-tag"></i> Systemd</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/23/170127-CentOS7系统启动流程分析与systemd/" rel="next" title="CentOS7系统启动流程分析与systemd">
+                <i class="fa fa-chevron-left"></i> CentOS7系统启动流程分析与systemd
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/25/194107-内核与内核模块/" rel="prev" title="内核与内核模块">
+                内核与内核模块 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Silence">
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <div class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">136</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/linuxgeeks" title="GitHub &rarr; https://github.com/linuxgeeks" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="https://www.ibm.com/developerworks/cn/" rel="noopener" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="http://iissnan.com/progit/" rel="noopener" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="http://www.freeoa.net/index/" rel="noopener" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="http://www.ttlsa.com/" rel="noopener" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="http://www.361way.com/" rel="noopener" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="http://www.ipcpu.com" rel="noopener" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="http://www.yiibai.com/" rel="noopener" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="http://www.centoscn.com/" rel="noopener" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="http://www.linuxprobe.com/" rel="noopener" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="http://www.netingcn.com/" rel="noopener" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="https://www.liaoxuefeng.com" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="https://yihui.name/cn/" rel="noopener" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="https://coolshell.cn" rel="noopener" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="https://zhangguanzhang.github.io" rel="noopener" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="https://kuops.com" rel="noopener" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="http://www.jinbuguo.com/" rel="noopener" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="http://www.sa-log.com" rel="noopener" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="https://thief.one" rel="noopener" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="https://arvon.top" rel="noopener" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="https://kionf.com" rel="noopener" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="https://www.the5fire.com" rel="noopener" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-简介"><span class="nav-number">1.</span> <span class="nav-text">Systemd 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-的功能和特性"><span class="nav-number">2.</span> <span class="nav-text">Systemd 的功能和特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-架构"><span class="nav-number">3.</span> <span class="nav-text">Systemd 架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-的-Unit-文件"><span class="nav-number">4.</span> <span class="nav-text">Systemd 的 Unit 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Systemd-支持的-12-种-Unit-文件类型"><span class="nav-number">4.1.</span> <span class="nav-text">Systemd 支持的 12 种 Unit 文件类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Systemd-相关的目录"><span class="nav-number">4.2.</span> <span class="nav-text">Systemd 相关的目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unit-和-Target"><span class="nav-number">4.3.</span> <span class="nav-text">Unit 和 Target</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-Service-Unit"><span class="nav-number">5.</span> <span class="nav-text">Systemd Service Unit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unit-文件结构"><span class="nav-number">5.1.</span> <span class="nav-text">Unit 文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unit-段"><span class="nav-number">5.1.1.</span> <span class="nav-text">Unit 段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-段"><span class="nav-number">5.1.2.</span> <span class="nav-text">Install 段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-段"><span class="nav-number">5.1.3.</span> <span class="nav-text">Service 段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#服务生命周期控制相关"><span class="nav-number">5.1.3.1.</span> <span class="nav-text">服务生命周期控制相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行"><span class="nav-number">5.1.3.2.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子"><span class="nav-number">5.1.3.3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务上下文配置相关"><span class="nav-number">5.1.3.4.</span> <span class="nav-text">服务上下文配置相关</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unit-文件占位符和模板"><span class="nav-number">5.2.</span> <span class="nav-text">Unit 文件占位符和模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unit-文件占位符"><span class="nav-number">5.2.1.</span> <span class="nav-text">Unit 文件占位符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unit-模板"><span class="nav-number">5.2.2.</span> <span class="nav-text">Unit 模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#apache-service-模板"><span class="nav-number">5.2.2.1.</span> <span class="nav-text">apache@.service 模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动-Unit-模板的服务实例"><span class="nav-number">5.2.2.2.</span> <span class="nav-text">启动 Unit 模板的服务实例</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子-1"><span class="nav-number">6.</span> <span class="nav-text">例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#允许单元被启用"><span class="nav-number">6.1.</span> <span class="nav-text">允许单元被启用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#覆盖软件包的默认设置"><span class="nav-number">6.2.</span> <span class="nav-text">覆盖软件包的默认设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-systemctl-命令管理-systemd-资源"><span class="nav-number">7.</span> <span class="nav-text">使用 systemctl 命令管理 systemd 资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#电源管理"><span class="nav-number">7.1.</span> <span class="nav-text">电源管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析系统状态"><span class="nav-number">7.2.</span> <span class="nav-text">分析系统状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unit-管理"><span class="nav-number">7.3.</span> <span class="nav-text">Unit 管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看-Unit-的依赖关系"><span class="nav-number">7.4.</span> <span class="nav-text">查看 Unit 的依赖关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看-Unit-的状态"><span class="nav-number">7.5.</span> <span class="nav-text">查看 Unit 的状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务的管理"><span class="nav-number">7.6.</span> <span class="nav-text">服务的管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Target-管理"><span class="nav-number">7.7.</span> <span class="nav-text">Target 管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-journalctl-命令管理-systemd-日志"><span class="nav-number">8.</span> <span class="nav-text">使用 journalctl 命令管理 systemd 日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#选项说明"><span class="nav-number">8.1.</span> <span class="nav-text">选项说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子-2"><span class="nav-number">8.2.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#错误诊断"><span class="nav-number">9.</span> <span class="nav-text">错误诊断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-工具集"><span class="nav-number">10.</span> <span class="nav-text">Systemd 工具集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">11.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

@@ -450,7 +450,7 @@
       
 
       
-        <p>首先简单说一下DNS解析的相关流程。客户端在访问某个域名，例如 ”www.xieyidian.com” 的时候，浏览器首先会将这个域名提交到客户端配置的 DNS 服务器上，由 DNS 服务器将其解析为可识别的 IP 地址，并返回客户端，随后客户端会使用解析到的IP地址访问。</p>
+        <p>首先简单说一下DNS解析的相关流程。客户端在访问某个域名，例如 ”<a href="http://www.xieyidian.com”" target="_blank" rel="noopener">www.xieyidian.com”</a> 的时候，浏览器首先会将这个域名提交到客户端配置的 DNS 服务器上，由 DNS 服务器将其解析为可识别的 IP 地址，并返回客户端，随后客户端会使用解析到的IP地址访问。</p>
 <p>一般情况下，在成功解析一个域名后，客户端的DNS缓存会将这个信息记录下来，这样在这条缓存记录的TTL（有效存活时间）范围内，如果需要再次访问这个域名，那么不需要重新提交到DNS解析，客户端即可使用缓存中记录的IP地址直接访问。然而这就存在一个问题，假设客户端访问一个不存在的域名，或者内部网络中的所有DNS服务器都无法解析该域名，自然，DNS服务器是解析不到任何记录的。但如果客户端因为某种缘故，例如中毒，导致需要在短时间内频繁访问这个不存在或无法解析的域名，又会怎么样？客户端可能会在每次尝试访问的时候都通过DNS解析这个不存在的域名，当然，每次的结果都是无法解析，或解析失败。</p>
 <p>如果有大量客户端都有这种情况，无疑，这会对DNS服务器造成很大压力。为了解决这种问题，现在的DNS技术中包含了这个叫做”Negative caching”的功能。简单来说，当客户端尝试通过DNS解析某个域名但解析失败后，客户端依然会在自己的缓存中记录相关的信息，但这里记录的并非解析结果，而是”Negative caching”。这样当客户端尝试再次访问不存在的域名时，因为本地的DNS缓存中已经有了相关的Negative caching记录，因此客户端不会频繁尝试通过DNS进行解析。</p>
 <p>该功能的基本原理就是这样，详细信息请参考 <a href="http://www.faqs.org/rfcs/rfc2308.html" target="_blank" rel="noopener">RFC 2308</a></p>
@@ -604,7 +604,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">132</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -681,7 +681,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

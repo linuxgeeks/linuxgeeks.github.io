@@ -111,7 +111,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/20/212135-Linux内核参数rp_filter/rp_filter1.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/20/212135-Linux内核参数rp_filter/rp_filter2.png">
-<meta property="og:updated_time" content="2019-05-29T12:54:54.529Z">
+<meta property="og:updated_time" content="2019-08-26T08:15:43.655Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux内核参数rp_filter">
 <meta name="twitter:description" content="说明内核的 rp_filter 参数用于控制系统是否开启对数据包源地址的校验，Linux  内核文档 中的描述： 1234567891011121314151617rp_filter - INTEGER0 - No source validation.1 - Strict mode as defined in RFC3704 Strict Reverse Path    Each incoming">
@@ -408,7 +408,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-29 20:54:54" itemprop="dateModified" datetime="2019-05-29T20:54:54+08:00">2019-05-29</time>
+                <time title="修改时间：2019-08-26 16:15:43" itemprop="dateModified" datetime="2019-08-26T16:15:43+08:00">2019-08-26</time>
               </span>
             
           
@@ -455,16 +455,17 @@
       
         <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>内核的 rp_filter 参数用于控制系统是否开启对数据包源地址的校验，Linux  <a href="https://www.baidu.com/link?url=2x1snmPs3FowXF4IgsntmrWh6TbFiojKKvF3lTRYe8K5oci44n83yIJvXRGJz-0V0rXxUhmqkaeWUBT7C_7AE7u-Vq2YlwBb-PkUhodVa5C&amp;wd=&amp;eqid=a1e7ed7e0000f7730000000359a423c3" target="_blank" rel="noopener">内核文档</a> 中的描述：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">rp_filter - INTEGER</span><br><span class="line">0 - No source validation.</span><br><span class="line">1 - Strict mode as defined in RFC3704 Strict Reverse Path</span><br><span class="line">    Each incoming packet is tested against the FIB and if the interface</span><br><span class="line">    is not the best reverse path the packet check will fail.</span><br><span class="line">    By default failed packets are discarded.</span><br><span class="line">2 - Loose mode as defined in RFC3704 Loose Reverse Path</span><br><span class="line">    Each incoming packet&apos;s source address is also tested against the FIB</span><br><span class="line">    and if the source address is not reachable via any interface</span><br><span class="line">    the packet check will fail.</span><br><span class="line"></span><br><span class="line">　　Current recommended practice in RFC3704 is to enable strict mode</span><br><span class="line">to prevent IP spoofing from DDos attacks. If using asymmetric routing</span><br><span class="line">or other complicated routing, then loose mode is recommended.</span><br><span class="line">　　The max value from conf/&#123;all,interface&#125;/rp_filter is used</span><br><span class="line">when doing source validation on the &#123;interface&#125;.</span><br><span class="line">　　Default value is 0. Note that some distributions enable itin startup scripts.</span><br></pre></td></tr></table></figure>
-<p>rp_filter参数有三个值：</p>
+<p>rp_filter 参数有三个值：</p>
 <ul>
 <li>0：不开启源地址校验</li>
 <li>1：开启严格的反向路径校验。对每个进来的数据包，校验其反向路径是否是最佳路径。如果反向路径不是最佳路径，则直接丢弃该数据包</li>
 <li>2：开启松散的反向路径校验。对每个进来的数据包，校验其源地址是否可达，即反向路径是否能通（通过任意网口），如果反向路径不通，则直接丢弃该数据包</li>
 </ul>
+<p><code>/etc/sysctl.conf</code> 中包含 all 和 eth/lo（具体网卡）的 rp_filter 参数，取其中较大的值生效。</p>
 <h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><p>假设一台 Linux 服务器在提供 Web 服务的同时又充当了路由器的功能，并且该服务器有多个网卡，配置的 IP 地址也不属于同一运营商。</p>
 <p><img src="/2017/03/20/212135-Linux内核参数rp_filter/rp_filter1.png" alt=""></p>
 <p>如图所示，在服务器的 eth0 网卡上配置了电信 IP 125.88.177.76，在 eth1 网卡上配置了移动 IP 183.232.239.248。电信的网络质量比较好，通常配置默认网关为电信 IP 的网关。至于移动 IP 如何到达它的网关并访问互联网的，因为涉及到 Linux 的高级路由，这里不再讨论。</p>
-<p>现在来自 IP 是 211.138.190.130 的客户端，向这台机器移动 IP 的 Web 服务服务发送请求，即 eth1 上的<code>183.232.239.248:80</code>。系统 rp_filter 参数的配置为：</p>
+<p>现在来自 IP 是 211.138.190.130 的客户端，向这台机器移动 IP 的 Web 服务发送请求，即 eth1 上的<code>183.232.239.248:80</code>。系统 rp_filter 参数的配置为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@m1 ~]# sysctl -p --pattern &apos;rp_filter&apos;</span><br><span class="line">net.ipv4.conf.default.rp_filter = 1</span><br><span class="line">net.ipv4.conf.all.rp_filter = 1</span><br><span class="line">[root@m1 ~]#</span><br></pre></td></tr></table></figure>
 <p><img src="/2017/03/20/212135-Linux内核参数rp_filter/rp_filter2.png" alt=""></p>
 <p>如上图红色箭头所示，客户端发送请求到服务器端的 eth1 网卡，服务器端收到请求开始进行对客户端 211.138.190.130 的响应，此时查看本机的路由表发现到客户端 211.138.190.130 是从 eth0 出去的，并且内核的参数 <code>rp_filter = 1</code>，因此系统会严格校验数据包的反向路径，请求数据包入网卡和响应数据包出网卡不是同一个网卡，这时候系统会判断该反向路径不是最佳路径，而直接丢弃该请求数据包。</p>
@@ -558,8 +559,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/24/110110-使用谷歌的BBR拥塞算法为TCP加速/" rel="prev" title="使用谷歌的BBR拥塞算法为TCP加速">
-                使用谷歌的BBR拥塞算法为TCP加速 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/21/174103-Linux内核参数arp_ignore和arp_announce/" rel="prev" title="Linux内核参数arp_ignore和arp_announce">
+                Linux内核参数arp_ignore和arp_announce <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -631,7 +632,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">132</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -708,7 +709,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

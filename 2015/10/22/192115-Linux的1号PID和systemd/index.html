@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="要说清 Systemd，得先从Linux操作系统的启动说起。Linux 操作系统的启动首先从 BIOS 开始，然后由 Boot Loader 载入内核，并初始化内核。内核初始化的最后一步就是启动 init 进程。这个进程是系统的第一个进程，PID 为 1，又叫超级进程，也叫根进程。它负责产生其他所有用户进程。所有的进程都会被挂在这个进程下，如果这个进程退出了，那么所有的进程都被 kill 。如果一">
+<meta name="keywords" content="Systemd,PID">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux的1号PID和systemd">
+<meta property="og:url" content="http://linuxgeeks.github.io/2015/10/22/192115-Linux的1号PID和systemd/index.html">
+<meta property="og:site_name" content="Just Do It">
+<meta property="og:description" content="要说清 Systemd，得先从Linux操作系统的启动说起。Linux 操作系统的启动首先从 BIOS 开始，然后由 Boot Loader 载入内核，并初始化内核。内核初始化的最后一步就是启动 init 进程。这个进程是系统的第一个进程，PID 为 1，又叫超级进程，也叫根进程。它负责产生其他所有用户进程。所有的进程都会被挂在这个进程下，如果这个进程退出了，那么所有的进程都被 kill 。如果一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/22/192115-Linux的1号PID和systemd/boot.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/10/22/192115-Linux的1号PID和systemd/systemd_shewantsit.jpg">
+<meta property="og:updated_time" content="2019-10-23T07:55:59.001Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux的1号PID和systemd">
+<meta name="twitter:description" content="要说清 Systemd，得先从Linux操作系统的启动说起。Linux 操作系统的启动首先从 BIOS 开始，然后由 Boot Loader 载入内核，并初始化内核。内核初始化的最后一步就是启动 init 进程。这个进程是系统的第一个进程，PID 为 1，又叫超级进程，也叫根进程。它负责产生其他所有用户进程。所有的进程都会被挂在这个进程下，如果这个进程退出了，那么所有的进程都被 kill 。如果一">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2015/10/22/192115-Linux的1号PID和systemd/boot.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just Do It" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://linuxgeeks.github.io/2015/10/22/192115-Linux的1号PID和systemd/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux的1号PID和systemd | Just Do It</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just Do It</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/linuxgeeks" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2015/10/22/192115-Linux的1号PID和systemd/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux的1号PID和systemd
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-10-22 19:21:15" itemprop="dateCreated datePublished" datetime="2015-10-22T19:21:15+08:00">2015-10-22</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-23 15:55:59" itemprop="dateModified" datetime="2019-10-23T15:55:59+08:00">2019-10-23</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>要说清 Systemd，得先从Linux操作系统的启动说起。Linux 操作系统的启动首先从 BIOS 开始，然后由 Boot Loader 载入内核，并初始化内核。内核初始化的最后一步就是启动 init 进程。这个进程是系统的第一个进程，PID 为 1，又叫超级进程，也叫根进程。它负责产生其他所有用户进程。所有的进程都会被挂在这个进程下，如果这个进程退出了，那么所有的进程都被 kill 。如果一个子进程的父进程退了，那么这个子进程会被挂到 PID 1 下面。（注：PID 0 是内核的一部分，主要用于内进换页，参看：<a href="http://en.wikipedia.org/wiki/Process_identifier" target="_blank" rel="noopener">Process identifier</a>）。</p>
+<h1 id="SysV-Init"><a href="#SysV-Init" class="headerlink" title="SysV Init"></a>SysV Init</h1><p>PID 1 这个进程非常特殊，其主要就任务是把整个操作系统带入可操作的状态。比如：启动 UI – Shell 以便进行人机交互，或者进入 X 图形窗口。传统上，PID 1 和传统的 Unix System V 相兼容的，所以也叫 <code>sysvinit</code>，这是使用得最悠久的 init 实现。Unix System V 于1983年 release。</p>
+<p>在 <code>sysvint</code> 下，有好几个运行模式，又叫 <code>runlevel</code>。比如：常见的 3 级别指定启动到多用户的字符命令行界面，5 级别指定启起到图形界面，0 表示关机，6 表示重启。其配置在 <code>/etc/inittab</code> 文件中。</p>
+<p>与此配套的还有 <code>/etc/init.d/</code> 和 <code>/etc/rc[X].d</code>，前者存放各种进程的启停脚本（需要按照规范支持 <code>start</code>，<code>stop</code> 子命令），后者的 X 表示不同的 runlevel 下相应的后台进程服务，如：<code>/etc/rc3.d</code> 是 runlevel=3 的。 里面的文件主要是 link 到  <code>/etc/init.d/</code> 里的启停脚本。其中也有一定的命名规范：S 或 K 打头的，后面跟一个数字，然后再跟一个自定义的名字，如：<code>S01rsyslog</code>，<code>S02ssh</code>。S 表示启动，K 表示停止，数字表示执行的顺序。</p>
+<h1 id="UpStart"><a href="#UpStart" class="headerlink" title="UpStart"></a>UpStart</h1><p>Unix 和 Linux 在 <code>sysvint</code> 运作多年后，大约到了2006年的时候，Linux内核进入2.6时代，Linux有了很多更新。并且，Linux开始进入桌面系统，而桌面系统和服务器系统不一样的是，桌面系统面临频繁重启，而且，用户会非常频繁的使用硬件的热插拔技术。于是，这些新的场景，让 <code>sysvint</code> 受到了很多挑战。</p>
+<p>比如，打印机需要CUPS等服务进程，但是如果用户没有打机印，启动这个服务完全是一种浪费，而如果不启动，如果要用打印机了，就无法使用，因为 <code>sysvint</code> 没有自动检测的机制，它只能一次性启动所有的服务。另外，还有网络盘挂载的问题。在 <code>/etc/fstab</code> 中，负责硬盘挂载，有时候还有网络硬盘（NFS 或 iSCSI）在其中，但是在桌面机上，有很可能开机的时候是没有网络的， 于是网络硬盘都不可以访问，也无法挂载，这会极大的影响启动速度。<code>sysvinit</code> 采用 <code>netdev</code> 的方式来解决这个问题，也就是说，需要用户自己在 <code>/etc/fstab</code> 中给相应的硬盘配置上 netdev 属性，于是 sysvint 启动时不会挂载它，只有在网络可用后，由专门的 <code>netfs</code> 服务进程来挂载。这种管理方式比较难以管理，也很容易让人掉坑。</p>
+<p>所以，Ubuntu 开发人员在评估了当时几个可选的 init 系统后，决定重新设计这个系统，于是，这就是我们后面看到的 upstart 。 upstart 基于事件驱动的机制，把之前的完全串行的同步启动服务的方式改成了由事件驱动的异步的方式。比如：如果有U盘插入，udev 得到通知，upstart 感知到这个事件后触发相应的服务程序，比如挂载文件系统等等。因为使用一个事件驱动的玩法，所以，启动操作系统时，很多不必要的服务可以不用启动，而是等待通知，lazy 启动。而且事件驱动的好处是，可以并行启动服务，他们之间的依赖关系，由相应的事件通知完成。</p>
+<p>upstart 有着很不错的设计，其中最重要的两个概念是 Job 和 Event。</p>
+<p>Job 有一般的Job，也有 service 的 Job，并且，<code>upstart</code> 管理了整个 Job 的生命周期，比如：Waiting, Starting, pre-Start, Spawned, post-Start, Running, pre-Stop, Stopping, Killed, post-Stop等等，并维护着这个生命周期的状态机。</p>
+<p>Event 分成三类，<code>signal</code>, <code>method</code> 和 <code>hooks</code>。<code>signal</code> 就是异步消息，<code>method</code> 是同步阻塞的。<code>hooks</code> 也是同步的，但介于前面两者之间，发出hook事件的进程必须等到事件完成，但不检查是否成功。</p>
+<p>但是，<code>upstart</code> 的事件非常复杂，也非常纷乱，各种各样的事件（事件没有归好类）导致有点凌乱。不过因为整个事件驱动的设计比之前的 <code>sysvinit</code> 来说好太多，所以，也深得欢迎。</p>
+<h1 id="Systemd"><a href="#Systemd" class="headerlink" title="Systemd"></a>Systemd</h1><p>直到2010年，有一天，一个在 RedHat 工作的工程师 <a href="https://en.wikipedia.org/wiki/Lennart_Poettering" target="_blank" rel="noopener">Lennart Poettering</a> 和 <a href="https://en.wikipedia.org/wiki/Kay_Sievers" target="_blank" rel="noopener">Kay Sievers</a> ，开始引入了一个新的 <code>init</code> 系统—— <code>systemd</code>。这是一个非常非常有野心的项目，这个项目几乎改变了所有的东西，<code>systemd</code> 不但想取代已有的 <code>init</code> 系统，而且还想干更多的东西。</p>
+<p>Lennart 同意 <code>upstart</code> 干的不错，代码质量很好，基于事件的设计也很好。但是他觉得 <code>upstart</code> 也有问题，其中最大的问题还是不够快，虽然 <code>upstart</code> 用事件可以达到一定的启动并行度，但是，本质上来说，这些事件还是会让启动过程串行在一起。  如：<code>NetworkManager</code> 在等 <code>D-Bus</code> 的启动事件，而 <code>D-Bus</code> 在等 <code>syslog</code> 的启动事件。</p>
+<p>Lennart 认为，实现上来说，<code>upstart</code> 其实是在管理一个逻辑上的服务依赖树，但是这个服务依赖树在表现形式上比较简单，你只需要配置——“启动B好了就启动A”或是“停止了A后就停止B”这样的规则。但是，Lennart 说，这种简单其实是有害的（this simplification is actually detrimental）。他认为，</p>
+<ul>
+<li><p>从一个系统管理的角度出来，他一开始会设定好整个系统启动的服务依赖树，但是这个系统管理员要人肉的把这个本来就非常干净的服务依整树给翻译成计算机看的懂的 Event/Action 形式，而且 Event/Action 这种配置方式是运行时的，所以，你需要运行起来才知道是什么样的。</p>
+</li>
+<li><p>Event逻辑从头到脚到处都是，这个事件扩大了运维的复杂度，还不如之前的 sysvint。 也就是说，当用户配置了 “启动 <code>D-Bus</code> 后请启动 <code>NetworkManager</code>”， 这个 <code>upstart</code> 可以干，但是反过来，如果，用户启动 <code>NetworkManager</code>，我们应该先去启动他的前置依赖 <code>D-Bus</code>，然而你还要配置相应的反向 Event。本来，我只需要配置一条依赖的，结果现在我要配置很多很多情况下的 Event。</p>
+</li>
+<li><p>最后，<code>upstart</code> 里的 Event 的并不标准，很混乱，没有良好的定义。比如：既有进程启动，运行，停止的事件，也有USB设备插入、可用、拔出的事件，还有文件系统设备being mounted、 mounted 和 umounted 的事件，还有AC电源线连接和断开的事件。你会发现，这进程启停的、USB的、文件系统的、电源线的事件，看上去长得很像， 但是没有被标准化抽像出来掉，因为绝大多数的事件都是三元组：start, condition, stop 。这种概念设计模型并没有在 <code>upstart</code> 中出现。因为 <code>upstart</code> 被设计为单一的事件，而忽略了逻辑依赖。</p>
+</li>
+</ul>
+<p>当然，如果 <code>systemd</code> 只是解决 <code>upstart</code> 的问题，他就改造 <code>upstart</code> 就好了，但是 Lennart 的野心不只是想干个这样的事，他想干的更多。</p>
+<p>首先，<code>systemd</code> 清醒地认识到了 <code>init</code> 进程的首要目标是要让用户快速的进入可以操作OS的环境，所以，这个速度一定要快，越快越好，所以，<code>systemd</code> 的设计理念就是两条：</p>
+<ul>
+<li><p>To start <strong>less</strong>.</p>
+</li>
+<li><p>And to start <strong>more</strong> in parallel.</p>
+</li>
+</ul>
+<p>也就是说，按需启动，能不启动就不启动，如果要启动，能并行启动就并行启动，包括你们之间有依赖，我也并行启动。按需启动还好理解，那么，有依赖关系的并行启动，它是怎么做到的？这里，<code>systemd</code> 借鉴了 MacOS 的 <code>Launchd</code> 的玩法（在Youtube上有一个分享——<a href="https://www.youtube.com/watch?v=SjrtySM9Dns" target="_blank" rel="noopener">Launchd: One Program to Rule them All</a>，在苹果的开源网站上也有相关的设计文档——<a href="https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/Introduction.html" target="_blank" rel="noopener">About Daemons and Services</a>）</p>
+<p>要解决这些依赖性，systemd 需要解决好三种底层依赖—— Socket， D-Bus ，文件系统。</p>
+<ul>
+<li><strong>Socket依赖</strong>。如果服务C依赖于服务S的socket，那么就要先启动S，然后再启动C，因为如果C启动时找不到S的Socket，那么C就会失败。<code>systemd</code> 可以帮你在S还没有启动好的时候，建立一个socket，用来接收所有的C的请求和数据，并缓存之，一旦S全部启动完成，把systemd替换好的这个缓存的数据和Socket描述符替换过去。</li>
+</ul>
+<ul>
+<li><strong>D-Bus依赖</strong>。<code>D-Bus</code> 全称 Desktop Bus，是一个用来在进程间通信的服务。除了用于用户态进程和内核态进程通信，也用于用户态的进程之前。现在，很多的现在的服务进程都用 <code>D-Bus</code> 而不是Socket来通信。比如：<code>NetworkManager</code> 就是通过 <code>D-Bus</code> 和其它服务进程通讯的，也就是说，如果一个进程需要知道网络的状态，那么就必需要通过 <code>D-Bus</code> 通信。<code>D-Bus</code> 支持 “Bus Activation”的特性。也就是说，A要通过 <code>D-Bus</code> 服务和B通讯，但是B没有启动，那么 <code>D-Bus</code> 可以把B起来，在B启动的过程中，D-Bus 帮你缓存数据。systemd 可以帮你利用好这个特性来并行启动 A 和 B。</li>
+</ul>
+<ul>
+<li><strong>文件系统依赖</strong>。系统启动过程中，文件系统相关的活动是最耗时的，比如挂载文件系统，对文件系统进行磁盘检查（<code>fsck</code>），磁盘配额检查等都是非常耗时的操作。在等待这些工作完成的同时，系统处于空闲状态。那些想使用文件系统的服务似乎必须等待文件系统初始化完成才可以启动。<code>systemd</code> 参考了 <code>autofs</code> 的设计思路，使得依赖文件系统的服务和文件系统本身初始化两者可以并发工作。<code>autofs</code> 可以监测到某个文件系统挂载点真正被访问到的时候才触发挂载操作，这是通过内核 <code>automounter</code> 模块的支持而实现的。比如一个 <code>open()</code> 系统调用作用在某个文件系统上的时候，而这个文件系统尚未执行挂载，此时 <code>open()</code> 调用被内核挂起等待，等到挂载完成后，控制权返回给 <code>open()</code> 系统调用，并正常打开文件。这个过程和 <code>autofs</code> 是相似的。</li>
+</ul>
+<p>下图来自 Lennart 的演讲里的一页PPT，展示了不同 init 系统的启动。</p>
+<p><img src="/2015/10/22/192115-Linux的1号PID和systemd/boot.png" alt=""></p>
+<p>除此之外，systemd 还在启动时管理好了一些下面的事。</p>
+<p>用C语言取代传统的脚本式的启动。前面说过，<code>sysvint</code> 用 <code>/etc/rcX.d</code> 下的各种脚本启动。然而这些脚本中需要使用 <code>awk</code>, <code>sed</code>, <code>grep</code>, <code>find</code>, <code>xargs</code> 等等这些操作系统的命令，这些命令需要生成进程，生成进程的开销很大，关键是生成完这些进程后，这个进程就干了点屁大的事就退了。换句话说就是，我操作系统干了那么多事为你拉个进程起来，结果你就把个字串转成小写就退了，把我操作系统当什么了？</p>
+<p>在正常的一个 <code>sysvinit</code> 的脚本里，可能会有成百上千个这样的命令。所以，慢死。因此，<code>systemd</code> 全面用 C 语言全部取代了。一般来说，<code>sysvinit</code> 下，操作系统启动完成后，用 <code>echo $$</code> 可以看到，pid 被分配到了上千的样子，而 <code>systemd</code> 的系统只是上百。</p>
+<p>另外，<code>systemd</code> 是真正一个可以管住服务进程的——可以跟踪上服务进程所 <code>fork/exec</code> 出来的所有进程。</p>
+<ul>
+<li><p>我们知道， 传统 Unix/Linux 的 Daemon 服务进程的最佳实践基本上是这个样子的 （具体过程可参看这篇文章“<a href="http://0pointer.de/public/systemd-man/daemon.html#SysV%20Daemons" target="_blank" rel="noopener">SysV Daemon</a>”）——</p>
+<ol>
+<li>进程启动时，关闭所有的打开的文件描述符（除了标准描述符0,1,2），然后重置所有的信号处理。</li>
+<li>调用 fork() 创建子进程，在子进程中 setsid()，然后父进程退出（为了后台执行）</li>
+<li>在子进程中，再调用一次 fork()，创建孙子进程，确定没有交互终端。然后子进程退出。</li>
+<li>在孙子进程中，把标准输入标准输出标准错误都连到 /dev/null 上，还要创建 pid 文件，日志文件，处理相关信号……</li>
+<li>最后才是真正开始提供服务。</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>在上面的这个过程中，服务进程除了两次 <code>fork</code> 外还会 <code>fork</code> 出很多很多的子进程（比如说一些Web服务进程，会根据用户的请求链接来 <code>fork</code> 子进程），这个进程树是相当难以管理的，因为，一旦父进程退出来了，子进程就会被挂到 PID 1下，所以，基本上来说，你无法通过服务进程自已给定的一个pid文件来找到所有的相关进程（这个对开发者的要求太高了），所以，在传统的方式下用脚本启停服务是相当相当的 Buggy 的，因为无法做对所有的服务生出来的子子孙孙做到监控。</li>
+</ul>
+<ul>
+<li>为了解决这个问题，<code>upstart</code> 通过变态的 <code>strace</code> 来跟踪进程中的 <code>fork()</code> 和 <code>exec()</code> 或 <code>exit()</code> 等相关的系统调用。这种方法相当笨拙。 <code>systemd</code> 使用了一个非常有意思的玩法来 <code>tracking</code> 服务进程生出来的所有进程，那就是用 <code>cgroup</code> （我在 <a href="https://coolshell.cn/articles/17049.html" target="_blank" rel="noopener">Docker 的基础技术“cgroup篇”</a> 中讲过这个东西）。<code>cgroup</code>主要是用来管理进程组资源配额的事，所以，无论服务如何启动新的子进程，所有的这些相关进程都会同属于一个 <code>cgroup</code>，所以，<code>systemd</code> 只需要简单的去遍历一下相应的 <code>cgroup</code> 的那个虚文件系统目录下的文件，就可以正确的找到所有的相关进程，并将他们一一停止。</li>
+</ul>
+<p>另外，<code>systemd</code> 简化了整个 daemon 开发的过程：</p>
+<ul>
+<li><p>不需要两次 fork()，只需要实现服务本身的主逻辑就可以了。</p>
+</li>
+<li><p>不需要 setsid()，systemd 会帮你干。</p>
+</li>
+<li><p>不需要维护 pid文件，systemd 会帮你处理。</p>
+</li>
+<li><p>不需要管理日志文件或是使用syslog，或是处理HUP的日志reload信号。把日志打到 stderr 上，systemd 帮你管理。</p>
+</li>
+<li><p>处理 SIGTERM 信号，这个信号就是正确退出当前服务，不要做其他的事。</p>
+</li>
+<li><p>……</p>
+</li>
+</ul>
+<p>除此之外，<code>systemd</code> 还能——</p>
+<ul>
+<li><p>自动检测启动的服务间有没有环形依赖。</p>
+</li>
+<li><p>内建 autofs 自动挂载管理功能。</p>
+</li>
+<li><p>日志服务。systemd 改造了传统的 syslog 的问题，采用二进制格式保存日志，日志索引更快。</p>
+</li>
+<li><p>快照和恢复。对当前的系统运行的服务集合做快照，并可以恢复。</p>
+</li>
+<li><p>……</p>
+</li>
+</ul>
+<p>还有好多好多，他接管很多很多东西，于是就让很多人不爽了，因为他在干了很多本不属于 PID 1 的事。</p>
+<h1 id="Systemd-争论和八卦"><a href="#Systemd-争论和八卦" class="headerlink" title="Systemd 争论和八卦"></a>Systemd 争论和八卦</h1><p>于是 <code>systemd</code> 这个东西成了可能是有史以来口水战最多的一个开源软件了。<code>systemd</code> 饱受各种争议，最大的争议就是他破坏了 Unix 的设计哲学（相关的哲学可以读一下《<a href="https://book.douban.com/subject/1467587/" target="_blank" rel="noopener">Unix编程艺术</a>》），干了一个大而全而且相当复杂的东西。当然，Lennart 并不同意这样的说法，他后来又写一篇blog “<a href="http://0pointer.de/blog/projects/the-biggest-myths.html" target="_blank" rel="noopener">The Biggest Myths</a>”来解释 <code>systemd</code> 并不是这样的，大家可以前往一读。</p>
+<p>这个争议大到什么样子呢？2014 年，Debian Linux 因为想准备使用 <code>systemd</code> 来作为标准的 init 守护进程来替换 <code>sysvinit</code> 。而围绕这个事的争论达到了空前的热度，争论中充满着仇恨，<code>systemd</code> 的支持者和反对者都在互相辱骂，导致当时 Debian 阵营开始分裂。还有人给 Lennart 发了死亡威胁的邮件，用比特币雇凶买杀手，扬言要取他的性命，在 Youbute 上传了侮辱他的歌曲，在IRC和各种社交渠道上给他发下流和侮辱性的消息。这已经不是争议了，而是一种不折不扣的仇恨！</p>
+<p><img src="/2015/10/22/192115-Linux的1号PID和systemd/systemd_shewantsit.jpg" alt=""></p>
+<p>于是，Lennart 在 Google Plus 上发了贴子，批评整个 Linux 开源社区和 Linus 本人。他大意说，</p>
+<blockquote>
+<p>这个社区太病态了，全是 ass holes，你们不停用各种手段在各种地方用不同的语言和方式来侮辱和漫骂我。我还是一个年轻人，我从来没有经历过这样的场面，但是今天我已经对这种场面很熟悉了。我有时候说话可能不准确，但是我不会像他样那样说出那样的话，我也没有被这些事影响，因为我脸皮够厚，所以，为什么我可以在如何大的反对声面前让 <code>systemd</code> 成功，但是，你们 Linux 社区太可怕了。你们里面的有精神病的人太多了。另外，对于Linus Torvalds，你是这个社区的 Role Model，但可惜你是一个 Bad Role Model，你在社区里的刻薄和侮辱性的言行，基本从一定程度上鼓励了其它人跟你一样，当然，并不只是你一个人的问题，而是在你周围聚集了一群和你一样的这样干的人。送你一句话—— A fish rots from the head down ！一条鱼是从头往下腐烂的……</p>
+</blockquote>
+<p>这篇契文很长，喜欢八卦的同学可以前往一读。感受一下 Lennart 当时的心态（我觉得能算上是非常平稳了）。</p>
+<p>Linus也在被一媒体问起 <code>systemd</code> 这个事来（参看“<a href="https://www.itwire.com/business-it-news/open-source/65402-torvalds-says-he-has-no-strong-opinions-on-systemd" target="_blank" rel="noopener">Torvalds says he has no strong opinions on systemd</a>”），Linus在采访里说，</p>
+<blockquote>
+<p>我对 <code>systemd</code> 和 Lennart 的贴子没有什么强烈的想法。虽然，传统的 Unix 设计哲学—— “Do one thing and Do it well”，很不错，而且我们大多数人也实践了这么多年，但是这并不代表所有的真实世界。在历史上，也不只有 <code>systemd</code> 这么干过。但是，我个人还是 old-fashioned 的人，至少我喜欢文本式的日志，而不是二进制的日志。但是 <code>systemd</code> 没有必要一定要有这样的品味。哦，我说细节了……</p>
+</blockquote>
+<p>今天，<code>systemd</code> 占据了几乎所有的主流的 Linux 发行版的默认配置，包括：Arch Linux、CentOS、CoreOS、Debian、Fedora、Megeia、OpenSUSE、RHEL、SUSE企业版和 Ubuntu。而且，对于 CentOS, CoreOS, Fedora, RHEL, SUSE这些发行版来说，不能没有 <code>systemd</code>。（Ubuntu 还有一个不错的wiki – <a href="https://wiki.ubuntu.com/SystemdForUpstartUsers" target="_blank" rel="noopener">Systemd for Upstart Users</a> 阐述了如何在两者间切换）。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>还记得在《<a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">缓存更新的套路</a>》一文中，我说过，如果你要做好架构，首先你得把计算机体系结构以及很多老古董的基础技术吃透了。因为里面会有很多可以借鉴和相通的东西。那么，你是否从这篇文章里看到了一些有分布式架构相似的东西？</p>
+<p>比如：从 <code>sysvinit</code> 到 <code>upstart</code> 再到 <code>systemd</code>，像不像是服务治理？Linux系统下的这些服务进程，是不是很像分布式架构中的微服务？还有那个 <code>D-Bus</code>，是不是很像SOA里的ESB？而 <code>init</code> 系统是不是很像一个控制系统？甚至像一个服务编排（Service Orchestration）系统？</p>
+<p>分布式系统中的服务之间也有很多依赖，所以，在启动一个架构的时候，如果我们可以做到像 <code>systemd</code> 那样并行启动的话，那么是不是就像是一个微服务的玩法了？</p>
+<p>嗯，你会发现，技术上的很多东西是相通的，也是互相有对方的影子，所以，其实技术并不多。关键是我们学在了表面还是看到了本质。</p>
+<h1 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h1><ul>
+<li>Lennert 的博文：<a href="http://0pointer.de/blog/projects/systemd.html" target="_blank" rel="noopener">Rethinking PID 1</a></li>
+<li>Lennert 的演讲：<a href="https://www.youtube.com/watch?v=TyMLi8QF6sw" target="_blank" rel="noopener">systemd, beyond init （ PPT ）</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Systemd" target="_blank" rel="noopener">Wikipedia：Systemd</a></li>
+<li>LinuxVoice：<a href="https://www.linuxvoice.com/interview-lennart-poettering/" target="_blank" rel="noopener">Lennart Poettering 专访</a></li>
+</ul>
+<h1 id="原文及作者"><a href="#原文及作者" class="headerlink" title="原文及作者"></a>原文及作者</h1><ul>
+<li><p>原文：<a href="https://coolshell.cn/articles/17998.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17998.html</a></p>
+</li>
+<li><p>作者：<a href="https://coolshell.cn/articles/author/haoel" target="_blank" rel="noopener">陈皓</a></p>
+</li>
+<li><p>版权：本文版权归原作者所有</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>有钱任性，请我吃包辣条</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Silence 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Silence 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Systemd/" rel="tag"><i class="fa fa-tag"></i> Systemd</a>
+          
+            <a href="/tags/PID/" rel="tag"><i class="fa fa-tag"></i> PID</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/06/114107-shell的学习建议/" rel="next" title="shell的学习建议">
+                <i class="fa fa-chevron-left"></i> shell的学习建议
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/23/170127-CentOS7系统启动流程分析与systemd/" rel="prev" title="CentOS7系统启动流程分析与systemd">
+                CentOS7系统启动流程分析与systemd <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Silence">
+            
+              <p class="site-author-name" itemprop="name">Silence</p>
+              <div class="site-description motion-element" itemprop="description">书山有路勤为径，学海无涯苦作舟</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">136</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/linuxgeeks" title="GitHub &rarr; https://github.com/linuxgeeks" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:yourname@gmail.com" title="E-Mail &rarr; mailto:yourname@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ibm.com/developerworks/cn/" title="https://www.ibm.com/developerworks/cn/" rel="noopener" target="_blank">IBM developerWorks</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://iissnan.com/progit/" title="http://iissnan.com/progit/" rel="noopener" target="_blank">Pro Git</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.freeoa.net/index/" title="http://www.freeoa.net/index/" rel="noopener" target="_blank">freeOA</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ttlsa.com/" title="http://www.ttlsa.com/" rel="noopener" target="_blank">运维生存时间</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.361way.com/" title="http://www.361way.com/" rel="noopener" target="_blank">运维之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ipcpu.com" title="http://www.ipcpu.com" rel="noopener" target="_blank">网络之路</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.yiibai.com/" title="http://www.yiibai.com/" rel="noopener" target="_blank">易百教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.centoscn.com/" title="http://www.centoscn.com/" rel="noopener" target="_blank">CentOS中文站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.linuxprobe.com/" title="http://www.linuxprobe.com/" rel="noopener" target="_blank">Linux就该这么学</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.netingcn.com/" title="http://www.netingcn.com/" rel="noopener" target="_blank">网络进行时</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.liaoxuefeng.com" title="https://www.liaoxuefeng.com" rel="noopener" target="_blank">廖雪峰的官方网站</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://yihui.name/cn/" title="https://yihui.name/cn/" rel="noopener" target="_blank">谢益辉的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn" title="https://coolshell.cn" rel="noopener" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhangguanzhang.github.io" title="https://zhangguanzhang.github.io" rel="noopener" target="_blank">张馆长的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kuops.com" title="https://kuops.com" rel="noopener" target="_blank">kuops</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jinbuguo.com/" title="http://www.jinbuguo.com/" rel="noopener" target="_blank">金步国作品集</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sa-log.com" title="http://www.sa-log.com" rel="noopener" target="_blank">王帅的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://thief.one" title="https://thief.one" rel="noopener" target="_blank">nMask</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://arvon.top" title="https://arvon.top" rel="noopener" target="_blank">Arvon</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kionf.com" title="https://kionf.com" rel="noopener" target="_blank">Kionf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.the5fire.com" title="https://www.the5fire.com" rel="noopener" target="_blank">the5fire</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SysV-Init"><span class="nav-number">1.</span> <span class="nav-text">SysV Init</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UpStart"><span class="nav-number">2.</span> <span class="nav-text">UpStart</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd"><span class="nav-number">3.</span> <span class="nav-text">Systemd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Systemd-争论和八卦"><span class="nav-number">4.</span> <span class="nav-text">Systemd 争论和八卦</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延伸阅读"><span class="nav-number">6.</span> <span class="nav-text">延伸阅读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原文及作者"><span class="nav-number">7.</span> <span class="nav-text">原文及作者</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">文章总结于网络，转载请注明出处</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

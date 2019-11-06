@@ -624,7 +624,7 @@
 <p><strong>(?:…)</strong></p>
 <p>这将禁止正则捕获分组。它匹配在括号内的任何正则表达式，但该分组所匹配的子字符串 不能 在执行匹配后被获取或是之后在模式中被引用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> re</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">'www.(baidu|google).com'</span>, <span class="string">'www.baidu.com'</span>)</span><br><span class="line">[<span class="string">'baidu'</span>]</span><br><span class="line"><span class="comment"># 这是因为findall会优先把匹配结果组里内容返回,如果想要匹配结果，使用 (?:) 取消优先权即可</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>re.findall(<span class="string">'www.(?:baidu|google).com'</span>, <span class="string">'www.baidu.com'</span>)</span><br><span class="line">[<span class="string">'www.baidu.com'</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>(?P\<name\>…)</name\></strong></p>
+<p><strong>(?P\&lt;name>…)</strong></p>
 <p>（命名组合）类似正则组合，但是匹配到的子字符串组在外部是通过定义的 name 来获取的。组合名必须是有效的 Python 标识符，并且每个组合名只能用一个正则表达式定义，只能定义一次。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> re</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'&lt;body&gt;something&lt;/body&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m =  re.search(<span class="string">r'(?P&lt;tag_start&gt;.*?&gt;).*?(?P&lt;tag_end&gt;/.*?&gt;)'</span>, s)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.group(<span class="number">0</span>)</span><br><span class="line"><span class="string">'&lt;body&gt;something&lt;/body&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.group(<span class="number">1</span>)</span><br><span class="line"><span class="string">'&lt;body&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.group(<span class="number">2</span>)</span><br><span class="line"><span class="string">'/body&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.groups()</span><br><span class="line">(<span class="string">'&lt;body&gt;'</span>, <span class="string">'/body&gt;'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.group(<span class="string">'tag_start'</span>)</span><br><span class="line"><span class="string">'&lt;body&gt;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.group(<span class="string">'tag_end'</span>)</span><br><span class="line"><span class="string">'/body&gt;'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 <p>命名组合可以在三种上下文中引用。如果样式是 <code>(?P&lt;quote&gt;[&#39;&quot;]).*?(?P=quote)</code> （也就是说，匹配单引号或者双引号括起来的字符串)：</p>
@@ -986,7 +986,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">132</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1063,7 +1063,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

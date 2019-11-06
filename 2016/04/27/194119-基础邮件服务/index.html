@@ -657,7 +657,7 @@
 <p>如果DATA命令之前的所有内容都被接受，客户端接着就可以开始传送邮件内容了。邮件内容通常由两部分组成，前半部分是标题(header)，其可以由header_check过滤，后半部分是邮件正文(body)，其可以由check_body过滤。这两项实现的是邮件“内容检查”。</p>
 <p>postfix的默认配置如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">smtpd_client_restrictions =</span><br><span class="line">smtpd_data_restrictions =</span><br><span class="line">smtpd_end_of_data_restrictions =</span><br><span class="line">smtpd_etrn_restrictions =</span><br><span class="line">smtpd_helo_restrictions =</span><br><span class="line">smtpd_recipient_restrictions = permit_mynetworks, reject_unauth_destination</span><br><span class="line">smtpd_sender_restrictions =</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这限制了只有mynetworks参数中定义的本地网络中的客户端才能通过postfix转发邮件，</span></span><br><span class="line"><span class="comment"># 其它客户端则不被允许，从而关闭了开放式中继(open relay)的功能。</span></span><br></pre></td></tr></table></figure>
-<p>Postfix有多个内置的限制条件，如上面的 <code>permit_mynetworks</code> 和 <code>reject_unauth_destination</code>，但管理员也可以使用访问表(access map)来自定义限制条件。自定义访问表的条件通常使用 <code>check_client_access</code> ，<code>check_helo_access</code>， <code>check_sender_access</code>， <code>check_recipient_access</code>进行，它们后面通常跟上 <code>type:mapname</code> 格式的访问表类型和名称。其中，<code>check_sender_access</code> 和 <code>check_recipient_access</code> 用来检查客户端提供的邮件地址，因此其访问表中可以使用完整的邮件地址，如 <code>admin@test.com</code>；也可以只使用域名，<code>test.com</code>；还可以只有用户名的部分，如 <code>marion@</code>。</p>
+<p>Postfix有多个内置的限制条件，如上面的 <code>permit_mynetworks</code> 和 <code>reject_unauth_destination</code>，但管理员也可以使用访问表(access map)来自定义限制条件。自定义访问表的条件通常使用 <code>check_client_access</code> ，<code>check_helo_access</code>， <code>check_sender_access</code>， <code>check_recipient_access</code>进行，它们后面通常跟上 <code>type:mapname</code> 格式的访问表类型和名称。其中，<code>check_sender_access</code> 和 <code>check_recipient_access</code> 用来检查客户端提供的邮件地址，因此其访问表中可以使用完整的邮件地址，如 <a href="mailto:`admin@test.com" target="_blank" rel="noopener">`admin@test.com</a><code>；也可以只使用域名，</code>test.com<code>；还可以只有用户名的部分，如</code>marion@`。</p>
 <p><strong>实现示例1</strong></p>
 <p>这里以禁止 172.16.100.200 这台主机通过工作在 172.16.100.1上 的 postfix 服务发送邮件为例演示说明其实现过程。访问表使用 hash 的格式。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先，编辑/etc/postfix/access文件，以之作为客户端检查的控制文件，在里面定义如下一行：</span></span><br><span class="line">172.16.100.200		REJECT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其次，将此文件转换为hash格式</span></span><br><span class="line">postmap /etc/postfix/access</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后，配置postfix使用此文件对客户端进行检查</span></span><br><span class="line"><span class="comment"># 编辑/etc/postfix/main.cf文件，添加如下参数：</span></span><br><span class="line">smtpd_client_restrictions = check_client_access <span class="built_in">hash</span>:/etc/postfix/access</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最后，让postfix重新载入配置文件即可进行发信控制的效果测试了。</span></span><br></pre></td></tr></table></figure>
@@ -868,7 +868,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">132</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -945,7 +945,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

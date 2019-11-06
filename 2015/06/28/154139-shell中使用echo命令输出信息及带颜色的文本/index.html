@@ -109,10 +109,17 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="echoshell 中有个内置的命令 echo 用来输出信息，在默认情况下输出位置是屏幕。 123[user1@study ~]$ echo &quot;Hello World&quot;Hello World[user1@study ~]$ 此外 echo 命令还可以改变样式，以输出不同颜色的文本，但是必须有 -e 选项(开启 echo 中的转义)。 格式如下 12echo -e &quot;\033[字背景颜色；文字颜色m">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-05T04:36:58.992Z">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/01_256_colors_fg.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/02_256-color_fg_example_01.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/02_256-color_fg_example_02.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/03_256_colors_bg.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/04_256-color_bg_example_01.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/05_256-color_bg_example_02.png">
+<meta property="og:updated_time" content="2019-09-23T12:36:55.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shell中使用echo命令输出信息及带颜色的文本">
 <meta name="twitter:description" content="echoshell 中有个内置的命令 echo 用来输出信息，在默认情况下输出位置是屏幕。 123[user1@study ~]$ echo &quot;Hello World&quot;Hello World[user1@study ~]$ 此外 echo 命令还可以改变样式，以输出不同颜色的文本，但是必须有 -e 选项(开启 echo 中的转义)。 格式如下 12echo -e &quot;\033[字背景颜色；文字颜色m">
+<meta name="twitter:image" content="http://linuxgeeks.github.io/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/01_256_colors_fg.png">
 
 
 
@@ -405,7 +412,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-05 12:36:58" itemprop="dateModified" datetime="2019-05-05T12:36:58+08:00">2019-05-05</time>
+                <time title="修改时间：2019-09-23 20:36:55" itemprop="dateModified" datetime="2019-09-23T20:36:55+08:00">2019-09-23</time>
               </span>
             
           
@@ -456,17 +463,17 @@
 <p>格式如下</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[字背景颜色；文字颜色m 字符串\033[0m"</span> </span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[1;36;41m Something here \033[0m"</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>\代表转义</li>
-<li>033 代表键盘的Control键</li>
-<li>1代表字体行为(高亮，闪烁，下划线等)；</li>
-<li>36代表字体的颜色</li>
-<li>41的位置代表背景色</li>
-<li>注：<ul>
-<li>字背景颜色和文字颜色之间是英文的分号’;’</li>
-<li>文字颜色后面有个m </li>
-<li>字符串前后可以没有空格，如果有的话，输出也是同样有空格 </li>
+<li><code>\033</code> 代表键盘的 <code>Ctl</code> 键或 <code>Esc</code> 键</li>
+<li>1 代表字体行为(高亮，闪烁，下划线等)；</li>
+<li>36 代表字体的颜色</li>
+<li>41 的位置代表背景色</li>
 </ul>
-</li>
+<p>注意：字背景颜色和文字颜色之间是英文的分号 <code>;</code>，并且文字颜色后面有个 <code>m</code> ，字符串前后可以没有空格，如果有的话，输出也是同样有空格</p>
+<p>在 Bash 中，<code>Esc</code> 字符可以用以下的语法来表示：</p>
+<ul>
+<li><code>\e</code></li>
+<li><code>\033</code></li>
+<li><code>\x1B</code></li>
 </ul>
 <h1 id="文字和背景颜色搭配"><a href="#文字和背景颜色搭配" class="headerlink" title="文字和背景颜色搭配"></a>文字和背景颜色搭配</h1><p>字体颜色范围是 <code>30~37</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[30m 黑色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[31m 红色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[32m 绿色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[33m 黄色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[34m 蓝色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[35m 紫色字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[36m 天蓝字 \033[0m"</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\033[37m 白色字 \033[0m"</span></span><br></pre></td></tr></table></figure>
@@ -482,6 +489,24 @@
 </ul>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>在 RedHat 系统的 <code>/etc/sysconfig/init</code> 文件中有事先设置好的输出方式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># color =&gt; new RH6.0 bootup</span></span><br><span class="line"><span class="comment"># verbose =&gt; old-style bootup</span></span><br><span class="line"><span class="comment"># anything else =&gt; new style bootup without ANSI colors or positioning</span></span><br><span class="line">BOOTUP=color</span><br><span class="line"><span class="comment"># column to start "[  OK  ]" label in </span></span><br><span class="line">RES_COL=60</span><br><span class="line"><span class="comment"># terminal sequence to move to that column. You could change this</span></span><br><span class="line"><span class="comment"># to something like "tput hpa $&#123;RES_COL&#125;" if your terminal supports it</span></span><br><span class="line">MOVE_TO_COL=<span class="string">"echo -en \\033[<span class="variable">$&#123;RES_COL&#125;</span>G"</span></span><br><span class="line"><span class="comment"># terminal sequence to set color to a 'success' color (currently: green)</span></span><br><span class="line">SETCOLOR_SUCCESS=<span class="string">"echo -en \\033[0;32m"</span></span><br><span class="line"><span class="comment"># terminal sequence to set color to a 'failure' color (currently: red)</span></span><br><span class="line">SETCOLOR_FAILURE=<span class="string">"echo -en \\033[0;31m"</span></span><br><span class="line"><span class="comment"># terminal sequence to set color to a 'warning' color (currently: yellow)</span></span><br><span class="line">SETCOLOR_WARNING=<span class="string">"echo -en \\033[0;33m"</span></span><br><span class="line"><span class="comment"># terminal sequence to reset to the default color.</span></span><br><span class="line">SETCOLOR_NORMAL=<span class="string">"echo -en \\033[0;39m"</span></span><br></pre></td></tr></table></figure>
+<h1 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h1><h2 id="文字颜色"><a href="#文字颜色" class="headerlink" title="文字颜色"></a>文字颜色</h2><p>对于在文本颜色上使用 256 种颜色之一，控制序列是 <code>&lt;Esc&gt;[38;5;ColorNumberm</code>，其中 <code>ColorNumber</code> 是下列颜色值之一：</p>
+<p><img src="/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/01_256_colors_fg.png" alt=""></p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\e[38;5;82mHello \e[38;5;198mWorld"</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/02_256-color_fg_example_01.png" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;16..21&#125; &#123;21..16&#125; ; <span class="keyword">do</span> <span class="built_in">echo</span> -en <span class="string">"\e[38;5;<span class="variable">$&#123;i&#125;</span>m#\e[0m"</span> ; <span class="keyword">done</span> ; <span class="built_in">echo</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/02_256-color_fg_example_02.png" alt=""></p>
+<h2 id="背景颜色"><a href="#背景颜色" class="headerlink" title="背景颜色"></a>背景颜色</h2><p>对于在背景上使用 256 种颜色之一，控制序列是  <code>&lt;Esc&gt;[48;5;ColorNumberm</code>，其中 <code>ColorNumber</code> 是下列颜色值之一：</p>
+<p><img src="/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/03_256_colors_bg.png" alt=""></p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e <span class="string">"\e[40;38;5;82m Hello \e[30;48;5;82m World \e[0m"</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/04_256-color_bg_example_01.png" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;16..21&#125; &#123;21..16&#125; ; <span class="keyword">do</span> <span class="built_in">echo</span> -en <span class="string">"\e[48;5;<span class="variable">$&#123;i&#125;</span>m \e[0m"</span> ; <span class="keyword">done</span> ; <span class="built_in">echo</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2015/06/28/154139-shell中使用echo命令输出信息及带颜色的文本/05_256-color_bg_example_02.png" alt=""></p>
+<h2 id="示范"><a href="#示范" class="headerlink" title="示范"></a>示范</h2><h3 id="16中颜色值的颜色与格式"><a href="#16中颜色值的颜色与格式" class="headerlink" title="16中颜色值的颜色与格式"></a>16中颜色值的颜色与格式</h3><p>下面的 <code>colors_and_formatting.sh</code> 脚本显示了许多可能的属性组合（但不是全部，因为它一次只使用一个格式化属性）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># This program is free software. It comes without any warranty, to</span></span><br><span class="line"><span class="comment"># the extent permitted by applicable law. You can redistribute it</span></span><br><span class="line"><span class="comment"># and/or modify it under the terms of the Do What The Fuck You Want</span></span><br><span class="line"><span class="comment"># To Public License, Version 2, as published by Sam Hocevar. See</span></span><br><span class="line"><span class="comment"># http://sam.zoy.org/wtfpl/COPYING for more details.</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#Background</span></span><br><span class="line"><span class="keyword">for</span> clbg <span class="keyword">in</span> &#123;40..47&#125; &#123;100..107&#125; 49 ; <span class="keyword">do</span></span><br><span class="line">	<span class="comment">#Foreground</span></span><br><span class="line">	<span class="keyword">for</span> clfg <span class="keyword">in</span> &#123;30..37&#125; &#123;90..97&#125; 39 ; <span class="keyword">do</span></span><br><span class="line">		<span class="comment">#Formatting</span></span><br><span class="line">		<span class="keyword">for</span> attr <span class="keyword">in</span> 0 1 2 4 5 7 ; <span class="keyword">do</span></span><br><span class="line">			<span class="comment">#Print the result</span></span><br><span class="line">			<span class="built_in">echo</span> -en <span class="string">"\e[<span class="variable">$&#123;attr&#125;</span>;<span class="variable">$&#123;clbg&#125;</span>;<span class="variable">$&#123;clfg&#125;</span>m ^[<span class="variable">$&#123;attr&#125;</span>;<span class="variable">$&#123;clbg&#125;</span>;<span class="variable">$&#123;clfg&#125;</span>m \e[0m"</span></span><br><span class="line">		<span class="keyword">done</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="comment">#Newline</span></span><br><span class="line">	<span class="keyword">done</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+<h3 id="256-种颜色值"><a href="#256-种颜色值" class="headerlink" title="256 种颜色值"></a>256 种颜色值</h3><p>以下 <code>256-colors.sh</code> 脚本显示某些终端和终端模拟器（如 xterm 和 gnome 终端）上可用的 256 中颜色。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># This program is free software. It comes without any warranty, to</span></span><br><span class="line"><span class="comment"># the extent permitted by applicable law. You can redistribute it</span></span><br><span class="line"><span class="comment"># and/or modify it under the terms of the Do What The Fuck You Want</span></span><br><span class="line"><span class="comment"># To Public License, Version 2, as published by Sam Hocevar. See</span></span><br><span class="line"><span class="comment"># http://sam.zoy.org/wtfpl/COPYING for more details.</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> fgbg <span class="keyword">in</span> 38 48 ; <span class="keyword">do</span> <span class="comment"># Foreground / Background</span></span><br><span class="line">    <span class="keyword">for</span> color <span class="keyword">in</span> &#123;0..255&#125; ; <span class="keyword">do</span> <span class="comment"># Colors</span></span><br><span class="line">        <span class="comment"># Display the color</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">"\e[<span class="variable">$&#123;fgbg&#125;</span>;5;%sm  %3s  \e[0m"</span> <span class="variable">$color</span> <span class="variable">$color</span></span><br><span class="line">        <span class="comment"># Display 6 colors per lines</span></span><br><span class="line">        <span class="keyword">if</span> [ $(((<span class="variable">$color</span> + 1) % 6)) == 4 ] ; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="comment"># New line</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="comment"># New line</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
 <p>一个不错的网站</p>
 <p><a href="https://misc.flogisoft.com/bash/tip_colors_and_formatting" target="_blank" rel="noopener">Colors and formatting (ANSI/VT100 Control sequences) </a></p>
 
@@ -639,7 +664,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">132</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -716,7 +741,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -885,7 +918,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#echo"><span class="nav-number">1.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文字和背景颜色搭配"><span class="nav-number">2.</span> <span class="nav-text">文字和背景颜色搭配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#echo"><span class="nav-number">1.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文字和背景颜色搭配"><span class="nav-number">2.</span> <span class="nav-text">文字和背景颜色搭配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展"><span class="nav-number">4.</span> <span class="nav-text">拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文字颜色"><span class="nav-number">4.1.</span> <span class="nav-text">文字颜色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景颜色"><span class="nav-number">4.2.</span> <span class="nav-text">背景颜色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示范"><span class="nav-number">4.3.</span> <span class="nav-text">示范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#16中颜色值的颜色与格式"><span class="nav-number">4.3.1.</span> <span class="nav-text">16中颜色值的颜色与格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#256-种颜色值"><span class="nav-number">4.3.2.</span> <span class="nav-text">256 种颜色值</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

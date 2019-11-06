@@ -1355,6 +1355,173 @@ TCP BBR 致力于解决两个问题
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/03/21/174103-Linux内核参数arp_ignore和arp_announce/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Silence">
+      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just Do It">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2017/03/21/174103-Linux内核参数arp_ignore和arp_announce/" class="post-title-link" itemprop="url">Linux内核参数arp_ignore和arp_announce</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-03-21 17:41:03" itemprop="dateCreated datePublished" datetime="2017-03-21T17:41:03+08:00">2017-03-21</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-26 18:02:25" itemprop="dateModified" datetime="2019-08-26T18:02:25+08:00">2019-08-26</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              说明内核的 arp_ignore 和 arp_announce 参数都和 ARP 协议相关，主要用于控制系统返回 ARP 响应和发送 ARP 请求时的动作。这两个参数很重要，特别是在 LVS 的 DR 场景下，它们的配置直接影响到 DR 转发是否正常。Linux  内核文档 中的描述：
+arp_ig
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2017/03/21/174103-Linux内核参数arp_ignore和arp_announce/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/03/20/212135-Linux内核参数rp_filter/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1415,7 +1582,7 @@ TCP BBR 致力于解决两个问题
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-29 20:54:54" itemprop="dateModified" datetime="2019-05-29T20:54:54+08:00">2019-05-29</time>
+                <time title="修改时间：2019-08-26 16:15:43" itemprop="dateModified" datetime="2019-08-26T16:15:43+08:00">2019-08-26</time>
               </span>
             
           
@@ -1840,175 +2007,6 @@ Linux 上基于 iptables 可实现源地址转换，即 SNAT。一般情况下�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Silence">
-      <meta itemprop="description" content="书山有路勤为径，学海无涯苦作舟">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just Do It">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/03/10/094107-学习使用iptables/" class="post-title-link" itemprop="url">学习使用iptables</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-10 09:41:07" itemprop="dateCreated datePublished" datetime="2017-03-10T09:41:07+08:00">2017-03-10</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-25 14:14:02" itemprop="dateModified" datetime="2019-06-25T14:14:02+08:00">2019-06-25</time>
-              </span>
-            
-          
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              基础知识防火墙
-工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件
-iptables
-linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 L
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2017/03/10/094107-学习使用iptables/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2057,7 +2055,7 @@ linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables �
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">132</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2134,7 +2132,15 @@ linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables �
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
