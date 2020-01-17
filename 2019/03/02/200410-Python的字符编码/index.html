@@ -101,13 +101,13 @@
 
 
 
-  <meta name="description" content="二进制与数字我们能知道，在古代曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。 现在假设敌人有十万大军，我们该怎样向盟军传递">
+  <meta name="description" content="二进制与数字在古代，曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。因为光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。 假设敌人有十万大军，这时候应该怎样向盟军传递信息呢？">
 <meta name="keywords" content="Python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python的字符编码">
 <meta property="og:url" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="二进制与数字我们能知道，在古代曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。 现在假设敌人有十万大军，我们该怎样向盟军传递">
+<meta property="og:description" content="二进制与数字在古代，曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。因为光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。 假设敌人有十万大军，这时候应该怎样向盟军传递信息呢？">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire1.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire2.png">
@@ -120,10 +120,10 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/02_encode1.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/02_encode2.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/02_encode3.png">
-<meta property="og:updated_time" content="2019-09-29T07:40:40.638Z">
+<meta property="og:updated_time" content="2019-12-03T05:37:38.161Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的字符编码">
-<meta name="twitter:description" content="二进制与数字我们能知道，在古代曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。 现在假设敌人有十万大军，我们该怎样向盟军传递">
+<meta name="twitter:description" content="二进制与数字在古代，曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。因为光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。 假设敌人有十万大军，这时候应该怎样向盟军传递信息呢？">
 <meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/02/200410-Python的字符编码/01_fire1.png">
 
 
@@ -417,7 +417,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-29 15:40:40" itemprop="dateModified" datetime="2019-09-29T15:40:40+08:00">2019-09-29</time>
+                <time title="修改时间：2019-12-03 13:37:38" itemprop="dateModified" datetime="2019-12-03T13:37:38+08:00">2019-12-03</time>
               </span>
             
           
@@ -462,30 +462,29 @@
       
 
       
-        <h1 id="二进制与数字"><a href="#二进制与数字" class="headerlink" title="二进制与数字"></a>二进制与数字</h1><p>我们能知道，在古代曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。 假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。</p>
-<p>现在假设敌人有十万大军，我们该怎样向盟军传递信息呢？如果我们点燃一根火把来代表一个敌人，则没有办法在短时间内表示十万；于是我们可以点燃一根火把代表敌人规模是 1~100，再点燃第二根则代表敌人规模是 101~1000，以此类推：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1~100	  101~1000 		1001~5000</span><br><span class="line">第一根		第二根   		第三根</span><br></pre></td></tr></table></figure>
-<p>如果我们需要精确传递敌人的个数，这种方法就不可行了。火把只有两种状态，那么如何才能表示精确的数字呢？</p>
-<p>既然一根火把可以表示两个状态，那么两根火把便可以表示四个状态。三根火把便可以表示八个状态。因此我们就可以约定，第一根火把亮了代表 1（2 的 0 次幂），第二根火把亮了代表2（2 的 1 次幂），第三根火把亮了代表 4（2 的 2 次幂），不亮的位置代表的就是 0 。那么对于位置 n 的火把，他亮了就代表 <code>2^(n-1)</code> ，即：</p>
-<p>从右向左，第一根火把亮，第二根火把灭。代表的敌人数量就是 <code>2^(1-1)  + 0  = 1</code>。</p>
+        <h1 id="二进制与数字"><a href="#二进制与数字" class="headerlink" title="二进制与数字"></a>二进制与数字</h1><p>在古代，曾经使用的通信方式是使用烽火台，一旦出现战事，有敌人发起攻击，则会点燃烽火用烟来传递信息。因为光信号的传递速度很快，所以古代的这种信息传递方式是非常高效的。假设长城足够长的话，通过烽火依次传递消息，能很快的传递信息给盟友。点火代就表敌人来了，不点火则代表没有敌人。但是这种信息传递方式有一个缺点，那就是无法精确传递敌人的规模。</p>
+<p>假设敌人有十万大军，这时候应该怎样向盟军传递信息呢？如果点燃一根火把来代表一个敌人，则没有办法在短时间内表示十万；于是可以点燃一根火把来代表敌人规模是 1~100，再点燃第二根则代表敌人规模是 101~1000，点燃第三根则代表敌人规模是 1001~5000 。以此类推：</p>
+<p>如果需要精确传递敌人的个数，这种方法就不可行了。火把只有亮和灭两种状态，那么如何才能表示精确的数字呢？</p>
+<p>既然一根火把可以表示两个状态，那么两根火把便可以表示四个状态。三根火把便可以表示八个状态。因此我们就可以约定，第一根火把亮了代表 1（2 的 0 次幂），第二根火把亮了代表2（2 的 1 次幂），第三根火把亮了代表 4（2 的 2 次幂），不亮的位置代表的就是 0 。那么对于位置 n 的火把，他亮了就代表 <code>2^(n-1)</code> 。因此，可以通过以下的方式来表示精确数值：</p>
+<p>从右向左，第一根火把亮代表 <code>2^(1-1)=1</code>，第二根火把灭代表 <code>0</code>，那么代表的敌人数量就是 <code>2^(1-1)  + 0  = 1</code> ：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire1.png" alt=""></p>
-<p>从右向左，第一根火把灭，第二根火把亮。代表的敌人数量就是 <code>0 + 2^(2-1) = 2</code>。</p>
+<p>从右向左，第一根火把灭代表 <code>0</code> ，第二根火把亮代表 <code>2^(2-1)=2</code>，那么代表的敌人数量就是 <code>0 + 2^(2-1) = 2</code> ：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire2.png" alt=""></p>
-<p>从右向左，第一根火把亮，第二根火把亮。代表的敌人数量就是 <code>2^(1-1) + 2^(2-1) = 3</code>。</p>
+<p>从右向左，第一根火把亮代表 <code>2^(1-1)=1</code>，第二根火把亮代表 <code>2^(2-1)=2</code>，那么代表的敌人数量就是 <code>2^(1-1) + 2^(2-1) = 3</code> ：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire3.png" alt=""></p>
-<p>从右向左，第一、二根火把灭，第三根火把亮。代表的敌人数量就是 <code>0 + 0 + 2^(3-1) = 4</code>。</p>
+<p>从右向左，第一、二根火把灭都代表 <code>0</code> ，第三根火把亮代表 <code>2^(3-1)=4</code>，那么代表的敌人数量就是 <code>0 + 0 + 2^(3-1) =  4</code> ：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire4.png" alt=""></p>
-<p>从右向左，第一根火把亮，第二根火把灭，第三根火把亮。代表的敌人数量就是 <code>2^(1-1) + 0 + 2^(3-1) = 5</code>。</p>
+<p>从右向左，第一根火把亮代表 <code>2^(1-1)=1</code>，第二根火把灭代表 <code>0</code>，第三根火把亮代表 <code>2^(3-1)=4</code>，那么代表的敌人数量就是 <code>2^(1-1) + 0 + 2^(3-1) = 5</code> ：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire5.png" alt=""></p>
-<p>按照这样的方式来表示，我们发现利用前三位可以表示的数字有 0、1、2、3、4、5、6、7，最多能表示 7 。如果想要表示 8，我们可以再借一个位置，即第四个位，用这个位加上前面的三个位来表示 8 ： <code>0 + 0 + 0 + 2^(4-1)  = 8</code> 。</p>
+<p>按照这样的方式来表示，我们发现利用前三位可以表示的数字有 0、1、2、3、4、5、6、7，最多能表示 7 。如果想要表示 8，我们可以再借一个位置，即第四个位，用这个位加上前面的三个位来表示 8 ： <code>0 + 0 + 0 + 2^(4-1)  = 8</code> ：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire6.png" alt=""></p>
-<p>利用这种表示方法，我们就可以根据使用 <code>0</code> 代表火把灭，使用 <code>1</code> 代表火把亮，从而就会有不同序列，来表示不同的数字。</p>
+<p>利用这种表示方法，我们就可以使用 <code>0</code> 代表火把灭，使用 <code>1</code> 代表火把亮，从而就会有不同序列，来表示不同的数字：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire7.png" alt=""></p>
 <p>上图中用  <code>0</code> 和 <code>1</code> 表示出来的序列就是 <code>1010110</code>，那么他所表示的数字就是 <code>0 + 2^1 + 2^2 + 0 + 2^4 + 0 + 2^6</code> 即 <code>0 + 2 + 4 + 0+ 16 + 0 + 64 = 86</code>。</p>
-<p>计算机必须在通电情况下工作，它在物理层面上只能表示两种状态：低电压和高电压，或者我们可以简单地理解为电路的通电和不通电。通电用 1 表示，不通电则用 0 表示。在拆开的硬盘盘片上我们看不到所谓的 0 和 1 ，但是如果使用足够大的放大镜能看到磁盘的表面有着无数的凹凸不平的元件，凹下去的代表 0 ，凸出的代表 1，这就是计算机用来表现二进制的方式。计算机中的所有数据，不论是文字、图片、视频、还是音频文件，本质上最终都是按照类似 <code>01010101</code> 的二进制存储的。</p>
-<h1 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h1><p>通过二进制的 1 和 0 的不同序列边可以表示我们平常说的十进制数字了，但是每个国家都有各自的语言，相比在计算机上去读很难读懂的不同序列的 0101 二进制，我们更愿意在计算机上使用人类自己的语言。</p>
+<p>计算机必须在通电情况下工作，它在物理层面上只能表示两种状态：低电压和高电压，或者可以简单地理解为电路的通电和不通电。通电用 1 表示，不通电则用 0 表示。在拆开的硬盘盘片上我们看不到所谓的 0 和 1 ，但是如果使用足够大的放大镜，则能看到磁盘的表面有着无数的凹凸不平的元件，凹下去的代表 0 ，凸出的代表 1，这就是计算机用来表现二进制的方式。计算机中的所有数据，不论是文字、图片、视频、还是音频文件，本质上最终都是按照类似 <code>01010101</code> 的二进制存储的。</p>
+<h1 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h1><p>通过二进制的 1 和 0 的不同序列边就可以表示平常所说的十进制数字了，但是每个国家都有各自的语言，相比在计算机上去读很难读懂的不同序列的 0101 二进制，我们更愿意在计算机上使用人类自己的语言。</p>
 <p>计算机诞生在美国，为了让计算机表示不同的英文字母、数字和特殊符号，美国人便在计算机上使用了字符编码。字符编码是如何让二进制来表示字母的呢？字符编码专门规定了哪些数字表示哪些字母，只要计算机用二进制能表示出这些数字，便可以通过编码来表示字母了。</p>
-<p>比如计算机中是用二进制 <code>01000001</code> 表示的十进制数字是 65，那么人就规定数字 65 代表大写字母 <code>A</code>。</p>
+<p>比如计算机中是用二进制 <code>01000001</code> 表示的十进制数字是 65，那么人就规定数字 65 代表大写字母 <code>A</code>：</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/01_fire8.png" alt=""></p>
 <p>以此类推，所有的人为规定就形成了一张对照表，最早的编码便是 ASCII 码对照表，全称是 American Standard Code for Information Interchange , 美国信息交换标准代码。ASCII 码使用指定的 7 位或 8 位二进制数组合来表示128 或 256 种可能的字符，但是最早的时候只用了 7 位二进制，已经完全能够来表示所有的大写和小写字母，数字 0 到 9、标点符号， 以及在美式英语中使用的特殊控制字符。后来为了将拉丁文也编码进了 ASCII 表，将最高位也占用了，这就是扩展 ASCII 码。</p>
 <table>
@@ -958,12 +957,12 @@
 </table>
 <h1 id="字符编码的发展史"><a href="#字符编码的发展史" class="headerlink" title="字符编码的发展史"></a>字符编码的发展史</h1><p>计算机开始普遍在其他国家开始使用，但是 ASCII 只能表示英文，无法表示中文、日文、韩文等。一个字节是 8 个比特，这意味着 1 个比特并没有被使用，也就是从 128 到 255 的编码并没有被制定 ASCII 标准的人所规定。其它国家的人趁这个机会开始使用 128 到 255 范围内的编码来表达自己语言中的字符。例如，144 在阿拉伯人的 ASCII 码中是 <code>گ</code>，而在俄罗斯的 ASCII 码中是 <code>ђ</code>。ASCII 码的问题在于尽管所有人都在 0-127 号字符的使用上达成了一致，但对于 128-255 号字符却有很多很多不同的解释。你必须告诉计算机使用哪种风格的 ASCII 码才能正确显示 128-255 号的字符。</p>
 <h2 id="中文编码"><a href="#中文编码" class="headerlink" title="中文编码"></a>中文编码</h2><p>为了处理汉字，程序员设计了用于简体中文的 GB2312 和用于繁体中文的 big5 。GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。</p>
-<p>GB2312 支持的汉字太少。1995年的汉字扩展规范 GBK1.0 收录了 21886 个符号，它分为汉字区和图形符号区。汉字区包括 21003 个字符。2000年的 GB18030 是取代 GBK1.0 的正式国家标准。该标准收录了 27484 个汉字，同时还收录了藏文、蒙文、维吾尔文等主要的少数民族文字。现在的 PC 平台必须支持 GB18030，对嵌入式产品暂不作要求。所以手机、MP3一般只支持 GB2312。</p>
+<p>GB2312 支持的汉字太少。1995年的汉字扩展规范 GBK1.0 收录了 21886 个符号，它分为汉字区和图形符号区。汉字区包括 21003 个字符。2000年的 GB18030 是取代 GBK1.0 的正式国家标准。该标准收录了 27484 个汉字，同时还收录了藏文、蒙文、维吾尔文等主要的少数民族文字。现在的 PC 平台必须支持 GB18030，对嵌入式产品暂不作要求。所以手机、MP3 一般只支持 GB2312。</p>
 <p>从 ASCII、GB2312、GBK 到 GB18030，这些编码方法是向下兼容的，即同一个字符在这些方案中总是有相同的编码，后面的标准支持更多的字符。在这些编码中，英文和中文可以统一地处理。区分中文编码的方法是高字节的最高位不为0。按照程序员的称呼，GB2312、GBK 到 GB18030 都属于双字节字符集 (DBCS)。</p>
-<p>有的中文 Windows 的缺省内码还是 GBK，可以通过 GB18030 升级包升级到 GB18030。不过 GB18030 相对 GBK 增加的字符，普通人是很难用到的，通常我们还是用 GBK 作为中文 Windows 的缺省编码。</p>
+<p>有的中文 Windows 的缺省内码还是 GBK，可以通过 GB18030 升级包升级到 GB18030。不过 GB18030 相对 GBK 增加的字符，普通人是很难用到的，通常我们还是用 GBK 作为中文 Windows 系统的缺省编码。</p>
 <h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p>全世界有上百种语言，日本把日文编到 Shift_JIS 里，韩国把韩文编到 Euc-kr 里，各国有各国的标准，就会不可避免地出现冲突，结果就是，在多语言混合的文本中，显示出来会有乱码。比如如果中国的软件出口到美国，在美国人的电脑上就会显示乱码，因为他们没有 GBK 编码。</p>
 <p>因此，Unicode（统一码、万国码、单一码）应运而生。Unicode 把所有语言都统一到一套编码里，这样就不会再有乱码问题了。规定所有的字符和符号统一最少由 16 位(2Bytes)代表一个字符，2**16-1=65535，可代表6万多个字符，因而兼容万国语言。</p>
-<h2 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h2><p>但对于通篇都是英文的文本来说，本来用一个字节就可以表示的内容，用 Unicode 这种编码方式无疑是多了一倍的存储空间。本着节约的精神，于是产生了 UTF-8，对英文字符只用 1Bytes 表示，对中文字符用 3Bytes 。如果你要传输的文本包含大量英文字符，用 UTF-8 编码就能节省空间：</p>
+<h2 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h2><p>但对于通篇都是英文的文本来说，本来用一个字节就可以表示的内容，用 Unicode 这种编码方式无疑是多了一倍的存储空间。本着节约的精神，于是产生了 UTF-8，对英文字符只用 1Bytes 表示，对中文字符用 3Bytes 。如果要传输的文本包含大量英文字符，用 UTF-8 编码就能节省空间：</p>
 <table>
 <thead>
 <tr>
@@ -989,7 +988,7 @@
 </tbody>
 </table>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>为了处理英文字符，产生了 ASCII 码。为了处理中文字符，产生了 GB2312。</p>
-<p>为了处理各国字符，产生了Unicode。在 Unicode 中所有字符都是 2Bytes，兼容所有语言字符，优点是字符 =&gt;数字的转换速度快，缺点是占用空间大。</p>
+<p>为了处理各国字符，产生了 Unicode 。在 Unicode 中所有字符都是 2Bytes，兼容所有语言字符，优点是字符 =&gt; 数字的转换速度快，缺点是占用空间大。</p>
 <p>为了提高 Unicode 存储和传输性能，产生了 UTF-8，它是 Unicode 的一种实现形式，对于不同的字符用不同的长度表示，优点是节省空间，缺点是：字符 =&gt; 数字的转换速度慢，因为每次都需要计算出字符需要多长的 Bytes 才能够准确表示。</p>
 <p><strong>内存中使用的编码是 Unicode</strong>：用空间换时间（程序都需要加载到内存才能运行，因而内存应该是尽可能的保证快）。</p>
 <p><strong>硬盘中或者网络传输用 UTF-8</strong>：网络 I/O 的延迟或磁盘 I/O 的延迟要远大与 UTF-8 的转换延迟，而且 I/O 应该是尽可能地节省带宽，保证数据传输的稳定性。</p>
@@ -1043,7 +1042,7 @@
 <p>由于不能同时对一个文件对象进行又读又写的操作，所以应将读入内存的内容重新写到另外一个新的文件，最后对文件重命名即可。具体操作代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'notepad.txt'</span>, <span class="string">'rt'</span>, encoding=<span class="string">'gbk'</span>) <span class="keyword">as</span> frd, \</span><br><span class="line">        open(<span class="string">'notepad2.txt'</span>, <span class="string">'wt'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fwt:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> frd:</span><br><span class="line">        fwt.write(line)</span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">'notepad2.txt'</span>, <span class="string">'notepad.txt'</span>)</span><br></pre></td></tr></table></figure>
 <p>这时再使用 <code>cat</code> 查看文件内容就不会再有乱码了。</p>
-<p>而对于原本在 Windows 上创建的记事本文件 <code>notepad.txt</code>，在 Windows 下使用 Python 解释器来处理也是用的 utf-8 ，为什么没有出现乱码呢？ 这其实是 Windows 里的某个程序帮你处理了，而 Linux 下你没有使用其他程序进行处理，所以会出现乱码问题。</p>
+<p>而对于原本在 Windows 上创建的记事本文件 <code>notepad.txt</code>，在 Windows 下使用 Python 解释器来处理也是用的 utf-8 ，为什么没有出现乱码呢？ 这其实是 Windows 里的某个程序帮你处理了，而 Linux 下没有使用其他程序进行处理，所以会出现乱码问题。</p>
 <h2 id="内存中的执行"><a href="#内存中的执行" class="headerlink" title="内存中的执行"></a>内存中的执行</h2><p>Python 读取已经加载到内存的代码（unicode 编码的二进制），然后执行，在执行过程中可能会开辟新的内存空间，比如 <code>x=&quot;hello&quot;</code></p>
 <p>内存的编码使用 unicode，不代表内存中全都是 unicode 编码的二进制，在程序执行之前，内存中确实都是 unicode 编码的二进制，比如从文件中读取了一行 <code>x=&quot;hello&quot;</code> ，其中的 x，等号，引号，地位都一样，都是普通字符而已，都是以 unicode 编码的二进制形式存放于内存中的。但是程序在执行过程中，会申请内存（与程序代码所存在的内存是两个空间），可以存放任意编码格式的数据，比如 <code>x=&quot;hello&quot;</code> ，会被 Python 解释器识别为字符串，会申请内存空间来存放字符串 <code>hello</code>，然后让 <code>x</code> 指向该内存地址，此时新申请的该内存地址保存也是 unicode 编码的 <code>hello</code> ，如果代码换成 <code>x=&quot;hello&quot;.encode(&#39;utf-8&#39;)</code>，那么新申请的内存空间里存放的就是 utf-8 编码的字符串 <code>hello</code> 了.</p>
 <p><img src="/2019/03/02/200410-Python的字符编码/02_encode3.png" alt=""></p>
@@ -1214,7 +1213,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1299,7 +1298,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1489,7 +1492,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

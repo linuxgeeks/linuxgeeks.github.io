@@ -101,18 +101,18 @@
 
 
 
-  <meta name="description" content="字符串的格式化字符串的 s.format() 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代 12&amp;gt;&amp;gt;&amp;gt; &quot;The novel &apos;&amp;#123;0&amp;#125;&apos; was published in &amp;#123;1&amp;#125;&quot;.format(&quot;Hard Times&quot;, 1854)&quot;The novel &apos;Hard Times&apos; was publishe">
+  <meta name="description" content="字符串的格式化字符串的 s.format() 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代： 12&amp;gt;&amp;gt;&amp;gt; &quot;The novel &apos;&amp;#123;0&amp;#125;&apos; was published in &amp;#123;1&amp;#125;&quot;.format(&quot;Hard Times&quot;, 1854)&quot;The novel &apos;Hard Times&apos; was publish">
 <meta name="keywords" content="Python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python中字符串的format方法">
 <meta property="og:url" content="http://linuxgeeks.github.io/2019/03/05/204910-Python中字符串的format方法/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="字符串的格式化字符串的 s.format() 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代 12&amp;gt;&amp;gt;&amp;gt; &quot;The novel &apos;&amp;#123;0&amp;#125;&apos; was published in &amp;#123;1&amp;#125;&quot;.format(&quot;Hard Times&quot;, 1854)&quot;The novel &apos;Hard Times&apos; was publishe">
+<meta property="og:description" content="字符串的格式化字符串的 s.format() 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代： 12&amp;gt;&amp;gt;&amp;gt; &quot;The novel &apos;&amp;#123;0&amp;#125;&apos; was published in &amp;#123;1&amp;#125;&quot;.format(&quot;Hard Times&quot;, 1854)&quot;The novel &apos;Hard Times&apos; was publish">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-27T14:20:53.751Z">
+<meta property="og:updated_time" content="2019-12-03T08:58:31.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中字符串的format方法">
-<meta name="twitter:description" content="字符串的格式化字符串的 s.format() 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代 12&amp;gt;&amp;gt;&amp;gt; &quot;The novel &apos;&amp;#123;0&amp;#125;&apos; was published in &amp;#123;1&amp;#125;&quot;.format(&quot;Hard Times&quot;, 1854)&quot;The novel &apos;Hard Times&apos; was publishe">
+<meta name="twitter:description" content="字符串的格式化字符串的 s.format() 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代： 12&amp;gt;&amp;gt;&amp;gt; &quot;The novel &apos;&amp;#123;0&amp;#125;&apos; was published in &amp;#123;1&amp;#125;&quot;.format(&quot;Hard Times&quot;, 1854)&quot;The novel &apos;Hard Times&apos; was publish">
 
 
 
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-27 22:20:53" itemprop="dateModified" datetime="2019-03-27T22:20:53+08:00">2019-03-27</time>
+                <time title="修改时间：2019-12-03 16:58:31" itemprop="dateModified" datetime="2019-12-03T16:58:31+08:00">2019-12-03</time>
               </span>
             
           
@@ -450,28 +450,22 @@
       
 
       
-        <h1 id="字符串的格式化"><a href="#字符串的格式化" class="headerlink" title="字符串的格式化"></a>字符串的格式化</h1><p>字符串的 <code>s.format()</code> 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代</p>
+        <h1 id="字符串的格式化"><a href="#字符串的格式化" class="headerlink" title="字符串的格式化"></a>字符串的格式化</h1><p>字符串的 <code>s.format()</code> 方法会返回一个新字符串，在新字符串中原字符串的替换字段被适当格式化后的参数所替代：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"The novel '&#123;0&#125;' was published in &#123;1&#125;"</span>.format(<span class="string">"Hard Times"</span>, <span class="number">1854</span>)</span><br><span class="line"><span class="string">"The novel 'Hard Times' was published in 1854"</span></span><br></pre></td></tr></table></figure>
-<p>每个替换字段都是由包含在花括号中的字段名标识的</p>
-<ul>
-<li>如果字段名是简单的整数，就将被作为传递给 <code>s.format()</code> 方法的一个参数的索引位置。因此在这种情况下，名为 0 的字段被第一个参数所替代，名为 1 的字段则被第二个参数所替代。如果需要在格式化字符串中包含花括号，就需要将其复写，下面给出一个实例：</li>
-</ul>
+<p>每个替换字段都是由包含在花括号中的字段名标识的，如果字段名是简单的整数，就将被作为传递给 <code>s.format()</code> 方法的一个参数的索引位置。因此在这种情况下，名为 0 的字段被第一个参数所替代，名为 1 的字段则被第二个参数所替代。如果需要在格式化字符串中包含花括号，就需要将其复写：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"&#123;&#123;&#123;0&#125;&#125;&#125; &#123;1&#125;;-&#125;&#125;"</span>.format(<span class="string">"I'm in braces"</span>, <span class="string">"I'm not"</span>)</span><br><span class="line"><span class="string">"&#123;I'm in braces&#125; I'm not;-&#125;"</span></span><br></pre></td></tr></table></figure>
 <p>如果我们试图连接字符串与数字将产生 <code>TypeError</code> 异常，但使用 <code>str.format()</code> 方法可以很容易地做到这一点：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"&#123;0&#125;&#123;1&#125;"</span>.format(<span class="string">"The amount due is $"</span>,<span class="number">200</span>)</span><br><span class="line"><span class="string">'The amount due is $200'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>字段名可以是一个与某个 <code>s.format()</code> 方法参数对应的整数，也可以是方法的某个关键字参数的名称</li>
-</ul>
+<p>字段名除了可以是一个与某个 <code>s.format()</code> 方法参数对应的整数，也可以是方法的某个关键字参数的名称。</p>
 <p>使用关键字参数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>string=<span class="string">"My name is &#123;who&#125; , I am is &#123;age&#125; years old "</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(string.format(who=<span class="string">"Linux"</span>,age=<span class="number">18</span>))</span><br><span class="line">My name <span class="keyword">is</span> Linux , I am <span class="keyword">is</span> <span class="number">18</span> years old</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(string.format_map(&#123;<span class="string">"who"</span>:<span class="string">"Litingjie"</span>,<span class="string">"age"</span>:<span class="string">"18"</span>&#125;))</span><br><span class="line">My name <span class="keyword">is</span> Litingjie , I am <span class="keyword">is</span> <span class="number">18</span> years old</span><br></pre></td></tr></table></figure>
 <p>使用位置参数和关键字参数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>string=<span class="string">"My name is &#123;who&#125; , I am is &#123;0&#125; years old "</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(string.format(<span class="number">18</span>,who=<span class="string">"Linux"</span>))</span><br><span class="line">My name <span class="keyword">is</span> Linux , I am <span class="keyword">is</span> <span class="number">18</span> years old</span><br></pre></td></tr></table></figure>
 <p><strong>注意：在参数列表中，关键字参数总是在位置参数之后</strong></p>
-<ul>
-<li>字段名可以引用组合数据类型——比如列表。在这样的情况下，我们可以包含一个索引（不是一个分片）来标识特定的数据项</li>
-</ul>
+<p>字段名可以引用组合数据类型——比如列表。在这样的情况下，我们可以包含一个索引（不是一个分片）来标识特定的数据项：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>stock = [<span class="string">"paper"</span>, <span class="string">"envelopes"</span>, <span class="string">"notepads"</span>, <span class="string">"pens"</span>, <span class="string">"paper clips"</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"We have &#123;0[1]&#125; and &#123;0[2]&#125; in stock"</span>.format(stock)</span><br><span class="line"><span class="string">'We have envelopes and notepads in stock'</span></span><br></pre></td></tr></table></figure>
-<p>0 引用的是位置参数，因此 <code>{0[1]}</code>是列表 <code>stock</code> 参数的第二个数据项，<code>{0[2]}</code> 是 列表 <code>stock</code> 参数的第三个数据项。字典对象也可以用于 <code>s.format()</code> 方法：</p>
+<p>在上述示例中， 0 引用的是位置参数，因此 <code>{0[1]}</code> 是列表 <code>stock</code> 参数的第二个数据项，<code>{0[2]}</code> 是 列表 <code>stock</code> 参数的第三个数据项。</p>
+<p>字典对象也可以用于 <code>s.format()</code> 方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">"The &#123;0[animal]&#125; weighs &#123;0[weight]&#125;kg"</span>.format(d)</span><br><span class="line"><span class="string">'The elephantn weighs 12000kg'</span></span><br></pre></td></tr></table></figure>
 
       
@@ -628,7 +622,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -713,7 +707,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -903,7 +901,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

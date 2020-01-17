@@ -101,18 +101,18 @@
 
 
 
-  <meta name="description" content="input很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 input() 函数可以很便捷地获取用户的输入 12name = input(&quot;What&apos;s your name ? &quot;)print(&quot;Your name is&quot;, name) 输出结果 12What&amp;apos;s your name ? To">
+  <meta name="description" content="input很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 input() 函数可以很便捷地获取用户的输入： 12name = input(&quot;What&apos;s your name ? &quot;)print(&quot;Your name is&quot;, name) 输出结果 12What&amp;apos;s your name ? T">
 <meta name="keywords" content="Python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python中的input和print方法">
 <meta property="og:url" content="http://linuxgeeks.github.io/2019/03/05/083910-Python中的input和print方法/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="input很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 input() 函数可以很便捷地获取用户的输入 12name = input(&quot;What&apos;s your name ? &quot;)print(&quot;Your name is&quot;, name) 输出结果 12What&amp;apos;s your name ? To">
+<meta property="og:description" content="input很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 input() 函数可以很便捷地获取用户的输入： 12name = input(&quot;What&apos;s your name ? &quot;)print(&quot;Your name is&quot;, name) 输出结果 12What&amp;apos;s your name ? T">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-27T14:20:53.700Z">
+<meta property="og:updated_time" content="2019-12-03T07:49:11.534Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的input和print方法">
-<meta name="twitter:description" content="input很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 input() 函数可以很便捷地获取用户的输入 12name = input(&quot;What&apos;s your name ? &quot;)print(&quot;Your name is&quot;, name) 输出结果 12What&amp;apos;s your name ? To">
+<meta name="twitter:description" content="input很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 input() 函数可以很便捷地获取用户的输入： 12name = input(&quot;What&apos;s your name ? &quot;)print(&quot;Your name is&quot;, name) 输出结果 12What&amp;apos;s your name ? T">
 
 
 
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-27 22:20:53" itemprop="dateModified" datetime="2019-03-27T22:20:53+08:00">2019-03-27</time>
+                <time title="修改时间：2019-12-03 15:49:11" itemprop="dateModified" datetime="2019-12-03T15:49:11+08:00">2019-12-03</time>
               </span>
             
           
@@ -450,38 +450,31 @@
       
 
       
-        <h1 id="input"><a href="#input" class="headerlink" title="input"></a>input</h1><p>很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 <code>input()</code> 函数可以很便捷地获取用户的输入</p>
+        <h1 id="input"><a href="#input" class="headerlink" title="input"></a>input</h1><p>很多情况下运行的 Python 程序并没有和用户交互，程序运行后就等待结果的输出。而有些程序是需要用户输入才能继续向下执行。Python 中使用 <code>input()</code> 函数可以很便捷地获取用户的输入：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name = input(<span class="string">"What's your name ? "</span>)</span><br><span class="line">print(<span class="string">"Your name is"</span>, name)</span><br></pre></td></tr></table></figure>
 <p>输出结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">What&apos;s your name ? Tom</span><br><span class="line">Your name is Tom</span><br></pre></td></tr></table></figure>
 <p>需要注意的是， <code>input()</code> 返回的数据类型都是字符串</p>
 <h1 id="print"><a href="#print" class="headerlink" title="print"></a>print</h1><h2 id="使用帮助"><a href="#使用帮助" class="headerlink" title="使用帮助"></a>使用帮助</h2><p><code>print()</code> 函数是 Python 的内置方法，用于将指定的值打印到屏幕输出，或文件流。它的参数如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>help(<span class="keyword">print</span>)</span><br><span class="line">Help on built-<span class="keyword">in</span> function <span class="keyword">print</span> <span class="keyword">in</span> module builtins:</span><br><span class="line"></span><br><span class="line">print(...)</span><br><span class="line">    print(value, ..., sep=<span class="string">' '</span>, end=<span class="string">'\n'</span>, file=sys.stdout, flush=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">    Prints the values to a stream, <span class="keyword">or</span> to sys.stdout by default.</span><br><span class="line">    Optional keyword arguments:</span><br><span class="line">    file:  a file-like object (stream); defaults to the current sys.stdout.</span><br><span class="line">    sep:   string inserted between values, default a space.</span><br><span class="line">    end:   string appended after the last value, default a newline.</span><br><span class="line">    flush: whether to forcibly flush the stream.</span><br></pre></td></tr></table></figure>
-<h2 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h2><ul>
-<li><code>*values</code> : 表示要打印的值，任何多个无名参数, 各个值之间用 <code>,</code> 隔开，打印出来的各个值之间默认是以空格隔开</li>
-</ul>
+<h2 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h2><p><code>*values</code> : 表示要打印的值，任何多个无名参数, 各个值之间用 <code>,</code> 隔开，打印出来的各个值之间默认是以空格隔开</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'Tom'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>age = <span class="string">'18'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name, age)</span><br><span class="line">Tom <span class="number">18</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>sep=&#39; &#39;</code>： 表示当输入多个打印的值时，各个值之间分割方式， 默认是空格，也可以自定义，例如</li>
-</ul>
+<p><code>sep=&#39; &#39;</code>： 表示当输入多个打印的值时，各个值之间分割方式， 默认是空格，也可以自定义，例如</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'Tom'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>age = <span class="string">'18'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name, age, sep = <span class="string">'---'</span> )</span><br><span class="line">Tom--<span class="number">-18</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>end=&#39;\n&#39;</code>: 控制 <code>print()</code> 中传入值输出完后的结束符号，默认是换行，也可以自定义，例如：</li>
-</ul>
+<p><code>end=&#39;\n&#39;</code>: 控制 <code>print()</code> 中传入值输出完后的结束符号，默认是换行，也可以自定义，例如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'Tom'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>age = <span class="string">'18'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name);print(age)</span><br><span class="line">Tom</span><br><span class="line"><span class="number">18</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name, end=<span class="string">' is '</span>);print(age, end=<span class="string">' years old '</span>)</span><br><span class="line">Tom <span class="keyword">is</span> <span class="number">18</span> years old</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>file=sys.stdout</code>：在 Linux 中一切皆文件，包括屏幕终端输出，<code>file</code> 用来设置输出到哪里，默认是输出到屏幕(标准输出)，在 Python 中就是 <code>sys.stdout</code> 。我们可以设置 <code>file=&#39;/tmp/test.txt&#39;</code>，把内容存到该文件中</li>
-</ul>
+<p><code>file=sys.stdout</code>：在 Linux 中一切皆文件，包括屏幕终端输出，<code>file</code> 用来设置输出到哪里，默认是输出到屏幕(标准输出)，在 Python 中就是 <code>sys.stdout</code> 。我们可以设置 <code>file=&#39;/tmp/test.txt&#39;</code>，把内容存到该文件中</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">r'/tmp/test.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line">print(<span class="string">'Tom is 18 years old'</span>, file=f)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>flush=False</code>：刷新内存中的缓冲区数据，是否立刻将缓冲区的数据写入硬盘中的文件，默认为 <code>False</code> 。默认情况下 <code>print()</code> 将内容输出到 <code>sys.stdout</code> ，即标准输出（屏幕）文件，比较下面两种的参数实现进度条的效果</li>
-</ul>
+<p><code>flush=False</code>：刷新内存中的缓冲区数据，是否立刻将缓冲区的数据写入 <code>file=</code> 所指定的输出位置，默认为 <code>False</code> 。默认情况下 <code>print()</code> 将内容输出到 <code>sys.stdout</code> ，即标准输出（屏幕）文件，比较下面两种的参数实现进度条的效果</p>
 <p>默认情况，<code>flush=False</code>，当所有 <code>sleep</code> 完成之后才会写到屏幕输出文件</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    print(<span class="string">'*'</span>, end=<span class="string">''</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
 <p>人为干预，<code>flush=True</code>，每次输出都会写到屏幕输出文件</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    print(<span class="string">'*'</span>, end=<span class="string">''</span>, flush=<span class="keyword">True</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
 <p>另一种实现效果</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">101</span>, <span class="number">2</span>):</span><br><span class="line">    time.sleep(<span class="number">0.3</span>)</span><br><span class="line">    char_num = i // <span class="number">2</span>  <span class="comment"># 打印多少个'*'</span></span><br><span class="line">    per_str = <span class="string">'\r%s%% : %s'</span> % (i, <span class="string">'*'</span> * char_num)</span><br><span class="line">    print(per_str, end=<span class="string">''</span>, flush=<span class="keyword">True</span>)</span><br><span class="line">print(<span class="string">''</span>)</span><br><span class="line"><span class="comment"># \r 可以把光标移动到行首但不换行，覆盖之前行的内容</span></span><br></pre></td></tr></table></figure>
+<p>请注意，如果使用了 Pycharm 在远程调试 Linux 的代码时，会给解释器添加 <code>-u</code> 选项，这样将会导致看不出来实际效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh://root@192.168.127.129:22/opt/python3-venv/bin/python3 -u /Python3/everyday/test.py</span><br></pre></td></tr></table></figure>
+<p>这时候应该在 Linux 终端执行代码查看效果。</p>
 <h2 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h2><p>Python 中的 <code>print</code> 继承了 C 中的 <code>printf</code>，例如</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'%s x %s = %s'</span> % (<span class="number">5</span>, <span class="number">6</span>, <span class="number">5</span> * <span class="number">6</span>))</span><br><span class="line"><span class="number">5</span> x <span class="number">6</span> = <span class="number">30</span></span><br></pre></td></tr></table></figure>
 <ul>
@@ -504,9 +497,8 @@
 <li>如果是 <code>*</code>，那么精度将从元组中读出</li>
 </ul>
 </li>
-<li><p>字符串格式化转换类型</p>
-</li>
 </ul>
+<p>字符串格式化转换类型</p>
 <table>
 <thead>
 <tr>
@@ -569,47 +561,38 @@
 </tr>
 </tbody>
 </table>
-<ul>
-<li>示例</li>
-</ul>
+<p>示例</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最小宽度为2，默认右对齐</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'%2sx%2s=%2s'</span> % (<span class="number">5</span>, <span class="number">6</span>, <span class="number">5</span> * <span class="number">6</span>))</span><br><span class="line"> <span class="number">5</span>x <span class="number">6</span>=<span class="number">30</span></span><br><span class="line"><span class="comment"># 最小宽度为2，左对齐</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'%-2sx%-2s=%-2s'</span> % (<span class="number">5</span>, <span class="number">6</span>, <span class="number">5</span> * <span class="number">6</span>))</span><br><span class="line"><span class="number">5</span> x6 =<span class="number">30</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最小宽度为8,</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'%8d'</span> % <span class="number">9</span>)</span><br><span class="line">       <span class="number">9</span></span><br><span class="line"><span class="comment"># 最小宽度为8，位数不够用0填充	   </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">'%08d'</span> % <span class="number">9</span>)</span><br><span class="line"><span class="number">00000009</span></span><br></pre></td></tr></table></figure>
-<h2 id="颜色输出"><a href="#颜色输出" class="headerlink" title="颜色输出"></a>颜色输出</h2><h3 id="示例和说明"><a href="#示例和说明" class="headerlink" title="示例和说明"></a>示例和说明</h3><ul>
-<li>示例</li>
-</ul>
+<h2 id="颜色输出"><a href="#颜色输出" class="headerlink" title="颜色输出"></a>颜色输出</h2><p>示例</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'\033[0;31m Hello \033[0;39m'</span>)</span><br><span class="line"><span class="comment"># print('\033[字背景颜色;文字颜色m 字符串\033[0m') </span></span><br><span class="line">print(<span class="string">'\033[1;36;41m Something here \033[0m'</span>)</span><br></pre></td></tr></table></figure>
+<p>说明</p>
 <ul>
-<li>说明<ul>
 <li><code>\</code> 代表转义</li>
 <li><code>033</code> 代表键盘的Control键</li>
 <li><code>1</code> 字体行为(高亮，闪烁，下划线等)；</li>
 <li><code>36</code> 字体颜色</li>
 <li><code>41</code> 字体背景色</li>
 </ul>
+<p>注：</p>
+<ul>
+<li><p>字背景颜色和文字颜色之间是英文的分号 <code>;</code></p>
 </li>
-<li>注：<ul>
-<li>字背景颜色和文字颜色之间是英文的分号’;’</li>
-<li>文字颜色后面有个m </li>
-<li>字符串前后可以没有空格，如果有的话，输出也是同样有空格 </li>
-</ul>
+<li><p>文字颜色后面有个m </p>
+</li>
+<li><p>字符串前后可以没有空格，如果有的话，输出也是同样有空格 </p>
 </li>
 </ul>
-<h3 id="文字和背景颜色搭配"><a href="#文字和背景颜色搭配" class="headerlink" title="文字和背景颜色搭配"></a>文字和背景颜色搭配</h3><ul>
-<li>字体颜色范围值 30~37</li>
-</ul>
+<h3 id="文字和背景颜色搭配"><a href="#文字和背景颜色搭配" class="headerlink" title="文字和背景颜色搭配"></a>文字和背景颜色搭配</h3><p>字体颜色范围值 30~37</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"\033[30m 黑色字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[31m 红色字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[32m 绿色字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[33m 黄色字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[34m 蓝色字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[35m 紫色字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[36m 天蓝字 \033[0m"</span></span><br><span class="line"><span class="string">"\033[37m 白色字 \033[0m"</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>字体背景颜色范围值 40~47</li>
-</ul>
+<p>字体背景颜色范围值 40~47</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"\033[40;37m 黑底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[41;37m 红底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[42;37m 绿底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[43;37m 黄底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[44;37m 蓝底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[45;37m 紫底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[46;37m 天蓝底白字 \033[0m"</span> </span><br><span class="line"><span class="string">"\033[47;30m 白底黑字 \033[0m"</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>控制选项说明 </li>
-</ul>
+<p>控制选项说明 </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">\033[0m <span class="comment"># 关闭所有属性 </span></span><br><span class="line">\033[1m <span class="comment"># 设置高亮度 </span></span><br><span class="line">\033[4m <span class="comment"># 下划线 </span></span><br><span class="line">\033[5m <span class="comment"># 闪烁 </span></span><br><span class="line">\033[7m <span class="comment"># 反显 </span></span><br><span class="line">\033[8m <span class="comment"># 消隐 </span></span><br><span class="line">\033[30m — \33[37m <span class="comment"># 设置前景色 </span></span><br><span class="line">\033[40m — \33[47m <span class="comment"># 设置背景色 </span></span><br><span class="line">\033[60A  <span class="comment"># 光标上移60行 </span></span><br><span class="line">\033[60B  <span class="comment"># 光标下移60行 </span></span><br><span class="line">\033[60C  <span class="comment"># 光标右移60行 </span></span><br><span class="line">\033[60G  <span class="comment"># 光标右移60行</span></span><br><span class="line">\033[60D  <span class="comment"># 光标左移60行 </span></span><br><span class="line">\033[y;xH <span class="comment"># 设置光标位置 </span></span><br><span class="line">\033[2J   <span class="comment"># 清屏 </span></span><br><span class="line">\033[K    <span class="comment"># 清除从光标到行尾的内容 </span></span><br><span class="line">\033[s    <span class="comment"># 保存光标位置 </span></span><br><span class="line">\033[u    <span class="comment"># 恢复光标位置 </span></span><br><span class="line">\033[?25l <span class="comment"># 隐藏光标 </span></span><br><span class="line">\033[?25h <span class="comment"># 显示光标</span></span><br></pre></td></tr></table></figure>
+<p>额外说明</p>
 <ul>
-<li>额外说明<ul>
-<li>前景颜色各数字是对应背景颜色减去10</li>
-<li>结束非常规字符序列的 <code>m</code> 要紧跟前面的数字，不能有空格</li>
-</ul>
+<li><p>前景颜色各数字是对应背景颜色减去10</p>
+</li>
+<li><p>结束非常规字符序列的 <code>m</code> 要紧跟前面的数字，不能有空格</p>
 </li>
 </ul>
 <h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><p>输入的内容如下</p>
@@ -773,7 +756,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -858,7 +841,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1027,7 +1014,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#input"><span class="nav-number">1.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#print"><span class="nav-number">2.</span> <span class="nav-text">print</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用帮助"><span class="nav-number">2.1.</span> <span class="nav-text">使用帮助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数说明"><span class="nav-number">2.2.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化输出"><span class="nav-number">2.3.</span> <span class="nav-text">格式化输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#颜色输出"><span class="nav-number">2.4.</span> <span class="nav-text">颜色输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例和说明"><span class="nav-number">2.4.1.</span> <span class="nav-text">示例和说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文字和背景颜色搭配"><span class="nav-number">2.4.2.</span> <span class="nav-text">文字和背景颜色搭配</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#练习"><span class="nav-number">3.</span> <span class="nav-text">练习</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#input"><span class="nav-number">1.</span> <span class="nav-text">input</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#print"><span class="nav-number">2.</span> <span class="nav-text">print</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用帮助"><span class="nav-number">2.1.</span> <span class="nav-text">使用帮助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数说明"><span class="nav-number">2.2.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化输出"><span class="nav-number">2.3.</span> <span class="nav-text">格式化输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#颜色输出"><span class="nav-number">2.4.</span> <span class="nav-text">颜色输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文字和背景颜色搭配"><span class="nav-number">2.4.1.</span> <span class="nav-text">文字和背景颜色搭配</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#练习"><span class="nav-number">3.</span> <span class="nav-text">练习</span></a></li></ol></div>
             
 
           </div>
@@ -1048,7 +1035,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

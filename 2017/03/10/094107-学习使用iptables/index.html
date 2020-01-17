@@ -112,8 +112,8 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables1.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables2.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables3.png">
-<meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables_03.gif">
-<meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables_04.gif">
+<meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables3-2.png">
+<meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables3-3.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables3.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables4.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables5.png">
@@ -125,7 +125,7 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables11.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables12.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2017/03/10/094107-学习使用iptables/iptables13.png">
-<meta property="og:updated_time" content="2019-09-02T06:14:45.727Z">
+<meta property="og:updated_time" content="2020-01-17T06:56:39.346Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习使用iptables">
 <meta name="twitter:description" content="基础知识防火墙 工作于主机或网络边缘，对于进出的报文根据事先定义的规则做检查，对被匹配到的报文作出相应处理的组件 iptables linux 的包过滤功能，即 linux 防火墙，它由 netfilter 和 iptables 两个组件组成。真正实现防火墙功能的是 netfilter，它是一个 Linux 内核模块，工作于 Kernel space 做实际的包过滤。 Netfilter 的官方站">
@@ -422,7 +422,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-09-02 14:14:45" itemprop="dateModified" datetime="2019-09-02T14:14:45+08:00">2019-09-02</time>
+                <time title="修改时间：2020-01-17 14:56:39" itemprop="dateModified" datetime="2020-01-17T14:56:39+08:00">2020-01-17</time>
               </span>
             
           
@@ -499,18 +499,18 @@
 <p>而实际上的处理过程比较复杂，数据包要经过多个 table 来处理。</p>
 <p>对于 Web 服务器来说，要想让客户端对它发送 web 请求，就得处理 filter 的 INPUT 链； 对于用作局域网路由器的 Linux 来说，就得要分析 nat 的各个链以及 filter 的 FORWARD 链才行。</p>
 <p>总而言之，各个表以及链之间是有关联的：</p>
-<p><img src="/2017/03/10/094107-学习使用iptables/iptables_03.gif" alt=""></p>
+<p><img src="/2017/03/10/094107-学习使用iptables/iptables3-2.png" alt=""></p>
 <p>上面的图示很复杂，不过基本上 iptables 可以控制三种数据包的流向：</p>
 <ul>
-<li><p>数据包进入 Linux 主机使用资源 (<strong>路径 A</strong>)，在路由判断后已经确定是向 Linux 主机发送请求的数据包，比如客户端向 web 服务器端发送的请求，主要会经过 filter 的 INPUT 链来进行处理；</p>
+<li><p>数据包进入 Linux 主机使用资源 (<strong>路径 A</strong>)，在路由判断后已经确定是向 Linux 主机发送请求的数据包，比如客户端向 web 服务器端发送的请求，主要会经过 filter 表的 INPUT 链来进行处理；</p>
 </li>
-<li><p>数据包的目的地不是本机，而是经过本机做转发，没有使用本机的资源，向其后端主机流动 (<strong>路径 B</strong>)： 在路由判断之前进行数据包表头的修订作业后，发现到数据包主要是要经过防火墙而去后端，此时就会经过路径 B 来跑动。 主要经过的链是 nat 的 PREROUTING， filter 的 FORWARD 以及 nat 的 POSTROUTING。</p>
+<li><p>数据包的目的地不是本机，而是经过本机做转发，没有使用本机的资源，向其后端主机流动 (<strong>路径 B</strong>)： 在路由判断之前进行数据包表头的修订作业后，发现到数据包主要是要经过防火墙而去后端，此时就会经过路径 B 来跑动。 主要经过的链是 nat 表的 PREROUTING， filter 表的 FORWARD 以及 nat表 的 POSTROUTING。</p>
 </li>
-<li><p>数据包由本机发送出去 (<strong>路径 C</strong>)： 例如服务器端要响应客户端的请求，或者是本机作为客户端向其他服务器主动发送的数据包，都是经过路径 C 来处理的。先是经过路由判断， 决定了输出的路径后，再由 filter 的 OUTPUT 链来处理，当然最终还会经过 nat 的 POSTROUTING 链。</p>
+<li><p>数据包由本机发送出去 (<strong>路径 C</strong>)： 例如服务器端要响应客户端的请求，或者是本机作为客户端向其他服务器主动发送的数据包，都是经过路径 C 来处理的。先是经过路由判断， 决定了输出的路径后，再由 filter 表的 OUTPUT 链来处理，当然最终还会经过 nat 的 POSTROUTING 链。</p>
 </li>
 </ul>
-<p>由于 mangle 这个表的过滤很少被使用，将上面图里 mangle 拿掉的话，那就容易看的多了：</p>
-<p><img src="/2017/03/10/094107-学习使用iptables/iptables_04.gif" alt=""></p>
+<p>事实上，不建议使用 raw 和 mangle 做包的过滤，因为他们是用来做高级操作的。在不考虑搭建隧道的情况下，将上面图简化后，那就容易看的多了：</p>
+<p><img src="/2017/03/10/094107-学习使用iptables/iptables3-3.png" alt=""></p>
 <h1 id="iptables命令"><a href="#iptables命令" class="headerlink" title="iptables命令"></a>iptables命令</h1><p>iptables 命令用来编写规则，规则就是指向标，对不同的连接和数据包做过滤，或者允许它们去向什么地方。</p>
 <p>它的语法格式如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables [-t table]  <span class="built_in">command</span> CHAIN [match] [target/jump]</span><br></pre></td></tr></table></figure>
@@ -804,7 +804,7 @@
 <p>另外，当网卡停用时 MASQUERADE 不会记住任何连接，而 SNAT 是会将连接跟踪的数据保留下来一段时间，并且 SNAT 会占用很多链接追踪的内存资源。</p>
 <p>所以当 IP 地址是动态获取而不固定时，使用 MASQUERADE，有固定的 IP 地址时最好用 SNAT。</p>
 <p>还要注意 MASQUERADE 和 SNAT 一样，只能用于 nat 表的 POSTROUTING 链。它也可以指定源端口或范围，如果是指定单个端口用 <code>--to-ports 1025</code>，指定端口范围用 <code>--to-1024-3000</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I POSTROUTING -o eth0 -s 192.168.1.0/24 j MASQUERADE</span><br><span class="line"><span class="comment"># 不管现在 eth0上获得了怎样的动态 IP，使用 MASQUERADE 都会自动读取网卡上可用 IP 然后做 SNAT 出去，这样就实现了很好的动态SNAT地址转换</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I POSTROUTING -o eth0 -s 192.168.1.0/24 -j MASQUERADE</span><br><span class="line"><span class="comment"># 不管现在 eth0上获得了怎样的动态 IP，使用 MASQUERADE 都会自动读取网卡上可用 IP 然后做 SNAT 出去，这样就实现了很好的动态 SNAT 地址转换</span></span><br></pre></td></tr></table></figure>
 <h2 id="DNAT"><a href="#DNAT" class="headerlink" title="DNAT"></a>DNAT</h2><p>这个 target 是用来做目标 IP 地址转换的，就是重写包的目的 IP 地址。如果一个包被匹配了，那么和它属于同一个流的所有的包都会被自动转换，然后就可以被路由到正确的主机或网络。目的地址也可以是一个范围，这样的话 DNAT会为每一个流随机分配一个地址。因此可以用这个 target 做某种类型的负载均衡。为了便于理解，下面阐述为映射。</p>
 <p>注意，DNAT 必须在 POSTROUTING 之前进行，因为交给 POSTROUTING 的时候目标地址就已经确定了，此时做 DNAT 已经为时已晚。并且 DNAT 只能用在 nat 表的 PREROUTING 和 OUTPUT 链中，或者是被这两条链调用的链里。</p>
 <p><img src="/2017/03/10/094107-学习使用iptables/iptables8.png" alt=""></p>
@@ -1817,7 +1817,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1902,7 +1902,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2092,7 +2096,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

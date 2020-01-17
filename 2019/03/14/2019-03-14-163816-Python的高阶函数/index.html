@@ -101,18 +101,18 @@
 
 
 
-  <meta name="description" content="函数式编程函数是 Python 内建支持的一种封装，我们通过把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。 函数式编程中的函数这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 y=x*x 函数计算 x 的平方根，">
+  <meta name="description" content="函数式编程函数是 Python 内建支持的一种封装，把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。 函数式编程中的函数这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 y = x * x 函数计算 x 的平方根，">
 <meta name="keywords" content="Python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python的高阶函数">
 <meta property="og:url" content="http://linuxgeeks.github.io/2019/03/14/2019-03-14-163816-Python的高阶函数/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="函数式编程函数是 Python 内建支持的一种封装，我们通过把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。 函数式编程中的函数这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 y=x*x 函数计算 x 的平方根，">
+<meta property="og:description" content="函数式编程函数是 Python 内建支持的一种封装，把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。 函数式编程中的函数这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 y = x * x 函数计算 x 的平方根，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-01T12:53:32.053Z">
+<meta property="og:updated_time" content="2019-12-05T08:58:53.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的高阶函数">
-<meta name="twitter:description" content="函数式编程函数是 Python 内建支持的一种封装，我们通过把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。 函数式编程中的函数这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 y=x*x 函数计算 x 的平方根，">
+<meta name="twitter:description" content="函数式编程函数是 Python 内建支持的一种封装，把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。 函数式编程中的函数这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 y = x * x 函数计算 x 的平方根，">
 
 
 
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-01 20:53:32" itemprop="dateModified" datetime="2019-07-01T20:53:32+08:00">2019-07-01</time>
+                <time title="修改时间：2019-12-05 16:58:53" itemprop="dateModified" datetime="2019-12-05T16:58:53+08:00">2019-12-05</time>
               </span>
             
           
@@ -450,86 +450,84 @@
       
 
       
-        <h1 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h1><p>函数是 Python 内建支持的一种封装，我们通过把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。</p>
-<p>函数式编程中的<strong>函数</strong>这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 <code>y=x*x</code> 函数计算 <code>x</code> 的平方根，只要 <code>x</code> 的平方，不论什么时候调用，调用几次，值都是不变的</p>
-<p>Python 对函数式编程提供部分支持。由于 Python 允许使用变量，因此 Python 不是纯函数式编程语言。</p>
-<p>举例来说，现在有这样一个数学表达式：</p>
+        <h1 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h1><p>函数是 Python 内建支持的一种封装，把大段代码拆成函数，通过一层一层的函数调用，就可以把复杂任务分解成简单的任务，这种分解可以称之为面向过程的程序设计。函数就是面向过程的程序设计的基本单元。</p>
+<p>函数式编程中的<strong>函数</strong>这个术语不是指计算机中的函数，而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如 <code>y = x * x</code> 函数计算 <code>x</code> 的平方根，只要 <code>x</code> 的平方，不论什么时候调用，调用几次，值都是不变的。</p>
+<p>Python 对函数式编程提供部分支持，由于 Python 允许使用变量，因此 Python 不是纯函数式编程语言。举例来说，现在有这样一个数学表达式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span> + <span class="number">2</span>) * <span class="number">3</span> - <span class="number">4</span></span><br></pre></td></tr></table></figure>
 <p>传统的过程式编程，可能这样写：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a = <span class="number">1</span> + <span class="number">2</span>;</span><br><span class="line">var b = a * <span class="number">3</span>;</span><br><span class="line">var c = b - <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
 <p>函数式编程要求使用函数，我们可以把运算过程定义为不同的函数，然后写成下面这样：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var result = subtract(multiply(add(<span class="number">1</span>,<span class="number">2</span>), <span class="number">3</span>), <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
-<p>这段代码再演进以下，可以变成这样</p>
+<p>这段代码再演进一下，可以变成这样：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add(<span class="number">1</span>,<span class="number">2</span>).multiply(<span class="number">3</span>).subtract(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-<p>这基本就是自然语言的表达了。再看下面的代码，大家应该一眼就能明白它的意思吧：</p>
+<p>这基本就是自然语言的表达了，再看下面的代码，应该一眼就能明白它的意思：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">merge([<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]).sort().search(<span class="string">"2"</span>)</span><br></pre></td></tr></table></figure>
-<p>因此，函数式编程的代码更容易理解</p>
-<p>要想学好函数式编程，建议使用 Erlang ，Haskell 而不是 Python</p>
-<h1 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h1><p>Python 中变量可以指向函数，函数名实际上也是变量</p>
-<p>以 Python 内置的求绝对值的函数 <code>abs()</code> 为例：</p>
+<p>因此，函数式编程的代码更容易理解。但是如果要想学好函数式编程，建议使用 Erlang ，Haskell 而不是 Python 。</p>
+<h1 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h1><p>Python 中变量可以指向函数，函数名实际上也是变量。以 Python 内置的求绝对值的函数 <code>abs()</code> 为例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; abs(-10)</span><br><span class="line">10</span><br><span class="line">&gt;&gt;&gt; abs</span><br><span class="line">&lt;built-in function abs&gt;</span><br></pre></td></tr></table></figure>
-<p>由此可见 <code>abs(-10)</code> 是函数调用，而 <code>abs</code> 是函数名称。可以理解为 <code>abs</code> 等同于变量名，并且函数名（变量名）相当于是一个标签，贴在了内存中函数体（变量的值）上</p>
-<p>如果要获得函数调用结果，可以把结果赋值给变量：</p>
+<p>由此可见 <code>abs(-10)</code> 是函数调用，而 <code>abs</code> 是函数名称。可以理解为 <code>abs</code> 等同于变量名，并且函数名（变量名）相当于是一个标签，贴在了内存中函数体（变量的值）上。</p>
+<p>如果要获得函数调用结果，可以把函数执行的结果赋值给变量：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; x = abs(-10)</span><br><span class="line">&gt;&gt;&gt; x</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
 <p>函数名称也可以赋值给变量，实际上相当于重新建立了一个对象引用，并且指向了函数名所指向的对象上，也就是函数体：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; id(abs)</span><br><span class="line">10652528</span><br><span class="line">&gt;&gt;&gt; f = abs</span><br><span class="line">&gt;&gt;&gt; id(f)</span><br><span class="line">10652528</span><br><span class="line">&gt;&gt;&gt; f(-10)</span><br><span class="line">10</span><br><span class="line">&gt;&gt;&gt; f</span><br><span class="line">&lt;built-in function abs&gt;</span><br></pre></td></tr></table></figure>
-<p><strong>高阶函数：既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数的函数名作为参数，这种函数就称之为高阶函数</strong> ，至少满足下列条件之一：</p>
+<p><strong>高阶函数：既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数的函数名作为参数，这种函数就称之为高阶函数</strong> 。编写高阶函数，就是让函数的参数能够接收别的函数。</p>
+<p>高阶函数至少满足下列条件之一：</p>
 <ul>
-<li>接受一个或多个函数名作为输入 </li>
-<li>输出（返回）一个函数对象</li>
+<li><p>接受一个或多个函数名作为输入 。</p>
+</li>
+<li><p>输出（返回）一个函数对象。</p>
+</li>
 </ul>
-<p>编写高阶函数，就是让函数的参数能够接收别的函数</p>
-<p>以简单的加法器示例：</p>
+<p>编写高阶函数，就是让函数的参数能够接收别的函数。以简单的加法器为例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x,y,f)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> f(x) + f(y)</span><br><span class="line"></span><br><span class="line">sum = add(<span class="number">3</span>,<span class="number">-6</span>,abs)</span><br><span class="line">print(sum)</span><br></pre></td></tr></table></figure>
 <p>返回函数对象的示例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">    x=<span class="number">3</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line">x = foo</span><br><span class="line">print(x())</span><br><span class="line">x = foo()</span><br><span class="line">print(x())</span><br><span class="line"><span class="comment"># &lt;function foo.&lt;locals&gt;.bar at 0x00947E40&gt;</span></span><br><span class="line"><span class="comment"># 3</span></span><br></pre></td></tr></table></figure>
 <h1 id="Python内置的高阶函数"><a href="#Python内置的高阶函数" class="headerlink" title="Python内置的高阶函数"></a>Python内置的高阶函数</h1><h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filter(function, sequence)</span><br></pre></td></tr></table></figure>
-<p>对 sequence 中的 item 依次执行 function(item)，将执行结果为 True 的 item 做成一个 filter object 的迭代器返回。可以看作是过滤函数。</p>
-<p>请注意， <code>filter(function, sequence)</code> 相当于一个生成器表达式，当 <code>function</code> 不是 <code>None</code> 的时候实际上就是 <code>(item for item in iterable if function(item))</code>；<code>function</code> 是 <code>None</code> 的时候实际上就是 <code>(item for item in iterable if item)</code> 。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> x != <span class="string">'a'</span>:</span><br><span class="line">        <span class="keyword">return</span> x <span class="comment"># 这两行可以简写成 return x != 'a'</span></span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">retval = filter(func,lst)</span><br><span class="line"></span><br><span class="line">print(retval) <span class="comment"># &lt;filter object at 0x00F866F0&gt; 一个 filter object 迭代器对象</span></span><br><span class="line">print(list(retval))</span><br></pre></td></tr></table></figure>
+<p>filter 会对 sequence 中的 item 依次执行 function(item)，将执行结果为 True 的 item 做成一个 filter object 的迭代器返回。可以看作是过滤函数。请注意， <code>filter(function, sequence)</code> 相当于一个生成器表达式，当 <code>function</code> 不是 <code>None</code> 的时候实际上就是 <code>(item for item in iterable if function(item))</code>；<code>function</code> 是 <code>None</code> 的时候实际上就是 <code>(item for item in iterable if item)</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> x != <span class="string">'a'</span>:</span><br><span class="line">        <span class="keyword">return</span> x  <span class="comment"># 这两行可以简写成 return x != 'a'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">retval = filter(func, lst)</span><br><span class="line"></span><br><span class="line">print(retval)  <span class="comment"># &lt;filter object at 0x00F866F0&gt; 一个 filter object 迭代器对象</span></span><br><span class="line">print(list(retval))  <span class="comment"># ['b', 'c', 'd', 'e']</span></span><br></pre></td></tr></table></figure>
 <p>把一个序列中的空（空或空白）字符串删掉，可以这么写： </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">lst = [<span class="string">'A'</span>, <span class="string">''</span>, <span class="string">'B'</span>, <span class="keyword">None</span>, <span class="string">'C'</span>, <span class="string">'  '</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">notNull</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x <span class="keyword">and</span> len(x.strip()) &gt; <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(list(filter(notNull, lst)))</span><br><span class="line"><span class="comment"># 结果: ['A', 'B', 'C']</span></span><br></pre></td></tr></table></figure>
 <p>如果只删除空字符串而保留空白字符串：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">retval = list(filter(<span class="keyword">None</span>, [<span class="string">'A'</span>, <span class="string">''</span>, <span class="string">'B'</span>, <span class="keyword">None</span>, <span class="string">'C'</span>, <span class="string">'  '</span>]))</span><br><span class="line">print(retval)</span><br><span class="line"><span class="comment"># None代表不输入函数，也就是 </span></span><br><span class="line"><span class="comment"># [x for x in ['A', '', 'B', None, 'C', '  '] if x ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">retval = list(filter(<span class="keyword">None</span>, [<span class="string">'A'</span>, <span class="string">''</span>, <span class="string">'B'</span>, <span class="keyword">None</span>, <span class="string">'C'</span>, <span class="string">'  '</span>]))</span><br><span class="line"><span class="comment"># None代表不输入函数，也就是</span></span><br><span class="line"><span class="comment"># [x for x in ['A', '', 'B', None, 'C', '  '] if x ]</span></span><br><span class="line"></span><br><span class="line">print(retval)</span><br></pre></td></tr></table></figure>
 <h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map(function, sequence)</span><br></pre></td></tr></table></figure>
-<p>对 sequence 中的 item 依次执行 function(item)，将执行结果组成一个 map object 的迭代器返回，其功能近似于不带条件，只有循环的生成器生成式。</p>
+<p>map 会对 sequence 中的 item 依次执行 function(item)，将执行结果组成一个 map object 的迭代器返回，其功能近似于不带条件，只有循环的生成器生成式。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;-'</span> + x + <span class="string">'-&gt;'</span></span><br><span class="line">retval = map(func,lst)</span><br><span class="line"></span><br><span class="line">print(retval)  <span class="comment"># &lt;map object at 0x00D76770&gt; 一个 map object 迭代器对象</span></span><br><span class="line">print(list(retval)) <span class="comment"># ['&lt;-a-&gt;', '&lt;-b-&gt;', '&lt;-c-&gt;', '&lt;-d-&gt;', '&lt;-e-&gt;']</span></span><br></pre></td></tr></table></figure>
 <p>map 也支持多个 sequence，这就要求 function 也支持相应数量的参数输入：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ef add(x,y):</span><br><span class="line">    <span class="keyword">return</span> x+y</span><br><span class="line"><span class="keyword">print</span> (list(map(add, range(<span class="number">10</span>), range(<span class="number">10</span>))))</span><br><span class="line"><span class="comment">#[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]</span></span><br></pre></td></tr></table></figure>
-<p>我们不但可以使用 map 函数计算简单的算术运算，还可以计算任意复杂的函数，比如把一个list所有数字转为字符串：</p>
+<p>我们不但可以使用 map 函数计算简单的算术运算，还可以计算任意复杂的函数，比如把一个 list 所有数字转为字符串：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(map(str, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]))</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>]</span><br></pre></td></tr></table></figure>
 <h2 id="sorted"><a href="#sorted" class="headerlink" title="sorted"></a>sorted</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sorted(iterable, /, *, key=<span class="keyword">None</span>, reverse=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
-<p>返回一个列表对象</p>
+<p>sorted 会返回一个列表对象。</p>
 <ul>
-<li>列表对象的 sort 方法是在源数据的基础上进行的排序，因此源列表发生了变化</li>
-<li>sorted() 方法重新生成了一个新对象，不改变原数据</li>
-<li>使用sorted时内存会有两份数据容易造成内存空间占用过高</li>
+<li><p>列表对象的 sort 方法是在源数据的基础上进行的排序，因此源列表发生了变化。</p>
+</li>
+<li><p>使用 <code>sorted()</code> 方法会重新生成一个新的对象，不会改变原数据。</p>
+</li>
+<li><p>使用 <code>sorted()</code> 时内存会有两份数据容易造成内存空间占用过高</p>
+</li>
 </ul>
-<p>对list进行排序：</p>
+<p>对 list 对象进行排序：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sorted([36, 5, -12, 9, -21])</span><br><span class="line">[-21, -12, 5, 9, 36]</span><br></pre></td></tr></table></figure>
-<p>它可以接收一个<code>key</code>函数来实现自定义的排序，例如按绝对值大小排序：</p>
+<p>sorted 可以接收一个 <code>key</code> 参数来实现自定义的排序，例如按绝对值大小排序：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sorted([36, 5, -12, 9, -21], key=abs)</span><br><span class="line">[5, 9, -12, -21, 36]</span><br></pre></td></tr></table></figure>
-<p>key指定的函数将作用于list的每一个元素上，并根据key函数返回的结果进行排序。对比原始的list和经过<code>key=abs</code>处理过的list：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list = [36, 5, -12, 9, -21]</span><br><span class="line"></span><br><span class="line">keys = [36, 5,  12, 9,  21]</span><br></pre></td></tr></table></figure>
-<p>然后<code>sorted()</code>函数按照keys进行排序，并按照对应关系返回list相应的元素：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">keys排序结果 =&gt; [5, 9,  12,  21, 36]</span><br><span class="line">                |  |    |    |   |</span><br><span class="line">最终结果     =&gt; [5, 9, -12, -21, 36]</span><br></pre></td></tr></table></figure>
-<p>我们再看一个字符串排序的例子：</p>
+<p><code>key</code> 指定的函数将作用于 list 对象的每一个元素上，并根据函数返回的结果进行排序。对比原始的 list 和经过<code>key=abs</code> 处理过的 list ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">36</span>, <span class="number">5</span>, <span class="number">-12</span>, <span class="number">9</span>, <span class="number">-21</span>]</span><br><span class="line"></span><br><span class="line">print(lst)</span><br><span class="line">print(sorted(lst, key=abs))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">[36, 5, -12, 9, -21]</span></span><br><span class="line"><span class="string">[5, 9, -12, -21, 36]</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>再比如字符串排序的例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sorted([&apos;bob&apos;, &apos;about&apos;, &apos;Zoo&apos;, &apos;Credit&apos;])</span><br><span class="line">[&apos;Credit&apos;, &apos;Zoo&apos;, &apos;about&apos;, &apos;bob&apos;]</span><br></pre></td></tr></table></figure>
-<p>默认情况下，对字符串排序，是按照ASCII的大小比较的，由于<code>&#39;Z&#39; &lt; &#39;a&#39;</code>，结果，大写字母<code>Z</code>会排在小写字母<code>a</code>的前面。</p>
-<p>现在，我们提出排序应该忽略大小写，按照字母序排序。要实现这个算法，不必对现有代码大加改动，只要我们能用一个key函数把字符串映射为忽略大小写排序即可。忽略大小写来比较两个字符串，实际上就是先把字符串都变成大写（或者都变成小写），再比较。</p>
-<p>这样，我们给<code>sorted</code>传入key函数，即可实现忽略大小写的排序：</p>
+<p>默认情况下，对字符串排序，是按照ASCII的大小比较的，由于 <code>&#39;Z&#39; &lt; &#39;a&#39;</code>，结果是大写字母 <code>Z</code> 会排在小写字母 <code>a</code> 的前面。</p>
+<p>现在，想要再排序时忽略大小写，按照字母顺序来进行排序。要实现这个算法，不必对现有代码做太多的改动，只要能用一个函数把字符串映射为忽略大小写排序即可。忽略大小写来比较两个字符串，实际上就是先把字符串都变成大写（或者都变成小写），然后再比较，即可实现忽略大小写的排序：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sorted([&apos;bob&apos;, &apos;about&apos;, &apos;Zoo&apos;, &apos;Credit&apos;], key=str.lower)</span><br><span class="line">[&apos;about&apos;, &apos;bob&apos;, &apos;Credit&apos;, &apos;Zoo&apos;]</span><br></pre></td></tr></table></figure>
-<p>要进行反向排序，不必改动key函数，可以传入第三个参数<code>reverse=True</code>：</p>
+<p>要进行反向排序，不必改动函数，可以传入第三个参数 <code>reverse=True</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; sorted([&apos;bob&apos;, &apos;about&apos;, &apos;Zoo&apos;, &apos;Credit&apos;], key=str.lower, reverse=True)</span><br><span class="line">[&apos;Zoo&apos;, &apos;Credit&apos;, &apos;bob&apos;, &apos;about&apos;]</span><br></pre></td></tr></table></figure>
-<p>从上述例子可以看出，高阶函数的抽象能力是非常强大的，而且，核心代码可以保持得非常简洁。</p>
+<p>从上述例子可以看出，高阶函数的抽象能力是非常强大的，而且核心代码可以保持得非常简洁。</p>
 <h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reduce(function, sequence, starting_value)</span><br></pre></td></tr></table></figure>
-<p>高阶函数之一，对 sequence 中的 item 顺序迭代调用 function ，如果有 starting_value，还可以作为初始值调用</p>
-<p>对一个序列求和，就可以用 <code>reduce</code> 实现 ，当然求和运算可以直接用 Python内建函数<code>sum()</code>，没必要动用<code>reduce</code> </p>
+<p>reduce 也是高阶函数之一，它将会对 sequence 中的 item 顺序迭代调用 function ，如果有 starting_value，还可以作为初始值进行调用。</p>
+<p>比如，对一个序列求和就可以用 <code>reduce</code> 来实现 ，当然求和运算可以直接用 Python 的内建函数 <code>sum()</code> ，没必要动用 <code>reduce</code> 。这里只是为了做个示范： </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x,y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x+y</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (reduce(add, range(<span class="number">1</span>, <span class="number">101</span>)))</span><br><span class="line"><span class="comment"># 5050 （注：1+2+...+99+100）</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">print</span> (reduce(add, range(<span class="number">1</span>, <span class="number">101</span>), <span class="number">20</span>))</span><br><span class="line"><span class="comment"># 5070 （注：20+1+2+...+99+100）</span></span><br></pre></td></tr></table></figure>
-<p>但是如果要把序列 <code>[1, 3, 5, 7, 9]</code> 变换成整数 <code>13579</code>，<code>reduce</code>就可以派上用场：</p>
+<p>但是如果要把序列 <code>[1, 3, 5, 7, 9]</code> 变换成整数 <code>13579</code>，<code>reduce</code> 就可以派上用场：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(x, y)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> x * <span class="number">10</span> + y</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(fn, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>])</span><br><span class="line"><span class="number">13579</span></span><br></pre></td></tr></table></figure>
-<p> 假设Python中没有<code>int()</code> 函数，我们完全可以使用 map 和 lambda 实现这一功能：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"></span><br><span class="line">seq = [<span class="string">'1'</span>,<span class="string">'3'</span>,<span class="string">'5'</span>,<span class="string">'7'</span>,<span class="string">'9'</span>]</span><br><span class="line"></span><br><span class="line">DIGITS = &#123;<span class="string">'0'</span>: <span class="number">0</span>, <span class="string">'1'</span>: <span class="number">1</span>, <span class="string">'2'</span>: <span class="number">2</span>, <span class="string">'3'</span>: <span class="number">3</span>, <span class="string">'4'</span>: <span class="number">4</span>, <span class="string">'5'</span>: <span class="number">5</span>, <span class="string">'6'</span>: <span class="number">6</span>, <span class="string">'7'</span>: <span class="number">7</span>, <span class="string">'8'</span>: <span class="number">8</span>, <span class="string">'9'</span>: <span class="number">9</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">char2num</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> DIGITS[x]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">str2int</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> reduce(<span class="keyword">lambda</span> x,y:x*<span class="number">10</span>+y,map(char2num,s))</span><br><span class="line"></span><br><span class="line">print(str2int(seq))</span><br></pre></td></tr></table></figure>
+<p>假设Python中没有 <code>int()</code> 函数，我们完全可以使用 map 和 lambda 实现这一功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"></span><br><span class="line">seq = [<span class="string">'1'</span>, <span class="string">'3'</span>, <span class="string">'5'</span>, <span class="string">'7'</span>, <span class="string">'9'</span>]</span><br><span class="line"></span><br><span class="line">DIGITS = &#123;</span><br><span class="line">    <span class="string">'0'</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">'1'</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">'2'</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">'3'</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="string">'4'</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="string">'5'</span>: <span class="number">5</span>,</span><br><span class="line">    <span class="string">'6'</span>: <span class="number">6</span>,</span><br><span class="line">    <span class="string">'7'</span>: <span class="number">7</span>,</span><br><span class="line">    <span class="string">'8'</span>: <span class="number">8</span>,</span><br><span class="line">    <span class="string">'9'</span>: <span class="number">9</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">char2num</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> DIGITS[x]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">str2int</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> reduce(<span class="keyword">lambda</span> x, y: x * <span class="number">10</span> + y, map(char2num, s))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(str2int(seq))  <span class="comment"># 13579</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -685,7 +683,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -770,7 +768,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -960,7 +962,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

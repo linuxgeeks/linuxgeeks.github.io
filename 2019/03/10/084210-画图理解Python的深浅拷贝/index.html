@@ -101,13 +101,13 @@
 
 
 
-  <meta name="description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝 基本概念对象在 Python 中，一切皆对象。任何数据类型、函数">
+  <meta name="description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝。 基本概念对象在 Python 中，一切皆对象。任何数据类型、函">
 <meta name="keywords" content="Python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="画图理解Python的深浅拷贝">
 <meta property="og:url" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/index.html">
 <meta property="og:site_name" content="Just Do It">
-<meta property="og:description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝 基本概念对象在 Python 中，一切皆对象。任何数据类型、函数">
+<meta property="og:description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝。 基本概念对象在 Python 中，一切皆对象。任何数据类型、函">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy01.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy02.png">
@@ -118,10 +118,10 @@
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy07.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy08.png">
 <meta property="og:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy09.png">
-<meta property="og:updated_time" content="2019-06-24T07:32:38.069Z">
+<meta property="og:updated_time" content="2019-12-04T09:29:50.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="画图理解Python的深浅拷贝">
-<meta name="twitter:description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝 基本概念对象在 Python 中，一切皆对象。任何数据类型、函数">
+<meta name="twitter:description" content="在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。 同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝。 基本概念对象在 Python 中，一切皆对象。任何数据类型、函">
 <meta name="twitter:image" content="http://linuxgeeks.github.io/2019/03/10/084210-画图理解Python的深浅拷贝/copy01.png">
 
 
@@ -415,7 +415,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-24 15:32:38" itemprop="dateModified" datetime="2019-06-24T15:32:38+08:00">2019-06-24</time>
+                <time title="修改时间：2019-12-04 17:29:50" itemprop="dateModified" datetime="2019-12-04T17:29:50+08:00">2019-12-04</time>
               </span>
             
           
@@ -461,52 +461,56 @@
 
       
         <p>在平常运维工作中，难免会有一些修改服务配置文件的操作，为了安全和可以回滚起见，我们习惯性的会将源配置文件做一个拷贝，这样以来即便配置文件参数被修改错了也没事，可以快速从备份的副本还原回来。</p>
-<p>同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝</p>
-<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>在 Python 中，一切皆对象。任何数据类型、函数、模块在 Python 中都被当做对象处理。</p>
-<p>所有的 Python 对象都有三个属性：身份、类型、值</p>
+<p>同样，在 Python 中如果涉及到数据传递，在传递过程中就有可能会发生数据被修改的问题，为了防止数据被修改，就需要生成一个副本，这就产生了拷贝。</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>在 Python 中，一切皆对象。任何数据类型、函数、模块在 Python 中都被当做对象处理。所有的 Python 对象都有三个属性：身份、类型、值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'Tom'</span>  <span class="comment"># 建立一个对象引用</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(name)  <span class="comment"># ID其实是内存地址，即身份的唯一标识</span></span><br><span class="line"><span class="number">19018976</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(name)  <span class="comment"># 对象的类型，决定对象可以引用什么样的值</span></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">name</span>  # 对象引用的值，即实际表示的数据</span></span><br><span class="line"><span class="class">'<span class="title">Tom</span>'</span></span><br></pre></td></tr></table></figure>
-<h2 id="可变与不可变对象"><a href="#可变与不可变对象" class="headerlink" title="可变与不可变对象"></a>可变与不可变对象</h2><p>可变对象：对象的值可变，身份是不变的，例如列表、字典、集合，这些都是容器类型的数据，容器的内存地址是不变的，发生变化的是容器内部的数据</p>
-<p>不可变对象： 对象的值和身份都是不变的，新创建的对象被原来的变量名引用，旧的对象就会被丢弃，最后交给垃圾回收机制处理掉，例如数字、字符串、元组</p>
+<h2 id="可变对象与不可变对象"><a href="#可变对象与不可变对象" class="headerlink" title="可变对象与不可变对象"></a>可变对象与不可变对象</h2><p>可变对象：对象的值可变，身份是不变的，例如列表、字典、集合，这些都是容器类型的数据，容器的内存地址是不变的，发生变化的是容器内部的数据。</p>
+<p>不可变对象： 对象的值和身份都是不变的，新创建的对象被原来的变量名引用，旧的对象就会被丢弃，最后交给垃圾回收机制处理掉，例如数字、字符串、元组。</p>
 <h2 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h2><p>或许在很多人的直观印象中，变量是一个容器，给变量赋值，就像是往一个存储的容器中填入一个数据，再次赋值就是把容器中的数据换掉，<strong>在 Python 中，这种理解是不准确的！</strong></p>
 <p>更恰当的比喻是，我们可以把变量当做是一个标签：给变量赋值就是把标签贴在一个物体上；再次赋值就是把标签取下来贴在另一个物体上。</p>
 <h2 id="对象引用"><a href="#对象引用" class="headerlink" title="对象引用"></a>对象引用</h2><p>在 Python 程序中，每个对象都会在内存中申请开辟一块空间来保存该对象，该对象在内存中所在位置的地址被称为引用。在开发程序时，所定义的变量名实际就是对象的地址引用。</p>
 <p>引用实际就是内存中的一个数字地址编号（内存地址），在使用对象时，只要知道这个对象的内存地址，就可以操作这个对象，但是因为内存地址不方便在开发时使用和记忆，所以使用变量名的形式来代替对象的内存地址。 在 Python 中，变量就是地址的一种表示形式，并不开辟存储空间。</p>
-<p>就像在访问网站时我们输入的是域名，而不是IP，但实际都是通过 IP 地址来进行网络通信的，而 IP 地址不方便记忆，所以使用域名来代替 IP 地址，在使用域名访问网站时，域名被 DNS 服务器解析成 IP 地址来使用。</p>
-<p>在创建一个数据项时，将其赋值给一个变量，或者将其插入到一个组合中时，实际上是使得某个变量对内存中存放数据的对象进行引用，使用 <code>del</code> 时，实际上是删除了相应的对象引用</p>
+<p>就像在访问网站时我们输入的是域名，而不是 IP ，但实际都是通过 IP 地址来进行网络通信的，而 IP 地址不方便记忆，所以使用域名来代替 IP 地址，在使用域名访问网站时，域名被 DNS 服务器解析成 IP 地址来使用。</p>
+<p>在创建一个数据项时，将其赋值给一个变量，或者将其插入到一个组合中时，实际上是使得某个变量对内存中存放数据的对象进行引用，使用 <code>del</code> 时，实际上是删除了相应的对象引用。</p>
 <h3 id="不可变对象的引用赋值"><a href="#不可变对象的引用赋值" class="headerlink" title="不可变对象的引用赋值"></a>不可变对象的引用赋值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">497079344</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">497079344</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">'xyz'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">19019808</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">497079344</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<p><code>a = 1</code> 相当于把标签 a 贴在了 <code>1</code> 上，他的身份（内存地址）是 <code>497079344</code></p>
+<p><code>a = 1</code> 相当于把标签 a 贴在了 <code>1</code> 上，他的身份（内存地址）是 <code>497079344</code> ：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy01.png" alt=""></p>
-<p>使用 <code>b = a</code> 的方式，实际上就相当于把标签 b 也贴在了标签 a 贴的那个物体上，也就是 a 和 b 都指向了同一块内存地址，可以简单的认为给对象的引用做了一个别名</p>
+<p>使用 <code>b = a</code> 的方式，实际上就相当于把标签 b 也贴在了标签 a 贴的那个物体上，也就是 a 和 b 都指向了同一块内存地址，可以简单的认为给对象的引用做了一个别名：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy02.png" alt=""></p>
-<p>当重新为 a 进行赋值时（<code>a=&#39;xyz&#39;</code>），实际上是在内存中新开辟了一段空间存放字符串对象 <code>&#39;xyz&#39;</code> 并把 a 的指向改为 <code>&#39;xyz&#39;</code>，而 b 则还是原来的对象引用</p>
+<p>当重新为 a 进行赋值时（<code>a=&#39;xyz&#39;</code>），实际上是在内存中新开辟了一段空间存放字符串对象 <code>&#39;xyz&#39;</code> 并把 a 的指向改为 <code>&#39;xyz&#39;</code>，而 b 则还是原来的对象引用：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy03.png" alt=""></p>
-<h3 id="可变对象的引用赋值"><a href="#可变对象的引用赋值" class="headerlink" title="可变对象的引用赋值"></a>可变对象的引用赋值</h3><p>可变对象保存的其实是对象引用（内存地址），而不是真正的对象数据。当对可变对象进行赋值时，只是将可变对象中保存的引用指向了新的对象</p>
+<h3 id="可变对象的引用赋值"><a href="#可变对象的引用赋值" class="headerlink" title="可变对象的引用赋值"></a>可变对象的引用赋值</h3><p>可变对象保存的其实是对象引用（内存地址），而不是真正的对象数据。当对可变对象进行赋值时，只是将可变对象中保存的引用指向了新的对象。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">19007448</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">19007448</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>] = <span class="string">'hello'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'hello'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="string">'hello'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">19007448</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">19007448</span></span><br></pre></td></tr></table></figure>
-<p>上例中变量 <code>a</code> 并不是引用了实际数据 <code>1, 2, 3</code> 的内存地址，而是单纯的列表的内存地址，引用实际数据的是这个列表对象而不是变量 <code>a</code></p>
+<p>上例中变量 <code>a</code> 并不是引用了实际数据 <code>1, 2, 3</code> 的内存地址，而是单纯的列表的内存地址，引用实际数据的是这个列表对象而不是变量 <code>a</code>：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy04.png" alt=""></p>
-<p>当改变列表中的数据时，改变的不是列表的内存地址，而改变的是列表中对实际数据的引用</p>
+<p>当改变列表中的数据时，改变的不是列表的内存地址，而改变的是列表中对实际数据的引用：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy05.png" alt=""></p>
 <h1 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h1><h2 id="不可变对象的拷贝"><a href="#不可变对象的拷贝" class="headerlink" title="不可变对象的拷贝"></a>不可变对象的拷贝</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">505009200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">505009200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="number">1</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<p>不可变对象的拷贝就是对象赋值，实际上是让多个对象同时指向一个引用 （内存地址）</p>
+<p>不可变对象的拷贝就是对象赋值，实际上是让多个对象同时指向一个引用 （内存地址）：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy06.png" alt=""></p>
 <h2 id="可变对象的拷贝"><a href="#可变对象的拷贝" class="headerlink" title="可变对象的拷贝"></a>可变对象的拷贝</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">0</span>] = <span class="string">'hello'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="string">'hello'</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-<p>可变对象的拷贝，会在内存中开辟一个新的空间来保存拷贝的数据。当再改变之前的对象时，对拷贝之后的对象没有任何影响</p>
+<p>可变对象的拷贝，会在内存中开辟一个新的空间来保存拷贝的数据。当再改变之前的对象时，对拷贝之后的对象没有任何影响：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy07.png" alt=""></p>
 <h2 id="可变对象与不可变对象的组合"><a href="#可变对象与不可变对象的组合" class="headerlink" title="可变对象与不可变对象的组合"></a>可变对象与不可变对象的组合</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Tom'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.copy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">3</span>][<span class="number">0</span>] = <span class="string">'Dog'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11778728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779728</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Dog'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Dog'</span>, <span class="string">'Jerry'</span>]]</span><br></pre></td></tr></table></figure>
 <p>复杂对象在拷贝时并没有解决数据在传递之后数据改变的问题。 这是因为 <code>copy()</code>  函数在拷贝对象时，只是将指定对象中的所有引用拷贝了一份，如果这些引用当中包含了一个可变对象的话，那么数据还是会被改变。 这种拷贝方式，称为浅拷贝。</p>
-<p>浅拷贝只拷贝顶层数据，不拷贝子层数据</p>
+<p>浅拷贝只拷贝顶层数据，不拷贝子层数据：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy08.png" alt=""></p>
 <p>再比如</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1=dict.fromkeys([<span class="string">'host1'</span>,<span class="string">'host2'</span>,<span class="string">'host3'</span>],[<span class="string">'test1'</span>,<span class="string">'test2'</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1</span><br><span class="line">&#123;<span class="string">'host1'</span>: [<span class="string">'test1'</span>, <span class="string">'test2'</span>], <span class="string">'host2'</span>: [<span class="string">'test1'</span>, <span class="string">'test2'</span>], <span class="string">'host3'</span>: [<span class="string">'test1'</span>, <span class="string">'test2'</span>]&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1[<span class="string">'host2'</span>][<span class="number">1</span>]=<span class="string">'test3'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1</span><br><span class="line">&#123;<span class="string">'host1'</span>: [<span class="string">'test1'</span>, <span class="string">'test3'</span>], <span class="string">'host2'</span>: [<span class="string">'test1'</span>, <span class="string">'test3'</span>], <span class="string">'host3'</span>: [<span class="string">'test1'</span>, <span class="string">'test3'</span>]&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> copy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Tom'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = copy.deepcopy(a)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11779528</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779688</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a[<span class="number">3</span>][<span class="number">0</span>] = <span class="string">'Dog'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">11778968</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b)</span><br><span class="line"><span class="number">11779528</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779648</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(b[<span class="number">3</span>])</span><br><span class="line"><span class="number">11779688</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Dog'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="string">'Tom'</span>, <span class="string">'Jerry'</span>]]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<p>深拷贝会逐层进行拷贝，直到拷贝的所有引用都是不可变引用为止</p>
+<p>深拷贝会逐层进行拷贝，直到拷贝的所有引用都是不可变引用为止：</p>
 <p><img src="/2019/03/10/084210-画图理解Python的深浅拷贝/copy09.png" alt=""></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>在 Python 中，默认的拷贝方式是浅拷贝。从时间上看，浅拷贝花费时间更少；从使用空间上看，浅拷贝花费内存更少；从执行效率上看，浅拷贝只拷贝顶层数据，一般情况下比深拷贝效率高</li>
-<li>不可变对象在赋值时会开辟新空间</li>
-<li>深、浅拷贝对不可变对象拷贝时，不开辟新空间，相当于赋值操作</li>
-<li>浅拷贝在拷贝时，只拷贝第一层中的引用，如果元素是可变对象，并且被修改，那么拷贝的对象也会发生变化</li>
-<li>大多数情况下，编写程序时，都是使用浅拷贝，除非有特定的需求</li>
+<li><p>在 Python 中，默认的拷贝方式是浅拷贝。从时间上看，浅拷贝花费时间更少；从使用空间上看，浅拷贝花费内存更少；从执行效率上看，浅拷贝只拷贝顶层数据，一般情况下比深拷贝效率高。</p>
+</li>
+<li><p>不可变对象在赋值时会开辟新空间。</p>
+</li>
+<li><p>深、浅拷贝对不可变对象拷贝时，不开辟新空间，相当于赋值操作。</p>
+</li>
+<li><p>浅拷贝在拷贝时，只拷贝第一层中的引用，如果元素是可变对象，并且被修改，那么拷贝的对象也会发生变化。</p>
+</li>
+<li><p>大多数情况下，编写程序时，都是使用浅拷贝，除非有特定的需求。</p>
+</li>
 </ul>
 
       
@@ -663,7 +667,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -748,7 +752,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -917,7 +925,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象"><span class="nav-number">1.1.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变与不可变对象"><span class="nav-number">1.2.</span> <span class="nav-text">可变与不可变对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量赋值"><span class="nav-number">1.3.</span> <span class="nav-text">变量赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象引用"><span class="nav-number">1.4.</span> <span class="nav-text">对象引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变对象的引用赋值"><span class="nav-number">1.4.1.</span> <span class="nav-text">不可变对象的引用赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变对象的引用赋值"><span class="nav-number">1.4.2.</span> <span class="nav-text">可变对象的引用赋值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅拷贝"><span class="nav-number">2.</span> <span class="nav-text">浅拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变对象的拷贝"><span class="nav-number">2.1.</span> <span class="nav-text">不可变对象的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象的拷贝"><span class="nav-number">2.2.</span> <span class="nav-text">可变对象的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象与不可变对象的组合"><span class="nav-number">2.3.</span> <span class="nav-text">可变对象与不可变对象的组合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深拷贝"><span class="nav-number">3.</span> <span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象"><span class="nav-number">1.1.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象与不可变对象"><span class="nav-number">1.2.</span> <span class="nav-text">可变对象与不可变对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量赋值"><span class="nav-number">1.3.</span> <span class="nav-text">变量赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象引用"><span class="nav-number">1.4.</span> <span class="nav-text">对象引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变对象的引用赋值"><span class="nav-number">1.4.1.</span> <span class="nav-text">不可变对象的引用赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变对象的引用赋值"><span class="nav-number">1.4.2.</span> <span class="nav-text">可变对象的引用赋值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅拷贝"><span class="nav-number">2.</span> <span class="nav-text">浅拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变对象的拷贝"><span class="nav-number">2.1.</span> <span class="nav-text">不可变对象的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象的拷贝"><span class="nav-number">2.2.</span> <span class="nav-text">可变对象的拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变对象与不可变对象的组合"><span class="nav-number">2.3.</span> <span class="nav-text">可变对象与不可变对象的组合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深拷贝"><span class="nav-number">3.</span> <span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -938,7 +946,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

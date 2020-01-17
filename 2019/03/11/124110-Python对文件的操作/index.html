@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="Python的文件操作什么是IO在计算机中 I/O 是指 Input/Output，即 Stream (流)的输入和输出，输入和输出是相对于内存来说的。程序运行时数据都驻留在在内存当中，由 CPU 这个超快的计算机核心来执行，涉及到数据交换的地方，通常是磁盘、网络操作就需要 IO 接口。 在 IO 编程中可以把流想象成一个水管，数据就是水管里的水，但是只能单向流动。Input  Stream（输入">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-27T14:20:53.830Z">
+<meta property="og:updated_time" content="2019-12-04T10:52:04.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python对文件的操作">
 <meta name="twitter:description" content="Python的文件操作什么是IO在计算机中 I/O 是指 Input/Output，即 Stream (流)的输入和输出，输入和输出是相对于内存来说的。程序运行时数据都驻留在在内存当中，由 CPU 这个超快的计算机核心来执行，涉及到数据交换的地方，通常是磁盘、网络操作就需要 IO 接口。 在 IO 编程中可以把流想象成一个水管，数据就是水管里的水，但是只能单向流动。Input  Stream（输入">
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-27 22:20:53" itemprop="dateModified" datetime="2019-03-27T22:20:53+08:00">2019-03-27</time>
+                <time title="修改时间：2019-12-04 18:52:04" itemprop="dateModified" datetime="2019-12-04T18:52:04+08:00">2019-12-04</time>
               </span>
             
           
@@ -459,15 +459,18 @@
 <p>同步IO：你说“来个汉堡”，服务员告诉你，对不起，汉堡要现做，需要等5分钟，于是你站在收银台前面等了5分钟，拿到汉堡再去逛商场，这是同步IO。 </p>
 <p>异步IO：你说“来个汉堡”，服务员告诉你，汉堡需要等5分钟，你可以先去逛商场，等做好了，我们再通知你，这样你可以立刻去干别的事情（逛商场）</p>
 <p>很明显，使用异步IO来编写程序性能会远远高于同步IO，但是异步IO的缺点是编程模型复杂。想想看，你得知道什么时候通知你“汉堡做好了”，而通知你的方法也各不相同。如果是服务员跑过来找到你，这是回调模式，如果服务员发短信通知你，你就得不停地检查手机，这是轮询模式。总之，异步IO的复杂度远远高于同步IO。</p>
-<p>操作IO的能力都是由操作系统提供的，每一种编程语言都会把操作系统提供的低级C接口封装起来方便使用，Python也不例外</p>
-<p>以上内容转自 <a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431917590955542f9ac5f5c1479faf787ff2b028ab47000" target="_blank" rel="noopener">[廖雪峰的官方网站]</a></p>
+<p>操作IO的能力都是由操作系统提供的，每一种编程语言都会把操作系统提供的低级C接口封装起来方便使用，Python也不例外。</p>
+<p>以上内容转自 <a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431917590955542f9ac5f5c1479faf787ff2b028ab47000" target="_blank" rel="noopener">[廖雪峰的官方网站]</a> 。</p>
 <h2 id="文件读写"><a href="#文件读写" class="headerlink" title="文件读写"></a>文件读写</h2><p>读写文件是最常见的IO操作，Python 内置了读写文件的函数，用法和C是兼容的。</p>
 <p>在磁盘上读写文件的功能都是由操作系统提供的，现代操作系统不允许普通的程序直接操作磁盘，所以读写文件就是请求操作系统打开一个文件对象（通常称为文件描述符），然后通过操作系统提供的接口从这个文件对象中读取数据（读文件），或者把数据写入这个文件对象（写文件）。</p>
 <p>在 Python 中对文件操作的步骤：</p>
 <ul>
-<li>打开文件，得到文件对象（文件描述符）赋值给一个变量</li>
-<li>通过文件描述符对文件进行操作</li>
-<li>关闭文件</li>
+<li><p>打开文件，得到文件对象（文件描述符）赋值给一个变量。</p>
+</li>
+<li><p>通过文件描述符对文件进行操作。</p>
+</li>
+<li><p>关闭文件。</p>
+</li>
 </ul>
 <h3 id="文件打开模式"><a href="#文件打开模式" class="headerlink" title="文件打开模式"></a>文件打开模式</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'r'</span>       open <span class="keyword">for</span> reading (default)</span><br><span class="line"><span class="comment"># 以只读模式打开文件（默认模式），并将文件指针指向文件头；如果文件不存在会报错</span></span><br><span class="line"></span><br><span class="line"><span class="string">'w'</span>       open <span class="keyword">for</span> writing, truncating the file first</span><br><span class="line"><span class="comment"># 以只写模式打开文件，并将文件指针指向文件头；如果文件存在则将其内容清空，如果文件不存在则创建</span></span><br><span class="line"></span><br><span class="line"><span class="string">'x'</span>       create a new file <span class="keyword">and</span> open it <span class="keyword">for</span> writing</span><br><span class="line"><span class="comment"># 以只写模式新建文件，并将文件指针指向文件头；如果文件存在则抛出 FileExistsError</span></span><br><span class="line"></span><br><span class="line"><span class="string">'a'</span>       open <span class="keyword">for</span> writing, appending to the end of the file <span class="keyword">if</span> it exists</span><br><span class="line"><span class="comment"># 以追加可写模式打开文件，并将文件指针指向文件尾部；如果文件不存在则创建</span></span><br><span class="line"></span><br><span class="line"><span class="string">'b'</span>       binary mode</span><br><span class="line"><span class="comment"># 二进制模式，需要与上面几种模式搭配使用，如ab，wb, ab, ab+</span></span><br><span class="line"></span><br><span class="line"><span class="string">'t'</span>       text mode (default)</span><br><span class="line"><span class="comment"># 普通文本模式（默认模式）</span></span><br><span class="line"></span><br><span class="line"><span class="string">'+'</span>       open a disk file <span class="keyword">for</span> updating (reading <span class="keyword">and</span> writing)</span><br><span class="line"><span class="comment"># 在原有操作基础上补充其他操作功能</span></span><br><span class="line"></span><br><span class="line"><span class="string">'r+'</span></span><br><span class="line"><span class="comment"># 在 r 的基础上增加了可写功能</span></span><br><span class="line"><span class="comment"># 覆盖当前文件指针所在位置的字符，如原来文件内容是"Hello，World"，打开文件后写入"hi"则文件内容会变成"hillo, World"</span></span><br><span class="line"></span><br><span class="line"><span class="string">'w+'</span></span><br><span class="line"><span class="comment"># 在w的基础上增加了可读功能</span></span><br><span class="line"><span class="comment"># 'w+'与 r+ 的不同是，w+在打开文件时就会先将文件内容清空，和 w 基本相同</span></span><br><span class="line"></span><br><span class="line"><span class="string">'a+'</span></span><br><span class="line"><span class="comment"># 在 a 的基础上增加了可读功能</span></span><br><span class="line"><span class="comment"># a+ 与 r+ 的不同是， a+ 不管指针在哪只能写到文件末尾(读指针和写指针不相同)</span></span><br></pre></td></tr></table></figure>
 <h3 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h3><p>例如现有文件 ‘poem’ 内容如下：    </p>
@@ -478,7 +481,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
 <p>文件使用完毕后必须关闭，因为文件对象会占用操作系统的资源，并且操作系统同一时间能打开的文件数量也是有限的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.close()</span><br></pre></td></tr></table></figure>
-<p><strong>注意:</strong>  打开文件时 <code>open()</code> 函数是通过操作系统打开的文件，如果不指定文件编码方式则默认使用操作系统自身文件编码方式打开，并且在内存中是Unicode形式。在windows系统中，’poem’ 文件是 utf-8 保存的，而Windows的默认编码是 gbk 编码，所以直接打开会乱码，需要 <code>f=open(&#39;poem&#39;,encoding=&#39;utf8&#39;)</code>，’poem’ 文件如果是 gbk 保存的则直接打开即可</p>
+<p><strong>注意:</strong>  打开文件时 <code>open()</code> 函数是通过操作系统打开的文件，如果不指定文件编码方式则默认使用操作系统自身文件编码方式打开，并且在内存中是 Unicode 形式。在 windows 系统中，’poem’ 文件是 utf-8 保存的，而 Windows 的默认编码是 gbk 编码，所以直接打开会乱码，需要 <code>f=open(&#39;poem&#39;,encoding=&#39;utf8&#39;)</code>，’poem’ 文件如果是 gbk 保存的则直接打开即可。</p>
 <p>由于文件读写时都有可能产生 <code>IOError</code> ，一旦出错，后面的 <code>f.close()</code> 就不会调用。所以为了保证无论是否出错都能正确地关闭文件，我们可以使用 <code>try ... finally</code> 来实现： </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>: <span class="comment"># 执行代码，可能抛出异常</span></span><br><span class="line">    f = open(<span class="string">'poem'</span>, <span class="string">'r'</span>)</span><br><span class="line">    print(f.read())</span><br><span class="line"><span class="keyword">finally</span>: <span class="comment"># 不管有无异常都执行</span></span><br><span class="line">    <span class="keyword">if</span> f:</span><br><span class="line">        f.close()</span><br></pre></td></tr></table></figure>
 <p>但是每次都这么写实在太繁琐，所以 Python 引入了 <code>with</code> 语句来自动帮我们调用 <code>close()</code> 方法：</p>
@@ -498,7 +501,7 @@
 </tr>
 <tr>
 <td>read(size)</td>
-<td style="text-align:left">每次最多读取指定长度的内容，返回一个str；Python3中 size 指定的是字符(非字节)长度</td>
+<td style="text-align:left">每次最多读取指定长度的内容，返回一个str；Python3 中 size 指定的是字符(非字节)长度</td>
 </tr>
 <tr>
 <td>readlines()</td>
@@ -531,51 +534,29 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'test.txt'</span>, <span class="string">'w'</span>)</span><br><span class="line">f.write(<span class="string">'Hello world'</span>)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
 <p>可以反复调用 <code>write()</code> 来写入文件，但是务必要调用 <code>f.close()</code> 来关闭文件。当我们写文件时，操作系统往往不会立刻把数据写入磁盘，而是放到内存缓存起来，空闲的时候再慢慢写入。只有调用 <code>close()</code> 方法时，操作系统才保证把没有写入的数据全部写入磁盘。忘记调用 <code>close()</code> 的后果是数据可能只写了一部分到磁盘，剩下的丢失了。所以还是用 <code>with</code> 语句来得保险： </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'test.txt'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">'Hello World'</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><ul>
-<li>flush()：刷新缓冲区数据，立刻将缓冲区的数据写入硬盘中的文件</li>
-</ul>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><p>使用 <code>flush()</code> 可以刷新缓冲区数据，立刻将缓冲区的数据写入硬盘中的文件：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys,time</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    sys.stdout.write(<span class="string">'*'</span>) <span class="comment"># stdout 标准输出，也是一个文件</span></span><br><span class="line">    sys.stdout.flush()</span><br><span class="line">    <span class="comment"># 实时将内存中的数据写入标准输出文件</span></span><br><span class="line">    <span class="comment"># 如果不写此行则数据会保留着内存缓冲区，直到sleep完成并一次性显示所有符号</span></span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
 <p>内置的 <code>print()</code> 也有 flush 参数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys,time</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>):</span><br><span class="line">    print(<span class="string">'*'</span>,end=<span class="string">''</span>,flush=<span class="keyword">True</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>truncate() ：裁切数据<ul>
-<li>如果不加任何参数，则裁切(删除)掉开头到结尾的内容</li>
-<li>如果指定一个数字N，则将第N个字符后的内容全部截掉，保留前N个字符</li>
-</ul>
-</li>
-</ul>
+<p>使用 <code>truncate()</code> 可以裁切数据，如果不加任何参数，则裁切(删除)掉开头到结尾的内容。如果指定一个数字 N，则将第 N 个字符后的内容全部截掉，保留前 N 个字符：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'poem2'</span>,<span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line"><span class="comment"># 文件打开模式应该是 append 而不是 write ，因为 write 会先清除所有内容</span></span><br><span class="line">    f.truncate(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>isatty()：判断文件是否是终端文件</li>
-<li>next() ：返回文件下一行，这个方法也是 file 对象实例可以被当做迭代器使用的原因 </li>
-<li>fileno() ：返回一个整型的文件描述符，可以用于一些底层 IO 操作上（如 os 模块的 read 方法）</li>
-</ul>
-<h3 id="操作练习"><a href="#操作练习" class="headerlink" title="操作练习"></a>操作练习</h3><p>读取文件 ‘poem’ ，显示到屏幕同时为第四行添加注释 <code># 琴瑟友之：弹琴鼓瑟来亲近她</code> ，如果涉及到字符串拼接尽量使用 <code>join()</code> 方法代替 <code>+</code></p>
-<ul>
-<li>菜鸟版：一次性读入所有内容到内存然后循环打印，使用变量定位行号</li>
-</ul>
+<p><code>isatty()</code> 可以判断文件是否是终端文件</p>
+<p><code>next()</code> 将会返回文件下一行，这个方法也是 file 对象实例可以被当做迭代器使用的原因。</p>
+<p><code>fileno()</code> 返回一个整型的文件描述符，可以用于一些底层 IO 操作上（如 os 模块的 read 方法）。</p>
+<h3 id="操作练习"><a href="#操作练习" class="headerlink" title="操作练习"></a>操作练习</h3><p>读取文件 ‘poem’ ，显示到屏幕同时为第四行添加注释 <code># 琴瑟友之：弹琴鼓瑟来亲近她</code> ，如果涉及到字符串拼接尽量使用 <code>join()</code> 方法代替 <code>+</code> 。</p>
+<p>菜鸟版：一次性读入所有内容到内存然后循环打印，使用变量定位行号。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'poem'</span>, mode=<span class="string">'r'</span>, encoding=<span class="string">'utf8'</span>)</span><br><span class="line">line_number = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f.readlines():</span><br><span class="line">    line_number += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> line_number == <span class="number">4</span>:</span><br><span class="line">        i = <span class="string">''</span>.join([i.strip(), <span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她'</span>])</span><br><span class="line">    print(i.strip())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
-<ul>
-<li>菜鸟加强版：读入所有内容赋值给变量后立即关闭文件，对变量的元素循环和修改，使用索引定位</li>
-</ul>
+<p>菜鸟加强版：读入所有内容赋值给变量后立即关闭文件，对变量的元素循环和修改，使用索引定位</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'poem'</span>,mode=<span class="string">'r'</span>,encoding=<span class="string">'utf8'</span>)</span><br><span class="line">data = f.readlines()</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line">data[<span class="number">3</span>] = <span class="string">''</span>.join([data[<span class="number">3</span>].strip(),<span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她'</span>])</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">    print(line.strip())</span><br></pre></td></tr></table></figure>
-<ul>
-<li>中级版：一次性读入所有内容，使用<code>enumerate()</code> 和 <code>try ... finally</code> </li>
-</ul>
+<p>中级版：一次性读入所有内容，使用<code>enumerate()</code> 和 <code>try ... finally</code> </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = open(<span class="string">'poem'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    <span class="keyword">for</span> line_number, line <span class="keyword">in</span> enumerate(f.readlines(), <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> line_number == <span class="number">4</span>:</span><br><span class="line">            line = <span class="string">''</span>.join([line.strip(), <span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她'</span>])</span><br><span class="line">        print(line.strip())</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="keyword">if</span> f:</span><br><span class="line">        f.close()</span><br></pre></td></tr></table></figure>
-<ul>
-<li>最佳实践：<ul>
-<li>前三种方法中 <code>read()</code> 、<code>readlines()</code> 在文件比较大时都会消耗大量内存空间，容易造成内存溢出</li>
-<li>结合  <code>with</code> 语句并使用迭代器用一行取一行，变量定位行号</li>
-</ul>
-</li>
-</ul>
+<p>最佳实践：前三种方法中 <code>read()</code> 、<code>readlines()</code> 在文件比较大时都会消耗大量内存空间，容易造成内存溢出，因此结合  <code>with</code> 语句并使用迭代器用一行取一行，变量定位行号更合适：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">line_number = <span class="number">0</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'poem'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        line_number += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> line_number == <span class="number">4</span>:</span><br><span class="line">            line = <span class="string">''</span>.join([line.strip(), <span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她'</span>])</span><br><span class="line">        print(line.strip())</span><br></pre></td></tr></table></figure>
 <p>在 Python 中由于内存的机制无法像 word 那样实时修改并保存文件，因此只能先读取源文件数据到内存空间中进行修改，然后写入到另一个文件，再把新文件替换掉源文件。</p>
 <p>例如，要在文件 ‘poem’ 的第四行之后添加注释 <code># 琴瑟友之：弹琴鼓瑟来亲近她</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line">f_read = open(<span class="string">'poem'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">f_write = open(<span class="string">'poem.bak'</span>,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">line_number = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f_read:</span><br><span class="line">    line_number += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> line_number == <span class="number">4</span>:</span><br><span class="line">        line = line.replace(<span class="string">'\n'</span>,<span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她\n'</span>)</span><br><span class="line">    f_write.write(line)</span><br><span class="line"></span><br><span class="line">f_read.close()</span><br><span class="line">f_write.close()</span><br></pre></td></tr></table></figure>
 <p>使用 <code>with</code> 语句，可以同时管理多个文件对象</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line">line_number = <span class="number">0</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'poem'</span>,<span class="string">'r'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fr , open(<span class="string">'poem.bak'</span>,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fw:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> fr:</span><br><span class="line">        line_number += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> line_number == <span class="number">4</span>:</span><br><span class="line">            line = line.replace(<span class="string">'\n'</span>,<span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她\n'</span>)</span><br><span class="line">        fw.write(line)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line">line_number = <span class="number">0</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'poem'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fr, \</span><br><span class="line">        open(<span class="string">'poem.bak'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fw:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> fr:</span><br><span class="line">        line_number += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> line_number == <span class="number">4</span>:</span><br><span class="line">            line = line.replace(<span class="string">'\n'</span>, <span class="string">'# 琴瑟友之：弹琴鼓瑟来亲近她\n'</span>)</span><br><span class="line">        fw.write(line)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -731,7 +712,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -816,7 +797,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1006,7 +991,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

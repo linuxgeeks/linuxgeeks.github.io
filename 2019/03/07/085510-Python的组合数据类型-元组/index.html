@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="Just Do It">
 <meta property="og:description" content="元组元组是有序序列，其中包含0个或多个对象引用。元组被称为只读列表，即数据可以被查询但不能被修改，所以列表的切片操作同样适用于元组。如果需要修改有序序列应该使用列表而非元组。如果有一个元组需要对其进行修改，则可以使用 list() 转换函数将其转换为列表之后在产生的列表之上进行适当修改。 tuple 数据类型可以作为函数进行调用，tuple()——不带参数将返回一个空元组，带一个 tuple 类参">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-27T14:20:53.788Z">
+<meta property="og:updated_time" content="2019-12-03T11:31:31.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python的组合数据类型-元组">
 <meta name="twitter:description" content="元组元组是有序序列，其中包含0个或多个对象引用。元组被称为只读列表，即数据可以被查询但不能被修改，所以列表的切片操作同样适用于元组。如果需要修改有序序列应该使用列表而非元组。如果有一个元组需要对其进行修改，则可以使用 list() 转换函数将其转换为列表之后在产生的列表之上进行适当修改。 tuple 数据类型可以作为函数进行调用，tuple()——不带参数将返回一个空元组，带一个 tuple 类参">
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-27 22:20:53" itemprop="dateModified" datetime="2019-03-27T22:20:53+08:00">2019-03-27</time>
+                <time title="修改时间：2019-12-03 19:31:31" itemprop="dateModified" datetime="2019-12-03T19:31:31+08:00">2019-12-03</time>
               </span>
             
           
@@ -460,7 +460,7 @@
 <li>元组可以在映射（和集合的成员）中当作键使用——而列表则不行；元组作为很多内建函数和方法的返回值存在</li>
 </ul>
 <h1 id="元组的方法"><a href="#元组的方法" class="headerlink" title="元组的方法"></a>元组的方法</h1><p>元组只提供了两种方法：<code>t.count(x)</code> ,返回对象 <code>x</code> 在元组中出现的次数；<code>t.index(x)</code> ,返回对象在元组 <code>t</code> 中出现的最左边位置——元组中不包含 <code>x</code> 时则产生ValueError异常。</p>
-<h1 id="元组操作符"><a href="#元组操作符" class="headerlink" title="元组操作符"></a>元组操作符</h1><p>元组可以使用操作符 <code>+</code> (连接)、<code>*</code> (复制) 与 <code>[]</code> (分片)，也可以使用 <code>in</code> 与 <code>not in</code> 来测试成员关系。虽然元组是固定对象，但 <code>+=</code> 与 <code>*=</code> 这两个增强的赋值运算符也可以使用——实际上是 Python 创建了新元组用于存放结果，并将左边的对象引用设置为指向新元组。元组可以使用标准的比较操作符（<code>&lt;</code>、<code>&lt;=</code>、<code>==</code>、<code>!=</code>、<code>&gt;=</code>、<code>&gt;</code>)进行比较，这种比较实际是逐项进行的（对嵌套项，比如元组内的元组，递归进行处理)。示例:</p>
+<h1 id="元组操作符"><a href="#元组操作符" class="headerlink" title="元组操作符"></a>元组操作符</h1><p>元组可以使用操作符 <code>+</code> (连接)、<code>*</code> (复制) 与 <code>[]</code> (分片)，也可以使用 <code>in</code> 与 <code>not in</code> 来测试成员关系。虽然元组是固定对象，但 <code>+=</code> 与 <code>*=</code> 这两个增强的赋值运算符也可以使用——实际上是 Python 创建了新元组用于存放结果，并将左边的对象引用设置为指向新元组。元组可以使用标准的比较操作符（ <code>&lt;</code>、<code>&lt;=</code>、<code>==</code>、<code>!=</code>、<code>&gt;=</code>、<code>&gt;</code> ）进行比较，这种比较实际是逐项进行的（对嵌套项，比如元组内的元组，递归进行处理)。示例:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hair = <span class="string">"black"</span>, <span class="string">"brown"</span>, <span class="string">"blonde"</span>, <span class="string">"red"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hair[<span class="number">2</span>]</span><br><span class="line"><span class="string">'blonde'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hair[<span class="number">-3</span>:] <span class="comment"># same as: hair[l:]</span></span><br><span class="line">(<span class="string">'brown'</span>, <span class="string">'blonde'</span>, <span class="string">'red'</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hair[:<span class="number">2</span>], <span class="string">"gray"</span>, hair[<span class="number">2</span>:]</span><br><span class="line">((<span class="string">'black'</span>, <span class="string">'brown'</span>), <span class="string">'gray'</span>, (<span class="string">'blonde'</span>, <span class="string">'red'</span>))</span><br></pre></td></tr></table></figure>
 <p>这里本来是想创建一个新的五元组，但结果是一个三元组，其中包含两个二元组，之所以会这样是因为在3个项（一个元组，一个字符串，一个元组)之间使用了逗号操作符。要得到一个单独的元组，并包含所需项必须对其进行连接：</p>
@@ -621,7 +621,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -706,7 +706,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">32</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -896,7 +900,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>
